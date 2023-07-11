@@ -23,6 +23,7 @@ export default function DateTimePickerValue({ value, setValue }: getAllProps) {
                     onChange={(newValue) => setValue(newValue)}
                     disableFuture//אין אפשרות לבחור בתאריך שעדיין לא היה
                     minDate={lastYear}
+                    label="dateTimePicker"
                 />
             </DemoContainer>
         </LocalizationProvider>

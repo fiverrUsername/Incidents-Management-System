@@ -45,13 +45,13 @@ const theme = createTheme({
           //   contrastText:'#FFFFFF',
           // },
         },
-    typography: {
-        fontFamily: 'Poppins',
-        fontSize: 15,
-        // fontWeight: 500,
-        //  lineHeight: 23,
-        //  letterSpacing: 0,
-      },
+    // typography: {
+    //     fontFamily: 'Poppins',
+    //     fontSize: 15,
+    //     // fontWeight: 500,
+    //     //  lineHeight: 23,
+    //     //  letterSpacing: 0,
+    //   },
       components: {
         MuiButton: {
           styleOverrides: {
@@ -64,6 +64,10 @@ const theme = createTheme({
             
           }
         },
-    }
+    },
+    
 })
 export default theme
+
+
+
