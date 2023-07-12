@@ -62,7 +62,8 @@ import TimeLine from './pages/timeLine/timeLine'
 import DemoComponent from './demoTest/DemoComponent'
 
 function App() {
-  const [open, setOpen] = useState(false);  
+  const [open, setOpen] = useState(false);
+  // const tagOptions = [{ id: "a", name: 'Tag1' }, { id: "b", name: 'Tag2' }, { id: "c", name: 'Tag3' }, { id: "d", name: 'Tag4' }];
   const drawerIcons: IIcon[] = [
     { icon: BiHomeHeart, text: "home", navigation: "./home" },
     { icon: BiHome, text: "dashboard", navigation: "./dashboard" },
@@ -82,7 +83,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex' }}>
-      <LeftDrawer icons={drawerIcons} />
+        <LeftDrawer icons={drawerIcons} />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Button onClick={handleClick}>Open Incident</Button>
           {open && <AddIncident open={open} onClose={handleClose} />}

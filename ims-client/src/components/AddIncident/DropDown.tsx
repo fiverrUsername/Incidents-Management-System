@@ -4,47 +4,40 @@ import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import {Types} from './Types';
-
-
-export default function DropDown() {
-  const [type, setType] = React.useState('');
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setType(event.target.value);
-  };
-
-  return (
-    <div>
-      <FormControl
-        sx={{
-          position: 'absolute',
-          top: '50%',
-          right: '50%',
-          transform: 'translateY(-50%)',
-          minWidth: 200,
-        }}
-      >
-        <InputLabel id="demo-simple-select-helper-label">Select Type</InputLabel>
-        <Select
-          labelId="demo-simple-select-helper-label"
-          id="demo-simple-select-helper"
-          value={type}
-          label="Type"
-          onChange={handleChange}
-        >
-            <MenuItem value="">
-          </MenuItem>
-          {Types.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </Select>
-        <FormHelperText></FormHelperText>
-      </FormControl>
-    </div>
-  );
+import { Types } from './Types';
+interface Props{
+    type:string;
+    setType: React.Dispatch<React.SetStateAction<string>>
 }
+export default function DropDown({type,setType}:Props) {
+
+    const handleChange = (event: SelectChangeEvent) => {
+        setType(event.target.value);
+    };
+
+    return (
+        <FormControl>
+            <InputLabel id="demo-simple-select-label">Select type</InputLabel>
+            <Select
+                labelId="demo-simple-select-placeholder-label"
+                id="demo-simple-select-placeholder"
+                value={type}
+                onChange={handleChange}
+                displayEmpty
+            >
+                <MenuItem value="">
+                </MenuItem>
+                {Types.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                    </MenuItem>
+                ))}
+            </Select>
+            <FormHelperText></FormHelperText>
+        </FormControl>
+    );
+}
+
+
 
 

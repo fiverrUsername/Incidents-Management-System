@@ -18,33 +18,36 @@ const selectedButtonStyles: React.CSSProperties = {
   border: '1px solid #2F854F',
   background: 'rgba(47, 133, 79, 0.10)',
 };
-
-export default function ToggleButtons() {
-  const [alignment, setAlignment] = React.useState<string | null>();
-  const handleAlignment = (
+interface Props{
+  priority:string|null;
+  setPriority:React.Dispatch<React.SetStateAction<string|null>>
+}
+export default function ToggleButtons({priority,setPriority}:Props) {
+  
+  const handlepriority = (
     event: React.MouseEvent<HTMLElement>,
-    newAlignment: string | null,
+    newpriority: string | null,
   ) => {
-    setAlignment(newAlignment);
+    setPriority(newpriority);
   };
   return (
     <ToggleButtonGroup
-      value={alignment}
+      value={priority}
       exclusive
-      onChange={handleAlignment}
-      aria-label="text alignment"
+      onChange={handlepriority}
+      aria-label="text priority"
       style={{ display: 'flex', gap: '10px' }}
     >
-      <ToggleButton value="left" style={alignment === 'left' ? selectedButtonStyles : buttonStyles}>
+      <ToggleButton value="p0" style={priority === 'p0' ? selectedButtonStyles : buttonStyles}>
         p0
       </ToggleButton>
-      <ToggleButton value="center" style={alignment === 'center' ? selectedButtonStyles : buttonStyles}>
+      <ToggleButton value="p1" style={priority === 'p1' ? selectedButtonStyles : buttonStyles}>
         p1
       </ToggleButton>
-      <ToggleButton value="right" style={alignment === 'right' ? selectedButtonStyles : buttonStyles}>
+      <ToggleButton value="p2" style={priority === 'p2' ? selectedButtonStyles : buttonStyles}>
         p2
       </ToggleButton>
-      <ToggleButton value="justify" style={alignment === 'justify' ? selectedButtonStyles : buttonStyles}>
+      <ToggleButton value="p3" style={priority === 'p3' ? selectedButtonStyles : buttonStyles}>
         p3
       </ToggleButton>
     </ToggleButtonGroup>

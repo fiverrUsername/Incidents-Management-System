@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { Tag } from '../AddIncident/addIncident';
 
-interface Tag{
-  id: string;
-  name: string;
-}
+
 
 interface AutocompleteTagProps{
   tagOptions: Tag[];
+  selectedTags:Tag[];
+  setSelectedTags:React.Dispatch<React.SetStateAction<Tag[]>>
 }
 
-const AutocompleteTag = ({ tagOptions }: AutocompleteTagProps) => {
-  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+const AutocompleteTag = ({ tagOptions,selectedTags ,setSelectedTags}: AutocompleteTagProps) => {
+  
   return (
     <Autocomplete
       ChipProps={{
@@ -35,6 +35,7 @@ const AutocompleteTag = ({ tagOptions }: AutocompleteTagProps) => {
       getOptionLabel={(option) => option.name}
       onChange={(event, newValue) => {
         setSelectedTags(newValue);
+        console.log(newValue)
       }}
       renderInput={(params) => (
         <TextField

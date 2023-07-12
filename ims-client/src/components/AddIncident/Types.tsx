@@ -1,16 +1,4 @@
-// interface Type {
-//     value: string;
-//     label: string;
-// }
 
-// export const Types: Type[] = [
-//     { value: 'securing', label: 'securing' },
-//     { value: 'technical', label: 'technical' },
-//     { value: 'comment', label: 'comment' },
-// ];
-
-
-//+++++++++++++++++++++++++++++++++++++++++++++
 import React, { ChangeEvent } from 'react';
 import { Select, MenuItem, SelectChangeEvent } from '@mui/material';
 import { styled } from '@mui/system';
