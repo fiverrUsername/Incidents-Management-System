@@ -34,11 +34,8 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows }) => {
     filteredRows = filterRowsByStatus(filteredRows, statusValue);
   };
 
-  someFunction();
-
   const [searchValue, setSearchValue] = useState<string>("");
   const [statusValue, setStatusValue] = useState<string>("Active");
-
   let filteredRows: IIncident[] = [];
 
   someFunction();
