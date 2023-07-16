@@ -11,10 +11,9 @@ import { TimelineConnectorWrapper, TimelineDotWrapper, TimelineItemWrapper } fro
 
 
 const timeLineEvent: React.FC<ITimeLineEventprops> = (props) => {
-
-    const { timeline, isPriorityChanged, isTypeChanged, previousType, previosPriority } = props
-    const { profile, name, description } = timeline
-    const date = dayjs(timeline.createdDate).format("DD/MM/YYYY")
+    const { timeline, isPriorityChanged, isTypeChanged, previousType, previosPriority, name, profile } = props
+    const { description,createdDate } = timeline
+    const date = dayjs(createdDate).format("DD/MM/YYYY")
 
     return <div >
         <TimelineItemWrapper>
@@ -31,11 +30,15 @@ const timeLineEvent: React.FC<ITimeLineEventprops> = (props) => {
                 <Typography variant='date'>
                     {date.toString()}
                 </Typography>
+
+                {isPriorityChanged === true ? <><Typography variant='boldGreen'> Priority Change: </Typography>
+                    <Typography> {previosPriority} to {timeline.priority}</Typography></> : ""}
+                {isTypeChanged === true ? <><Typography variant='boldGreen'> Type Change: </Typography>
+                    <Typography>{previousType} to {timeline.type}</Typography></> : ""}
                 <Typography variant='longText'>
-                    {timeline.description}
+                    {description}
                 </Typography>
-                {isPriorityChanged ? <Typography> priority change:{timeline.priority} to{previosPriority}</Typography> : ""}
-                {isTypeChanged ? <Typography> type change:{timeline.type} to{previousType}</Typography> : ""}
+
             </TimelineContent>
         </TimelineItemWrapper>
         <Attachment />

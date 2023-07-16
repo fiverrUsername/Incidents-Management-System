@@ -3,7 +3,7 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import React, { useState } from "react";
 import theme from "../../theme";
-import { EventProps } from "../IncidentTable/IncidentTable";
+import { EventProps } from "../incidentTable/incidentTable";
 import { TabStyles } from "./Tabs.style";
 
 const UpTabs: React.FC<EventProps> = ({ onEvent, setValue }) => {

@@ -21,16 +21,16 @@ export const PaginationComponent = () => {
   const pageCount = useGridSelector(apiRef, gridPageCountSelector);
 
   return (
-    <StyledPagination
-      sx={{
-        display: "flex",
-        justifyContent: "flex-start",
-      }}
-      page={page + 1}
-      count={pageCount}
-      onChange={(event: React.ChangeEvent<unknown>, value: number) =>
-        apiRef.current.setPage(value - 1)
-      }
-    />
+      <StyledPagination
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start",
+        }}
+        page={page + 1}
+        count={pageCount}
+        onChange={(event: React.ChangeEvent<unknown>, value: number) =>
+          apiRef.current.setPage(value - 1)
+        }
+      />
   );
 };

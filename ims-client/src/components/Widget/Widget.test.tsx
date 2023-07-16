@@ -1,33 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Widget from '../Widget/Widget';
+import Widget from './Widget';
 
 describe('Widget', () => {
   it('renders the component with correct props', () => {
     const title = 'Test Widget';
     const aggregation = 123456;
-    const img = 'test.jpg';
+    const icon = <svg data-testid="test-icon" />;
 
-    render(<Widget title={title} aggregation={aggregation} img={img} />);
-
-    // Assert the title is rendered correctly
-    expect(screen.getByText(title)).toBeInTheDocument();
-
-    // Assert the aggregation is rendered correctly
-    const formattedAggregation = aggregation.toLocaleString();
-    expect(screen.getByText(formattedAggregation)).toBeInTheDocument();
-
-    // Assert the image is rendered correctly
-    const imgElement = screen.getByAltText(title);
-    expect(imgElement).toBeInTheDocument();
-    expect(imgElement.getAttribute('src')).toBe(img);
-  });
-
-  it('renders the component without an image', () => {
-    const title = 'Test Widget';
-    const aggregation = 123456;
-
-    render(<Widget title={title} aggregation={aggregation} />);
+    render(<Widget title={title} aggregation={aggregation} icon={icon} />);
 
     // Assert the title is rendered correctly
     expect(screen.getByText(title)).toBeInTheDocument();
@@ -36,7 +17,11 @@ describe('Widget', () => {
     const formattedAggregation = aggregation.toLocaleString();
     expect(screen.getByText(formattedAggregation)).toBeInTheDocument();
 
-    // Assert that no image is rendered
-    expect(screen.queryByAltText(title)).not.toBeInTheDocument();
+    // Assert the icon is rendered correctly
+    const iconElement = screen.getByTestId('test-icon');
+    expect(iconElement).toBeInTheDocument();
+   
   });
+
+  
 });

@@ -12,56 +12,86 @@
     ],
     "tags": [
         {
-            "name": "incident",
-            "name":"tag"
+            "name": "incident"
+        },
+        {
+            "name": "tag"
         }
     ],
     "paths": {
-        "/tag":{
-            "get":{
-                    "tags": [
-                        "tag"
-                    ],
-                    "description": "Retrieve all tags",
-                    "responses": {
-                        "200": {
-                            "description": "successful operation"
-                        },
-                        "400": {
-                            "description": "Invalid status value"
-                        }
-                    }
-            },"post": {
-                    "tags": [
-                        "tag"
-                    ],
-                    "description": "add a tag",
-                    "requestBody": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Tag"
-                                },
-                                "required":"true"
-                            }
-                        }
+        "/tag": {
+            "get": {
+                "tags": [
+                    "tag"
+                ],
+                "description": "Retrieve all tags",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
                     },
-                    "responses": {
-                        "200": {
-                            "description": "successful operation"
-                        },
-                        "400": {
-                            "description": "Invalid status value"
-                        }
+                    "400": {
+                        "description": "Invalid status value"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "tag"
+                ],
+                "description": "add a tag",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Tag"
+                            },
+                            "required": "true"
+                        }
+                    }
                 },
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
+        },
         "/incident": {
             "get": {
                 "tags": [
                     "incident"
                 ],
                 "description": "Retrieve all incidents",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "incident"
+                ],
+                "description": "add an incident",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Incident"
+                            }
+                        },
+                        "id": {
+                            "type": "string"
+                        }
+                    },
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "description": "successful operation"
@@ -123,7 +153,7 @@
                 }
             }
         },
-        "/incident/updateIncidence/{id}": {
+        "/incident/updateIncident/{id}": {
             "put": {
                 "tags": [
                     "incident"
@@ -132,9 +162,7 @@
                 "parameters": [
                     {
                         "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
+                        "in": "path"        
                     }
                 ],
                 "requestBody": {
@@ -156,7 +184,8 @@
                     }
                 }
             }
-        }, "/aggrigation": {
+        },
+        "/aggrigation": {
             "get": {
                 "tags": [
                     "aggrigation"
@@ -174,9 +203,9 @@
         },
         "components": {
             "schemas": {
-                "Tag":{
-                    "type":"object",
-                    "properties":{
+                "Tag": {
+                    "type": "object",
+                    "properties": {
                         "name": {
                             "type": "string"
                         },

@@ -8,7 +8,7 @@ import config from './config/config'
 import incidentRout from './routes/IncidentRout'
 import aggrigationRouter from './routes/aggrigationRouter'
 import tagRouter from './routes/tagRouter'
-import {connect} from './models/db'
+import { connect } from './models/db'
 import logger from './loggers/log'
 const port = config.server.port
 
@@ -22,12 +22,13 @@ connect()
 app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use(cors())
 app.use(bodyParser.json())
-app.get('/', (req: Request, res: Response): void => {
-  res.send('IMS');
-});
 app.use('/incident', incidentRout)
-app.use('/aggregation',aggrigationRouter)
-app.use('/tag',tagRouter)
+app.use('/aggregation', aggrigationRouter)
+app.use('/tag', tagRouter)
+
+app.get('/', (req: Request, res: Response): void => {
+  res.redirect('/swagger')
+});
 
 app.listen(port, () => {
   logger.info(`Server is listeningo on http://localhost:${port}`)

@@ -1,12 +1,14 @@
 export interface ITimeLineEventprops {
-    timeline: TimelineEvent
-    isPriorityChanged: boolean
-    isTypeChanged: boolean
-    previousType: string
-    previosPriority: string
+    timeline: TimelineEvent;
+    isPriorityChanged: boolean;
+    isTypeChanged: boolean;
+    previousType: string;
+    previosPriority: string;
+    name?: string;
+    profile?: string;
 }
-export interface IIncidentprops {
-    incident: Incident
+export interface Idincidentprops {
+    _id: string
 }
 
 
@@ -20,8 +22,7 @@ interface TimelineEvent {
     files: string[];
     createdDate: string;
     updatedDate: string;
-    name: string;
-    profile: string;
+
 }
 export interface Incident {
     _id: string,

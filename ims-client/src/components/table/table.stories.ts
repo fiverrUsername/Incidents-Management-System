@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import IncidentTable from './IncidentTable';
+import Table from './table';
 
 const meta = {
-    title: 'Components/IncidentTable',
-    component: IncidentTable,
+    title: 'Components/Table',
+    component: Table,
     tags: ['autodocs'],
     parameters: {
         layout: 'fullscreen',
@@ -11,7 +11,8 @@ const meta = {
 };
 export const Default = {
     args: {
-        rows:[]
+        columns: [],
+        rows: []
     }
 };
 export default meta;

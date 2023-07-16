@@ -5,15 +5,16 @@ declare module '@mui/material/styles' {
     date: React.CSSProperties;
     bold: React.CSSProperties;
     normal: React.CSSProperties;
-    widget:React.CSSProperties;
+    widget: React.CSSProperties;
     longText: React.CSSProperties;
   }
   interface TypographyVariantsOptions {
     date: React.CSSProperties;
     bold: React.CSSProperties;
     normal: React.CSSProperties;
-    widget:React.CSSProperties;
+    widget: React.CSSProperties;
     longText: React.CSSProperties;
+    boldGreen: React.CSSProperties;
   }
 }
 
@@ -22,8 +23,9 @@ declare module '@mui/material/Typography' {
     date: true;
     bold: true;
     normal: true;
-    widget:true;
+    widget: true;
     longText: true;
+    boldGreen: true;
   }
 }
 const theme = createTheme({
@@ -59,7 +61,7 @@ const theme = createTheme({
       main: '#ED6C02',
       contrastText: '#fff'
     },
-    
+
     info: {
       light: '#D9D9D9',
       dark: '#D9D9D9',
@@ -77,11 +79,11 @@ const theme = createTheme({
       color: ' #5F5F5F',
       display: 'block',
     },
-    widget:{
+    widget: {
       fontWeight: 400,
       fontSize: '46.32px',
       lineHeight: '69.48px',
-      paddingTop:'15px',                          
+      paddingTop: '15px',
     },
     bold: {
       fontWeight: 500,
@@ -99,6 +101,14 @@ const theme = createTheme({
       paddingBlock: '30px',
       lineHeight: '35.79px',
       display: 'block',
+    },
+    boldGreen: {
+      fontWeight: 700,
+      lineHeight: '36px',
+      letterSpacing: '0em',
+      color: '#2F854F',
+      paddingTop: '3%',
+      display: 'block'
     }
   },
   components: {

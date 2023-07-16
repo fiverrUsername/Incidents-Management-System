@@ -1,30 +1,33 @@
-import react from 'react'
+import React from 'react'
 import IIncident from '../../interface/incidentInterface'
 import apiCalls from '../../service/apiCalls'
+import { FormData } from '../AddIncident/addIncident'
 
 
-// interface incidentprps{
-//     incident:IIncident
-//     }
+export default async function submitIncident(prop:FormData) {
     
-
-export default async function submitIncident(prop:IIncident) {
     const incidentcR:IIncident={
-        id:prop.id,
+        //TODO
+        //Remove the id
+        id: "1",
         name: prop.name,
-        status:prop.status,
+        status:"Open",
         description:prop.description,
         priority: prop.priority,
         type: prop.type,
-        durationHours: prop.durationHours,
+        durationHours: 0,
         slackLink: prop.slackLink,
-         tags: prop.tags.map(tag => ({ id: tag.id, name: tag.name })),
-        date: prop.date,
-        createdAt: prop.createdAt,
-        updatedAt: prop.updatedAt,
-        cost: prop.cost
+        tags: prop.tags.map(tag => ({ id: tag.key.toString(), name: tag.value })),
+        date: prop.date.toDate(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        cost: 0,
     }
+
+
     await apiCalls.createIncident(incidentcR)
+    console.log('I am in submit incident')
+
 
 
 }

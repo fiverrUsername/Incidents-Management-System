@@ -1,5 +1,4 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import Search from './Search';
 
 describe('Search',()=>{
     test('Search component should handle click event', () => {

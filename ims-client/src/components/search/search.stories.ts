@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import Search from './Search';
+import Search from './search';
 
 const meta = {
     title: 'Components/Search',

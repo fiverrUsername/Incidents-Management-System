@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -6,10 +7,11 @@ import theme from '../../theme';
 
 interface AutocompleteProps {
   options: Option[];
+  selectedTags:Option[]
+  setSelectedTags:React.Dispatch<React.SetStateAction<Option[]>>
 }
 
-const CustomAutocomplete =({ options }: AutocompleteProps) => {
-  const [selectedOptions, setSelectedOptions] = useState<Option []>([]);
+const CustomAutocomplete =({ options, selectedTags,setSelectedTags }: AutocompleteProps) => {
   return (
     <Autocomplete
       ChipProps={{
@@ -28,10 +30,10 @@ const CustomAutocomplete =({ options }: AutocompleteProps) => {
       multiple
       options={options}
       filterSelectedOptions
-      value={selectedOptions}
+      value={selectedTags}
       getOptionLabel={(option) => option.value}
       onChange={(event, newValue) => {
-        setSelectedOptions(newValue);
+        setSelectedTags(newValue);
       }}
       renderInput={(params) => (
         <TextField
