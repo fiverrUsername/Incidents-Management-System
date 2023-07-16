@@ -7,13 +7,14 @@ import LeftDrawer, { IIcon } from "./components/drawer/Drawer";
 import theme from "./theme";
 import React from "react";
 import TimeLinePage from "./pages/timeLine/timeLinePage";
+import CustomAutocomplete from "./components/autoCompleteTag/autoComplete";
 
 function App() {
   const tagOptions = [
-    { id: "a", name: "Tag1" },
-    { id: "b", name: "Tag2" },
-    { id: "c", name: "Tag3" },
-    { id: "d", name: "Tag4" },
+    { key: "a", value: "Tag1" },
+    { key: "b", value: "Tag2" },
+    { key: "c", value: "Tag3" },
+    { key: "d", value: "Tag4" },
   ];
   const drawerIcons: IIcon[] = [
     { icon: BiHomeHeart, text: "home", navigation: "./home" },
@@ -30,7 +31,7 @@ function App() {
           <LeftDrawer icons={drawerIcons} />
           <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
             {/* <Here put all the components /> */}
-            
+         
             <TimeLinePage id={"649cbeda942a5d4d8bcf303d"}></TimeLinePage>
           </Box>
         </Box>

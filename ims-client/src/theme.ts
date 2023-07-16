@@ -81,7 +81,7 @@ const theme = createTheme({
       fontWeight: 400,
       fontSize: '46.32px',
       lineHeight: '69.48px',
-      paddingTop:'15px',
+      paddingTop:'15px',                          
     },
     bold: {
       fontWeight: 500,

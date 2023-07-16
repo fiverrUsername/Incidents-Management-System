@@ -4,14 +4,16 @@ import TimeLine from "./timeLine";
 import { Incident } from "./modules/interface";
 import Search from "../../components/Search/Search";
 import { EventProps } from "../../components/IncidentTable/IncidentTable";
-
+import { Paper, makeStyles } from "@mui/material";
+ 
 
 interface TimeLinePageProps{
   id:string
 }
 
 const TimeLinePage = ({id}:TimeLinePageProps) => {
-  
+ 
+
   const [incident, setIncident] = useState<Incident>();
   useEffect(() => {
     const FetchData = async () => {
@@ -29,7 +31,10 @@ const TimeLinePage = ({id}:TimeLinePageProps) => {
   return (
    <>
    <Search onEvent={someFunction} setValue={setMyValue} ></Search>
+   <Paper   >
    {incident && <TimeLine incident={incident} />}
+   </Paper>
+ 
 
    </>
   );
