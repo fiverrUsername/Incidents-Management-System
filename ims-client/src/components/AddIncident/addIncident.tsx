@@ -135,7 +135,7 @@ export default function AddIncident({ open, onClose }: Props) {
               <FormControl fullWidth>
                 <label htmlFor="name">Incident Name</label>
                 <TextFieldInput placeholder="Incident Name" multiline rows={1} size="small"
-                  {...register("name", {
+                  {...register("name" as const, {
                     required: "Name is required",
                   })} />
                 {errors.name && <span style={{ color: errorColor }}>{errors.name.message}</span>}
