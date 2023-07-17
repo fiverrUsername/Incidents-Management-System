@@ -2,15 +2,13 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridOverlays, GridRowSelectionModel, GridToolbar } from "@mui/x-data-grid";
 import { useState } from "react";
+import { CustomNoRowsOverlay } from "./customNoRowsOverlay";
+import { CustomFooter } from "./footer";
 import React from "react";
 import LinearProgress from '@mui/material/LinearProgress';
 import theme from "../../theme";
-import { CustomFooter } from "./footer";
-import { CustomNoRowsOverlay } from "./customNoRowsOverlay";
-// import { CustomNoRowsOverlay } from "./customNoRowsOverlay";
 
-
-
+import { useNavigate } from 'react-router-dom';
 export interface TableProps<T> {
   columns: GridColDef[];
   rows: Array<T>;
@@ -18,25 +16,26 @@ export interface TableProps<T> {
   visibilityModel: GridColumnVisibilityModel | undefined
 }
 
-export const PAGE_SIZE = 5;
-
-const handleSelectionChange = (rowSelectionModel: GridRowSelectionModel) => {
-  console.log('Selected rows:', rowSelectionModel[0]);    // Add your logic to perform actions on the selected row(s)
-};
+export const PAGE_SIZE = 6;
 
 const Table = <T extends object>({ columns, rows, isLoading, visibilityModel }: TableProps<T>) => {
+  const navigate = useNavigate();
 
   const [paginationModel, setPaginationModel] = useState({
     pageSize: PAGE_SIZE,
     page: 0,
   });
 
-  const [columnVisibilityModel, setColumnVisibilityModel] =
-    React.useState<GridColumnVisibilityModel>(visibilityModel!);
+  const [columnVisibilityModel, setColumnVisibilityModel] = React.useState<GridColumnVisibilityModel>(visibilityModel!);
+
+  const handleSelectionChange = (rowSelectionModel: GridRowSelectionModel) => {
+    const timelineUrl = `/timeline/${rowSelectionModel[0]}`;
+    navigate(timelineUrl);
+  };
 
   return (
     <>
-      <DataGrid style={{  width: "100%" }}
+      <DataGrid style={{ height: 510, width: "98%" }}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
         slots={{
@@ -65,10 +64,16 @@ const Table = <T extends object>({ columns, rows, isLoading, visibilityModel }: 
           ".MuiDataGrid-sortIcon": {
             opacity: "inherit !important",
           },
-          borderRadius: "25px",
+          border: 'none',
           '& .MuiDataGrid-columnHeader': {
             backgroundColor: theme.palette.secondary.light
           },
+          marginLeft:2,
+          marginRight:2,
+          // "& .MuiDataGrid-row": {
+          //   borderRight:`1px solid ${theme.palette.grey[300]}`,
+          //   borderLeft:`1px solid ${theme.palette.grey[300]}`
+          // },
         }}
       />
     </>
