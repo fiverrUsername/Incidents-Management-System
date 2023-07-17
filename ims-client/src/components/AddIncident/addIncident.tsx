@@ -128,14 +128,12 @@ export default function AddIncident({ open, onClose }: Props) {
         <CloseIcon style={closeIconStyles} onClick={onClose} />
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
           <h2>Add Incident</h2>
-
-  
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <FormControl fullWidth>
                 <label htmlFor="name">Incident Name</label>
                 <TextFieldInput placeholder="Incident Name" multiline rows={1} size="small"
-                  {...register("name" as const, {
+                  {...register("name", {
                     required: "Name is required",
                   })} />
                 {errors.name && <span style={{ color: errorColor }}>{errors.name.message}</span>}
