@@ -3,8 +3,9 @@ import apiCalls from "../../service/apiCalls";
 import TimeLine from "./timeLine";
 import { Incident } from "./modules/interface";
 // import Search from "../../components/Search/Search";
-import { Paper } from "@mui/material";
-import { CustomScrollbar, StyledPaper} from "./timeLinePage.style";
+import { Box, Paper } from "@mui/material";
+import { CustomScrollbar, StyledPaper,  } from "./timeLinePage.style";
+import Search from "../../components/search/search";
 // import Search from "../../components/Search/Search";
 
 
@@ -36,7 +37,8 @@ const TimeLinePage = ({ id }: TimeLinePageProps) => {
   return (
     <>
     {/* <StyledSearch onEvent={someFunction} setValue={setMyValue}></StyledSearch> */}
-      {/* <Search onEvent={someFunction} setValue={setMyValue}></Search> */}
+      <Search onEvent={someFunction} setValue={setMyValue}></Search>
+       
       <StyledPaper>
         {/* profile */}
         {/* current priority */}
@@ -51,6 +53,7 @@ const TimeLinePage = ({ id }: TimeLinePageProps) => {
         {/* button updade incident */}
         {/* images */}
       </StyledPaper>
+      
     </>
   );
 };

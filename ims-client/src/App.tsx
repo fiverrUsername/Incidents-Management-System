@@ -8,6 +8,7 @@ import LeftDrawer, { IIcon } from "./components/drawer/Drawer";
 import theme from "./theme";
 import Router from "./routes";
 import Table from "./components/table/table";
+import TimeLinePage from "./pages/timeLine/timeLinePage";
 
 function App() {
 
@@ -25,7 +26,8 @@ function App() {
           <LeftDrawer icons={drawerIcons} />
           <Box  component="main" sx={{ flexGrow: 1, p: 3, height: 'calc(100vh - 64px)', overflow: 'auto'  }}>
             {/* <Here put all the components /> */}
-            <Router/>
+            <TimeLinePage id={"649cbeda942a5d4d8bcf303b"}></TimeLinePage>
+            {/* <Router/> */}
           </Box>
         </Box>
       </CssBaseline>

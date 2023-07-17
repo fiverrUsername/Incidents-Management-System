@@ -3,7 +3,7 @@ import theme from "../../theme";
 import { Paper } from "@mui/material";
 // import Search from "../../components/Search/Search";
 export const CustomScrollbar = styled.div`
-  max-height: 500px;
+  max-height: 400px;
   overflow-y: auto;
   scrollbar-width: thin;
 
@@ -20,11 +20,18 @@ export const CustomScrollbar = styled.div`
   }
 `;
 export const StyledPaper = styled(Paper)`
-  border-radius: 20px;
-  border: 1px solid #BFBFBF;
-  background: #FFF;
-  padding: 20px;
+border-radius: 20px;
+border: 1px solid #bfbfbf;
+background: #fff;
+padding: 20px;
+margin-top: 2%;
 `;
+ 
+
+// export const StyleBox = styled( Box)`
+//    display: 'flex'
+ 
+// `;
 // export const StyledSearch = styled(Search)`
 // .Paper{
 //     border-radius: 250px;
