@@ -23,7 +23,7 @@ function App() {
       <CssBaseline>
         <Box sx={{ display: "flex"}}>
           <LeftDrawer icons={drawerIcons} />
-          <Box  component="main" sx={{ flexGrow: 1, p: 3, height: 'calc(100vh - 64px)', overflow: 'auto'  }}>
+          <Box  component="main" sx={{ flexGrow: 1, p: 3, height: 'calc(100vh - 64px)', overflow: 'hidden'  }}>
             {/* <Here put all the components /> */}
             <Router/>
           </Box>

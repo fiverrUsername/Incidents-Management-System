@@ -24,11 +24,13 @@ const IncidentsPage = () => {
   useEffect(() => {
     console.log("incident", incidents);
   }, [incidents]);
-
+  
   return (
-    <div >
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <div style={{marginButtom:'10px'}}>
       <WidgetsStack />
-      <div style={{ margin: '10px' }}>
+      </div>
+      <div style={{ margin: '20px' ,flex: 1, overflow: 'auto'}}>
         <IncidentTable rows={incidents} isLoading={isLoading} />
       </div>
     </div>
