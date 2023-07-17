@@ -29,7 +29,7 @@ const Search: React.FC<EventProps> = ({ onEvent, setValue }) => {
             component="form"
             sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
         >
-            <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleClick}>
+            <IconButton type="button" sx={{ p: '10px', color:"#7F8085"}} aria-label="search" onClick={handleClick}>
             <SearchIcon />
             </IconButton>
             <InputBase
@@ -39,7 +39,7 @@ const Search: React.FC<EventProps> = ({ onEvent, setValue }) => {
                 onKeyDown={handleKeyDown}
                 onChange={handleChange}
             />
-          <FilterListIcon sx={{ opacity: "20%" }}></FilterListIcon>
+          <FilterListIcon sx={{ color:"rgba(127, 128, 133, 0.15)" }}></FilterListIcon>
         </Paper>
     );
 };
