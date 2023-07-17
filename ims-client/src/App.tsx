@@ -7,21 +7,15 @@ import "./App.css";
 import LeftDrawer, { IIcon } from "./components/drawer/Drawer";
 import theme from "./theme";
 import Router from "./routes";
-
-
+import Table from "./components/table/table";
 
 function App() {
-  const tagOptions = [
-    { id: "a", name: "Tag1" },
-    { id: "b", name: "Tag2" },
-    { id: "c", name: "Tag3" },
-    { id: "d", name: "Tag4" },
-  ];
+
   const drawerIcons: IIcon[] = [
-    { icon: BiHomeHeart, text: "home", navigation: "./home" },
+    { icon: BiHomeHeart, text: "home", navigation: "./" },
     { icon: BiHome, text: "dashboard", navigation: "./dashboard" },
     { icon: AiOutlineSetting, text: "settings", navigation: "./settings" },
-    { icon: BiMessageAdd, text: "settings", navigation: "./message" },
+    { icon: BiMessageAdd, text: "Send message", navigation: "./message" },
   ];
 
   return (

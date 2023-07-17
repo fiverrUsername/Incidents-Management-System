@@ -10,7 +10,7 @@ describe('Search',()=>{
         // Render the Search component
       
         // Find the search input
-        const searchInput = screen.getByPlaceholderText('Search Incident');
+        const searchInput = screen.getByPlaceholderText('Search...');
       
         // Simulate a change event on the search input
         fireEvent.change(searchInput, { target: { value: 'test' } });

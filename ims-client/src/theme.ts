@@ -1,5 +1,6 @@
 // import { colors } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+import { hover } from '@testing-library/user-event/dist/hover';
 declare module '@mui/material/styles' {
   interface TypographyVariants {
     date: React.CSSProperties;
@@ -7,7 +8,6 @@ declare module '@mui/material/styles' {
     normal: React.CSSProperties;
     widget: React.CSSProperties;
     longText: React.CSSProperties;
-    boldGreen: React.CSSProperties;
   }
   interface TypographyVariantsOptions {
     date: React.CSSProperties;
@@ -31,6 +31,9 @@ declare module '@mui/material/Typography' {
 }
 const theme = createTheme({
   palette: {
+    background:{
+      default:'#F1F1F1'
+    },
     primary: {
       //the basic color
       light: '#2F854F1A', //light-green
@@ -84,6 +87,7 @@ const theme = createTheme({
       fontWeight: 400,
       fontSize: '46.32px',
       lineHeight: '69.48px',
+      display:'flex',
       paddingTop: '15px',
     },
     bold: {
@@ -119,9 +123,15 @@ const theme = createTheme({
           backgroundColor: '#2F854F',
           color: '#FFFFFF', //white
           border: '#FFFFFF',
-        }
-      }
+          transition: 'background-color 0.3s', // נוסיף אנימציה לשינוי הצבע בעת hover
+          '&:hover': {
+            backgroundColor: '#2F854F1A'
+            ,color:'#2E7D32'
+          },
+        },
+      },
     },
   }
 })
+
 export default theme;

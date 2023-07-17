@@ -10,6 +10,7 @@ import UpTabs from "../tabs/Tabs";
 import IIncident from "../../interface/incidentInterface";
 import AddIncidentComp from "../AddIncident/addIncidentComp";
 import { Box, Typography } from "@mui/material";
+import theme from "../../theme";
 
 
 export type EventProps = {
@@ -124,12 +125,20 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading }) => {
   someFunction();
 
   return (
-    <Box>
-      <UpTabs onEvent={someFunction} setValue={setStatusValue}></UpTabs>
-      <Search onEvent={someFunction} setValue={setSearchValue} />
-      <AddIncidentComp></AddIncidentComp>
-      <Table columns={columns} rows={filteredRows} isLoading={isLoading} visibilityModel={visibilityModel}></Table>
+    <Box border={`1px solid ${theme.palette.grey[300]}`} borderRadius={10} bgcolor={theme.palette.primary.contrastText}>
+    <Box display="grid" gridTemplateColumns="1fr auto" margin={4} >
+      <Box >
+        <UpTabs onEvent={someFunction} setValue={setStatusValue} />
+      </Box>
+      <Box display="flex" alignItems="center" justifyContent="flex-end">
+        <Box style={{ marginRight: '8px' }}>
+        <Search onEvent={someFunction} setValue={setSearchValue} />
+        </Box>
+        <AddIncidentComp />
+      </Box>
     </Box>
+      <Table columns={columns} rows={filteredRows} isLoading={isLoading} visibilityModel={visibilityModel} />
+</Box>
   );
 };
 
