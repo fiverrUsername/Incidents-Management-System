@@ -21,11 +21,11 @@ const StyledButtonBase = styled(ButtonBase)(({ theme }) => ({
 }));
 
 const StyledIcon = styled('div')(({ theme }) => ({
-  color: theme.palette.background.default,
+  color: theme.palette.primary.contrastText,
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  fontSize: '65px',
+  fontSize: '65px', 
 }));
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
