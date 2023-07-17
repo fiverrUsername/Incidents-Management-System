@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import theme from "../../theme";
 import { Paper } from "@mui/material";
-import Search from "../../components/Search/Search";
+import Search from "../../components/search/search";
 export const CustomScrollbar = styled.div`
   max-height: 500px;
   overflow-y: auto;
