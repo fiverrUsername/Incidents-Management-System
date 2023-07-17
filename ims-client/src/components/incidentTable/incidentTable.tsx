@@ -125,7 +125,7 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading }) => {
   someFunction();
 
   return (
-    <Box border={`1px solid ${theme.palette.grey[300]}`} borderRadius={10}>
+    <Box border={`1px solid ${theme.palette.grey[300]}`} borderRadius={10} bgcolor={theme.palette.primary.contrastText}>
     <Box display="grid" gridTemplateColumns="1fr auto" margin={4} >
       <Box >
         <UpTabs onEvent={someFunction} setValue={setStatusValue} />
