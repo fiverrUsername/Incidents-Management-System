@@ -4,7 +4,11 @@ import React, { useContext } from 'react';
 const theme = createTheme({
 
     palette: {
-      //לבן
+
+        background:{
+          default:'#F1F1F1'
+        },
+        
         primary: {
            light: '#2F854F',
           main: '#2F854F', 
