@@ -1,6 +1,5 @@
 import mongoose, { Schema } from 'mongoose'
 import { type IIncident } from '../interfaces/IncidentInterface'
-import { v4 as uuidv4 } from 'uuid';
 
 export const IncidentSchema = new Schema<IIncident>({
   _id: {

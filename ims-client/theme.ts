@@ -1,22 +1,22 @@
-import { colors } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
-import React, { useContext } from 'react';
+import { colors } from '@mui/material'
+import { createTheme } from '@mui/material/styles'
+import React, { useContext } from 'react'
 const theme = createTheme({
 
     palette: {
       //לבן
         primary: {
-           light: '#2F854F',
-          main: '#2F854F', 
-         dark: '#2F854F',
+           light: '#aa00ff',
+          main: '#FFFFFF',  //הצבע הראשי
+         dark: '#aa00ff',
           contrastText: '#aa00ff',
          
         },
-       
+        //אפור
         secondary: {
-            light: '#D9D9D9',
+            light: '#aa00ff',
             main: '#D9D9D9',
-            dark: '#D9D9D9',
+            dark: '#aa00ff',
             contrastText: '#FFFFFF',
           },
           success: {
@@ -38,12 +38,12 @@ const theme = createTheme({
             contrastText:'#fff'
           },
           //???
-          // info: {
-          //   light: '#aa00ff',
-          //   dark: '#aa00ff',
-          //   main: '#aa00ff',
-          //   contrastText:'#FFFFFF',
-          // },
+          info: {
+            light: '#aa00ff',
+            dark: '#aa00ff',
+            main: '#aa00ff',
+            contrastText:'#FFFFFF',
+          },
         },
     // typography: {
     //     fontFamily: 'Poppins',

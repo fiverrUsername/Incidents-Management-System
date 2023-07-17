@@ -1,20 +1,18 @@
-import MailIcon from '@mui/icons-material/Mail'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import Divider from '@mui/material/Divider'
-import MuiDrawer from '@mui/material/Drawer'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import { CSSObject, Theme, styled, useTheme } from '@mui/material/styles'
-import React from 'react'
-import { ComponentType } from 'react';
-
-
-import logo from '../../images/logo.png'
+import React from 'react';
+import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
+import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+import logo from '../../images/logo.png';
 
 const drawerWidth = 240
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -47,15 +45,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }))
 
 interface AppBarProps extends MuiAppBarProps {
-  open?: boolean
-}
-interface Props {
-  icons: IIcon[];
-}
-export interface IIcon {
-  text: string,
-  icon: ComponentType<any>,
-  navigation: string,
+  open?: boolean;
 }
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -92,7 +82,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   })
 )
 
-export default function LeftDrawer({ icons }: Props) {
+export default function LeftDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
