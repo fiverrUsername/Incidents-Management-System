@@ -4,8 +4,8 @@ import IncidentModel from '../models/IncidentModel';
 
 describe("aggregate incidents", () => {
   describe("request validation", () => {
-    it("should return 200 for the /incident/aggregate route", async () => {
-      const res = await supertest(app).get("/incident/aggregate");
+    it("should return 200 for the /aggregation route", async () => {
+      const res = await supertest(app).get("/aggregation");
       expect(res.status).toBe(200);
     });
   });
@@ -19,7 +19,7 @@ describe("aggregate incidents", () => {
       };
       jest.spyOn(IncidentModel, 'aggregate').mockResolvedValueOnce([expectedResult]);
 
-      const res = await supertest(app).get("/incident/aggregate");
+      const res = await supertest(app).get("/aggregation");
       expect(res.status).toBe(200);
       expect(res.body).toEqual(expectedResult);
     });
@@ -29,7 +29,7 @@ describe("aggregate incidents", () => {
     it("should return default aggregated incident data if no result", async () => {
       jest.spyOn(IncidentModel, 'aggregate').mockResolvedValueOnce([]);
 
-      const res = await supertest(app).get("/incident/aggregate");
+      const res = await supertest(app).get("/aggregation");
       expect(res.status).toBe(200);
       expect(res.body).toEqual({
         activeCount: 0,
@@ -44,7 +44,7 @@ describe("aggregate incidents", () => {
       const errorMessage = "Aggregation error";
       jest.spyOn(IncidentModel, 'aggregate').mockRejectedValueOnce(new Error(errorMessage));
 
-      const res = await supertest(app).get("/incident/aggregate");
+      const res = await supertest(app).get("/aggregation");
       expect(res.status).toBe(404);
       expect(res.body).toEqual({ error: errorMessage });
     });
@@ -59,7 +59,7 @@ describe("aggregate incidents", () => {
       ];
       await IncidentModel.create(incidents);
 
-      const res = await supertest(app).get("/aggregate");
+      const res = await supertest(app).get("/aggregation");
 
       expect(res.status).toBe(200);
       expect(res.body).toEqual({
