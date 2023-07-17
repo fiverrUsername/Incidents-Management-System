@@ -13,7 +13,7 @@ export default function AddIncidentComp() {
     };
     return (
         <div>
-            <Button onClick={handleClick}>Add New</Button>
+            <Button onClick={handleClick}>+ Add New</Button>
             {open && <AddIncident open={open} onClose={handleClose} />}
            
         </div>
