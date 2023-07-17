@@ -7,16 +7,10 @@ import "./App.css";
 import LeftDrawer, { IIcon } from "./components/drawer/Drawer";
 import theme from "./theme";
 import Router from "./routes";
-
-
+import Table from "./components/table/table";
 
 function App() {
-  const tagOptions = [
-    { key: "a", value: "Tag1" },
-    { key: "b", value: "Tag2" },
-    { key: "c", value: "Tag3" },
-    { key: "d", value: "Tag4" },
-  ];
+
   const drawerIcons: IIcon[] = [
     { icon: BiHomeHeart, text: "home", navigation: "./home" },
     { icon: BiHome, text: "dashboard", navigation: "./dashboard" },
