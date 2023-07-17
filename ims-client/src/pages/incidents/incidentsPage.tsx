@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import apiCalls from "../../service/apiCalls";
-import IncidentTable from "../../components/incidentTable/incidentTable";
+// import IncidentTable from "../../components/incidentTable/incidentTable";
 import WidgetsStack from "../../components/Widget/WidgetsStack";
+import IncidentTable from "../../components/IncidentTable/incidentTable";
 // import WidgetsStack from "../../components/Widget/WidgetsStack";
 
 const IncidentsPage = () => {

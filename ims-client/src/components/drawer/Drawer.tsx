@@ -1,3 +1,5 @@
+
+
 import MailIcon from '@mui/icons-material/Mail'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
@@ -12,6 +14,7 @@ import ListItemText from '@mui/material/ListItemText'
 import { CSSObject, Theme, styled, useTheme } from '@mui/material/styles'
 import React from 'react'
 import { ComponentType } from 'react';
+import { useNavigate } from 'react-router-dom'
 
 
 import logo from '../../images/logo.png'
@@ -25,6 +28,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
   }),
   overflowX: 'hidden',
 })
+
 
 const closedMixin = (theme: Theme): CSSObject => ({
   transition: theme.transitions.create('width', {
@@ -45,6 +49,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
 }))
+
+
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean
@@ -95,7 +101,10 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function LeftDrawer({ icons }: Props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const navigate = useNavigate();
+  const handleClick = (navigation: string) => {
+    navigate(navigation)
+  }
   const handleDrawerOpen = () => {
     setOpen(!open)
   }
@@ -115,7 +124,7 @@ export default function LeftDrawer({ icons }: Props) {
         <Divider />
         <List>
           {icons.map((icon, index) => (
-            <ListItem key={icon.text} disablePadding sx={{ display: 'block' }}>
+            <ListItem onClick={() => handleClick(icon.navigation)} key={icon.text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -130,7 +139,7 @@ export default function LeftDrawer({ icons }: Props) {
                     justifyContent: 'flex-end', // Align icon to the right
                   }}
                 >
-               < icon.icon size={24}></icon.icon>
+                  < icon.icon size={24}></icon.icon>
                 </ListItemIcon>
               </ListItemButton>
 

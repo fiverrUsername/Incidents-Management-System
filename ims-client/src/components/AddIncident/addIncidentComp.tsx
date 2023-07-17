@@ -15,6 +15,7 @@ export default function AddIncidentComp() {
         <div>
             <Button onClick={handleClick}>Add New</Button>
             {open && <AddIncident open={open} onClose={handleClose} />}
+           
         </div>
     )
 

@@ -1,15 +1,17 @@
 import { GridColDef, GridColumnHeaderParams, GridColumnVisibilityModel } from "@mui/x-data-grid";
 import React, { useState } from "react";
-import Search from "../search/search";
+// import Search from "../search/search";
 import {
   filterRowsBySearch,
   filterRowsByStatus,
 } from "../../service/incidentTableService";
-import Table from "../table/table";
 import UpTabs from "../tabs/Tabs";
 import IIncident from "../../interface/incidentInterface";
 import AddIncidentComp from "../AddIncident/addIncidentComp";
-import { Box, Typography } from "@mui/material";
+import { Box,  Typography } from "@mui/material";
+import Search from "../search/search";
+import Table from "../table/table";
+// import Search from "@mui/icons-material/Search";
 
 
 export type EventProps = {

@@ -1,10 +1,10 @@
 import { GridFooterContainer, useGridApiContext } from "@mui/x-data-grid";
-import { PaginationComponent } from "./pagination";
-import CustomTextField from "../customTextField/customTextfield";
 import { useState } from "react";
 import { PAGE_SIZE } from "./table";
 import React from 'react';
 import theme from "../../theme";
+import { PaginationComponent } from "./pagination";
+import CustomTextField from "../customTextField/customTextfield";
 
 export const CustomFooter = (): JSX.Element => {
 
