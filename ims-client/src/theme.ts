@@ -8,7 +8,6 @@ declare module '@mui/material/styles' {
     normal: React.CSSProperties;
     widget: React.CSSProperties;
     longText: React.CSSProperties;
-    boldGreen: React.CSSProperties;
   }
   interface TypographyVariantsOptions {
     date: React.CSSProperties;

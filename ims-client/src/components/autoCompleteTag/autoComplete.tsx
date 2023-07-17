@@ -24,7 +24,7 @@ const CustomAutocomplete =({ options, selectedTags,setSelectedTags }: Autocomple
           fontSize: theme.typography.fontSize,
           fontStyle: theme.typography.normal.fontStyle,
           fontWeight:  theme.typography.normal.fontWeight,
-          lineHeight:  theme.typography.normal.lineHeight,
+          lineHeight:  theme.typography.bold.lineHeight,
         },
       }}
       multiple
