@@ -24,9 +24,7 @@ border-radius: 20px;
 border: 1px solid #bfbfbf;
 background: #fff;
 padding: 20px;
-margin-top: 2%; /* Added margin-bottom for spacing */
-// margin-right:2%;
-// margin-left:2%;
+margin-top: 2%;
 `;
 // export const StyledSearch = styled(Search)`
 // .Paper{
