@@ -85,8 +85,9 @@ const CustomAutocomplete = ({ options, selectedTags, setSelectedTags }: Autocomp
           fontFamily: theme.typography.fontFamily,
           fontSize: theme.typography.fontSize,
           fontStyle: theme.typography.normal.fontStyle,
-          fontWeight: theme.typography.normal.fontWeight,
-          lineHeight: theme.typography.normal.lineHeight,
+          fontWeight:  theme.typography.normal.fontWeight,
+          lineHeight:  theme.typography.bold.lineHeight,
+
         },
       }}
       multiple
