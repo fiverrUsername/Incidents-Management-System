@@ -2,26 +2,20 @@ import React, { useEffect, useState } from "react";
 import apiCalls from "../../service/apiCalls";
 import TimeLine from "./timeLine";
 import { Incident } from "./modules/interface";
-// import Search from "../../components/Search/Search";
-import { Paper } from "@mui/material";
+import Search from "../../components/search/search";
 import { CustomScrollbar, StyledPaper} from "./timeLinePage.style";
-// import Search from "../../components/Search/Search";
+import { WithIdProps } from "../../HOC";
 
-
-interface TimeLinePageProps {
-  id: string
-}
-
-const TimeLinePage = ({ id }: TimeLinePageProps) => {
+const TimeLinePage = ({ _id }: WithIdProps) => {
   const [incident, setIncident] = useState<Incident>();
   useEffect(() => {
     const FetchData = async () => {
-      const getIncidentById = await apiCalls.getTimeLineForIncident(id);
+      const getIncidentById = await apiCalls.getTimeLineForIncident(_id);
       console.log(getIncidentById);
       setIncident(getIncidentById);
     };
     FetchData();
-  }, [id]);
+  }, [_id]);
   const [myValue, setMyValue] = useState<string>("");
   const someFunction = () => {
     console.log("The event was triggered!");
@@ -36,7 +30,7 @@ const TimeLinePage = ({ id }: TimeLinePageProps) => {
   return (
     <>
     {/* <StyledSearch onEvent={someFunction} setValue={setMyValue}></StyledSearch> */}
-      {/* <Search onEvent={someFunction} setValue={setMyValue}></Search> */}
+      <Search onEvent={someFunction} setValue={setMyValue}></Search>
       <StyledPaper>
         {/* profile */}
         {/* current priority */}
