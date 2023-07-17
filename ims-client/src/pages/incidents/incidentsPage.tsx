@@ -26,10 +26,12 @@ const IncidentsPage = () => {
   }, [incidents]);
 
   return (
-    <>
+    <div >
       <WidgetsStack />
-      <IncidentTable rows={incidents} isLoading={isLoading} />
-    </>
+      <div style={{ margin: '10px' }}>
+        <IncidentTable rows={incidents} isLoading={isLoading} />
+      </div>
+    </div>
   );
 };
 
