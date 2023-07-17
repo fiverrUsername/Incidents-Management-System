@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
 import React from 'react';
 
-import Attachment from '../attachment';
+import Attachment from './attachment/attachment';
 import { ITimeLineEventprops } from '../modules/interface';
 import { TimelineConnectorWrapper, TimelineDotWrapper, TimelineItemWrapper } from './timeLineEvent.style';
 
@@ -41,7 +41,7 @@ const timeLineEvent: React.FC<ITimeLineEventprops> = (props) => {
 
             </TimelineContent>
         </TimelineItemWrapper>
-        <Attachment />
+        {/* <Attachment /> */}
     </div>
 }
 
