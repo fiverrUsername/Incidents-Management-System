@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import apiCalls from "../../service/apiCalls";
 import TimeLine from "./timeLine";
 import { Incident } from "./modules/interface";
+// import Search from "../../components/Search/Search";
 import { Paper } from "@mui/material";
 import { CustomScrollbar, StyledPaper} from "./timeLinePage.style";
 // import Search from "../../components/Search/Search";
