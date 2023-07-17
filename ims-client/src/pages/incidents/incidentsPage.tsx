@@ -27,7 +27,7 @@ const IncidentsPage = () => {
   
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <div style={{marginButtom:'10px'}}>
+      <div style={{marginBottom:'10px'}}>
       <WidgetsStack />
       </div>
       <div style={{ margin: '20px' ,flex: 1, overflow: 'auto'}}>
