@@ -32,6 +32,9 @@ declare module '@mui/material/Typography' {
 }
 const theme = createTheme({
   palette: {
+    background:{
+      default:'#F1F1F1'
+    },
     primary: {
       //the basic color
       light: '#2F854F1A', //light-green
