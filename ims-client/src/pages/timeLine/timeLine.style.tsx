@@ -6,6 +6,8 @@ export const TimelineWarpper = styled(Timeline)(({ theme }) => ({
         [`& .${timelineItemClasses.root}:before`]: {
             flex: 0,
             padding: 0,
+            
         },
     },
+    backgroundColor:"white"
 }))
