@@ -12,7 +12,7 @@ const CustomTextField = styled(TextField)<CustomTextFieldProps>(({ theme }) => (
     height: '50px',
     width: '150px',
     borderRadius: '8px',
-    borderColer: '',
+    borderColer: theme.palette.success.main,
   },
   '& input::-webkit-inner-spin-button, & input::-webkit-outer-spin-button': {
     margin: 0,
@@ -20,11 +20,12 @@ const CustomTextField = styled(TextField)<CustomTextFieldProps>(({ theme }) => (
   '& input[type=number]': {
     '-moz-appearance': 'textfield',
   },
-  '& label.Mui-focused': {},
+  '& label.Mui-focused': {
+    borderColor: theme.palette.success.main,
+  },
   '& .MuiOutlinedInput-root': {
     '&.Mui-focused fieldset': {
-      borderColor: theme.palette.success,
-      color: theme.palette.success,
+      borderColor: theme.palette.success.main,
     },
   },
 }));

@@ -1,5 +1,6 @@
 // import { colors } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+import { hover } from '@testing-library/user-event/dist/hover';
 declare module '@mui/material/styles' {
   interface TypographyVariants {
     date: React.CSSProperties;
@@ -119,9 +120,15 @@ const theme = createTheme({
           backgroundColor: '#2F854F',
           color: '#FFFFFF', //white
           border: '#FFFFFF',
-        }
-      }
+          transition: 'background-color 0.3s', // נוסיף אנימציה לשינוי הצבע בעת hover
+          '&:hover': {
+            backgroundColor: '#2F854F1A'
+            ,color:'#2E7D32'
+          },
+        },
+      },
     },
   }
 })
+
 export default theme;
