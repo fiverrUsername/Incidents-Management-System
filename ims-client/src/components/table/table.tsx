@@ -70,6 +70,9 @@ const Table = <T extends object>({ columns, rows, isLoading, visibilityModel }: 
           },
           marginLeft:2,
           marginRight:2,
+          '& .MuiDataGrid-toolbarContainer': {
+            marginBottom: '10px', // Add margin to the toolbar container
+          },
           // "& .MuiDataGrid-row": {
           //   borderRight:`1px solid ${theme.palette.grey[300]}`,
           //   borderLeft:`1px solid ${theme.palette.grey[300]}`
