@@ -116,8 +116,8 @@ export default function LeftDrawer({ icons }: Props) {
           <img
             src={logo}
             onClick={handleDrawerOpen}
-            width={50}
-            height={50}
+            width={48}
+            height={66}
             alt="Logo"
           />
         </DrawerHeader>
