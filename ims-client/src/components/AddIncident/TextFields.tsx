@@ -39,7 +39,7 @@ interface TextFieldProps {
 
 const TextFieldInput = styled(TextField)<TextFieldProps>(({ size }) => ({
   '& .MuiInputBase-root': {
-    margin: '10px 10px 10px 18px',
+    margin: '10px 10px 10px 0px',
     padding: '16px 20px',
     display: 'flex',
     alignItems: 'flex-start',

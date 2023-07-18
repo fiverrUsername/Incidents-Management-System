@@ -69,7 +69,7 @@ import { ITag } from '../../interface/ITag';
 interface AutocompleteProps {
   options: ITag[];
   selectedTags: ITag[];
-  setSelectedTags: React.Dispatch<React.SetStateAction<IntervalHistogram[]>>;
+  setSelectedTags: React.Dispatch<React.SetStateAction<ITag[]>>;
 }
 const CustomAutocomplete = ({ options, selectedTags, setSelectedTags }: AutocompleteProps) => {
   const filteredOptions = options.filter((option) => !selectedTags.some((selectedTag) => selectedTag.userId === option.name));
