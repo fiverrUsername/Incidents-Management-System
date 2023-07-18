@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Widget from './Widget';
+import Widget from './widget';
 
 describe('Widget', () => {
   it('renders the component with correct props', () => {

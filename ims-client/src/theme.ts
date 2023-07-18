@@ -31,8 +31,8 @@ declare module '@mui/material/Typography' {
 }
 const theme = createTheme({
   palette: {
-    background:{
-      default:'#F1F1F1'
+    background: {
+      default: '#F1F1F1'
     },
     primary: {
       //the basic color
@@ -87,7 +87,7 @@ const theme = createTheme({
       fontWeight: 400,
       fontSize: '46.32px',
       lineHeight: '69.48px',
-      display:'flex',
+      display: 'flex',
       paddingTop: '15px',
     },
     bold: {
@@ -126,10 +126,30 @@ const theme = createTheme({
           transition: 'background-color 0.3s', // נוסיף אנימציה לשינוי הצבע בעת hover
           '&:hover': {
             backgroundColor: '#2F854F1A'
-            ,color:'#2E7D32'
+            , color: '#2E7D32'
+          },
+        }
+      },
+      variants: [
+        {
+          props: { variant: 'outlined' },
+          style: {
+            border: `1px solid #2F854F`,
+            backgroundColor: '#FFFFFF',
+            color: 'black',
+            width: '176px',
+            height: '48px',
+            textTransform: 'capitalize',
+            marginBottom: '2%',
+            transition: 'background-color 0.3s', // נוסיף אנימציה לשינוי הצבע בעת hover
+            '&:hover': {
+              backgroundColor: '#2F854F1A',
+              color: '#2E7D32'
+            },
           },
         },
-      },
+      ],
+
     },
   }
 })

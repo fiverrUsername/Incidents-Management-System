@@ -5,12 +5,16 @@ import { ITimeLineEventprops, Incident } from "./modules/interface";
 import Search from "../../components/search/search";
 import { CustomScrollbar, StyledBox, StyledPaper } from "./timeLinePage.style";
 import { WithIdProps } from "../../HOC";
+
 import data from '../../mockAPI/timeLineEvent.json';
 import users from '../../mockAPI/users.json';
 import incident from '../../mockAPI/incident.json';
 import { Box } from "@mui/system";
 import { UserInfo } from "os";
 import { Typography } from "@mui/material";
+
+import AddUpdateComp from "../../components/AddUpdate/AddUpdateComp"
+
 
 const TimeLinePage = ({ _id }: WithIdProps) => {
   //const [timelineObjects, setTimelineObjects] = useState<ITimeLineEventprops[]>([]);
@@ -52,6 +56,7 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
   // <p>Formatted Date: {formattedDate}</p>
   return (
     <>
+
       {/* <StyledSearch onEvent={someFunction} setValue={setMyValue}></StyledSearch> */}
       {/* <Search onEvent={someFunction} setValue={setMyValue}></Search> */}
       <StyledPaper>
@@ -64,6 +69,7 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
       <StyledPaper>
         {timeLineEvents && (
           <CustomScrollbar>
+             <AddUpdateComp/>   
             <TimeLine timeLineEvents={timeLineEvents} />
           </CustomScrollbar>
         )}
