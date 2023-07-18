@@ -21,10 +21,17 @@ class IncidentService {
     try {
       const updatedIncident = await incidentRepository.updateIncident(id, data);
       if (updatedIncident) {
-        logger.info({ source: constants.FROM_DATA_PATH, msg: constants.UPDATE_INCIDENT_SUCCESS });
+        logger.info({ source: constants.FROM_DATA_PATH, msg: constants.UPDATE_INCIDENT_SUCCESS, incidetID: id });
+      }
+      if(!id){
+        logger.error({ source: constants.MISSNG_REQUIRED_FIELDS, method: constants.METHOD.PUT })
+      }
+      else{
+        logger.error({ source: constants.FROM_DATA_PATH, err: constants.INCIDENT_NOT_FOUND,incidentId:id });
       }
       return updatedIncident;
     } catch (error) {
+      logger.error({ source: constants.FROM_DATA_PATH, method: constants.METHOD.PUT, incidetID: id });
       console.error(`error: ${error}`);
       return null;
     }
