@@ -8,11 +8,11 @@ export interface ITimeLineEventprops {
     profile?: string;
 }
 export interface Idincidentprops {
-    _id: string
+    timeLineEvents: TimelineEvent[]
 }
 
 
-interface TimelineEvent {
+export interface TimelineEvent {
     _id: string;
     incidentId: string;
     userId: string;
