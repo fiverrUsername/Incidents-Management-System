@@ -78,7 +78,7 @@ export default function AddUpdate({ open, onClose }: Props) {
             <Grid item xs={12}>
               <FormControl fullWidth>
                 <label htmlFor="text">Text</label>
-                <TextFieldInput placeholder="Write whatever you have to say..." multiline rows={3}
+                <TextFieldInput placeholder="your update..." multiline rows={3}
                   size="medium"
                   {...register("text", {
                     required: "text is required",
