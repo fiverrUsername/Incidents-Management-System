@@ -7,7 +7,6 @@ const incidenceController = new IncidenceController()
 
 router.get('/', incidenceController.getAllIncidents)
 router.get('/:id', incidenceController.getIncidentById)
-router.get('getAggrigation', aggregateIncident)
 router.post('/', incidenceController.addIncident)
 router.put('/:id', incidenceController.updateIncident)
 

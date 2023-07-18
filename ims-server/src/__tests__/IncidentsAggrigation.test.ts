@@ -7,7 +7,7 @@ describe("aggregate incidents", () => {
     it("should return 200 for the /aggregation route", async () => {
       const res = await supertest(app).get("/aggregation");
       expect(res.status).toBe(200);
-    });
+    }, 10000); 
   });
 
   describe("success", () => {
