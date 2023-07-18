@@ -13,7 +13,7 @@ export const TimelineEventSchema = new Schema<ITimelineEvent>({
   },
   date:{
     type:Date,
-    required:true,
+    required:false,
     default:Date.now()
   },
   description:{
