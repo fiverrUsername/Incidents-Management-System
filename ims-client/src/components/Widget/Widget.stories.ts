@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import  Widget  from './widget';
+import  Widget  from './Widget';
 const meta = {
   title: 'Components/Widget',
   component: Widget,

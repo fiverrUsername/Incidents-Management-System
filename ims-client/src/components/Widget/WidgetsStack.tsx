@@ -8,7 +8,7 @@ import IAggregation  from '../../interface/aggregationInterface';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import ScheduleIcon from '@mui/icons-material/Schedule';
-import Widget from './widget';
+import Widget from './Widget';
 
 const NewStack = styled(Stack)(({ theme }) => ({
   '&':{

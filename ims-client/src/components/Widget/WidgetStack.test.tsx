@@ -1,7 +1,7 @@
 import React from 'react';
 
 import axios, { AxiosResponse } from 'axios';
-import WidgetsStack from './widgetsStack';
+import WidgetsStack from './WidgetsStack';
 import { act, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 jest.mock('axios');
