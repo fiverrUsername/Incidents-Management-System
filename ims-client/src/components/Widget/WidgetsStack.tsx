@@ -14,7 +14,9 @@ const NewStack = styled(Stack)(({ theme }) => ({
   '&':{
     'top': '123px',
     'left': '122px',
-    'gap': '20px'
+    'gap': '20px',
+    'display':'flex',
+    'paddingLeft':'25px'
   }
 }));
 

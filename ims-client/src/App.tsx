@@ -12,10 +12,10 @@ import Table from "./components/table/table";
 function App() {
 
   const drawerIcons: IIcon[] = [
-    { icon: BiHomeHeart, text: "home", navigation: "./home" },
+    { icon: BiHomeHeart, text: "home", navigation: "./" },
     { icon: BiHome, text: "dashboard", navigation: "./dashboard" },
     { icon: AiOutlineSetting, text: "settings", navigation: "./settings" },
-    { icon: BiMessageAdd, text: "settings", navigation: "./message" },
+    { icon: BiMessageAdd, text: "Send message", navigation: "./message" },
   ];
 
   return (

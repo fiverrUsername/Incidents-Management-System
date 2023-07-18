@@ -8,7 +8,6 @@ declare module '@mui/material/styles' {
     normal: React.CSSProperties;
     widget: React.CSSProperties;
     longText: React.CSSProperties;
-    boldGreen: React.CSSProperties;
   }
   interface TypographyVariantsOptions {
     date: React.CSSProperties;
@@ -32,8 +31,8 @@ declare module '@mui/material/Typography' {
 }
 const theme = createTheme({
   palette: {
-    background:{
-      default:'#F1F1F1'
+    background: {
+      default: '#F1F1F1'
     },
     primary: {
       //the basic color
@@ -88,7 +87,7 @@ const theme = createTheme({
       fontWeight: 400,
       fontSize: '46.32px',
       lineHeight: '69.48px',
-      display:'flex',
+      display: 'flex',
       paddingTop: '15px',
     },
     bold: {
@@ -121,13 +120,15 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          backgroundColor: '#2F854F',
-          color: '#FFFFFF', //white
-          border: '#FFFFFF',
+          border: `1px solid #2F854F`,
+          width: '176px',
+          height: '48px',
+          justifyContent: 'left',
+          textTransform: 'capitalize',
           transition: 'background-color 0.3s', // נוסיף אנימציה לשינוי הצבע בעת hover
           '&:hover': {
-            backgroundColor: '#2F854F1A'
-            ,color:'#2E7D32'
+            backgroundColor: '#2F854F1A',
+            color: '#2E7D32'
           },
         },
       },

@@ -29,8 +29,8 @@ const StyledIcon = styled('div')(({ theme }) => ({
 }));
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  width: '464px',
-  height: '170px',
+  width: '437px',
+  height: '147px',
   borderRadius: '20px',
   display: 'flex',
   paddingLeft: '40px',

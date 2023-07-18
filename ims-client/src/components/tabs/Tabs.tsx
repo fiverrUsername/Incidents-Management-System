@@ -49,6 +49,7 @@ const UpTabs: React.FC<EventProps> = ({ onEvent, setValue }) => {
                   : theme.palette.secondary.contrastText,
               borderRadius: "5px",
               border: `1px solid ${theme.palette.secondary.main}`,
+              textTransform:'capitalize',
             }}
           />
           <Tab
@@ -61,6 +62,7 @@ const UpTabs: React.FC<EventProps> = ({ onEvent, setValue }) => {
                   : theme.palette.secondary.contrastText,
               borderRadius: "5px",
               border: `1px solid ${theme.palette.secondary.main}`,
+              textTransform:'capitalize',
             }}
           />
         </Tabs>
