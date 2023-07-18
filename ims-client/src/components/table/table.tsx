@@ -35,7 +35,7 @@ const Table = <T extends object>({ columns, rows, isLoading, visibilityModel }: 
 
   return (
     <>
-      <DataGrid style={{ height: 510, width: "98%" }}
+      <DataGrid style={{ height: 540, width: "98%" }}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
         slots={{
