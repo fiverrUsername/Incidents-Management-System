@@ -36,7 +36,7 @@ class IncidentService {
       const incident = await incidentRepository.getAllIncidents();
       return incident;
     } catch (error) {
-      logger.error({ source: constants.FROM_DATA_PATH, err: constants.ERROR_GETTING_ALL_ICIDETS });
+      logger.error({ source: constants.FROM_DATA_PATH, err: constants.ERROR_GETTING_ALL_INCIDENTS });
       console.error(`error: ${error}`);
       return null;
     }
