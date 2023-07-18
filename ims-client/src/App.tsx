@@ -8,16 +8,13 @@ import LeftDrawer, { IIcon } from "./components/drawer/Drawer";
 import theme from "./theme";
 import Router from "./routes";
 import Table from "./components/table/table";
-
 function App() {
-
   const drawerIcons: IIcon[] = [
     { icon: BiHomeHeart, text: "home", navigation: "./" },
     { icon: BiHome, text: "dashboard", navigation: "./dashboard" },
     { icon: AiOutlineSetting, text: "settings", navigation: "./settings" },
     { icon: BiMessageAdd, text: "Send message", navigation: "./message" },
   ];
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline>
@@ -32,6 +29,4 @@ function App() {
     </ThemeProvider>
   );
 }
-
 export default App;
-
