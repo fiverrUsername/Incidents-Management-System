@@ -12,11 +12,6 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-@font-face {
-  font-family: "Poppins";  
-  src: local("AirbnbCerealPoppins"),
-    url("./fonts/Poppins-Medium.woff") format("woff");
-}
 
 .App-header {
   background-color: #282c34;
