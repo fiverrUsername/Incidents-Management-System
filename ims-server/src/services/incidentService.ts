@@ -23,7 +23,7 @@ class IncidentService {
       if (updatedIncident) {
         logger.info({ source: constants.FROM_DATA_PATH, msg: constants.UPDATE_INCIDENT_SUCCESS, incidetID: id });
       }
-      if(!id){
+      if(!data.name){
         logger.error({ source: constants.MISSNG_REQUIRED_FIELDS, method: constants.METHOD.PUT })
       }
       else{

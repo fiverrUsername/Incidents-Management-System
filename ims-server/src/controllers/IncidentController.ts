@@ -20,32 +20,32 @@ export default class IncidentController {
       if (incident) {
         res.status(200).json(incident);
       }
-      else if (!req.params.id) {
+      else if (!req.params.name) {
         res.status(422).json({ message: constants.MISSNG_REQUIRED_FIELDS, error: true })
       }
-      else{
-          res.status(404).json({ message: constants.INCIDENT_NOT_FOUND });
+      else {
+        res.status(404).json({ message: constants.INCIDENT_NOT_FOUND });
       }
     } catch (error: any) {
       res.status(500).json({ message: error.message, error: true });
     }
   }
 
-    async getAllIncidents(req: Request, res: Response): Promise < void> {
+  async getAllIncidents(req: Request, res: Response): Promise<void> {
     try {
       const incidents: IIncident[] | null = await incidentService.getAllIncidents();
       res.status(200).json(incidents);
-    } catch(error: any) {
+    } catch (error: any) {
       res.status(404).json({ message: error });
     }
   }
 
-    async getIncidentById(req: Request, res: Response): Promise < void> {
+  async getIncidentById(req: Request, res: Response): Promise<void> {
     try {
       const incident: IIncident | null = await incidentService.getIncidentById(req.params.id);
-    res.status(200).json(incident);
-  } catch (error: any) {
-    res.status(404).json({ message: error });
-  }
+      res.status(200).json(incident);
+    } catch (error: any) {
+      res.status(404).json({ message: error });
     }
+  }
 }
