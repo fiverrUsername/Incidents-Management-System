@@ -1,19 +1,15 @@
-
-
-
-
-
 import React, { useEffect, useState } from 'react';
 import { Dialog, FormControl, InputLabel, Grid, Button } from "@mui/material";
 import { useForm } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
+import dayjs from 'dayjs';
+
 import DateTimePickerValue from '../datePicker/datePicker';
 import TextFieldInput from './TextFields';
 import ToggleButtons from './PriorityButtons';
 import TypesSelect, { Types } from './Types';
 import DropDown from './DropDown';
 import CustomAutocomplete from '../autoCompleteTag/autoComplete';
-import dayjs from 'dayjs';
 import Option from '../../interface/IOption';
 import submitIncident from '../submitIncident/submitIncident';
 import theme from '../../theme';
@@ -36,9 +32,6 @@ interface Props {
   onClose: () => void;
 }
 
-
-
-
 export default function AddIncident({ open, onClose }: Props) {
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>();
   const [priority, setPriority] = React.useState<string | null>('p0');
@@ -48,8 +41,6 @@ export default function AddIncident({ open, onClose }: Props) {
   const [tags, setTags] = useState<ITag[]>([]);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
-
-
 
   function onSubmit(data: FormData) {
     setIsSubmit(true);
@@ -62,10 +53,10 @@ export default function AddIncident({ open, onClose }: Props) {
       data.date = date
     data.type = type
     data.tags = selectedTags
-    if(type&&tags){
+    if (type && tags) {
       submitIncident(data)
       setShowBanner(true);
-  }
+    }
   }
 
   const closeIconStyles: React.CSSProperties = {
@@ -89,11 +80,6 @@ export default function AddIncident({ open, onClose }: Props) {
     padding: '30px 31px',
     borderRadius: '20px',
   };
-
-
-  
-
-
 
   const validateSlackLink = (value: string) => {
     if (!value) {
@@ -119,8 +105,6 @@ export default function AddIncident({ open, onClose }: Props) {
       setTags(getAllTags);
     };
     FetchData();
-
-
   }, []);
 
   return (
@@ -134,14 +118,13 @@ export default function AddIncident({ open, onClose }: Props) {
               <FormControl fullWidth>
                 <label htmlFor="name">Incident Name</label>
                 <TextFieldInput placeholder="Incident Name" multiline rows={1} size="small"
-                  {...register("name" as any, {
+                  {...register("name", {
                     required: "Name is required",
-                  })} 
-                  />
+                  })}
+                />
                 {errors.name && <span style={{ color: errorColor }}>{errors.name.message}</span>}
               </FormControl>
             </Grid>
-
             <Grid item xs={12}>
               <FormControl fullWidth>
                 <label htmlFor="description">Description</label>
@@ -154,7 +137,6 @@ export default function AddIncident({ open, onClose }: Props) {
                 {errors.description && <span style={{ color: errorColor }}>{errors.description.message}</span>}
               </FormControl>
             </Grid>
-
             <Grid item xs={12}>
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
@@ -163,16 +145,14 @@ export default function AddIncident({ open, onClose }: Props) {
                 </div>
               </FormControl>
             </Grid>
-
             <Grid item xs={12}  >
-                <Grid spacing={2} container>
+              <Grid spacing={2} container>
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
                     <DateTimePickerValue date={date} setDate={setDate} />
                   </FormControl>
                 </Grid>
-
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="slack-channel"> Channel Link</label>
@@ -187,33 +167,26 @@ export default function AddIncident({ open, onClose }: Props) {
                     {errors.slackLink && <span style={{ color: errorColor }}>{errors.slackLink.message}</span>}
                   </FormControl>
                 </Grid>
-                </Grid>
+              </Grid>
             </Grid>
-
-
-
             <Grid item xs={12}>
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="type">Type</label>
-                <DropDown   type={type} setType={setType}  />
-                {isSubmit&&!type&&<span style={{ color: errorColor }}>Type is required</span>}
+                <DropDown type={type} setType={setType} />
+                {isSubmit && !type && <span style={{ color: errorColor }}>Type is required</span>}
               </FormControl>
             </Grid>
-
-
-
             <Grid item xs={12}>
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Tags</label>
                 <div id="tags">
-                  <CustomAutocomplete options={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags}/>
+                  <CustomAutocomplete options={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
                 </div>
-                {isSubmit && tags.length===0 && <span style={{ color: errorColor }}>tags is required</span>}
+                {isSubmit && tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>}
 
               </FormControl>
             </Grid>
-
             <Grid item xs={12}>
               <Button type="submit" style={{ width: '100%' }}>Add</Button>
             </Grid>
@@ -222,7 +195,7 @@ export default function AddIncident({ open, onClose }: Props) {
       </div>
       {showBanner && (
         <BannerNotification message="Incident Added Successfully" severity="success" onClose={() => onClose()} />
-     )}
+      )}
     </Dialog>
   );
 }

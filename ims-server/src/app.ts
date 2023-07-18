@@ -8,7 +8,7 @@ import config from './config/config';
 import logger from './loggers/log';
 import { connect } from './models/db';
 import incidentRoute from './routes/IncidentRout';
-import aggrigationRouter from './routes/aggrigationRouter';
+import aggregationRouter from './routes/aggrigationRouter';
 import tagRouter from './routes/tagRouter';
 const port = config.server.port
 
@@ -23,7 +23,7 @@ app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use(cors())
 app.use(bodyParser.json())
 app.use('/incident', incidentRoute)
-app.use('/aggregation', aggrigationRouter)
+app.use('/aggregation', aggregationRouter)
 app.use('/tag', tagRouter)
 
 app.get('/', (req: Request, res: Response): void => {
