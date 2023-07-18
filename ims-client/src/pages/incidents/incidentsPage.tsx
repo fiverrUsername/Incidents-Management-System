@@ -14,7 +14,7 @@ const IncidentsPage = () => {
     const FetchData = async () => {
       const getIncidents = await apiCalls.getIncidents();
       setIncidents(getIncidents);
-    };
+    }
     FetchData();
     setIsLoading(false)
 
