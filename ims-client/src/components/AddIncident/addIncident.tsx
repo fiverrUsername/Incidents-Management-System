@@ -46,10 +46,13 @@ export default function AddIncident({ open, onClose }: Props) {
   const [type, setType] = React.useState('');
   const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
   const [tags, setTags] = useState<ITag[]>([]);
+  const [showBanner, setShowBanner] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
 
 
 
   function onSubmit(data: FormData) {
+    setIsSubmit(true);
     if (priority != null)
       data.priority = priority
 
@@ -59,10 +62,10 @@ export default function AddIncident({ open, onClose }: Props) {
       data.date = date
     data.type = type
     data.tags = selectedTags
-    console.log("selectedTags ", selectedTags)
-    console.log("Form data:", data);
-    submitIncident(data)
-    setShowBanner(true);
+    if(type&&tags){
+      submitIncident(data)
+      setShowBanner(true);
+  }
   }
 
   const closeIconStyles: React.CSSProperties = {
@@ -88,7 +91,7 @@ export default function AddIncident({ open, onClose }: Props) {
   };
 
 
-  const [showBanner, setShowBanner] = useState(false);
+  
 
 
 
@@ -109,8 +112,6 @@ export default function AddIncident({ open, onClose }: Props) {
   const backdropStyles: React.CSSProperties = {
     background: 'rgba(0, 48, 18, 0.84)',
   };
-
-
 
   useEffect(() => {
     const FetchData = async () => {
@@ -133,9 +134,10 @@ export default function AddIncident({ open, onClose }: Props) {
               <FormControl fullWidth>
                 <label htmlFor="name">Incident Name</label>
                 <TextFieldInput placeholder="Incident Name" multiline rows={1} size="small"
-                  {...register("name", {
-                    required: "Name is required",
-                  })} />
+                  // {...register("name", {
+                  //   required: "Name is required",
+                  // })} 
+                  />
                 {errors.name && <span style={{ color: errorColor }}>{errors.name.message}</span>}
               </FormControl>
             </Grid>
@@ -162,8 +164,8 @@ export default function AddIncident({ open, onClose }: Props) {
               </FormControl>
             </Grid>
 
-            <Grid item xs={12}>
-              <div style={{ display: 'flex' }}>
+            <Grid item xs={12}  >
+                <Grid spacing={2} container>
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
@@ -185,7 +187,7 @@ export default function AddIncident({ open, onClose }: Props) {
                     {errors.slackLink && <span style={{ color: errorColor }}>{errors.slackLink.message}</span>}
                   </FormControl>
                 </Grid>
-              </div>
+                </Grid>
             </Grid>
 
 
@@ -194,7 +196,8 @@ export default function AddIncident({ open, onClose }: Props) {
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="type">Type</label>
-                <DropDown   type={type} setType={setType} />
+                <DropDown   type={type} setType={setType}  />
+                {isSubmit&&!type&&<span style={{ color: errorColor }}>Type is required</span>}
               </FormControl>
             </Grid>
 
@@ -204,8 +207,10 @@ export default function AddIncident({ open, onClose }: Props) {
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Tags</label>
                 <div id="tags">
-                  <CustomAutocomplete options={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+                  <CustomAutocomplete options={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags}/>
                 </div>
+                {isSubmit && tags.length===0 && <span style={{ color: errorColor }}>tags is required</span>}
+
               </FormControl>
             </Grid>
 
