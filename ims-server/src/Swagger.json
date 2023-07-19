@@ -73,33 +73,6 @@
                         "description": "Invalid status value"
                     }
                 }
-            },
-            "post": {
-                "tags": [
-                    "incident"
-                ],
-                "description": "add an incident",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Incident"
-                            }
-                        },
-                        "id": {
-                            "type": "string"
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "successful operation"
-                    },
-                    "400": {
-                        "description": "Invalid status value"
-                    }
-                }
             }
         },
         "/incident/{id}": {
@@ -162,7 +135,7 @@
                 "parameters": [
                     {
                         "name": "id",
-                        "in": "path"        
+                        "in": "path"
                     }
                 ],
                 "requestBody": {
@@ -185,15 +158,15 @@
                 }
             }
         },
-        "/aggrigation": {
+        "/aggregation": {
             "get": {
                 "tags": [
-                    "aggrigation"
+                    "aggregation"
                 ],
-                "description": "Retrieve incidents aggrigations",
+                "description": "Retrieve incidents aggregations",
                 "responses": {
                     "200": {
-                        "description": "successful get incidents aggrigations"
+                        "description": "successful get incidents aggregations"
                     },
                     "400": {
                         "description": "Error aggregate incident"

@@ -1,15 +1,16 @@
-import { Request, Response } from 'express';
-import bodyParser from 'body-parser'
-import cors from 'cors'
-import express from 'express'
-import fs from 'fs'
-import swaggerUI from 'swagger-ui-express'
-import config from './config/config'
-import incidentRout from './routes/IncidentRout'
-import aggrigationRouter from './routes/aggrigationRouter'
-import tagRouter from './routes/tagRouter'
-import { connect } from './models/db'
-import logger from './loggers/log'
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import express, { Request, Response } from 'express';
+import fs from 'fs';
+import swaggerUI from 'swagger-ui-express';
+
+import config from './config/config';
+import logger from './loggers/log';
+import { connect } from './models/db';
+import incidentRoute from './routes/IncidentRout';
+import aggregationRouter from './routes/aggrigationRouter';
+import tagRouter from './routes/tagRouter';
+import timelineEventRouter from './routes/timelineEventRouter';
 const port = config.server.port
 
 
@@ -22,9 +23,10 @@ connect()
 app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use(cors())
 app.use(bodyParser.json())
-app.use('/incident', incidentRout)
-app.use('/aggregation', aggrigationRouter)
+app.use('/incident', incidentRoute)
+app.use('/aggregation', aggregationRouter)
 app.use('/tag', tagRouter)
+app.use('/timelineEvent',timelineEventRouter)
 
 app.get('/', (req: Request, res: Response): void => {
   res.redirect('/swagger')

@@ -132,7 +132,26 @@ const theme = createTheme({
           },
         },
       },
-    },
+      variants: [
+        {
+          props: { variant: 'outlined' },
+          style: {
+            border: `1px solid #2F854F`,
+            backgroundColor: '#FFFFFF',
+            color: 'black',
+            width: '176px',
+            height: '48px',
+            textTransform: 'capitalize',
+            marginBottom: '2%',
+            transition: 'background-color 0.3s', // נוסיף אנימציה לשינוי הצבע בעת hover
+            '&:hover': {
+              backgroundColor: '#2F854F1A',
+              color: '#2E7D32'
+            },
+          },
+        },
+      ],
+    }
   }
 })
 
