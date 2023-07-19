@@ -39,10 +39,6 @@ export const TimelineEventSchema = new Schema<ITimelineEvent>({
   updatedDate:{
     type:Date,
     required:false,
-  },
-  createdBy: {
-    type:String,
-    required:true
   }
 });
 
