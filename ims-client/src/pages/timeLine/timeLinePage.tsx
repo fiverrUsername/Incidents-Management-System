@@ -5,6 +5,7 @@ import { Incident } from "./modules/interface";
 import Search from "../../components/search/search";
 import { CustomScrollbar, StyledPaper} from "./timeLinePage.style";
 import { WithIdProps } from "../../HOC";
+import AddUpdateComp from "../../components/AddUpdate/AddUpdateComp"
 
 const TimeLinePage = ({ _id }: WithIdProps) => {
   const [incident, setIncident] = useState<Incident>();
@@ -31,6 +32,7 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
     <>
     {/* <StyledSearch onEvent={someFunction} setValue={setMyValue}></StyledSearch> */}
       <Search onEvent={someFunction} setValue={setMyValue}></Search>
+
       <StyledPaper>
         {/* profile */}
         {/* current priority */}
@@ -38,12 +40,13 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
       </StyledPaper>
       <StyledPaper>
         {incident && (
+                   
           <CustomScrollbar>
+            <AddUpdateComp/>   
             <TimeLine _id={incident._id} />
           </CustomScrollbar>
         )}
-        {/* button updade incident */}
-        {/* images */}
+ {/* images */}
       </StyledPaper>
     </>
   );

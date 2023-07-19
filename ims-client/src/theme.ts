@@ -126,10 +126,10 @@ const theme = createTheme({
           textTransform: 'capitalize',
           transition: 'background-color 0.3s', // נוסיף אנימציה לשינוי הצבע בעת hover
           '&:hover': {
-            backgroundColor: '#2F854F1A'
-            , color: '#2E7D32'
+            backgroundColor: '#2F854F1A',
+            color: '#2E7D32'
           },
-        }
+        },
       },
       variants: [
         {
@@ -167,8 +167,7 @@ const theme = createTheme({
           },
         },
       ],
-
-    },
+    }
   }
 })
 
