@@ -24,9 +24,13 @@ export default class TimelineEventController {
             const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
             if (_timelineEvent instanceof Error) {
                 res.status(500).json({ message: _timelineEvent });
+                console.log("from try")
             }
             else res.status(201).json(_timelineEvent);
+            console.log("from try")
         } catch (error: any) {
+            console.log("from catch")
+
             res.status(500).json({ message: error.message });
         }
     }
