@@ -4,19 +4,24 @@ import { Paper } from "@mui/material";
 import { Box } from "@mui/system";
 // import Search from "../../components/Search/Search";
 export const CustomScrollbar = styled.div`
-  max-height: 400px;
+  // max-height: 400px;
+  max-height:300px;
   overflow-y: auto;
+  scrollbar-color-x:${theme.palette.info.main};
   scrollbar-width: thin;
+  
 
   /* Works on Chrome, Edge, and Safari */
   &::-webkit-scrollbar {
     width: 9px;
+    background-color: ${theme.palette.info.main};
   }
 
   &::-webkit-scrollbar-thumb {
     background-color: ${theme.palette.secondary.main};
     border-radius: 5px;
     border: none;
+    // scrollbar-hight: 400px;
 
   }
 `;
@@ -26,9 +31,6 @@ border: 1px solid #bfbfbf;
 background: #fff;
 padding: 20px;
 margin-top: 2%;
-// Box{
-//   font-color: #fff;
-// }
 `;
 export const StyledBox = styled(Box)`
  color: ${theme.palette.secondary.main};
