@@ -8,6 +8,7 @@ import LeftDrawer, { IIcon } from "./components/drawer/Drawer";
 import theme from "./theme";
 import Router from "./routes";
 import Table from "./components/table/table";
+import ShowFileButton from "./FileViewer";
 function App() {
   const drawerIcons: IIcon[] = [
     { icon: BiHomeHeart, text: "home", navigation: "./" },
@@ -18,14 +19,16 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline>
-        <Box sx={{ display: "flex"}}>
+        <Box sx={{ display: "flex" }}>
           <LeftDrawer icons={drawerIcons} />
-          <Box  component="main" sx={{ flexGrow: 1, p: 3, height: 'calc(100vh)', overflow: 'auto'  }}>
+          <Box component="main" sx={{ flexGrow: 1, p: 3, height: 'calc(100vh)', overflow: 'auto' }}>
             {/* <Here put all the components /> */}
-            <Router/>
+            <Router />
+            <ShowFileButton />
           </Box>
         </Box>
       </CssBaseline>
+
     </ThemeProvider>
   );
 }
