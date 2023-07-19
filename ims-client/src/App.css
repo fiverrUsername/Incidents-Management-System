@@ -17,7 +17,6 @@
   src: local("AirbnbCerealPoppins"),
     url("./fonts/Poppins-Medium.woff") format("woff");
 }
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

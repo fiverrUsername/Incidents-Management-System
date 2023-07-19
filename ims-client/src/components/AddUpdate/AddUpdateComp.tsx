@@ -1,8 +1,8 @@
 import { Box, Button } from "@mui/material";
 import React,{ useState } from "react";
-import AddIncident from "./addIncident";
+import AddUpdate from "./AddUpdate";
 
-export default function AddIncidentComp() {
+export default function AddUpdateComp () {
     const [open, setOpen] = useState(false);
     const handleClick = () => {
         setOpen(!open);
@@ -13,8 +13,8 @@ export default function AddIncidentComp() {
     };
     return (
         <div>
-            <Button onClick={handleClick} variant='outlined'>+ Add New</Button>
-            {open && <AddIncident open={open} onClose={handleClose} />}   
+            <Button onClick={handleClick} variant='outlined'>+ Add Update</Button>
+            {open && <AddUpdate open={open} onClose={handleClose} />}   
         </div>
     )
 

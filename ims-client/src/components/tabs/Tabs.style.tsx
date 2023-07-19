@@ -6,7 +6,7 @@ export const TabStyles: SxProps = {
     display: 'none',
   },
   '& .MuiTab-root': {
-    marginLeft: '5px',
+    marginRight: '5px',
     color: 'inherit',
     '&.Mui-selected': {
       color: 'white',
