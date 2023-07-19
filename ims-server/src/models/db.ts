@@ -9,6 +9,7 @@ const connect = () => {
     mongoose.connect(config.mongo.url?config.mongo.url:"", {
         useNewUrlParser: true,
         useUnifiedTopology: true,
+        maxTimeMS: 30000,
     } as ConnectOptions)
     .then(() => {
         logger.info('Connected to MongoDB');
