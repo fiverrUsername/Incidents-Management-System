@@ -18,12 +18,16 @@ import IIncident from '../../interface/incidentInterface';
 import TypesSelect, { Types } from './Types';
 import { ITag } from '../../interface/ITag';
 import { Tag } from 'styled-components/dist/sheet/types';
+import UploadFiles from '../uploadFiles/UploadFiles';
+
 export interface FormData {
   text: string;
   priority: string;
   date: dayjs.Dayjs;
   type: string;
   tags: ITag[];
+  files: File[];
+
 }
 interface Props {
   open: boolean;
@@ -40,6 +44,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   const [isSubmit, setIsSubmit] = useState(false);
   const [type, setType] = React.useState('');
   const [tags, setTags] = useState<ITag[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
   const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
 
 
@@ -98,7 +103,6 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addUpdate" style={popupStyles}>
-      
         <CloseIcon style={closeIconStyles} onClick={onClose} />
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
           <h2>Add Update</h2>
@@ -115,6 +119,10 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
                 {errors.text && <span style={{ color: errorColor }}>{errors.text.message}</span>}
               </FormControl>
             </Grid>
+            <Grid item xs={12}>
+            <label htmlFor="files">Files</label>
+          <UploadFiles files={files} setFiles={setFiles}/>
+          </Grid>
             <Grid item xs={12}>
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
@@ -155,6 +163,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
               <Button type="submit" style={{ width: '100%' }} variant='contained'>Update</Button>
             </Grid>
           </Grid>
+         
         </form>
       </div>
       {showBanner && (

@@ -18,8 +18,8 @@ export default async function submitIncident(props:Props) {
         description: props.data.text,
         priority:props.data.priority,
         type:props.data.type,
-        tags:props.data.tags,
-        files:[] ,
+      //  tags:props.data.tags,
+        files:props.data.files,
         createdDate: props.data.date,
         updatedDate:new Date()
     }

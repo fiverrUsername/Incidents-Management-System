@@ -6,7 +6,7 @@ export default interface ITimeLineEvent  {
   description: string,
   priority:string,
   type:string,
-  files:string [],
+  files:File[],
   createdDate: dayjs.Dayjs,
   updatedDate:Date
 }
