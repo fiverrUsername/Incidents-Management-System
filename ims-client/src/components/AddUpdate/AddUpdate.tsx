@@ -106,14 +106,14 @@ export default function AddUpdate({ open, onClose }: Props) {
               </Grid>
             </Grid>
             <Grid item xs={12}>
-              <Button type="submit" style={{ width: '100%' }}>Update</Button>
+              <Button type="submit" style={{ width: '100%' }} variant='contained'>Update</Button>
             </Grid>
           </Grid>
         </form>
       </div>
       {showBanner && (
         <BannerNotification message="new update Added Successfully" severity="success" onClose={() => onClose()} />
-     )}
+      )}
     </Dialog>
   );
 }

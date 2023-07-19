@@ -150,15 +150,14 @@ const theme = createTheme({
           },
         },
         {
-          props: { variant: 'outlined' },
+          props: { variant: 'contained' },
           style: {
-            border: `1px solid #2F854F`,
-            backgroundColor: '#FFFFFF',
-            color: 'black',
+            backgroundColor: '#2F854F',
+            color: '#FFFFFF',
             width: '176px',
             height: '48px',
+            justifyContent: 'center',
             textTransform: 'capitalize',
-            marginBottom: '2%',
             transition: 'background-color 0.3s', // נוסיף אנימציה לשינוי הצבע בעת hover
             '&:hover': {
               backgroundColor: '#2F854F1A',
