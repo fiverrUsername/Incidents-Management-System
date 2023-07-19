@@ -67,6 +67,10 @@ export const IncidentSchema = new Schema<IIncident>({
     type: Number,
     required: true,
   },
+  createdBy: {
+    type:String,
+    required:true
+  }
 });
 
 export default mongoose.model<IIncident>('incidents', IncidentSchema);

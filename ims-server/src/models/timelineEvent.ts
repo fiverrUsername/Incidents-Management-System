@@ -40,10 +40,6 @@ export const TimelineEventSchema = new Schema<ITimelineEvent>({
     type:Date,
     required:false,
   },
-  createdBy: {
-    type:String,
-    required:true
-  }
 });
 
 export default mongoose.model<ITimelineEvent>('timelineEvents', TimelineEventSchema);

@@ -66,5 +66,27 @@ class IncidentService {
       return error;
     }
   }
+  async getSummaryIncident(id: String): Promise<IIncident | any> {
+    try {
+      const summary:IIncident={}
+      //check if get incident from repository or service
+      const incident = await incidentRepository.getSummaryIncident(id);
+      if (incident) {
+        //create summary
+         summary={
+          createdBy:incident.createdBy,
+          createdAt:incident.createdAt,
+          currentPriority:incident.priority,
+          tags:incident.tags
+        }
+        logger.info({source:constants.INCIDENT_COTROLLER,method:constants.METHOD.GET,incidentId:id})
+      }
+      return summary;
+    } catch (error:any) {
+      logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentID: id });
+      console.error(`error: ${error}`);
+      return error;
+    }
+  }
 }
 export default new IncidentService();
