@@ -8,5 +8,5 @@ export interface ITimelineEvent{
     type:string,
     files:string[],
     createdDate:Date,
-    updatedDate:Date
+    updatedDate:Date,
 }
