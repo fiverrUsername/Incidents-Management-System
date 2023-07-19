@@ -42,7 +42,7 @@ const TimeLinePage = ({ _id }: WithIdProps ) => {
         {incident && (
                    
           <CustomScrollbar>
-            <AddUpdateComp priority={incident.priority}/>   
+            <AddUpdateComp incident={incident}/>   
             <TimeLine _id={incident._id} />
           </CustomScrollbar>
         )}

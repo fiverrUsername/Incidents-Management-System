@@ -8,10 +8,12 @@ import ToggleButtons from '../AddIncident/PriorityButtons';
 import DropDown from '../AddIncident/DropDown';
 import dayjs from 'dayjs';
 import Option from '../../interface/IOption';
-import submitIncident from '../submitIncident/submitIncident';
+import submitTimeLine from './submitTimeLine'
 import theme from '../../theme';
 import apiCalls from '../../service/apiCalls';
 import BannerNotification from "../bannerNotification/BannerNotification"
+import { text } from 'node:stream/consumers';
+import IIncident from '../../interface/incidentInterface';
 export interface FormData {
   text: string;
   priority: string;
@@ -20,12 +22,13 @@ export interface FormData {
 interface Props {
   open: boolean;
   onClose: () => void; 
-  priorityProp: string;
+  incident: IIncident;
 }
 
-export default function AddUpdate({ open, onClose, priorityProp }: Props) {
+export default function AddUpdate({ open, onClose, incident }: Props) {
+  const priorityProp= incident.priority;
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>();
-  const [priority, setPriority] = React.useState<string | null>('p0');
+  const [priority, setPriority] = React.useState<string | null>();
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -40,7 +43,9 @@ export default function AddUpdate({ open, onClose, priorityProp }: Props) {
     if (date == null)
       data.date = dayjs();
     else
-      data.date = date
+      data.date = date;
+      submitTimeLine({data,incident})
+
   }
   const closeIconStyles: React.CSSProperties = {
     width: '17px',
@@ -68,7 +73,7 @@ export default function AddUpdate({ open, onClose, priorityProp }: Props) {
   };
 
   useEffect(() => {
-      // setPriority(priorityProp);
+      setPriority(String(priorityProp.toLowerCase()));
   }, []);
 
 
@@ -80,7 +85,6 @@ export default function AddUpdate({ open, onClose, priorityProp }: Props) {
         <CloseIcon style={closeIconStyles} onClick={onClose} />
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
           <h2>Add Update</h2>
-          <h1>{priority}</h1>
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <FormControl fullWidth>
