@@ -9,5 +9,4 @@ export interface ITimelineEvent{
     files:string[],
     createdDate:Date,
     updatedDate:Date,
-    createdBy:string
 }
