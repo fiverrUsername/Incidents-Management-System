@@ -35,6 +35,12 @@ margin-top: 2%;
 export const StyledBox = styled(Box)`
  color: ${theme.palette.secondary.main};
 `;
+ 
+
+// export const StyleBox = styled( Box)`
+//    display: 'flex'
+ 
+// `;
 // export const StyledSearch = styled(Search)`
 // .Paper{
 //     border-radius: 250px;

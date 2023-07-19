@@ -57,6 +57,7 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
           </CustomScrollbar>
         )}
       </StyledPaper>
+      
     </>
   );
 };
