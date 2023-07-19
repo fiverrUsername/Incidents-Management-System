@@ -12,20 +12,21 @@ import ITimeLineEvent from '../../interface/timeLineInterface'
 
 export default async function submitIncident(props:Props) {
     
-    const incidentcR:ITimeLineEvent={
+    const timeLineEvent:ITimeLineEvent={
         incidentId: props.incident.id,
         userId:"698cbeda854a5d4d8bcf303l",
         description: props.data.text,
         priority:props.data.priority,
-        type:,
+        type:props.data.type,
+        tags:props.data.tags,
         files:[] ,
         createdDate: props.data.date,
         updatedDate:new Date()
     }
 
 
-    await apiCalls.(incidentcR)
-    console.log('I am in submit incident')
+    // await apiCalls.FUNC(timeLineEvent)
+    // console.log('I am in submit timeline')
 
 
 

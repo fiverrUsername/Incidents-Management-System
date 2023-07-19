@@ -6,6 +6,7 @@ import DateTimePickerValue from '../datePicker/datePicker';
 import TextFieldInput from '../AddIncident/TextFields'
 import ToggleButtons from '../AddIncident/PriorityButtons';
 import DropDown from '../AddIncident/DropDown';
+import CustomAutocomplete from '../autoCompleteTag/autoComplete';
 import dayjs from 'dayjs';
 import Option from '../../interface/IOption';
 import submitTimeLine from './submitTimeLine'
@@ -14,10 +15,15 @@ import apiCalls from '../../service/apiCalls';
 import BannerNotification from "../bannerNotification/BannerNotification"
 import { text } from 'node:stream/consumers';
 import IIncident from '../../interface/incidentInterface';
+import TypesSelect, { Types } from './Types';
+import { ITag } from '../../interface/ITag';
+import { Tag } from 'styled-components/dist/sheet/types';
 export interface FormData {
   text: string;
   priority: string;
   date: dayjs.Dayjs;
+  type: string;
+  tags: ITag[];
 }
 interface Props {
   open: boolean;
@@ -32,6 +38,12 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [type, setType] = React.useState('');
+  const [tags, setTags] = useState<ITag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
+
+
+
 
   // String(priorityProp)
 
@@ -44,6 +56,8 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       data.date = dayjs();
     else
       data.date = date;
+      data.type = type
+    data.tags = selectedTags
       submitTimeLine({data,incident})
 
   }
@@ -73,6 +87,9 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   };
 
   useEffect(() => {
+    const FetchData = async () => {
+      const getAllTags = await apiCalls.getTags();
+      setTags(getAllTags);}
       setPriority(String(priorityProp.toLowerCase()));
   }, []);
 
@@ -115,6 +132,24 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
                   </FormControl>
                 </Grid>
               </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl
+                style={{ width: '100%' }}>
+                <label htmlFor="type">Type</label>
+                <DropDown type={type} setType={setType} />
+                {isSubmit && !type && <span style={{ color: errorColor }}>Type is required</span>}
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl style={{ width: '100%' }}>
+                <label htmlFor="tags">Tags</label>
+                <div id="tags">
+                  <CustomAutocomplete options={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+                </div>
+                {isSubmit && tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>}
+
+              </FormControl>
             </Grid>
             <Grid item xs={12}>
               <Button type="submit" style={{ width: '100%' }} variant='contained'>Update</Button>
