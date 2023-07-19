@@ -1,63 +1,51 @@
-
-import IncidentSchema from '../models/IncidentModel';
 import { Request, Response } from 'express';
-import logger from '../loggers/log';
-import validate from './incidentValidation';
-import { constants } from '../loggers/constants';
+
 import { IIncident } from '../interfaces/IncidentInterface';
+import incidentService from '../services/incidentService';
+import { constants } from '../loggers/constants';
 
 export default class IncidentController {
-
-  public async addIncident(req: Request, res: Response) {
+  async addIncident(req: Request, res: Response): Promise<void> {
     try {
-      const incident:IIncident = req.body;
-      await validate(incident);
-      const createdIncident:IIncident = await IncidentSchema.create(incident);
-      logger.info({sourece:constants.FROM_DATA_PATH,msg:constants.ADD_INCIDENT_SUCCESS, incidentId:createdIncident.id});
-      return res.status(200).json(createdIncident);
-    }
-    catch (error: any) {
-      logger.error({source:constants.FROM_DATA_PATH, err:constants.ERROR_ADDING_INCIDENT});
-      return res.status(404).json({ message: error.message });
+      const incident = await incidentService.addIncident(req.body);
+      res.status(201).json(incident);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
     }
   }
 
-  public async updateIncident(req: Request, res: Response) {
-    try {    
-      const incident = await IncidentSchema.findByIdAndUpdate(req.params.id, req.body);
+  async updateIncident(req: Request, res: Response): Promise<void> {
+    try {
+      const incident = await incidentService.updateIncident(req.params.id, req.body);
       if (incident) {
-        logger.info({ source: constants.FROM_DATA_PATH, msg: constants.UPDATE_INCIDENT_SUCCESS });
-        return res.status(200).json(incident);
+        res.status(200).json(incident);
+      }
+      else if (!req.params.name) {
+        res.status(422).json({ message: constants.MISSNG_REQUIRED_FIELDS, error: true })
+      }
+      else {
+        res.status(404).json({ message: constants.INCIDENT_NOT_FOUND });
       }
     } catch (error: any) {
-      return res.status(404).json({ message: error.message, error: true });
+      res.status(500).json({ message: error.message, error: true });
     }
   }
 
-  public async getAllIncidents(req: Request, res: Response) {
+  async getAllIncidents(req: Request, res: Response): Promise<void> {
     try {
-      const incidents = await IncidentSchema.find();
-      logger.info({ source: constants.FROM_DATA_PATH, msg: constants.GET_ALL_INCIDENTS_SUCCESS });
-      return res.status(200).json(incidents);
+      const incidents: IIncident[] | null = await incidentService.getAllIncidents();
+      res.status(200).json(incidents);
     } catch (error: any) {
-      logger.error({source:constants.FROM_DATA_PATH, err:constants.ERROR_GETTING_ALL_ICIDETS});
-      return res.status(404).json({ message: error });
+      res.status(404).json({ message: error });
     }
   }
 
-  public async getIncidentById(req: Request, res: Response) {    
+  async getIncidentById(req: Request, res: Response): Promise<void> {
     try {
-      const incident = await IncidentSchema.findById(req.params.id);
-      if (incident)
-      {
-        logger.info('get incident by id',incident);
-        return res.status(200).json(incident);
-      }
-      return res.status(404).json({ message: "Incident not found" });
-    } catch (error:any) {
-      logger.error({ source: constants.FROM_DATA_PATH, err: constants.INCIDENT_NOT_FOUND ,incidentID:req.params.id});
-      return res.status(404).json({ message: error });
+      const incident: IIncident | null = await incidentService.getIncidentById(req.params.id);
+      res.status(200).json(incident);
+    } catch (error: any) {
+      res.status(404).json({ message: error });
     }
   }
-
 }
