@@ -188,7 +188,7 @@ export default function AddIncident({ open, onClose }: Props) {
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <Button type="submit" style={{ width: '100%' }}>Add</Button>
+              <Button type="submit" style={{ width: '100%' }} variant='contained'>Add</Button>
             </Grid>
           </Grid>
         </form>
