@@ -19,20 +19,18 @@ export interface FormData {
 }
 interface Props {
   open: boolean;
-  onClose: () => void;
+  onClose: () => void; 
+  priorityProp: string;
 }
 
-
-
-
-export default function AddUpdate({ open, onClose }: Props) {
+export default function AddUpdate({ open, onClose, priorityProp }: Props) {
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>();
   const [priority, setPriority] = React.useState<string | null>('p0');
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
 
-
+  // String(priorityProp)
 
   function onSubmit(data: FormData) {
     setIsSubmit(true);
@@ -68,12 +66,21 @@ export default function AddUpdate({ open, onClose }: Props) {
   const backdropStyles: React.CSSProperties = {
     background: 'rgba(0, 48, 18, 0.84)',
   };
+
+  useEffect(() => {
+      // setPriority(priorityProp);
+  }, []);
+
+
+
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addUpdate" style={popupStyles}>
+      
         <CloseIcon style={closeIconStyles} onClick={onClose} />
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
           <h2>Add Update</h2>
+          <h1>{priority}</h1>
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <FormControl fullWidth>

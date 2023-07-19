@@ -7,7 +7,7 @@ import { CustomScrollbar, StyledPaper} from "./timeLinePage.style";
 import { WithIdProps } from "../../HOC";
 import AddUpdateComp from "../../components/AddUpdate/AddUpdateComp"
 
-const TimeLinePage = ({ _id }: WithIdProps) => {
+const TimeLinePage = ({ _id }: WithIdProps ) => {
   const [incident, setIncident] = useState<Incident>();
   useEffect(() => {
     const FetchData = async () => {
@@ -42,7 +42,7 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
         {incident && (
                    
           <CustomScrollbar>
-            <AddUpdateComp/>   
+            <AddUpdateComp priority={incident.priority}/>   
             <TimeLine _id={incident._id} />
           </CustomScrollbar>
         )}
