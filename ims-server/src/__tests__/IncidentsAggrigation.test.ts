@@ -14,7 +14,6 @@ import IncidentModel from '../models/IncidentModel';
         it("should return 404", async()=>{
             jest.spyOn(IncidentModel, 'aggregate').mockRejectedValueOnce(new Error());
             const res=(await supertest(app).get("/aggregation/"));
-            console.log("bodyyyyyyyyyyyy", res.body)
             expect(res.status).toBe(404);
         })
       })
