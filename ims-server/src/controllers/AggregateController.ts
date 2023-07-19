@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import aggregationService from '../services/aggregationService';
 
-export default class IncidentController {
+export default class AggregationController {
     async incidentAggregation(req: Request, res: Response): Promise<void> {
         try {
             const aggregation = await aggregationService.aggregateIncident();

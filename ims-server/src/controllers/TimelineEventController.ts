@@ -2,59 +2,45 @@ import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import { constants } from "../loggers/constants";
 import timelineEvent, { TimelineEventSchema } from "../models/timelineEvent";
 import express, { Request, Response } from 'express';
+import timelineEventService from "../services/timelineEventService";
 
 
 export default class TimelineEventController {
 
-    getAllTimelineEvents = async (req: Request, res: Response) => {
+    async getAllTimelineEvents(req: Request, res: Response): Promise<void> {
         try {
-            const timelineEvents: ITimelineEvent[] | null = await timelineEvent.find();
-            return res.status(200).json(timelineEvents);
-        } catch (error: any) {
-            return res.status(404).json({ message: error });
-        }
-    }
-
-    getTimelineEventById = async (req: Request, res: Response) => {
-        try {
-            const _timelineEvent: ITimelineEvent | null = await timelineEvent.findById(req.params.id);
-            return res.status(200).json(_timelineEvent);
-        } catch (error: any) {
-            return res.status(404).json({ message: error });
-        }
-    }
-
-    addTimelineEvent = async (req: Request, res: Response) => {
-        try {
-            const _timelineEvent = await timelineEvent.create(req.body);
-            return res.status(201).json(_timelineEvent);
-        } catch (error: any) {
-            return res.status(500).json({ message: error.message });
-        }
-    }
-
-    updateTimelineEvent = async (req: Request, res: Response) => {
-        try {
-            const _timelineEvent = await timelineEvent.findByIdAndUpdate(req.params.id, req.body);
-            if (_timelineEvent) {
-                return res.status(200).json(_timelineEvent);
+            const timelineEvents: ITimelineEvent[] | null = await timelineEventService.getAllTimelineEvents();
+            if(timelineEvent instanceof Error){
+                res.status(404).json({ message: timelineEvent,error:true });
             }
-            else if (!req.params.userName) {
-                return res.status(422).json({ message: constants.MISSNG_REQUIRED_FIELDS, error: true })
-            }
-            return res.status(404).json({ message: constants.METHOD.POST });
+            else res.status(200).json(timelineEvents);
         } catch (error: any) {
-            return res.status(500).json({ message: error.message, error: true });
+            res.status(500).json({ message: error });
         }
     }
 
-    deleteTimelineEvent = async (req: Request, res: Response) => {
+    async addTimelineEvent(req: Request, res: Response): Promise<void> {
         try {
-            const _timelineEvent = await timelineEvent.findByIdAndDelete(req.params.id);
-            return res.status(200).send(_timelineEvent)
+            const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
+            if (_timelineEvent instanceof Error) {
+                res.status(500).json({ message: _timelineEvent });
+            }
+            else res.status(201).json(_timelineEvent);
+        } catch (error: any) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    async deleteTimelineEvent(req: Request, res: Response): Promise<void> {
+        try {
+            const _timelineEvent = await timelineEventService.deleteTimelineEvent(req.params.id);
+            if(_timelineEvent instanceof Error){
+                res.status(404).send({ message: _timelineEvent, error: true })
+            }
+            else res.status(200).send(_timelineEvent)
         }
         catch (error: any) {
-            return res.status(500).send({ message: error, error: true })
+            res.status(500).send({ message: error, error: true })
         }
     }
 

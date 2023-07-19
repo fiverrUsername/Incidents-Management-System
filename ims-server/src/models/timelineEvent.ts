@@ -7,21 +7,41 @@ export const TimelineEventSchema = new Schema<ITimelineEvent>({
     type: String,
     default: uuidv4,
   },
-    userName: {
+  incidentId: {
     type: String,
     required: true,
   },
-  date:{
+  userId: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  priority: {
+    type: String,
+    required: true
+  },
+  type:{
+    type:String,
+    required:true
+  },
+  files:{
+    type:[String],
+    required:true
+  },
+  createdDate:{
     type:Date,
     required:false,
     default:Date.now()
   },
-  description:{
-    type:String,
-    required:true
+  updatedDate:{
+    type:Date,
+    required:false,
   },
-  priority:{
-    type:Number,
+  createdBy: {
+    type:String,
     required:true
   }
 });
