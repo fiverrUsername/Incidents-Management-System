@@ -1,8 +1,12 @@
 
 export interface ITimelineEvent{
     _id: string,
-    userName:string,
-    date:Date,
+    incidentId:string,
+    userId:string,
     description:string,
-    priority:number,
+    priority:string,
+    type:string,
+    files:string[],
+    createdDate:Date,
+    updatedDate:Date
 }
