@@ -3,7 +3,6 @@ import { Dialog, FormControl, InputLabel, Grid, Button } from "@mui/material";
 import { useForm } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
-
 import DateTimePickerValue from '../datePicker/datePicker';
 import TextFieldInput from './TextFields';
 import ToggleButtons from './PriorityButtons';
@@ -188,7 +187,7 @@ export default function AddIncident({ open, onClose }: Props) {
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <Button type="submit" style={{ width: '100%' }}>Add</Button>
+              <Button type="submit" style={{ width: '100%' }} variant='contained'>Add</Button>
             </Grid>
           </Grid>
         </form>
