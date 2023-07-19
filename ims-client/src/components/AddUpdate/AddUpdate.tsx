@@ -155,7 +155,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
                 <div id="tags">
                   <CustomAutocomplete options={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
                 </div>
-                {isSubmit && tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>}
+                {/* {isSubmit && tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>} */}
 
               </FormControl>
             </Grid>
