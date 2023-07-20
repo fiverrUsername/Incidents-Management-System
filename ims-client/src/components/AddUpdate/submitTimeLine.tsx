@@ -24,7 +24,10 @@ export default async function submitTimeLine(props: Props) {
     createdDate: props.data.date,
     updatedDate: new Date()
   }
+  try{
    await apiCalls.addTimelineEvent(timeLineEvent)
-   console.log('I am in submit timeline');
-
+  }
+  catch{
+   console.log('there are some errors');
+}
 }
