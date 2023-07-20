@@ -16,6 +16,8 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
   //const [user,setUser]=useState();
   //const user = users.find((t) => t.userId === _id);
   //when the functions in server are done
+const TimeLinePage = ({ _id }: WithIdProps ) => {
+  const [incident, setIncident] = useState<Incident>();
   useEffect(() => {
     const FetchTimeline = async () => {
       const getTimeLineEvents = await apiCalls.getTimeLineEvents() 
@@ -59,10 +61,16 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
       <Search onEvent={someFunction} setValue={setMyValue}></Search>
      {summaryIncident && <DisplaySummary summaryIncident={{...summaryIncident}} ></DisplaySummary>} 
       <StyledPaper>
-        <AddUpdateComp />
-        {timelineObjects && (
+        {/* profile */}
+        {/* current priority */}
+        {/* tags */}
+      </StyledPaper>
+      <StyledPaper>
+        {incident && (
+                   
           <CustomScrollbar>
-            <TimeLine timeLineEvents={timelineObjects} />
+            <AddUpdateComp incident={incident}/>   
+            <TimeLine _id={incident._id} />
           </CustomScrollbar>
         )}
       </StyledPaper>

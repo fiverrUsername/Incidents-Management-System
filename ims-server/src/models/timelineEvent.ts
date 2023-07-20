@@ -39,7 +39,7 @@ export const TimelineEventSchema = new Schema<ITimelineEvent>({
   updatedDate:{
     type:Date,
     required:false,
-  },
+  }
 });
 
 export default mongoose.model<ITimelineEvent>('timelineEvents', TimelineEventSchema);

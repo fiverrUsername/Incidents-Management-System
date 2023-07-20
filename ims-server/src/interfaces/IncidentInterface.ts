@@ -14,5 +14,5 @@ export interface IIncident  extends Document{
     createdAt: Date;
     updatedAt: Date;
     cost: number;
-    createdBy:string
+    createdBy:string;
   }

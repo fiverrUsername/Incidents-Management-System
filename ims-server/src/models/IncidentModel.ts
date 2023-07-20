@@ -67,9 +67,9 @@ export const IncidentSchema = new Schema<IIncident>({
     type: Number,
     required: true,
   },
-  createdBy: {
+  createdBy:{
     type:String,
-    required:true
+    required:false
   }
 });
 
