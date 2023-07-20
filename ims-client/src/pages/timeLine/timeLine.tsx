@@ -2,15 +2,15 @@
 import React, { useEffect, useState } from 'react';
 import data from '../../mockAPI/timeLineEvent.json';
 import userdata from '../../mockAPI/users.json';
-import { Idincidentprops } from './modules/interface';
+import { ITimelineEventListprops } from './modules/interface';
 import { TimelineWarpper } from './timeLine.style';
 import TimeLineEvent from './timeLineEvent/timeLineEvent';
 import { ITimeLineEventprops } from './modules/interface'
 
 
-const TimeLine: React.FC<Idincidentprops> = (props) => {
-  const { _id } = props;
-  const timeLineEvents = data.filter((timeLine) => timeLine.incidentId === _id).sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+const TimeLine: React.FC<ITimelineEventListprops> = (props) => {
+  const { timelineList } = props;
+  const timeLineEvents= timelineList.sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
   const [timelineObjects, setTimelineObjects] = useState<ITimeLineEventprops[]>([]);
   useEffect(() => {
 
