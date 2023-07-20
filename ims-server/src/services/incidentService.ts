@@ -1,4 +1,5 @@
 import validate from '../controllers/incidentValidation';
+import { ISummary } from '../interfaces/ISummary';
 import { IIncident } from '../interfaces/IncidentInterface';
 import { constants } from '../loggers/constants';
 import logger from '../loggers/log';
@@ -66,13 +67,16 @@ class IncidentService {
       return error;
     }
   }
-  async getSummaryIncident(id: String): Promise<IIncident | any> {
+  async getSummaryIncident(id: String): Promise<ISummary | any> {
     try {
-      const summary:IIncident={}
-      //check if get incident from repository or service
-      const incident = await incidentRepository.getSummaryIncident(id);
+       let summary={
+        createdBy:"",
+        createdAt:new Date(),
+        currentPriority:"",
+        tags:[]
+       };
+        const incident = await  this.getIncidentById(id);
       if (incident) {
-        //create summary
          summary={
           createdBy:incident.createdBy,
           createdAt:incident.createdAt,
@@ -80,9 +84,9 @@ class IncidentService {
           tags:incident.tags
         }
         logger.info({source:constants.INCIDENT_COTROLLER,method:constants.METHOD.GET,incidentId:id})
+        return summary;
       }
-      return summary;
-    } catch (error:any) {
+     } catch (error:any) {
       logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentID: id });
       console.error(`error: ${error}`);
       return error;

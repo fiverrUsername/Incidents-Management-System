@@ -8,7 +8,8 @@ const apiCalls = {
     createIncident: (incident: IIncident) => axios.post(`http://127.0.0.1:7000/incident/addIncident`, incident).then(response => response.data),
     getTags: () => axios.get(`http://127.0.0.1:7000/tag`).then(response => response.data),
     getIncidentById:(id:string)=>axios.get(`http://localhost:7000/incident/${id}`).then(response => response.data),
-    
+    getSummaryIncident:(id:string)=>axios.get(`http://localhost:7000/incident/summary/${id}`).then(response => response.data),
+    getTimeLineEvents:()=>axios.get(`http://localhost:7000/timelineEvent`).then(response => response.data),
 }
 
 export default apiCalls

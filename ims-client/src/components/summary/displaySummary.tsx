@@ -1,19 +1,20 @@
 import React from 'react'
 import {StyledBox, StyledPaper} from '../../pages/timeLine/timeLinePage.style'
-import { Incident } from '../../pages/timeLine/modules/interface'
+import { ISummary } from '../../interface/ISummary';
+ 
 
 
 interface propsDisplaySummary
 {
-incident:Incident
+    summaryIncident:ISummary
 }
-const DisplaySummary = ({incident}:propsDisplaySummary) => {
+const DisplaySummary = ({summaryIncident}:propsDisplaySummary) => {
 //const formattedDate = incident.date.toLocaleDateString('en-GB');
 return(
 <StyledPaper>
-    <StyledBox>Created by:{incident.createdBy}</StyledBox>
-       <StyledBox>Created at: {incident.createdAt}</StyledBox>
-      <StyledBox>Current priority: {incident.priority}</StyledBox>
+    <StyledBox>Created by:{summaryIncident.createdBy}</StyledBox>
+       {/* <StyledBox>Created at: {summaryIncident.createdAt}</StyledBox> */}
+      <StyledBox>Current priority: {summaryIncident.currentPriority}</StyledBox>
       <StyledBox>Affected services: {/* tags */} </StyledBox>
 </StyledPaper>
 );
