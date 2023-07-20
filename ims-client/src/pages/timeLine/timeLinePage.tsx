@@ -59,7 +59,7 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
       <Search onEvent={someFunction} setValue={setMyValue}></Search>
      {summaryIncident && <DisplaySummary summaryIncident={{...summaryIncident}} ></DisplaySummary>} 
       <StyledPaper>
-        {/* <AddUpdateComp incident={undefined} /> */}
+        <AddUpdateComp incident={incident} />
         {timelineObjects && (
           <CustomScrollbar>
             <TimeLine timelineList={timelineObjects} />
@@ -69,6 +69,6 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
       
     </>
   );
-};
+        };
 
 export default TimeLinePage;

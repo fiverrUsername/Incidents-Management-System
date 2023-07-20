@@ -1,7 +1,5 @@
 
 export default interface IIncident  {
-
-
     id: string;
     name: string;
     status: string;
@@ -10,7 +8,7 @@ export default interface IIncident  {
     type: string;
     durationHours: number;
     slackLink: string;
-    tags: { id: string, name: string }[];
+    tags: ITag[];
     date: Date;
     createdAt: Date;
     updatedAt: Date;

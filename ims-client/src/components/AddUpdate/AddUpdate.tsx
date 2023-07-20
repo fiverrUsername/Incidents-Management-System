@@ -15,7 +15,7 @@ import apiCalls from '../../service/apiCalls';
 import BannerNotification from "../bannerNotification/BannerNotification"
 import { text } from 'node:stream/consumers';
 import IIncident from '../../interface/incidentInterface';
-import TypesSelect, { Types } from './Types';
+import TypesSelect, { Types } from '../AddIncident/Types';
 import { ITag } from '../../interface/ITag';
 import { Tag } from 'styled-components/dist/sheet/types';
 import UploadFiles from '../uploadFiles/UploadFiles';
@@ -43,9 +43,9 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [type, setType] = React.useState('');
-  const [tags, setTags] = useState<ITag[]>([]);
+  const [tags, setTags] = useState<ITag[]>(incident.tags);
   const [files, setFiles] = useState<File[]>([]);
-  const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<ITag[]>(incident.selectedTags);
 
 
 
