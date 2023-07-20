@@ -7,8 +7,8 @@ export interface ITimeLineEventprops {
     name?: string;
     profile?: string;
 }
-export interface Idincidentprops {
-    _id: string
+export interface ITimelineEventListprops {
+    timelineList: TimelineEvent[];
 }
 
 
@@ -22,7 +22,6 @@ interface TimelineEvent {
     files: string[];
     createdDate: string;
     updatedDate: string;
-
 }
 export interface Incident {
     _id: string,
