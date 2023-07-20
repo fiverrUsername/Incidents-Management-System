@@ -14,7 +14,7 @@ export default async function submitTimeLine(props: Props) {
 
   const timeLineEvent:ITimeLineEvent= {
     id: uuidv4(),
-    incidentId: props.incident.id,
+    incidentId: props.incident.id | "3",
     userId: "698cbeda854a5d4d8bcf303l",
     description: props.data.text,
     priority: props.data.priority,
@@ -24,7 +24,12 @@ export default async function submitTimeLine(props: Props) {
     createdDate: props.data.date,
     updatedDate: new Date()
   }
-   await apiCalls.addTimelineEvent(timeLineEvent)
-   console.log('I am in submit timeline');
-
+  console.log("before")
+  console.log(props.incident.id)
+  try{
+        await apiCalls.addTimelineEvent(timeLineEvent)
+     }
+   catch(error){
+     console.log("gg")
+   }
 }
