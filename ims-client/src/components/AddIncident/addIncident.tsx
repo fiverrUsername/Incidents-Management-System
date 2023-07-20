@@ -3,7 +3,6 @@ import { Dialog, FormControl, InputLabel, Grid, Button } from "@mui/material";
 import { useForm } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
-
 import DateTimePickerValue from '../datePicker/datePicker';
 import TextFieldInput from './TextFields';
 import ToggleButtons from './PriorityButtons';
@@ -26,7 +25,6 @@ export interface FormData {
   type: string;
   tags: ITag[];
 }
-
 interface Props {
   open: boolean;
   onClose: () => void;

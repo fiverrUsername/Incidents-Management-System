@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { IIncident } from '../interfaces/IncidentInterface';
 import incidentService from '../services/incidentService';
 import { constants } from '../loggers/constants';
+import { ISummary } from '../interfaces/ISummary';
 
 export default class IncidentController {
 
@@ -64,7 +65,7 @@ export default class IncidentController {
   }
   async getSummaryIncident(req: Request, res: Response): Promise<void> {
     try {
-       const summary: IIncident | null = await incidentService.getSummaryIncident(req.params.id);
+       const summary: ISummary | null = await incidentService.getSummaryIncident(req.params.id);
        if (summary instanceof Error) {
          res.status(404).json({ message: summary, error: true });
       }

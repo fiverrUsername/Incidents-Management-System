@@ -17,7 +17,7 @@ const IncidentsPage = () => {
     FetchData();
     setIsLoading(false)
 
-  }, []);
+  }, [incidents]);
 
 
   useEffect(() => {

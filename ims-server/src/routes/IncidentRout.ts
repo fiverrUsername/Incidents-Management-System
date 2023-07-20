@@ -9,5 +9,5 @@ router.get('/', incidenceController.getAllIncidents);
 router.get('/:id', incidenceController.getIncidentById);
 router.post('/addIncident', incidenceController.addIncident);
 router.put('/updateIncident/:id', incidenceController.updateIncident);
-router.get('/summary',incidenceController.getSummaryIncident);
+router.get('/summary/:id',incidenceController.getSummaryIncident);
 export default router;

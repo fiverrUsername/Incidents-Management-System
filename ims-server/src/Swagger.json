@@ -97,12 +97,18 @@
                 }
             }
         },
-        "/incident/summary": {
+        "/incident/summary/{id}": {
             "get": {
                 "tags": [
                     "incident"
                 ],
                 "description": "Retrieve incident summary",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "successful operation"
