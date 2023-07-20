@@ -30,8 +30,9 @@ const UpTabs: React.FC<EventProps> = ({ onEvent, setValue }) => {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box >
         <Tabs
+        
           value={status}
           onChange={handleChange}
           aria-label="basic tabs example"
@@ -41,12 +42,14 @@ const UpTabs: React.FC<EventProps> = ({ onEvent, setValue }) => {
             label="Active Incidents"
             {...a11yProps(0)}
             sx={{
+             
               backgroundColor:
                 status === 0
                   ? theme.palette.secondary.main
                   : theme.palette.secondary.contrastText,
               borderRadius: "5px",
               border: `1px solid ${theme.palette.secondary.main}`,
+              textTransform:'capitalize',
             }}
           />
           <Tab
@@ -59,6 +62,7 @@ const UpTabs: React.FC<EventProps> = ({ onEvent, setValue }) => {
                   : theme.palette.secondary.contrastText,
               borderRadius: "5px",
               border: `1px solid ${theme.palette.secondary.main}`,
+              textTransform:'capitalize',
             }}
           />
         </Tabs>

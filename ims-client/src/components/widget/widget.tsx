@@ -21,16 +21,16 @@ const StyledButtonBase = styled(ButtonBase)(({ theme }) => ({
 }));
 
 const StyledIcon = styled('div')(({ theme }) => ({
-  color: theme.palette.background.default,
+  color: theme.palette.primary.contrastText,
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  fontSize: '65px',
+  fontSize: '65px', 
 }));
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  width: '464px',
-  height: '170px',
+  width: '437px',
+  height: '147px',
   borderRadius: '20px',
   display: 'flex',
   paddingLeft: '40px',

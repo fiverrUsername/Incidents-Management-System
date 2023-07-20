@@ -13,8 +13,8 @@ export default function AddIncidentComp() {
     };
     return (
         <div>
-            <Button onClick={handleClick}>Add New</Button>
-            {open && <AddIncident open={open} onClose={handleClose} />}
+            <Button onClick={handleClick} variant='outlined'>+ Add New</Button>
+            {open && <AddIncident open={open} onClose={handleClose} />}   
         </div>
     )
 

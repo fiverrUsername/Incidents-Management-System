@@ -125,20 +125,20 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading }) => {
   someFunction();
 
   return (
-    <Box border={`1px solid ${theme.palette.grey[300]}`} borderRadius={10}>
-    <Box display="grid" gridTemplateColumns="1fr auto" margin={4} >
-      <Box >
-        <UpTabs onEvent={someFunction} setValue={setStatusValue} />
-      </Box>
-      <Box display="flex" alignItems="center" justifyContent="flex-end">
-        <Box style={{ marginRight: '8px' }}>
-        <Search onEvent={someFunction} setValue={setSearchValue} />
+    <Box border={`1px solid ${theme.palette.grey[300]}`} borderRadius={10} bgcolor={theme.palette.primary.contrastText}>
+      <Box display="grid" gridTemplateColumns="1fr auto" margin='32px 32px 10px 16px' >
+        <Box >
+          <UpTabs onEvent={someFunction} setValue={setStatusValue} />
         </Box>
-        <AddIncidentComp />
+        <Box display="flex" alignItems="center" justifyContent="flex-end">
+          <Box style={{ marginRight: '8px' }}>
+            <Search onEvent={someFunction} setValue={setSearchValue} />
+          </Box>
+          <AddIncidentComp />
+        </Box>
       </Box>
-    </Box>
       <Table columns={columns} rows={filteredRows} isLoading={isLoading} visibilityModel={visibilityModel} />
-</Box>
+    </Box>
   );
 };
 

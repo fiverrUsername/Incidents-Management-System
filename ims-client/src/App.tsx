@@ -8,22 +8,19 @@ import LeftDrawer, { IIcon } from "./components/drawer/Drawer";
 import theme from "./theme";
 import Router from "./routes";
 import Table from "./components/table/table";
-
 function App() {
-
   const drawerIcons: IIcon[] = [
-    { icon: BiHomeHeart, text: "home", navigation: "./home" },
+    { icon: BiHomeHeart, text: "home", navigation: "./" },
     { icon: BiHome, text: "dashboard", navigation: "./dashboard" },
     { icon: AiOutlineSetting, text: "settings", navigation: "./settings" },
-    { icon: BiMessageAdd, text: "settings", navigation: "./message" },
+    { icon: BiMessageAdd, text: "Send message", navigation: "./message" },
   ];
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline>
         <Box sx={{ display: "flex"}}>
           <LeftDrawer icons={drawerIcons} />
-          <Box  component="main" sx={{ flexGrow: 1, p: 3, height: 'calc(100vh - 64px)', overflow: 'auto'  }}>
+          <Box  component="main" sx={{ flexGrow: 1, p: 3, height: 'calc(100vh)', overflow: 'auto'  }}>
             {/* <Here put all the components /> */}
             <Router/>
           </Box>
@@ -32,6 +29,4 @@ function App() {
     </ThemeProvider>
   );
 }
-
 export default App;
-

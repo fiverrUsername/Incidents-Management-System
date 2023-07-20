@@ -35,7 +35,7 @@ export default function DropDown({ type, setType }: Props) {
                 displayEmpty
             >
                 <MenuItem disabled value="">
-                    <em>Select Type</em>
+                    <div>Select Type</div>
                 </MenuItem>
                 {Types.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
