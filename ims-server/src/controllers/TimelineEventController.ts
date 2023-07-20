@@ -20,19 +20,20 @@ export default class TimelineEventController {
         }
     }
 
-    async addTimelineEvent(req: Request, res: Response): Promise<void> {
+    async addTimelineEvent(req: Request, res: Response): Promise<Response> {
         try {
             const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
+            console.log(_timelineEvent )
             if (_timelineEvent instanceof Error) {
-                res.status(500).json({ message: _timelineEvent });
-                console.log("from try")
+               return res.status(500).json({ message: _timelineEvent });
+                console.log("from 500")
             }
-            else res.status(201).json(_timelineEvent);
+           return res.status(201).json(_timelineEvent);
             console.log("from try")
         } catch (error: any) {
             console.log("from catch")
 
-            res.status(500).json({ message: error.message });
+           return res.status(500).json({ message: error.message });
         }
     }
 
