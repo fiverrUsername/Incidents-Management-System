@@ -6,13 +6,14 @@ import { WithIdProps } from "../../HOC";
 import AddUpdateComp from "../../components/AddUpdate/AddUpdateComp"
 import DisplaySummary from "../../components/summary/displaySummary";
 import apiCalls from "../../service/apiCalls";
-import {  TimelineEvent } from "./modules/interface";
+import {  Incident, TimelineEvent } from "./modules/interface";
 import { ISummary } from "../../interface/ISummary";
+import IIncident from "../../interface/incidentInterface";
 
 const TimeLinePage = ({ _id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<TimelineEvent[]>([]);
   const [summaryIncident , setSummaryIncident] = useState<ISummary>( );
-  //const [incident,setIncident]=useState<Incident>();
+  const [incident,setIncident]=useState<IIncident>();
   //const [user,setUser]=useState();
   //const user = users.find((t) => t.userId === _id);
   //when the functions in server are done
@@ -32,14 +33,14 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
    }
 
    FetchSummaryIncident();
-  //////////////////////////
-  // const FetchInsident = async () => {
-  //   const getIncidentById = await apiCalls.getIncidentById(_id);
-  //   console.log(getIncidentById);
-  //   setIncident(getIncidentById);
-  // };
-  // FetchInsident();
-  //////////////////////////
+  
+  const FetchInsident = async () => {
+    const getIncidentById = await apiCalls.getIncidentById(_id);
+    console.log(getIncidentById);
+    setIncident(getIncidentById);
+  };
+  FetchInsident();
+  
   //   const FetchUser = async () => {
   //     const getUserById = await apiCalls.getUserById(_id);
   //     console.log(getUserById,"getUserById");
@@ -59,7 +60,7 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
       <Search onEvent={someFunction} setValue={setMyValue}></Search>
      {summaryIncident && <DisplaySummary summaryIncident={{...summaryIncident}} ></DisplaySummary>} 
       <StyledPaper>
-        {/* <AddUpdateComp incident={undefined} /> */}
+        {incident && <AddUpdateComp incident={{...incident}} />}
         {timelineObjects && (
           <CustomScrollbar>
             <TimeLine timelineList={timelineObjects} />
