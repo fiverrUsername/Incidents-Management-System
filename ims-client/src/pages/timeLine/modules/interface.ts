@@ -12,7 +12,7 @@ export interface ITimelineEventListprops {
 }
 
 
-interface TimelineEvent {
+export interface TimelineEvent {
     _id: string;
     incidentId: string;
     userId: string;

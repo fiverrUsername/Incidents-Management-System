@@ -97,6 +97,28 @@
                 }
             }
         },
+        "/incident/summary/{id}": {
+            "get": {
+                "tags": [
+                    "incident"
+                ],
+                "description": "Retrieve incident summary",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
+        },
         "/incident/addIncident": {
             "post": {
                 "tags": [
