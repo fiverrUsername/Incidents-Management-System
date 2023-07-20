@@ -3,26 +3,35 @@ import TimeLine from "./timeLine";
 import Search from "../../components/search/search";
 import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
 import { WithIdProps } from "../../HOC";
-import data from '../../mockAPI/timeLineEvent.json';
-import incidentData from '../../mockAPI/incident.json';
-import AddUpdateComp from "../../components/AddUpdate/AddUpdateComp"
+// import AddUpdateComp from "../../components/AddUpdate/AddUpdateComp"
 import DisplaySummary from "../../components/summary/displaySummary";
+import apiCalls from "../../service/apiCalls";
+import {  TimelineEvent } from "./modules/interface";
+import { ISummary } from "../../interface/ISummry";
 
 const TimeLinePage = ({ _id }: WithIdProps) => {
-  //const [timelineObjects, setTimelineObjects] = useState<ITimeLineEventprops[]>([]);
+  const [timelineObjects, setTimelineObjects] = useState<TimelineEvent[]>([]);
+  const [summaryIncident , setSummaryIncident] = useState<ISummary>( );
   //const [incident,setIncident]=useState<Incident>();
   //const [user,setUser]=useState();
-  const timeLineEvents = data.filter((timeLine) => timeLine.incidentId === _id).sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
-  const incidenta= incidentData.find((i) => i._id === _id);
   //const user = users.find((t) => t.userId === _id);
   //when the functions in server are done
-  // useEffect(() => {
-  //   const FetchTimeline = async () => {
-  //     const getTimeLineEvents = await apiCalls.getTimeLineEvents(_id);
-  //     console.log(getTimeLineEvents);
-  //     setTimeLineEvents(getTimeLineEvents);
-  //   };
-  //   FetchTimeline();
+  useEffect(() => {
+    const FetchTimeline = async () => {
+      const getTimeLineEvents = await apiCalls.getTimeLineEvents() 
+      console.log(getTimeLineEvents,"getTimeLineEvents");
+       setTimelineObjects(getTimeLineEvents);
+    };
+    FetchTimeline();
+
+  const FetchSummaryIncident= async()=>{
+       
+       const summary =await apiCalls.getSummaryIncident(_id);
+       console.log(summary,"summery") 
+       setSummaryIncident(summary)
+   }
+
+   FetchSummaryIncident();
   //////////////////////////
   // const FetchInsident = async () => {
   //   const getIncidentById = await apiCalls.getIncidentById(_id);
@@ -38,7 +47,7 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
   //   };
   //   FetchUser();
 
-  // }, [_id]);
+  }, [_id]);
 
   const [myValue, setMyValue] = useState<string>("");
   const someFunction = () => {
@@ -48,12 +57,12 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
     <>
       {/* <StyledSearch onEvent={someFunction} setValue={setMyValue}></StyledSearch> */}
       <Search onEvent={someFunction} setValue={setMyValue}></Search>
-      <DisplaySummary incident={incidenta} ></DisplaySummary>
+     {summaryIncident && <DisplaySummary summaryIncident={{...summaryIncident}} ></DisplaySummary>} 
       <StyledPaper>
-        <AddUpdateComp />
-        {timeLineEvents && (
+        {/* <AddUpdateComp incident={undefined} /> */}
+        {timelineObjects && (
           <CustomScrollbar>
-            <TimeLine timeLineEvents={timeLineEvents} />
+            <TimeLine timelineList={timelineObjects} />
           </CustomScrollbar>
         )}
       </StyledPaper>
