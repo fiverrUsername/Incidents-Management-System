@@ -50,7 +50,7 @@ export class Incident {
   type: string;
 
   @IsNotEmpty({ message: "durationHours is empty" })
-  @IsString({ message: "invalid durationHours" })
+  @IsNumber()
   durationHours: number;
 
   @IsNotEmpty({ message: "slackLink is empty" })
