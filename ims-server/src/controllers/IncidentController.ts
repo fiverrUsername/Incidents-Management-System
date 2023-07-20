@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { IIncident } from '../interfaces/IncidentInterface';
 import incidentService from '../services/incidentService';
 import { constants } from '../loggers/constants';
+import { ISummary } from '../interfaces/ISummary';
 
 export default class IncidentController {
 
@@ -58,6 +59,17 @@ export default class IncidentController {
         res.status(404).json({ message: incident, error: true });
       }
       else res.status(200).json(incident);
+    } catch (error: any) {
+      res.status(500).json({ message: error });
+    }
+  }
+  async getSummaryIncident(req: Request, res: Response): Promise<void> {
+    try {
+       const summary: ISummary | null = await incidentService.getSummaryIncident(req.params.id);
+       if (summary instanceof Error) {
+         res.status(404).json({ message: summary, error: true });
+      }
+      else res.status(200).json(summary);
     } catch (error: any) {
       res.status(500).json({ message: error });
     }

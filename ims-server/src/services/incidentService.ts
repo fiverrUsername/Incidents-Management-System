@@ -5,6 +5,7 @@ import logger from "../loggers/log";
 import incidentModel from "../models/IncidentModel";
 import incidentRepository from "../repositories/incidentRepository";
 import { Incident } from "../classValidator/incidentValidation";
+import { ISummary } from "../interfaces/ISummary";
 
 class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {
@@ -114,5 +115,35 @@ class IncidentService {
       return error;
     }
   }
+
+  async getSummaryIncident(id: String): Promise<ISummary|any> {
+    try {
+      let summary={
+        createdBy: '',
+        createdAt: new Date(),
+        currentPriority: '',
+        tags: []
+      }
+      //check if get incident from repository or service
+      const incident = await incidentRepository.getIncidentById(id);
+      if (incident) {
+        //find user with userId from createdBy  ????
+        //create summary
+         summary={
+          createdBy:incident.createdBy,
+          createdAt:incident.createdAt,
+          currentPriority:incident.priority,
+          tags:incident.tags
+        }
+        logger.info({source:constants.INCIDENT_COTROLLER,method:constants.METHOD.GET,incidentId:id})
+      }
+      return summary;
+    } catch (error:any) {
+      logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentID: id });
+      console.error(`error: ${error}`);
+      return error;
+    }
+  }
+
 }
 export default new IncidentService();
