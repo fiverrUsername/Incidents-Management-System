@@ -9,6 +9,7 @@ import apiCalls from "../../service/apiCalls";
 import {  Incident, TimelineEvent } from "./modules/interface";
 import { ISummary } from "../../interface/ISummary";
 import IIncident from "../../interface/incidentInterface";
+import { Box, Grid } from "@mui/material";
 const TimeLinePage = ({ _id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<TimelineEvent[]>([]);
   const [summaryIncident , setSummaryIncident] = useState<ISummary>( );
@@ -52,7 +53,10 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
       <Search onEvent={someFunction} setValue={setMyValue}></Search>
      {summaryIncident && <DisplaySummary summaryIncident={{...summaryIncident}} ></DisplaySummary>}
       <StyledPaper>
+      <Grid container direction="row" justifyContent="center" alignItems="flex-start" flexWrap="nowrap">
+        <Box>gggggggg</Box>
         {incident && <AddUpdateComp incident={{...incident}} />}
+        </Grid>
         {timelineObjects && (
           <CustomScrollbar>
             <TimeLine timelineList={timelineObjects} />

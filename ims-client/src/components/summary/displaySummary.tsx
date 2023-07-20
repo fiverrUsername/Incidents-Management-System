@@ -13,11 +13,11 @@ const DisplaySummary = ({ summaryIncident }: propsDisplaySummary) => {
     // const formattedDate = summaryIncident.createdAt.toLocaleDateString('en-GB');
     return (
         <StyledPaper>
-            <Grid container direction="row" justifyContent="flex-start" alignItems="flex-start" flexWrap="nowrap">
+            <Grid container direction="row" justifyContent="center" alignItems="flex-start" flexWrap="nowrap">
                 <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
-                    <StyledBox>Created by:<label >{summaryIncident.createdBy}</label></StyledBox>
+                    <StyledBox>Created by:<label style={{color:theme.palette.primary.dark ,fontSize:theme.typography.fontSize}}>{summaryIncident.createdBy}</label></StyledBox>
                     <StyledBox>Created at:
-                        {/* {summaryIncident.createdAt} */}
+                      <label style={{color:theme.palette.primary.dark ,fontSize:theme.typography.fontSize}}> {summaryIncident.createdAt.toString()}</label> 
                     </StyledBox>
                 </Grid>
                 <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
