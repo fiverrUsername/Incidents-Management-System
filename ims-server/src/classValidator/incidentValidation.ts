@@ -18,7 +18,7 @@ export class Incident {
     this.description = "";
     this.priority = "";
     this.type = "";
-    this.durationHours = "";
+    this.durationHours = 0;
     this.tags = [];
     this.date = "2023-07-19T10:00:00Z";
     this.createdAt = "2023-07-19T10:00:00Z";
@@ -50,8 +50,8 @@ export class Incident {
   type: string;
 
   @IsNotEmpty({ message: "durationHours is empty" })
-  @IsString({ message: "invalid durationHours" })
-  durationHours: string;
+  @IsNumber()
+  durationHours: number;
 
   @IsNotEmpty({ message: "slackLink is empty" })
   @IsString({ message: "invalid slackLink" })
