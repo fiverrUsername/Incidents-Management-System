@@ -25,7 +25,6 @@ export interface FormData {
   type: string;
   tags: ITag[];
 }
-
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -117,9 +116,9 @@ export default function AddIncident({ open, onClose }: Props) {
               <FormControl fullWidth>
                 <label htmlFor="name">Incident Name</label>
                 <TextFieldInput placeholder="Incident Name" multiline rows={1} size="small"
-                  // {...register("name", {
-                  //   required: "Name is required",
-                  // })}
+                  {...register("name", {
+                    required: "Name is required",
+                  })}
                 />
                 {errors.name && <span style={{ color: errorColor }}>{errors.name.message}</span>}
               </FormControl>
