@@ -6,7 +6,7 @@ import { WithIdProps } from "../../HOC";
 import AddUpdateComp from "../../components/AddUpdate/AddUpdateComp"
 import DisplaySummary from "../../components/summary/displaySummary";
 import apiCalls from "../../service/apiCalls";
-import { Idincidentprops, TimelineEvent } from "./modules/interface";
+import {  TimelineEvent } from "./modules/interface";
 import { ISummary } from "../../interface/ISummary";
 
 const TimeLinePage = ({ _id }: WithIdProps) => {
@@ -16,8 +16,6 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
   //const [user,setUser]=useState();
   //const user = users.find((t) => t.userId === _id);
   //when the functions in server are done
-const TimeLinePage = ({ _id }: WithIdProps ) => {
-  const [incident, setIncident] = useState<Incident>();
   useEffect(() => {
     const FetchTimeline = async () => {
       const getTimeLineEvents = await apiCalls.getTimeLineEvents() 
@@ -61,16 +59,10 @@ const TimeLinePage = ({ _id }: WithIdProps ) => {
       <Search onEvent={someFunction} setValue={setMyValue}></Search>
      {summaryIncident && <DisplaySummary summaryIncident={{...summaryIncident}} ></DisplaySummary>} 
       <StyledPaper>
-        {/* profile */}
-        {/* current priority */}
-        {/* tags */}
-      </StyledPaper>
-      <StyledPaper>
-        {incident && (
-                   
+        {/* <AddUpdateComp incident={undefined} /> */}
+        {timelineObjects && (
           <CustomScrollbar>
-            <AddUpdateComp incident={incident}/>   
-            <TimeLine _id={incident._id} />
+            <TimeLine timelineList={timelineObjects} />
           </CustomScrollbar>
         )}
       </StyledPaper>

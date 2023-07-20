@@ -9,8 +9,22 @@ import { Incident } from "../classValidator/incidentValidation";
 class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {
     try {
-      await validate(newIncident);
-      logger.info({ sourece: constants.INCIDENT_COTROLLER, msg: constants.ADD_INCIDENT_SUCCESS, incidentId: newIncident.id });
+      const incident = new Incident();
+      Object.assign(incident, newIncident);
+      const validationErrors = await validate(incident);
+      if (validationErrors.length > 0) {
+        logger.error({
+          source: constants.INCIDENT_SERVICE,
+          err: "Validation error",
+          validationErrors: validationErrors.map((error) => error.toString()),
+        });
+        throw new Error("Validation error");
+      }
+      logger.info({
+        sourece: constants.INCIDENT_COTROLLER,
+        msg: constants.ADD_INCIDENT_SUCCESS,
+        incidentId: newIncident.id,
+      });
       return await incidentRepository.addIncident(newIncident);
     } catch (error: any) {
       logger.error({
@@ -96,31 +110,6 @@ class IncidentService {
         err: constants.INCIDENT_NOT_FOUND,
         incidentID: id,
       });
-      console.error(`error: ${error}`);
-      return error;
-    }
-  }
-  async getSummaryIncident(id: String): Promise<ISummary | any> {
-    try {
-       let summary={
-        createdBy:"",
-        createdAt:new Date(),
-        currentPriority:"",
-        tags:[]
-       };
-        const incident = await  this.getIncidentById(id);
-      if (incident) {
-         summary={
-          createdBy:incident.createdBy,
-          createdAt:incident.createdAt,
-          currentPriority:incident.priority,
-          tags:incident.tags
-        }
-        logger.info({source:constants.INCIDENT_COTROLLER,method:constants.METHOD.GET,incidentId:id})
-        return summary;
-      }
-     } catch (error:any) {
-      logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentID: id });
       console.error(`error: ${error}`);
       return error;
     }
