@@ -21,6 +21,7 @@ function App() {
         <Box sx={{ display: "flex"}}>
           <LeftDrawer icons={drawerIcons} />
           <Box  component="main" sx={{ flexGrow: 1, p: 3, height: 'calc(100vh)', overflow: 'auto'  }}>
+            
             {/* <Here put all the components /> */}
             <Router/>
           </Box>

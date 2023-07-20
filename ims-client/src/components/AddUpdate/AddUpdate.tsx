@@ -53,6 +53,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   // String(priorityProp)
 
   function onSubmit(data: FormData) {
+    alert(files[0],files[1]);
     setIsSubmit(true);
     setShowBanner(true);
     if (priority != null)
@@ -64,6 +65,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       data.type = type
     data.tags = selectedTags
       submitTimeLine({data,incident})
+      
 
   }
   const closeIconStyles: React.CSSProperties = {
