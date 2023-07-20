@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-
 import { IIncident } from '../interfaces/IncidentInterface';
 import incidentService from '../services/incidentService';
 import { constants } from '../loggers/constants';
