@@ -3,40 +3,48 @@ import incidentModel from '../models/IncidentModel';
 
 class IncidentRepository {
 
-  async addIncident(newIncident: IIncident): Promise<void | null> {
+  async addIncident(newIncident: IIncident): Promise<void | any> {
     try {
       await incidentModel.create(newIncident);
-    } catch (error) {
+    } catch (error:any) {
       console.error(`error: ${error}`);
-      return null;
+      return error;
     }
   }
 
-  async updateIncident(id: String, data: typeof incidentModel): Promise<void | null> {
+  async updateIncident(id: String, data: typeof incidentModel): Promise<void | any> {
     try {
       return await incidentModel.findByIdAndUpdate(id, data);
-    } catch (error) {
+    } catch (error:any) {
       console.error(`error: ${error}`);
-      return null;
+      return error;
     }
   }
 
-  async getAllIncidents(): Promise<IIncident[] | null> {
+  async getAllIncidents(): Promise<IIncident[] | any> {
     try {
       return await incidentModel.find();
-    } catch (error) {
+    } catch (error:any) {
       console.error(`error: ${error}`);
-      return null;
+      return error;
     }
   }
 
-  async getIncidentById(id: String): Promise<IIncident | null> {
+  async getIncidentById(id: String): Promise<IIncident | any> {
     try {
       return await incidentModel.findById(id);
-    } catch (error) {
+    } catch (error:any) {
       console.error(`error: ${error}`);
-      return null;
+      return error;
     }
   }
+  // async getSummaryIncident(id: String): Promise<IIncident | any> {
+  //   try {
+  //     return await incidentModel.findById(id);
+  //   } catch (error:any) {
+  //     console.error(`error: ${error}`);
+  //     return error;
+  //   }
+  // }
 }
 export default new IncidentRepository();

@@ -69,7 +69,7 @@
                     "200": {
                         "description": "successful operation"
                     },
-                    "400": {
+                    "404": {
                         "description": "Invalid status value"
                     }
                 }
@@ -91,7 +91,29 @@
                     "200": {
                         "description": "successful operation"
                     },
-                    "400": {
+                    "404": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
+        },
+        "/incident/summary/{id}": {
+            "get": {
+                "tags": [
+                    "incident"
+                ],
+                "description": "Retrieve incident summary",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
                         "description": "Invalid status value"
                     }
                 }
@@ -117,10 +139,10 @@
                     "required": true
                 },
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "successful operation"
                     },
-                    "400": {
+                    "500": {
                         "description": "Invalid status value"
                     }
                 }
@@ -152,7 +174,13 @@
                     "200": {
                         "description": "successful operation"
                     },
-                    "400": {
+                    "422":{
+                        "description":"missing required fields"
+                    },
+                    "404":{
+                        "description": "incident not found"
+                    },
+                    "500": {
                         "description": "Invalid status value"
                     }
                 }
@@ -170,6 +198,73 @@
                     },
                     "400": {
                         "description": "Error aggregate incident"
+                    }
+                }
+            }
+        },
+        "/timelineEvent":{
+            "get": {
+                "tags": [
+                    "timelineEvent"
+                ],
+                "description": "Retrieve all timeline events",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Timeline Events not found"
+                    }
+                }
+            }
+        },
+        "/timelineEvent/": {
+            "post": {
+                "tags": [
+                    "timelineEvent"
+                ],
+                "description": "add a timeline event",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TimelineEvent"
+                            }
+                        },
+                        "id": {
+                            "type": "string"
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "successful operation"
+                    },
+                    "500": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
+        },
+        "/timelineEvent/{id}":{
+            "delete": {
+                "tags": [
+                    "timelineEvent"
+                ],
+                "description": "delete timeline event by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Timeline Events not found"
                     }
                 }
             }
