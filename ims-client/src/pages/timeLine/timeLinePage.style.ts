@@ -39,7 +39,7 @@ export const StyledBox = styled(Box)`
 `;
  
 
-// export const StyleBox = styled( Box)`
+// export const StyleBox = styled( Box)`    
 //    display: 'flex'
  
 // `;
