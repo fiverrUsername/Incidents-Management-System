@@ -14,6 +14,7 @@ import timelineEventRouter from './routes/timelineEventRouter';
 const port = config.server.port
 
 
+
 const swaggerFile: any = (process.cwd() + "/src/Swagger.json");
 const swaggerData: any = fs.readFileSync(swaggerFile, 'utf8');
 const swaggerDocument = JSON.parse(swaggerData);
