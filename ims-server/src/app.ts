@@ -11,6 +11,7 @@ import incidentRoute from './routes/IncidentRout';
 import aggregationRouter from './routes/aggrigationRouter';
 import tagRouter from './routes/tagRouter';
 import timelineEventRouter from './routes/timelineEventRouter';
+import awsRouter from './routes/awsRouter';
 const port = config.server.port
 
 
@@ -27,6 +28,7 @@ app.use('/incident', incidentRoute)
 app.use('/aggregation', aggregationRouter)
 app.use('/tag', tagRouter)
 app.use('/timelineEvent',timelineEventRouter)
+app.use('/aws', awsRouter)
 
 app.get('/', (req: Request, res: Response): void => {
   res.redirect('/swagger')
