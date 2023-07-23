@@ -1,6 +1,6 @@
-// import React from 'react';
-// import { render, fireEvent } from '@testing-library/react';
-// import CustomAutocomplete from './autoComplete';
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
+import CustomAutocomplete from './autoComplete';
 
 
 // // Mock tag options
