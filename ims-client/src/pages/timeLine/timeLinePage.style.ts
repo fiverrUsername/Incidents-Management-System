@@ -34,10 +34,12 @@ margin-top: 2%;
 `;
 export const StyledBox = styled(Box)`
  color: ${theme.palette.secondary.main};
+ font-weight: ${theme.typography.bold.fontWeight};
+ margin: 2%
 `;
  
 
-// export const StyleBox = styled( Box)`
+// export const StyleBox = styled( Box)`    
 //    display: 'flex'
  
 // `;

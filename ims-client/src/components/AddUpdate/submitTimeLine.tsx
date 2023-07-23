@@ -24,12 +24,10 @@ export default async function submitTimeLine(props: Props) {
     createdDate: props.data.date,
     updatedDate: new Date()
   }
-  console.log("before")
-  console.log(props.incident.id)
   try{
-        await apiCalls.addTimelineEvent(timeLineEvent)
-     }
-   catch(error){
-     console.log("gg")
-   }
+   await apiCalls.addTimelineEvent(timeLineEvent)
+  }
+  catch{
+   console.log('there are some errors');
+}
 }
