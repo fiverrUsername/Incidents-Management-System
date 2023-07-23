@@ -14,7 +14,7 @@ interface Props {
 export default async function submitTimeLine(props: Props) {
 
   const timeLineEvent:ITimeLineEvent= {
-    incidentId: props.incident._id,
+    incidentId: props.incident.id,
     userId: "698cbeda854a5d4d8bcf303l",
     description: props.data.text,
     priority: props.data.priority,
@@ -25,7 +25,8 @@ export default async function submitTimeLine(props: Props) {
     updatedDate: new Date()
   }
   try{
-   await apiCalls.addTimelineEvent(timeLineEvent);
+  const res= await apiCalls.addTimelineEvent(timeLineEvent);
+  console.log(res);
   }
   catch{
    console.log('there are some errors');
