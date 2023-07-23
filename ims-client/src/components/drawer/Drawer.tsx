@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 import MailIcon from '@mui/icons-material/Mail'
@@ -17,6 +18,22 @@ import { ComponentType } from 'react';
 import { useNavigate } from 'react-router-dom'
 
 
+=======
+import MailIcon from '@mui/icons-material/Mail'
+import InboxIcon from '@mui/icons-material/MoveToInbox'
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Divider from '@mui/material/Divider'
+import MuiDrawer from '@mui/material/Drawer'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import { CSSObject, Theme, styled, useTheme } from '@mui/material/styles'
+import React from 'react'
+
+>>>>>>> origin
 import logo from '../../images/logo.png'
 
 const drawerWidth = 240
@@ -28,7 +45,10 @@ const openedMixin = (theme: Theme): CSSObject => ({
   }),
   overflowX: 'hidden',
 })
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin
 
 const closedMixin = (theme: Theme): CSSObject => ({
   transition: theme.transitions.create('width', {
@@ -49,6 +69,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
 }))
+<<<<<<< HEAD
 
 
 
@@ -62,6 +83,11 @@ export interface IIcon {
   text: string,
   icon: ComponentType<any>,
   navigation: string,
+=======
+
+interface AppBarProps extends MuiAppBarProps {
+  open?: boolean
+>>>>>>> origin
 }
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -98,6 +124,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   })
 )
 
+<<<<<<< HEAD
 export default function LeftDrawer({ icons }: Props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -105,6 +132,12 @@ export default function LeftDrawer({ icons }: Props) {
   const handleClick = (navigation: string) => {
     navigate(navigation)
   }
+=======
+export default function LeftDrawer() {
+  const theme = useTheme()
+  const [open, setOpen] = React.useState(false)
+
+>>>>>>> origin
   const handleDrawerOpen = () => {
     setOpen(!open)
   }
@@ -116,8 +149,8 @@ export default function LeftDrawer({ icons }: Props) {
           <img
             src={logo}
             onClick={handleDrawerOpen}
-            width={48}
-            height={66}
+            width={50}
+            height={50}
             alt="Logo"
           />
         </DrawerHeader>

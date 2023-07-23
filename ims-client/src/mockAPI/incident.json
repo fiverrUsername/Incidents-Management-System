@@ -1,4 +1,5 @@
 [
+<<<<<<< HEAD
   {
   "_id": "649cbeda942a5d4d8bcf303b",
   "name": "Critical Event",
@@ -128,4 +129,95 @@
     "cost":"900"
     }   
     
+=======
+    {
+        "id": "649cbeda942a5d4d8bcf303b",
+        "name": "Critical Event",
+        "status": "Active",
+        "description": "Issue Description",
+        "priority":"P1",
+        "date": "2023-07-05T10:30:00Z",
+        "type":"comment",
+        "durationFault": "3",
+        "CaringTeam": "Team A"
+      },
+      {
+        "id": "649cbeda942a5d4d8bcf303c",
+        "name": "Stuck Incident",
+        "status": "Active",
+        "description": "Issue Description",
+        "priority":"P0",
+        "date": "2023-07-01T10:30:00Z",
+        "type":"securing",
+        "durationFault": "1",
+        "CaringTeam": "Team A"
+      },
+      {
+        "id": "649cbeda942a5d4d8bcf303d",
+        "name": "Delayed Problem",
+        "status": "Active",
+        "description": "Issue Description",
+        "priority":"P1",
+        "date": "2023-06-15T10:30:00Z",
+        "type":"technical",
+        "durationFault": "2",
+        "CaringTeam": "Team A"
+      },
+      {
+        "id": "649cbeda942a5d4d8bcf303e",
+        "name": "Locked Trouble",
+        "status": "Active",
+        "description": "Issue Description",
+        "priority":"P2",
+        "date": "2023-06-03T10:30:00Z",
+        "type":"technical",
+        "durationFault": "1",
+        "CaringTeam": "Team A"
+      },
+      {
+        "id": "649cbeda942a5d4d8bcf303f",
+        "name": "Paused Incident",
+        "status": "Active",
+        "description": "Issue Description",
+        "priority":"P0",
+        "date": "2023-05-28T10:30:00Z",
+        "type":"securing",
+        "durationFault": "2",
+        "CaringTeam": "Team A"
+      },
+      {
+        "id": "649cbeda942a5d4d8bcf3040",
+        "name": "Resolved Event",
+        "status": "Resolved",
+        "description": "Issue Description",
+        "priority":"P1",
+        "date": "2023-05-17T10:30:00Z",
+        "type":"comment",
+        "durationFault": "2",
+        "CaringTeam": "Team A"
+      },
+      {
+        "id": "649cbeda942a5d4d8bcf3043",
+        "name": "Suspended Event",
+        "status": "Active",
+        "description": "Issue Description",
+        "priority":"P2",
+        "date": "2023-05-02T10:30:00Z",
+        "type":"securing",
+        "durationFault": "1",
+        "CaringTeam": "Team A"
+      },
+      {
+        "id": "649cbeda942a5d4d8bcf3044",
+        "name": "Unresolved Incident",
+        "status": "Active",
+        "description": "Issue Description",
+        "priority":"P3",
+        "date": "2023-04-29T10:30:00Z",
+        "type":"technical",
+        "durationFault": "1",
+        "CaringTeam": "Team A"
+      }
+      
+>>>>>>> origin
 ]

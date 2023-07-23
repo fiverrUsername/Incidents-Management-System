@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from "react";
 import { ThemeProvider } from "@emotion/react";
 import { Box, CssBaseline } from "@mui/material";
@@ -30,3 +31,25 @@ function App() {
   );
 }
 export default App;
+=======
+import { Provider } from 'react-redux'
+import React from 'react'
+
+import './App.css'
+import LeftDrawer from './components/drawer/Drawer'
+import configureStore from './redux/configureStore'
+
+const store = configureStore()
+
+function App() {
+  return (
+    <div className="App">
+      <Provider store={store}>
+        <LeftDrawer></LeftDrawer>
+      </Provider>
+    </div>
+  )
+}
+
+export default App
+>>>>>>> origin

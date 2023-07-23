@@ -1,6 +1,0 @@
-{
-    "eslint.workingDirectories": [
-      "ims-client",
-      "ims-server"
-    ]
-  }

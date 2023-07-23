@@ -1,4 +1,5 @@
 import axios from "axios"
+<<<<<<< HEAD
 import IIncident from "../interface/incidentInterface"
 import ITimeLineEvent from "../interface/timeLineInterface"
 
@@ -13,6 +14,12 @@ const apiCalls = {
     getTimeLineEvents:()=>axios.get(`http://localhost:7000/timelineEvent`).then(response => response.data),
     getTimeLineForIncident:(id:string)=>axios.get(`http://localhost:7000/incident/${id}`).then(response => response.data),
     addTimelineEvent:(timeLineEvent: ITimeLineEvent) => axios.post(`http://127.0.0.1:7000/timelineEvent`, timeLineEvent).then(response => response.data),
+=======
+
+const apiCalls = {
+    //להוסיף את כל הקריאות שרת
+    getIncidents: () => axios.get(`http://localhost:5000/incident`).then(response => response.data),
+>>>>>>> origin
 }
 
 export default apiCalls
