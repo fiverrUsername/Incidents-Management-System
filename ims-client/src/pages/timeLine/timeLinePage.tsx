@@ -11,11 +11,6 @@ import { ISummary } from "../../interface/ISummary";
 import IIncident from "../../interface/incidentInterface";
 import { Grid, Typography } from "@mui/material";
 
-
-
-
-
-
 const TimeLinePage = ({ _id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<TimelineEvent[]>([]);
   const [summaryIncident, setSummaryIncident] = useState<ISummary>();
@@ -25,9 +20,9 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
   //when the functions in server are done
   useEffect(() => {
     const FetchTimeline = async () => {
-      const getTimeLineEvents = await apiCalls.getTimeLineEvents()
-      console.log(getTimeLineEvents, "getTimeLineEvents");
-      setTimelineObjects(getTimeLineEvents);
+      const getTimeLineEventsById = await apiCalls.getTimeLineEventsById(_id)
+      console.log(getTimeLineEventsById, "getTimeLineEventsById");
+      setTimelineObjects(getTimeLineEventsById);
     };
     FetchTimeline();
     const FetchSummaryIncident = async () => {
@@ -36,12 +31,12 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
       setSummaryIncident(summary)
     }
     FetchSummaryIncident();
-    const FetchInsident = async () => {
+    const FetchIncident = async () => {
       const getIncidentById = await apiCalls.getIncidentById(_id);
       console.log(getIncidentById);
       setIncident(getIncidentById);
     };
-    FetchInsident();
+    FetchIncident();
     //   const FetchUser = async () => {
     //     const getUserById = await apiCalls.getUserById(_id);
     //     console.log(getUserById,"getUserById");

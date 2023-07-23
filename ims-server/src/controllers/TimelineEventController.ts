@@ -20,6 +20,18 @@ export default class TimelineEventController {
         }
     }
 
+    async getTimelineEventsById(req: Request, res: Response): Promise<void> {
+        try {
+            const timelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventsById(req.params.incidentId);
+            if (timelineEvents instanceof Error) {
+                res.status(404).json({ message: timelineEvent, error: true });
+            }
+            else res.status(200).json(timelineEvents);
+        } catch (error: any) {
+            res.status(500).json({ message: error });
+        }
+    }
+
     async addTimelineEvent(req: Request, res: Response): Promise<Response> {
         try {
             const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);

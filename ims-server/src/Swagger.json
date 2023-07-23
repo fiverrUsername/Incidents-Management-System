@@ -218,6 +218,28 @@
                 }
             }
         },
+        "/timelineEvent/{incidentId}":{
+            "get": {
+                "tags": [
+                    "timelineEvent"
+                ],
+                "description": "Retrieve all timeline events for specific id",
+                "parameters": [
+                    {
+                        "name": "incidentId",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Timeline Events not found for given id"
+                    }
+                }
+            }
+        },
         "/timelineEvent/": {
             "post": {
                 "tags": [
