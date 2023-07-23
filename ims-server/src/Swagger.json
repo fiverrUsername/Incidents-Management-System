@@ -269,6 +269,31 @@
                 }
             }
         },
+        "/timelineEvent/getById/{id}":{
+            "get": {
+                "tags": [
+                    "timelineEvent"
+                ],
+                "description": "get a timeline event by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Timeline Event not found"
+                    },
+                    "500":{
+                        "description":"server error"
+                    }
+                }
+            }
+        },
         "/timelineEvent/getFile/{id}": {
             "get": {
                 "tags": [
