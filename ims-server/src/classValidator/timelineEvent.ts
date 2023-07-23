@@ -1,4 +1,10 @@
-import { IsString, IsNotEmpty,  IsArray, IsISO8601, ValidateNested } from "class-validator";
+import {
+  IsString,
+  IsNotEmpty,
+  IsArray,
+  IsISO8601,
+  ValidateNested,
+} from "class-validator";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 
 export class TimelineEventDto {

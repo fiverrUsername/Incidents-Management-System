@@ -1,6 +1,6 @@
 import { type Request, type Response } from "express";
-import tagService from "../services/tagService";
 import { TagDto } from "../classValidator/tagValidation";
+import tagService from "../services/tagService";
 
 export default class TagController {
   async addTag(req: Request, res: Response): Promise<void> {

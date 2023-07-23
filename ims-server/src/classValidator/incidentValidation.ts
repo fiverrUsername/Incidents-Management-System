@@ -5,7 +5,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  ValidateNested
+  ValidateNested,
 } from "class-validator";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { TagDto } from "./tagValidation";

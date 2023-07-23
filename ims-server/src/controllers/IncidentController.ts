@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { IIncident } from "../interfaces/IncidentInterface";
+import { IncidentDto } from "../classValidator/incidentValidation";
 import { constants } from "../loggers/constants";
 import incidentService from "../services/incidentService";
-import { IncidentDto } from "../classValidator/incidentValidation";
 
 export default class IncidentController {
   async addIncident(req: Request, res: Response): Promise<void> {

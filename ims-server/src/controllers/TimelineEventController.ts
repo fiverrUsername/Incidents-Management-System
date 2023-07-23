@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { ITimelineEvent } from "../interfaces/ItimelineEvent";
+import { TimelineEventDto } from "../classValidator/timelineEvent";
 import { constants } from "../loggers/constants";
 import timelineEventService from "../services/timelineEventService";
-import { TimelineEventDto } from "../classValidator/timelineEvent";
 
 export default class TimelineEventController {
   async getAllTimelineEvents(req: Request, res: Response): Promise<void> {
@@ -22,8 +21,9 @@ export default class TimelineEventController {
   }
 
   async addTimelineEvent(req: Request, res: Response): Promise<void> {
-      try {          
-      const timelineEventData: TimelineEventDto = await timelineEventService.addTimelineEvent(req.body);
+    try {
+      const timelineEventData: TimelineEventDto =
+        await timelineEventService.addTimelineEvent(req.body);
       res.status(201).json(timelineEventData);
     } catch (error: any) {
       res.status(500).json({ message: error.message });

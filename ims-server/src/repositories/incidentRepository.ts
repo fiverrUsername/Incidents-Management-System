@@ -1,16 +1,7 @@
-import { IIncident } from '../interfaces/IncidentInterface';
-import incidentModel from '../models/IncidentModel';
+import { IIncident } from "../interfaces/IncidentInterface";
+import incidentModel from "../models/IncidentModel";
 
 class IncidentRepository {
-
-  // async addIncident(newIncident: IIncident): Promise<void | any> {
-  //   try {
-  //     await incidentModel.create(newIncident);
-  //   } catch (error:any) {
-  //     console.error(`error: ${error}`);
-  //     return error;
-  //   }
-  // }
   async addIncident(newIncident: IIncident): Promise<IIncident | any> {
     try {
       return await incidentModel.create(newIncident);
@@ -19,12 +10,14 @@ class IncidentRepository {
       return error;
     }
   }
-  
 
-  async updateIncident(id: String, data: typeof incidentModel): Promise<void | any> {
+  async updateIncident(
+    id: String,
+    data: typeof incidentModel
+  ): Promise<void | any> {
     try {
       return await incidentModel.findByIdAndUpdate(id, data);
-    } catch (error:any) {
+    } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
     }
@@ -33,7 +26,7 @@ class IncidentRepository {
   async getAllIncidents(): Promise<IIncident[] | any> {
     try {
       return await incidentModel.find();
-    } catch (error:any) {
+    } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
     }
@@ -42,7 +35,7 @@ class IncidentRepository {
   async getIncidentById(id: String): Promise<IIncident | any> {
     try {
       return await incidentModel.findById(id);
-    } catch (error:any) {
+    } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
     }
