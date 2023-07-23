@@ -1,54 +1,47 @@
+import { Request, Response } from "express";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import { constants } from "../loggers/constants";
-import timelineEvent, { TimelineEventSchema } from "../models/timelineEvent";
-import express, { Request, Response } from 'express';
 import timelineEventService from "../services/timelineEventService";
-import logger from "../loggers/log";
-
+import { TimelineEventDto } from "../classValidator/timelineEvent";
 
 export default class TimelineEventController {
-
-    async getAllTimelineEvents(req: Request, res: Response): Promise<void> {
-        try {
-            const timelineEvents: ITimelineEvent[] | null = await timelineEventService.getAllTimelineEvents();
-            if (timelineEvents instanceof Error) {
-                res.status(404).json({ message: timelineEvent, error: true });
-            }
-            else res.status(200).json(timelineEvents);
-        } catch (error: any) {
-            res.status(500).json({ message: error });
-        }
+  async getAllTimelineEvents(req: Request, res: Response): Promise<void> {
+    try {
+      const timelineEvents: TimelineEventDto =
+        await timelineEventService.getAllTimelineEvents();
+      if (timelineEvents === null) {
+        res
+          .status(404)
+          .json({ message: "No timeline events found.", error: true });
+        return;
+      }
+      res.status(200).json(timelineEvents);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
     }
+  }
 
-    async addTimelineEvent(req: Request, res: Response): Promise<void> {
-        try {
-            const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
-            if (_timelineEvent instanceof Error) {
-                res.status(500).json({ message: _timelineEvent });
-                console.log("from try")
-            }
-            else res.status(201).json(_timelineEvent);
-            console.log("from try")
-        } catch (error: any) {
-            console.log("from catch")
-
-            res.status(500).json({ message: error.message });
-        }
+  async addTimelineEvent(req: Request, res: Response): Promise<void> {
+      try {          
+      const timelineEventData: TimelineEventDto = await timelineEventService.addTimelineEvent(req.body);
+      res.status(201).json(timelineEventData);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
     }
+  }
 
-    async deleteTimelineEvent(req: Request, res: Response): Promise<void> {
-        try {
-            const _timelineEvent:ITimelineEvent|null = await timelineEventService.deleteTimelineEvent(req.params.id);
-            if (_timelineEvent instanceof Error || _timelineEvent===null ) {
-                res.status(404).send({ message: constants.NOT_FOUND, error: true })
-            }
-            else {
-                res.status(200).send(_timelineEvent)
-            }
-        }
-        catch (error: any) {
-            res.status(500).send({ message: error, error: true })
-        }
+  async deleteTimelineEvent(req: Request, res: Response): Promise<void> {
+    try {
+      const timelineEventId: string = req.params.id;
+      const timelineEvent: TimelineEventDto =
+        await timelineEventService.deleteTimelineEvent(timelineEventId);
+      if (timelineEvent === null) {
+        res.status(404).json({ message: constants.NOT_FOUND, error: true });
+      } else {
+        res.status(200).send(timelineEvent);
+      }
+    } catch (error: any) {
+      res.status(500).send({ message: error, error: true });
     }
-
+  }
 }

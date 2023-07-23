@@ -4,12 +4,12 @@ import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import incidentModel from "../models/IncidentModel";
 import incidentRepository from "../repositories/incidentRepository";
-import { Incident } from "../classValidator/incidentValidation";
+import { IncidentDto } from "../classValidator/incidentValidation";
 
 class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {
     try {
-      const incident = new Incident();
+      const incident = new IncidentDto(newIncident);
       Object.assign(incident, newIncident);
       const validationErrors = await validate(incident);
       if (validationErrors.length > 0) {
@@ -26,6 +26,7 @@ class IncidentService {
         incidentId: newIncident.id,
       });
       return await incidentRepository.addIncident(newIncident);
+      // return await incidentRepository.addIncident(incident);
     } catch (error: any) {
       logger.error({
         source: constants.INCIDENT_COTROLLER,

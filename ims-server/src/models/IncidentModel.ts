@@ -50,18 +50,18 @@ export const IncidentSchema = new Schema<IIncident>({
     required: true,
   },
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
   createdAt: {
-    type: Date,
+    type: String,
     required: true,
-    default: Date.now,
+    // default: Date.now,
   },
   updatedAt: {
-    type: Date,
+    type: String,
     required: true,
-    default: Date.now,
+    // default: Date.now,
   },
   cost: {
     type: Number,

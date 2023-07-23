@@ -6,7 +6,7 @@ export const TagSchema = new Schema<ITag>({
     type: String,
     required: true
   },
-  userId: {
+  id: {
     type: String,
     required: true
   }

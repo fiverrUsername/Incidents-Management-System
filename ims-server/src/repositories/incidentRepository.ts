@@ -3,14 +3,23 @@ import incidentModel from '../models/IncidentModel';
 
 class IncidentRepository {
 
-  async addIncident(newIncident: IIncident): Promise<void | any> {
+  // async addIncident(newIncident: IIncident): Promise<void | any> {
+  //   try {
+  //     await incidentModel.create(newIncident);
+  //   } catch (error:any) {
+  //     console.error(`error: ${error}`);
+  //     return error;
+  //   }
+  // }
+  async addIncident(newIncident: IIncident): Promise<IIncident | any> {
     try {
-      await incidentModel.create(newIncident);
-    } catch (error:any) {
+      return await incidentModel.create(newIncident);
+    } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
     }
   }
+  
 
   async updateIncident(id: String, data: typeof incidentModel): Promise<void | any> {
     try {

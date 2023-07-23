@@ -1,17 +1,17 @@
 import {
-  IsString,
   IsArray,
-  IsDate,
+  IsISO8601,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
-  ValidateNested,
-  IsNotEmpty,
-  IsISO8601,
+  IsString,
+  ValidateNested
 } from "class-validator";
-import { Tag } from "./tagValidation";
+import { IIncident } from "../interfaces/IncidentInterface";
+import { TagDto } from "./tagValidation";
 
-export class Incident {
-  constructor() {
+export class IncidentDto {
+  constructor(init: IIncident) {
     this.id = "";
     this.name = "";
     this.status = "";
@@ -20,10 +20,11 @@ export class Incident {
     this.type = "";
     this.durationHours = 0;
     this.tags = [];
-    this.date = "2023-07-19T10:00:00Z";
-    this.createdAt = "2023-07-19T10:00:00Z";
-    this.updatedAt = "2023-07-19T10:00:00Z";
+    this.date = "";
+    this.createdAt = "";
+    this.updatedAt = "";
     this.cost = 0;
+    Object.assign(this, init);
   }
   @IsNotEmpty({ message: "id is empty" })
   @IsString({ message: "invalid id" })
@@ -61,7 +62,7 @@ export class Incident {
   @IsNotEmpty({ message: "tags is empty" })
   @IsArray({ message: "is not an array" })
   @ValidateNested({ each: true })
-  tags: Tag[];
+  tags: TagDto[];
 
   @IsNotEmpty({ message: "date is empty" })
   @IsISO8601()
