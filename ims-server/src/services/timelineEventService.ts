@@ -1,11 +1,7 @@
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
-import timelineEvent from "../models/timelineEvent";
 import timelineEventRepository from "../repositories/timelineEventRepository";
-import fs from 'fs';
-import path from 'path';
-import axios from 'axios';
 
 
 class TimelineEventService {
