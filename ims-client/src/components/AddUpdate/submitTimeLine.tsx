@@ -14,7 +14,7 @@ interface Props {
 export default async function submitTimeLine(props: Props) {
 
   const timeLineEvent:ITimeLineEvent= {
-    incidentId: props.incident.id | "7",
+    incidentId: props.incident._id,
     userId: "698cbeda854a5d4d8bcf303l",
     description: props.data.text,
     priority: props.data.priority,

@@ -8,7 +8,7 @@ export default interface ITimeLineEvent  {
   priority:string,
   type:string,
   tags:ITag[],
-  files:string,
+  files:string[],
   createdDate: dayjs.Dayjs,
   updatedDate:Date
 }
