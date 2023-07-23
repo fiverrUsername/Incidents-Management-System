@@ -29,5 +29,24 @@ class TimelineEventRepository {
       return error;
     }
   }
+
+  async updateTimelineEvent(id:string,newTimelineEvent:ITimelineEvent):Promise<void|any>{
+    try {
+      await timelineEvent.findByIdAndUpdate(id,newTimelineEvent);
+    } catch (error:any) {
+      console.error(`error: ${error}`);
+      return error;
+    }
+  }
+
+  async getTimelineEventById(id: String): Promise<ITimelineEvent | any> {
+    try {
+      return await timelineEvent.findById(id);
+    } catch (error:any) {
+      console.error(`error: ${error}`);
+      return error;
+    }
+  }
+
 }
 export default new TimelineEventRepository();
