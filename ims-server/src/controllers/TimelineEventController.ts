@@ -77,7 +77,7 @@ export default class TimelineEventController {
         }
     }
 
-    async getTimelineEventById(req: Request, res: Response): Promise<void> {
+    async getTimelineEventById(req: Request, res: Response): Promise<void> {        
         try {
             const _timelineEvent: ITimelineEvent | null = await timelineEventService.getTimelineEventById(req.params.id);
             if (_timelineEvent instanceof Error || _timelineEvent === null) {
@@ -127,5 +127,4 @@ export default class TimelineEventController {
             return res.status(500).json({ message: error });
         }
     }
-
 }
