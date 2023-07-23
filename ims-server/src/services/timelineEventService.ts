@@ -18,6 +18,18 @@ class TimelineEventService {
     }
   }
 
+  async getTimelineEventsById(id: string): Promise<ITimelineEvent[] | any> {
+    try {
+      logger.info({ source: constants.TIMELINE_EVENT, msg: constants.METHOD.GET, success: true });
+      const timelineEvent = await timelineEventRepository.getTimelineEventsById(id);
+      return timelineEvent;
+    } catch (error:any) {
+      logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.GET, err: true });
+      console.error(`error: ${error}`);
+      return error;
+    }
+  }
+
   async addTimelineEvent(newTimelineEvent: ITimelineEvent): Promise<void | any> {
     try {
       logger.info({ sourece: constants.TIMELINE_EVENT, method: constants.METHOD.POST, timelineEventId: newTimelineEvent._id });

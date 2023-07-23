@@ -6,28 +6,24 @@ import { WithIdProps } from "../../HOC";
 import AddUpdateComp from "../../components/AddUpdate/AddUpdateComp"
 import DisplaySummary from "../../components/summary/displaySummary";
 import apiCalls from "../../service/apiCalls";
-import { Incident, TimelineEvent } from "./modules/interface";
+import { TimelineEvent } from "./modules/interface";
 import { ISummary } from "../../interface/ISummary";
 import IIncident from "../../interface/incidentInterface";
 import { Grid, Typography } from "@mui/material";
-
-
-
-
-
+import users from '../../mockAPI/users.json';
 
 const TimeLinePage = ({ _id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<TimelineEvent[]>([]);
   const [summaryIncident, setSummaryIncident] = useState<ISummary>();
   const [incident, setIncident] = useState<IIncident>();
   //const [user,setUser]=useState();
-  //const user = users.find((t) => t.userId === _id);
+  // const user = users.find((u) => u._id === incident?.createdBy);
   //when the functions in server are done
   useEffect(() => {
     const FetchTimeline = async () => {
-      const getTimeLineEvents = await apiCalls.getTimeLineEvents()
-      console.log(getTimeLineEvents, "getTimeLineEvents");
-      setTimelineObjects(getTimeLineEvents);
+      const getTimeLineEventsById = await apiCalls.getTimeLineEventsById(_id)
+      console.log(getTimeLineEventsById, "getTimeLineEventsById");
+      setTimelineObjects(getTimeLineEventsById);
     };
     FetchTimeline();
     const FetchSummaryIncident = async () => {
@@ -36,12 +32,12 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
       setSummaryIncident(summary)
     }
     FetchSummaryIncident();
-    const FetchInsident = async () => {
+    const FetchIncident = async () => {
       const getIncidentById = await apiCalls.getIncidentById(_id);
       console.log(getIncidentById);
       setIncident(getIncidentById);
     };
-    FetchInsident();
+    FetchIncident();
     //   const FetchUser = async () => {
     //     const getUserById = await apiCalls.getUserById(_id);
     //     console.log(getUserById,"getUserById");
@@ -50,26 +46,23 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
     //   FetchUser();
   }, [_id]);
 
-  const filterTimeLineBySearch=(array: TimelineEvent[], filterString: string):TimelineEvent[]=>{
+  const filterTimeLineBySearch = (array: TimelineEvent[], filterString: string): TimelineEvent[] => {
     return array.filter((item) => {
- 
+
       for (const key in item) {
-    
-          if ((key!='createdAt')&&(String(item[key as keyof TimelineEvent]).toLowerCase()).includes(filterString.toLowerCase())) {
-              console.log(key)
-              return true;
-          }
-          if ((key=='userId')&&(String(item[key as keyof TimelineEvent]).toLowerCase()).includes(filterString.toLowerCase())) {
-            console.log(key)
-            return true;
+
+        if ((key != 'createdAt') && (String(item[key as keyof TimelineEvent]).toLowerCase()).includes(filterString.toLowerCase())) {
+          console.log(key)
+          return true;
         }
-      }        
+        if ((key == 'userId') && (String(item[key as keyof TimelineEvent]).toLowerCase()).includes(filterString.toLowerCase())) {
+          console.log(key)
+          return true;
+        }
+      }
       return false;
-  });
-}
-
-
- 
+    });
+  }
 
   const someFunction = () => {
     filter = filterTimeLineBySearch(timelineObjects, myValue);
@@ -77,8 +70,8 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
   };
 
   const [myValue, setMyValue] = useState<string>("");
-  let filter:TimelineEvent[] = []
-   someFunction()
+  let filter: TimelineEvent[] = []
+  someFunction()
 
   return (
     <>
@@ -88,7 +81,7 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
       <StyledPaper>
         <Grid container direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="nowrap">
           <Typography variant='bold'>Consectetur massa</Typography>
-          {incident && <AddUpdateComp incident={{...incident }} />}
+          {incident && <AddUpdateComp incident={{ ...incident }} />}
         </Grid>
         {timelineObjects && (
           <CustomScrollbar>

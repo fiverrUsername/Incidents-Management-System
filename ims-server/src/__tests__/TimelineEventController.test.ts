@@ -74,7 +74,7 @@ describe("timeline events", () => {
             });
         });
     })
-    describe("get a timeline event by ID", () => {
+    describe("get timeline event by ID", () => {
         describe("succeed", () => {
             it("should return data", async () => {
                 const id = "f1ffdef3-4f15-45c9-840b-4099c63772ff"
@@ -85,7 +85,7 @@ describe("timeline events", () => {
         describe("error", () => {
             it("should return 404", async () => {
                 const id = "987654";
-                jest.spyOn(timelineEvent, 'findById').mockRejectedValueOnce(new Error());
+                jest.spyOn(timelineEvent, 'find').mockRejectedValueOnce(new Error());
                 const res = await supertest(app).get(`/timelineEvent/getById/${id}`);
                 expect(res.status).toBe(404);
             });

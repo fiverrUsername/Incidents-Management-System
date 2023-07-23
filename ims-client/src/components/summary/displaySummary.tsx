@@ -11,7 +11,7 @@ interface propsDisplaySummary {
     summaryIncident: ISummary
 }
 const DisplaySummary = ({ summaryIncident }: propsDisplaySummary) => {
-    // const formattedDate = summaryIncident.createdAt.toLocaleDateString('en-GB');
+    
     const date = dayjs(summaryIncident.createdAt).format("DD/MM/YYYY")
     return (
         <StyledPaper>
