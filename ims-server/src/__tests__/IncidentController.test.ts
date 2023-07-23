@@ -1,7 +1,5 @@
-import IncidenceController from '../controllers/IncidentController';
 import app from '../app';
 import supertest from 'supertest';
-import { json } from 'express';
 import IncidentModel from '../models/IncidentModel';
 
 describe("incidents", () => {
@@ -59,7 +57,8 @@ describe("incidents", () => {
                     date: "2023-07-29T10:30:00.000Z",
                     createdAt: "2023-07-05T10:30:00.000Z",
                     updatedAt: "2023-08-15T10:30:00.000Z",
-                    cost: 800
+                    cost: 800,
+                    createdBy:"ploni"
                 }
                 const res = await supertest(app)
                     .post("/incident/addIncident")

@@ -23,8 +23,7 @@ class IncidentService {
       }
       logger.info({
         sourece: constants.INCIDENT_COTROLLER,
-        msg: constants.ADD_INCIDENT_SUCCESS,
-        incidentId: newIncident.id,
+        msg: constants.ADD_INCIDENT_SUCCESS
       });
       return await incidentRepository.addIncident(newIncident);
     } catch (error: any) {

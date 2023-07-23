@@ -26,7 +26,7 @@ export interface FormData {
   date: dayjs.Dayjs;
   type: string;
   tags: ITag[];
-  files: File[];
+  files: string[];
 
 }
 interface Props {
@@ -42,17 +42,18 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
-  const [type, setType] = React.useState('');
+  const [type, setType] = React.useState(incident.type);
   const [tags, setTags] = useState<ITag[]>([]);
   const [files, setFiles] = useState<File[]>([]);
+  const [filesS, setFilesS] = useState<string[]>([]);
+  const [text, setText] = useState<string>();
   const [selectedTags, setSelectedTags] = useState<ITag[]>(incident.tags);
 
 
 
-
-  // String(priorityProp)
-
   function onSubmit(data: FormData) {
+    console.log(data);
+    console.log(files);
     setIsSubmit(true);
     if (priority != null)
       data.priority = priority
@@ -60,8 +61,9 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       data.date = dayjs();
     else
       data.date = date;
-    data.type = type
-    data.tags = selectedTags
+    data.type = type;
+    data.tags = selectedTags;
+    data.files=filesS;
     if (type && tags) {
       submitTimeLine({ data, incident })
       setShowBanner(true);
@@ -93,6 +95,8 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   };
 
   useEffect(() => {
+    console.log("incident*******************");
+    console.log(incident);
     const FetchData = async () => {
       const getAllTags = await apiCalls.getTags();
       setTags(getAllTags);
@@ -100,10 +104,6 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
     FetchData();
     setPriority(String(priorityProp.toLowerCase()));
   }, []);
-
-
-
-
 
 
   return (
