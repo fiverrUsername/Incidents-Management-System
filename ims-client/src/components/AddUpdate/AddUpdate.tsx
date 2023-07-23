@@ -42,19 +42,14 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
-  const [type, setType] = React.useState('');
+  const [type, setType] = React.useState(incident.type);
   const [tags, setTags] = useState<ITag[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [filesS, setFilesS] = useState<string[]>([]);
-
   const [text, setText] = useState<string>();
-
   const [selectedTags, setSelectedTags] = useState<ITag[]>(incident.tags);
 
 
-
-
-  // String(priorityProp)
 
   function onSubmit(data: FormData) {
     console.log(data);
@@ -100,6 +95,8 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   };
 
   useEffect(() => {
+    console.log("incident*******************");
+    console.log(incident);
     const FetchData = async () => {
       const getAllTags = await apiCalls.getTags();
       setTags(getAllTags);
@@ -107,10 +104,6 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
     FetchData();
     setPriority(String(priorityProp.toLowerCase()));
   }, []);
-
-
-
-
 
 
   return (
