@@ -40,5 +40,6 @@ class IncidentRepository {
       return error;
     }
   }
+  
 }
 export default new IncidentRepository();
