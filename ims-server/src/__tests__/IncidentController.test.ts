@@ -165,4 +165,21 @@ describe("incidents", () => {
             })
         })
     })
+    describe("get summary incident",()=>{
+        describe("succed",()=>{
+            it("should return data",async()=>{
+                const id="649cbeda942a5d4d8bcf3044"
+                const res=await supertest(app).get(`/incident/${id}`);
+                expect(res.status).toBe(200);
+            })
+        })
+        describe("error",()=>{
+            it("should return 404", async()=>{
+                jest.spyOn(IncidentModel, 'findById').mockRejectedValueOnce(new Error());
+                const id="5555";
+                const res=(await supertest(app).get(`/incident/${id}`));
+                expect(res.status).toBe(404);
+            })
+        })
+    })
 })
