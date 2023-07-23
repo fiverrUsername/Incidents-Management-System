@@ -19,9 +19,9 @@ export default class TimelineEventController {
 
     async getTimelineEventsById(req: Request, res: Response): Promise<void> {
         try {
-            const timelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventsById(req.params.incidentId);
+            const timelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventsById(req.params.id);
             if (timelineEvents instanceof Error) {
-                res.status(404).json({ message: timelineEvent, error: true });
+                res.status(404).json({ message: timelineEvents, error: true });
             }
             else res.status(200).json(timelineEvents);
         } catch (error: any) {

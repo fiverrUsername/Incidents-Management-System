@@ -5,7 +5,7 @@ const router = express.Router()
 const timelineEventController = new TimelineEventController()
 
 router.get('/', timelineEventController.getAllTimelineEvents);
-router.get('/:incidentId', timelineEventController.getTimelineEventsById);
+router.get('/getById/:id', timelineEventController.getTimelineEventsById);
 router.post('/', timelineEventController.addTimelineEvent);
 router.delete('/:id',timelineEventController.deleteTimelineEvent);
 
