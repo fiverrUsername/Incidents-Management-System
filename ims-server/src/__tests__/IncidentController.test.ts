@@ -1,7 +1,5 @@
-import IncidenceController from '../controllers/IncidentController';
 import app from '../app';
 import supertest from 'supertest';
-import { json } from 'express';
 import IncidentModel from '../models/IncidentModel';
 
 describe("incidents", () => {
