@@ -60,19 +60,50 @@
 // // Call the function to create a new channel
 // createChannel();
 //++++++++++++++
-const axios = require('axios');
-// The Slack webhook URL -
-const webhookUrl = 'https://hooks.slack.com/services/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';
-// Function to send a message to Slack
-async function sendMessageToSlack(message) {
-  try {
-    await axios.post(webhookUrl, { text: message });
-  } catch (error) {
-    console.error('Error sending message to Slack:', error.message);
-  }
-}
-// Send a test message to Slack
-sendMessageToSlack('This is the slack group Bot - Hello everyone!');
+// const axios = require('axios');
+// // The Slack webhook URL -
+// const webhookUrl = 'https://hooks.slack.com/services/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';
+// // Function to send a message to Slack
+// async function sendMessageToSlack(message) {
+//   try {
+//     await axios.post(webhookUrl, { text: message });
+//   } catch (error) {
+//     console.error('Error sending message to Slack:', error.message);
+//   }
+// }
+// // Send a test message to Slack
+// sendMessageToSlack('This is the slack group Bot - Hello everyone!');
+
+//++++++++++++++++++++++++++=
+// //Create a nnew channel
+// const { WebClient } = require('@slack/web-api');
+
+// // Replace 'YOUR_SLACK_API_TOKEN' with your actual Slack API token
+// const slackApiToken = 'xoxe.xoxp-1-Mi0yLTU2MDY2MjY5MjQ3NTctNTYwOTU1ODIzNjI3NC01NTk2ODA2MzM0Njc5LTU2NDY4Mzg2NDc1ODQtMTlhMzUzN2M0MzlhNjNkYjA5ZjAyZGY4N2JjZDQzOTRkMGU0ZGFjMmRiMWJkMmEyNTIwMGNhZGYwODE1MmRiMg';
+// const web = new WebClient(slackApiToken);
+
+// async function createChannel(channelName, isPrivate = false) {
+//   try {
+//     const result = await web.conversations.create({
+//       name: channelName,
+//       is_private: isPrivate,
+//     });
+
+//     console.log('New channel created:', result.channel);
+//     return result.channel.id;
+//   } catch (error) {
+//     console.error('Error creating channel:', error);
+//     return null;
+//   }
+// }
+
+// // Replace 'CHANNEL_NAME' with the desired name for your new channel
+// // Set the second argument to true if you want to create a private channel
+// const channelName = 'CHANNEL_1';
+// const channelId = createChannel(channelName, false); // Change the second argument to true for private channel
+
+// // The channel ID will be printed once the channel is created
+// console.log('Channel ID:', channelId);
 
 
 
