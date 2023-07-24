@@ -13,13 +13,13 @@ export interface ITimelineEventListprops {
 
 
 export interface TimelineEvent {
-    _id: string;
+    _id?: string;
     incidentId: string;
     userId: string;
     description: string;
     priority: string;
     type: string,
-    files: string[];
+    files?: string[];
     createdDate: string;
     updatedDate: string;
 }

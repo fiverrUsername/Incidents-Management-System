@@ -77,8 +77,19 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
   };
 
   const [myValue, setMyValue] = useState<string>("");
-  let filter:TimelineEvent[] = []
-   someFunction()
+  
+  const firstTimeLine:TimelineEvent={
+    incidentId: '649cbeda942a5d4d8bcf3044',
+    userId: 'ffc',
+    description: "dfddujdgd",
+    priority: 'p0',
+    type: 'secureity',
+    createdDate: '01-01-2023',
+    updatedDate: '02-01-2023'
+}
+
+let filter:TimelineEvent[] = [firstTimeLine]
+   //someFunction()
 
   return (
     <>

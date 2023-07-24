@@ -1,5 +1,7 @@
 import React from 'react'
 import IIncident from '../../interface/incidentInterface'
+import ITimeLineEvent from '../../interface/timeLineInterface'
+import { TimelineEvent } from '../../pages/timeLine/modules/interface'
 import apiCalls from '../../service/apiCalls'
 import { FormData } from '../AddIncident/addIncident'
 
