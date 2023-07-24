@@ -118,9 +118,9 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
                 <label htmlFor="text">Text</label>
                 <TextFieldInput placeholder="your update..." multiline rows={3}
                   size="medium"
-                  {...register("text", {
-                    required: "text is required",
-                  })} 
+                  // {...register("text", {
+                  //   required: "text is required",
+                  // })} 
                   />
 
                 {errors.text && <span style={{ color: errorColor }}>{errors.text.message}</span>}
@@ -134,7 +134,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
-                  <ToggleButtons setPriority={setPriority} priority={priority} />
+                  {/* <ToggleButtons setPriority={setPriority} priority={priority} /> */}
                 </div>
               </FormControl>
             </Grid>
