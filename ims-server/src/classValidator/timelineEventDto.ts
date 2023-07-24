@@ -6,6 +6,7 @@ import {
   ValidateNested,
 } from "class-validator";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
+import { constants } from "../loggers/constants";
 
 export class TimelineEventDto {
   constructor(init: ITimelineEvent) {
@@ -20,40 +21,41 @@ export class TimelineEventDto {
     this.updatedDate = "";
     Object.assign(this, init);
   }
-  @IsNotEmpty({ message: "id is empty" })
-  @IsString({ message: "invalid id" }) 
+
+  @IsNotEmpty({ message: `id ${constants.EMPTY_OBJECT}` })
+  @IsString({ message: `id ${constants.INVALID_MESSAGE}` })
   _id: string;
 
-  @IsNotEmpty({ message: "incidentId is empty" })
-  @IsString({ message: "invalid incidentId" })
+  @IsNotEmpty({ message: `incidentId ${constants.EMPTY_OBJECT}` })
+  @IsString({ message: `incidentId ${constants.INVALID_MESSAGE}` })
   incidentId: string;
 
-  @IsNotEmpty({ message: "userId is empty" })
-  @IsString({ message: "invalid userId" })
+  @IsNotEmpty({ message: `userId ${constants.EMPTY_OBJECT}` })
+  @IsString({ message: `userId ${constants.INVALID_MESSAGE}` })
   userId: string;
 
-  @IsNotEmpty({ message: "description is empty" })
-  @IsString({ message: "invalid description" })
+  @IsNotEmpty({ message: `description ${constants.EMPTY_OBJECT}` })
+  @IsString({ message: `description ${constants.INVALID_MESSAGE}` })
   description: string;
 
-  @IsNotEmpty({ message: "priority is empty" })
-  @IsString({ message: "invalid priority" })
+  @IsNotEmpty({ message: `priority ${constants.EMPTY_OBJECT}` })
+  @IsString({ message: `priority ${constants.INVALID_MESSAGE}` })
   priority: string;
 
-  @IsNotEmpty({ message: "type is empty" })
-  @IsString({ message: "invalid type" })
+  @IsNotEmpty({ message: `type ${constants.EMPTY_OBJECT}` })
+  @IsString({ message: `type ${constants.INVALID_MESSAGE}` })
   type: string;
 
-  @IsNotEmpty({ message: "files are empty" })
+  @IsNotEmpty({ message: `files ${constants.EMPTY_OBJECT}` })
   @IsArray({ message: "is not an array" })
   @ValidateNested({ each: true })
   files: string[];
 
-  @IsNotEmpty({ message: "createdDate is empty" })
+  @IsNotEmpty({ message: `createdDate ${constants.EMPTY_OBJECT}` })
   @IsISO8601()
   createdDate: string;
 
-  @IsNotEmpty({ message: "updatedDate is empty" })
+  @IsNotEmpty({ message: `updatedDate ${constants.EMPTY_OBJECT}` })
   @IsISO8601()
   updatedDate: string;
 }
