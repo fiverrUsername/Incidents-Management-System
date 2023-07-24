@@ -2,6 +2,7 @@ import app from '../app';
 import supertest from 'supertest';
 import timelineEvent from '../models/timelineEvent';
 import timelineEventService from '../services/timelineEventService';
+import timelineEventRepository from '../repositories/timelineEventRepository';
 
 describe("timeline events", () => {
     describe("get all timeline events", () => {
@@ -118,13 +119,19 @@ describe("timeline events", () => {
             })
         })
         describe("error", () => {
-            it("should return 404 if file or timeline event is not found", async () => {
-                const id = "f1ffdef3-4f15-45c9-840b-4099c63772ff";
-                const index="1";
-                jest.spyOn(timelineEventService, 'getTimelineEventById').mockResolvedValueOnce(new Error());
+            it("should return 404 if timeline event id is not found", async () => {
+                const id = "000";
+                const index="0";
                 const res = await supertest(app)
                     .get(`/timelineEvent/getFile/${id}?index=${index}`);
                 expect(res.status).toBe(404);
+            })
+            it("should return 400 if file is not found", async () => {
+                const id = "f1ffdef3-4f15-45c9-840b-4099c63772ff";
+                const index="8";
+                const res = await supertest(app)
+                    .get(`/timelineEvent/getFile/${id}?index=${index}`);
+                expect(res.status).toBe(400);
             })
             it("should return 500 on error", async () => {
                 const id = "6d8815c8-989c-4ad5-8e36-587c5ff46cc6";
@@ -137,7 +144,7 @@ describe("timeline events", () => {
         })
     })
     describe("delete a file of a Timeline event by id and index", () => {
-        const mockTimelineEventId = "6d8815c8-989c-4ad5-8e36-587c5ff46cc6";
+        const mockTimelineEventId = "63bd7e7a-4a4d-441a-9321-7352232e29ad";
         describe("success",()=>{
             it("should delete a file from a timeline event and return 200", async () => {
                 const timelineEventWithFiles = {
@@ -145,23 +152,24 @@ describe("timeline events", () => {
                     "files": ["file1", "file2", "file3"]
                 };
                 jest.spyOn(timelineEventService, 'getTimelineEventById').mockResolvedValueOnce(timelineEventWithFiles);
-                jest.spyOn(timelineEventService, 'updateTimelineEvent').mockResolvedValueOnce(timelineEventWithFiles);
-                const deleteIndex = 1; 
+                jest.spyOn(timelineEventRepository, 'updateTimelineEvent').mockResolvedValueOnce(timelineEventWithFiles);
+                const deleteIndex = 0; 
                 const res = await supertest(app).delete(`/timelineEvent/deleteFile/${mockTimelineEventId}?index=${deleteIndex}`);
                 expect(res.status).toBe(200);
                 expect(res.body).toEqual(timelineEventWithFiles);
                 expect(timelineEventService.getTimelineEventById).toHaveBeenCalledWith(mockTimelineEventId);
-                expect(timelineEventService.updateTimelineEvent).toHaveBeenCalledWith(mockTimelineEventId, timelineEventWithFiles);
+                expect(timelineEventRepository.updateTimelineEvent).toHaveBeenCalledWith(mockTimelineEventId, timelineEventWithFiles);
             });
         })
         describe("error",()=>{
             it("should return 404 if timeline event is not found", async () => {
+                const id="000";
                 jest.spyOn(timelineEventService, 'getTimelineEventById').mockResolvedValueOnce(null);
                 const deleteIndex = 1; 
-                const res = await supertest(app).delete(`/timelineEvent/deleteFile/${mockTimelineEventId}?index=${deleteIndex}`);
+                const res = await supertest(app).delete(`/timelineEvent/deleteFile/${id}?index=${deleteIndex}`);
                 expect(res.status).toBe(404);
                 expect(timelineEventService.getTimelineEventById).toHaveBeenCalledWith(mockTimelineEventId);
-                expect(timelineEventService.updateTimelineEvent).not.toHaveBeenCalledWith(mockTimelineEventId);
+                expect(timelineEventRepository.updateTimelineEvent).not.toHaveBeenCalledWith(mockTimelineEventId);
             })
             it("should return 400 if index is not valid", async () => {
                 const timelineEventWithFiles = {
@@ -173,7 +181,7 @@ describe("timeline events", () => {
                 const res = await supertest(app).delete(`/timelineEvent/deleteFile/${mockTimelineEventId}?index=${deleteIndex}`);
                 expect(res.status).toBe(400);
                 expect(timelineEventService.getTimelineEventById).toHaveBeenCalledWith(mockTimelineEventId);
-                expect(timelineEventService.updateTimelineEvent).not.toHaveBeenCalledWith(mockTimelineEventId);
+                expect(timelineEventRepository.updateTimelineEvent).not.toHaveBeenCalledWith(mockTimelineEventId);
             })
             it("should return 500", async () => {
                 const timelineEventWithFiles = {
@@ -185,10 +193,8 @@ describe("timeline events", () => {
                 const res = await supertest(app).delete(`/timelineEvent/deleteFile/${mockTimelineEventId}?index=${deleteIndex}`);
                 expect(res.status).toBe(500);
                 expect(timelineEventService.getTimelineEventById).toHaveBeenCalledWith(mockTimelineEventId);
-                expect(timelineEventService.updateTimelineEvent).not.toHaveBeenCalledWith(mockTimelineEventId);
+                expect(timelineEventRepository.updateTimelineEvent).not.toHaveBeenCalledWith(mockTimelineEventId);
             })
         })
     })
 })
-
-
