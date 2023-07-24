@@ -5,11 +5,11 @@ export interface IIncident  extends Document{
     name: string;
     status: string;
     description: string;
-    priority: string;
+    currentPriority: string;
     type: string;
     durationHours: number;
     slackLink: string;
-    tags: { id: string, name: string }[];
+    currentTags: { id: string, name: string }[];
     date: Date;
     createdAt: Date;
     updatedAt: Date;
