@@ -36,7 +36,9 @@ export default function BannerNotification (props: BannerNotificationProps) {
       if (onClose) {
         onClose();
       }
-    }, 4000);
+      //TODO
+      //Check the duration time
+    }, 780);
     return () => clearTimeout(timer);
   }, [onClose]);
   return (

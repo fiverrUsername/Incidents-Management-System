@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {ITag} from './ITag';
 
 export default interface ITimeLineEvent  {
   incidentId: string,
@@ -6,7 +7,8 @@ export default interface ITimeLineEvent  {
   description: string,
   priority:string,
   type:string,
-  files:File[],
+  tags:ITag[],
+  files:string[],
   createdDate: dayjs.Dayjs,
   updatedDate:Date
 }

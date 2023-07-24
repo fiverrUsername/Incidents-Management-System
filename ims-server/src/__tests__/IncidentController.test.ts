@@ -1,7 +1,5 @@
-import IncidenceController from '../controllers/IncidentController';
 import app from '../app';
 import supertest from 'supertest';
-import { json } from 'express';
 import IncidentModel from '../models/IncidentModel';
 
 describe("incidents", () => {
@@ -59,7 +57,8 @@ describe("incidents", () => {
                     date: "2023-07-29T10:30:00.000Z",
                     createdAt: "2023-07-05T10:30:00.000Z",
                     updatedAt: "2023-08-15T10:30:00.000Z",
-                    cost: 800
+                    cost: 800,
+                    createdBy:"ploni"
                 }
                 const res = await supertest(app)
                     .post("/incident/addIncident")
@@ -162,6 +161,23 @@ describe("incidents", () => {
                     .put(`/incident/updateIncident/${id}`)
                     .send(updatedIncident);
                 expect(res.status).toBe(500);
+            })
+        })
+    })
+    describe("get summary incident",()=>{
+        describe("succed",()=>{
+            it("should return data",async()=>{
+                const id="649cbeda942a5d4d8bcf3044"
+                const res=await supertest(app).get(`/incident/${id}`);
+                expect(res.status).toBe(200);
+            })
+        })
+        describe("error",()=>{
+            it("should return 404", async()=>{
+                jest.spyOn(IncidentModel, 'findById').mockRejectedValueOnce(new Error());
+                const id="5555";
+                const res=(await supertest(app).get(`/incident/${id}`));
+                expect(res.status).toBe(404);
             })
         })
     })

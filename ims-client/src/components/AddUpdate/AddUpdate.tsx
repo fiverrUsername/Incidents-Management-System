@@ -15,7 +15,7 @@ import apiCalls from '../../service/apiCalls';
 import BannerNotification from "../bannerNotification/BannerNotification"
 import { text } from 'node:stream/consumers';
 import IIncident from '../../interface/incidentInterface';
-import TypesSelect, { Types } from './Types';
+import TypesSelect, { Types } from '../AddIncident/Types';
 import { ITag } from '../../interface/ITag';
 import { Tag } from 'styled-components/dist/sheet/types';
 import UploadFiles from '../uploadFiles/UploadFiles';
@@ -26,45 +26,48 @@ export interface FormData {
   date: dayjs.Dayjs;
   type: string;
   tags: ITag[];
-  files: File[];
+  files: string[];
 
 }
 interface Props {
   open: boolean;
-  onClose: () => void; 
+  onClose: () => void;
   incident: IIncident;
 }
 
 export default function AddUpdate({ open, onClose, incident }: Props) {
-  const priorityProp= incident.priority;
+  const priorityProp = incident.priority;
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>();
   const [priority, setPriority] = React.useState<string | null>();
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
-  const [type, setType] = React.useState('');
+  const [type, setType] = React.useState(incident.type);
   const [tags, setTags] = useState<ITag[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-  const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
+  const [filesS, setFilesS] = useState<string[]>([]);
+  const [text, setText] = useState<string>();
+  const [selectedTags, setSelectedTags] = useState<ITag[]>(incident.tags);
 
 
-
-
-  // String(priorityProp)
 
   function onSubmit(data: FormData) {
+    console.log(data);
+    console.log(files);
     setIsSubmit(true);
-    setShowBanner(true);
     if (priority != null)
       data.priority = priority
     if (date == null)
       data.date = dayjs();
     else
       data.date = date;
-      data.type = type
-    data.tags = selectedTags
-      submitTimeLine({data,incident})
-
+    data.type = type;
+    data.tags = selectedTags;
+    data.files=filesS;
+    if (type && tags) {
+      submitTimeLine({ data, incident })
+      setShowBanner(true);
+    }
   }
   const closeIconStyles: React.CSSProperties = {
     width: '17px',
@@ -92,12 +95,15 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   };
 
   useEffect(() => {
+    console.log("incident*******************");
+    console.log(incident);
     const FetchData = async () => {
       const getAllTags = await apiCalls.getTags();
-      setTags(getAllTags);}
-      setPriority(String(priorityProp.toLowerCase()));
+      setTags(getAllTags);
+    }
+    FetchData();
+    setPriority(String(priorityProp.toLowerCase()));
   }, []);
-
 
 
   return (
@@ -120,9 +126,9 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-            <label htmlFor="files">Files</label>
-          <UploadFiles files={files} setFiles={setFiles}/>
-          </Grid>
+              <label htmlFor="files">Files</label>
+              <UploadFiles files={files} setFiles={setFiles} />
+            </Grid>
             <Grid item xs={12}>
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
@@ -163,7 +169,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
               <Button type="submit" style={{ width: '100%' }} variant='contained'>Update</Button>
             </Grid>
           </Grid>
-         
+
         </form>
       </div>
       {showBanner && (

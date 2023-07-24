@@ -25,7 +25,6 @@ export interface FormData {
   type: string;
   tags: ITag[];
 }
-
 interface Props {
   open: boolean;
   onClose: () => void;
