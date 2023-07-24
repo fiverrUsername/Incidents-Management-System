@@ -25,8 +25,12 @@ const DisplaySummary = ({ summaryIncident }: propsDisplaySummary) => {
                 <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
                     <StyledBox>Current priority: <label style={{color:theme.palette.primary.dark ,fontSize:theme.typography.fontSize}}>{summaryIncident.currentPriority}</label></StyledBox>
                 </Grid>
+
                 <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
-                    <StyledBox>Affected services: {/* tags */} </StyledBox>
+                    
+                   {summaryIncident.tags&&<StyledBox>Affected services: {summaryIncident.tags.map((tag,index)=>{
+                        return  <span key={index}>{tag.name}</span>
+                    })}  </StyledBox>} 
                 </Grid>
             </Grid>
         </StyledPaper>

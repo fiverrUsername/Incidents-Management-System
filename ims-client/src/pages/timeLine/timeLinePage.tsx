@@ -34,7 +34,7 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
     FetchSummaryIncident();
     const FetchIncident = async () => {
       const getIncidentById = await apiCalls.getIncidentById(_id);
-      console.log(getIncidentById);
+      console.log(getIncidentById, "IncidentById");
       setIncident(getIncidentById);
     };
     FetchIncident();
