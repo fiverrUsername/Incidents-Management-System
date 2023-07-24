@@ -14,4 +14,5 @@ export default interface IIncident  {
     createdAt: Date;
     updatedAt: Date;
     cost: number;
+    createdBy:string;
   }

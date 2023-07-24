@@ -57,6 +57,5 @@ class TimelineEventRepository {
       return error;
     }
   }
-
 }
 export default new TimelineEventRepository();

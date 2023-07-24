@@ -24,7 +24,7 @@ export const IncidentSchema = new Schema<IIncident>({
     type: String,
     required: true,
   },
-  priority: {
+  currentPriority: {
     type: String,
     required: true,
   },
@@ -40,7 +40,7 @@ export const IncidentSchema = new Schema<IIncident>({
     type: String,
     required: true,
   },
-  tags: {
+  currentTags: {
     type: [
       {
         id: { type: String, required: true },
