@@ -3,8 +3,6 @@ import IIncident from '../../interface/incidentInterface'
 import apiCalls from '../../service/apiCalls'
 import { FormData } from '../AddUpdate/AddUpdate'
 import ITimeLineEvent from '../../interface/timeLineInterface'
-import { v4 as uuidv4 } from 'uuid';
-import { stringify } from 'querystring'
 
 interface Props {
   data: FormData;
@@ -12,7 +10,7 @@ interface Props {
 }
 
 export default async function submitTimeLine(props: Props) {
-
+  let flag: boolean;
   const timeLineEvent: ITimeLineEvent = {
     incidentId: props.incident.id,
     userId: "698cbeda854a5d4d8bcf303l",
@@ -26,8 +24,11 @@ export default async function submitTimeLine(props: Props) {
   }
   try {
     await apiCalls.addTimelineEvent(timeLineEvent);
+    flag = true;
   }
   catch (error) {
     console.log(error);
+    flag = false;
   }
+  return flag;
 }
