@@ -27,9 +27,8 @@ export class IncidentDto {
     this.cost = 0;
     Object.assign(this, init);
   }
-  // @IsNotEmpty({ message: "id is empty" })
+  
   @IsNotEmpty({ message: `id ${constants.EMPTY_OBJECT}` }) 
-  // @IsString({ message: "invalid id" })
   @IsString({ message: `id ${constants.INVALID_MESSAGE}` })
   id: string;
 
