@@ -218,6 +218,28 @@
                 }
             }
         },
+        "/timelineEvent/getById/{id}":{
+            "get": {
+                "tags": [
+                    "timelineEvent"
+                ],
+                "description": "Retrieve all timeline events for specific id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Timeline Events not found for given id"
+                    }
+                }
+            }
+        },
         "/timelineEvent/": {
             "post": {
                 "tags": [
@@ -265,31 +287,6 @@
                     },
                     "404": {
                         "description": "Timeline Events not found"
-                    }
-                }
-            }
-        },
-        "/timelineEvent/getById/{id}":{
-            "get": {
-                "tags": [
-                    "timelineEvent"
-                ],
-                "description": "get a timeline event by id",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation"
-                    },
-                    "404": {
-                        "description": "Timeline Event not found"
-                    },
-                    "500":{
-                        "description":"server error"
                     }
                 }
             }

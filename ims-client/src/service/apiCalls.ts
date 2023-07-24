@@ -11,7 +11,7 @@ const apiCalls = {
     getTags: () => axios.get(`http://127.0.0.1:7000/tag`).then(response => response.data),
     getIncidentById:(id:string)=>axios.get(`http://localhost:7000/incident/${id}`).then(response => response.data),
     getSummaryIncident:(id:string)=>axios.get(`http://localhost:7000/incident/summary/${id}`).then(response => response.data),
-    getTimeLineEvents:()=>axios.get(`http://localhost:7000/timelineEvent`).then(response => response.data),
+    getTimeLineEventsById:(id:string)=>axios.get(`http://localhost:7000/timelineEvent/getById/${id}`).then(response => response.data),
     getTimeLineForIncident:(id:string)=>axios.get(`http://localhost:7000/incident/${id}`).then(response => response.data),
     addTimelineEvent:(timeLineEvent: ITimelineEvent) => axios.post(`http://127.0.0.1:7000/timelineEvent`, timeLineEvent).then(response => response.data),
 }

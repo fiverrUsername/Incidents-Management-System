@@ -21,6 +21,16 @@ class TimelineEventRepository {
     }
   }
 
+  async getTimelineEventsById(id: string): Promise<ITimelineEvent[] | any> {
+    try {
+      return await timelineEvent.find({ incidentId: id });
+    } catch (error: any) {
+      console.error(`error: ${error}`);
+      return error;
+    }
+  }
+  
+
   async deleteTimelineEvent(id: String): Promise<ITimelineEvent | any> {
     try {
       return await timelineEvent.findByIdAndDelete(id);
@@ -47,6 +57,5 @@ class TimelineEventRepository {
       return error;
     }
   }
-
 }
 export default new TimelineEventRepository();
