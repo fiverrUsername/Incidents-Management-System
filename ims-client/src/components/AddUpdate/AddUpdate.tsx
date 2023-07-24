@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dialog, FormControl, InputLabel, Grid, Button } from "@mui/material";
+import { Dialog, FormControl, InputLabel, Grid, Button, AlertColor } from "@mui/material";
 import { useForm } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
 import DateTimePickerValue from '../datePicker/datePicker';
@@ -38,7 +38,7 @@ interface Props {
 export default function AddUpdate({ open, onClose, incident }: Props) {
   const priorityProp = incident.priority;
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>();
-  const [priority, setPriority] = React.useState<string | null>();
+  const [priority, setPriority] = React.useState<string | null>("");
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -46,14 +46,13 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   const [tags, setTags] = useState<ITag[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [filesS, setFilesS] = useState<string[]>([]);
+  const [severityValue, setSeverityValue] = useState<AlertColor>('error');
+  const [messageValue, setMessageValue] = useState<string>("");
   const [text, setText] = useState<string>();
+
   const [selectedTags, setSelectedTags] = useState<ITag[]>(incident.tags);
 
-
-
-  function onSubmit(data: FormData) {
-    console.log(data);
-    console.log(files);
+  async function onSubmit(data: FormData) {
     setIsSubmit(true);
     if (priority != null)
       data.priority = priority
@@ -63,9 +62,17 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       data.date = date;
     data.type = type;
     data.tags = selectedTags;
-    data.files=filesS;
+    data.files = filesS;
     if (type && tags) {
-      submitTimeLine({ data, incident })
+      const flag = await submitTimeLine({ data, incident });
+      if (flag) {
+        setSeverityValue('success');
+        setMessageValue('new update Added Successfully');
+      }
+      else {
+        setSeverityValue('error');
+        setMessageValue('failed to add update');
+      }
       setShowBanner(true);
     }
   }
@@ -95,16 +102,13 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   };
 
   useEffect(() => {
-    console.log("incident*******************");
-    console.log(incident);
-    const FetchData = async () => {
+    const getTags = async () => {
       const getAllTags = await apiCalls.getTags();
       setTags(getAllTags);
     }
-    FetchData();
+    getTags();
     setPriority(String(priorityProp.toLowerCase()));
   }, []);
-
 
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
@@ -120,9 +124,8 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
                   size="medium"
                   {...register("text", {
                     required: "text is required",
-                  })} 
-                  />
-
+                  })}
+                />
                 {errors.text && <span style={{ color: errorColor }}>{errors.text.message}</span>}
               </FormControl>
             </Grid>
@@ -162,19 +165,16 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
                 <div id="tags">
                   <CustomAutocomplete options={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
                 </div>
-                {/* {isSubmit && tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>} */}
-
               </FormControl>
             </Grid>
             <Grid item xs={12}>
               <Button type="submit" style={{ width: '100%' }} variant='contained'>Update</Button>
             </Grid>
           </Grid>
-
         </form>
       </div>
       {showBanner && (
-        <BannerNotification message="new update Added Successfully" severity="success" onClose={() => onClose()} />
+        <BannerNotification message={messageValue} severity={severityValue} onClose={() => onClose()} />
       )}
     </Dialog>
   );
