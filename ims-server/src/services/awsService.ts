@@ -2,6 +2,8 @@ import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import awsRepository from "../repositories/awsRepository";
+import { Response } from 'express';
+
 
 
 class AwsService {
@@ -18,27 +20,16 @@ class AwsService {
     }
   }
 
-  async getAllAttachmentByTimeline(filesKey:string[]): Promise<void | any> {
+  async getAllAttachmentByTimeline(filesKey:string[] ,res:Response): Promise<void | any> {
     try {
       logger.info({ source: constants.SHOW_FILES, msg: constants.METHOD.GET, success: true });
-      const  keys= await awsRepository.getAllAttachmentByTimeline(filesKey);
+      const  keys= await awsRepository.getAllAttachmentByTimeline(filesKey, res);
       return keys;
     } catch (error:any) {
       logger.error({ source: constants.SHOW_FILES, method: constants.METHOD.GET, err: true });
     }
   }    
 
-  async downloadAttachmentById(key: string):Promise<void|any>{
-    try {
-      logger.info({ source: constants.DOWNLOAD_FILE, msg: constants.METHOD.GET, success: true });
-      const file = await awsRepository.downloadAttachmentById(key)
-      return file;
-    } catch (error:any) {
-      logger.error({ source: constants.DOWNLOAD_FILE, method: constants.METHOD.GET, err: true });
-      console.error(`error: ${error}`);
-      return error;
-    }
-  }
 
   async deleteAttachmentById(key:string):Promise<void|any>{
     try {
