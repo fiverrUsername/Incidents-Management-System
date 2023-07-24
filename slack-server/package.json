@@ -1,8 +1,12 @@
 {
+  "scripts": {
+    "start": "nodemon src/app.ts"
+  },
   "devDependencies": {
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@slack/web-api": "^6.8.1"
+    "@slack/web-api": "^6.8.1",
+    "nodemon": "^3.0.1"
   }
 }

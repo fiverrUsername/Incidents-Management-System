@@ -33,6 +33,7 @@ export default class TimelineEventController {
     async addTimelineEvent(req: Request, res: Response): Promise<Response> {
         try {
             const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
+            
             console.log(_timelineEvent)
             if (_timelineEvent instanceof Error) {
                 return res.status(500).json({ message: _timelineEvent });
