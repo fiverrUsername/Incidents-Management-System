@@ -31,6 +31,8 @@ export const constants = {
   SHOW_FAILED: "SHOW_FILES_FAILED",
   INVALID_MESSAGE: "INVALID",
   EMPTY_OBJECT: "IS_EMPTY",
+  SUCCESS:'SUCCESS',
+  SERVER_ERROR:'SERVER_ERROR'
 };
 export const status = {
   SUCCESS: 200,
