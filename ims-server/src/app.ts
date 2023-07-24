@@ -29,7 +29,6 @@ app.use('/aggregation', aggregationRouter)
 app.use('/tag', tagRouter)
 app.use('/timelineEvent',timelineEventRouter)
 app.use('/aws', awsRouter)
-
 app.get('/', (req: Request, res: Response): void => {
   res.redirect('/swagger')
 });

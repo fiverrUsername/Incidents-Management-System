@@ -1,15 +1,14 @@
 import tagRepository from "../repositories/tagRepository";
 import { ITag } from "../interfaces/tagInterface";
-import { Tag } from "../classValidator/tagValidation";
+import { TagDto } from "../dto/tagDto";
 import { validate } from "class-validator";
 import logger from "../loggers/log";
 import { constants } from "../loggers/constants";
 
 class TagService {
-  async addTag(newTag: ITag): Promise<void> {
+  async addTag(newTag: ITag): Promise<void | any> {
     try {
-      const tag = new Tag();
-      Object.assign(tag, newTag);
+      const tag = new TagDto(newTag);
       const validationErrors = await validate(tag);
       if (validationErrors.length > 0) {
         logger.error({
@@ -19,6 +18,7 @@ class TagService {
         });
         throw new Error("Validation error");
       }
+      return await tagRepository.addTag(newTag);
     } catch (error) {
       console.error(`error: ${error}`);
       throw error;

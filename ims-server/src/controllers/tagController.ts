@@ -1,24 +1,28 @@
-import { type Request, type Response } from 'express'
-import TagSchema from '../models/tagModel'
-
+import { type Request, type Response } from "express";
+import { TagDto } from "../dto/tagDto";
+import tagService from "../services/tagService";
+import { status } from "../loggers/constants";
 export default class TagController {
-  public async addTag (req: Request, res: Response) {
+  async addTag(req: Request, res: Response): Promise<void> {
     try {
-      const tag = await TagSchema.create(req.body)
-      return res.status(200).json(tag)
-    } catch (error) {
-      return res.status(404).json({ message: error })
+      const tagData: TagDto = req.body;
+      const tag: TagDto = await tagService.addTag(tagData);
+      if (tag instanceof Error) {
+        res.status(status.SERVER_ERROR).json({ message: tag, error: true });
+      } else res.status(status.CREATED_SUCCESS).json(tag);
+    } catch (error: any) {
+      res.status(status.SERVER_ERROR).json({ message: error.message });
     }
   }
 
-  public async getAllTags (req: Request, res: Response) {
+  async getAllTags(req: Request, res: Response): Promise<void> {
     try {
-      const tags = await TagSchema.find()
-      return res.status(200).json(tags)
-    } catch (error) {
-      return res.status(404).json({ message: error })
+      const tags = await tagService.getAllTags();
+      if (tags instanceof Error) {
+        res.status(status.SERVER_ERROR).json({ message: tags, error: true });
+      } else res.status(status.CREATED_SUCCESS).json(tags);
+    } catch (error: any) {
+      res.status(status.SERVER_ERROR).json({ message: error });
     }
   }
-
 }
-
