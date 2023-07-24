@@ -1,9 +1,9 @@
-import express from 'express'
+import express from "express";
 
-import aggregation from '../controllers/AggregateController'
+import aggregation from "../controllers/AggregateController";
 
-const aggregationRouter = express.Router()
-const aggregationController = new aggregation()
+const aggregationRouter = express.Router();
+const aggregationController = new aggregation();
 
-aggregationRouter.get('/', aggregationController.incidentAggregation)
-export default aggregationRouter
+aggregationRouter.get("/", aggregationController.incidentAggregation);
+export default aggregationRouter;

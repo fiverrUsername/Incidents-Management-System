@@ -1,11 +1,10 @@
-import express from 'express'
-import TagController from '../controllers/tagController'
+import express from "express";
+import TagController from "../controllers/tagController";
 
-const router = express.Router()
-const tagController = new TagController()
+const router = express.Router();
+const tagController = new TagController();
 
-router.post('/', tagController.addTag)
-router.get('/', tagController.getAllTags)
+router.post("/", tagController.addTag);
+router.get("/", tagController.getAllTags);
 
-
-export default router
+export default router;
