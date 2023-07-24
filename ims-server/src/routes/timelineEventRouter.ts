@@ -12,5 +12,5 @@ router.get('/', timelineEventController.getAllTimelineEvents);
 router.get('/getById/:id', timelineEventController.getTimelineEventsById);
 router.get('/getFile/:id', timelineEventController.getFileInTimelineEventByIndex)
 router.delete('/deleteFile/:id', timelineEventController.deleteFileInTimelineEventByIndex)
-
+router.put('/updateTimeLineEvent/:id', timelineEventController.updateTimelineEvent);
 export default router;

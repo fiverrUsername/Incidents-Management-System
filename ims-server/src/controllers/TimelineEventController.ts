@@ -3,7 +3,6 @@ import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import { constants, status } from "../loggers/constants";
 import timelineEventService from "../services/timelineEventService";
 import logger from "../loggers/log";
-
 export default class TimelineEventController {
 
     async getAllTimelineEvents(req: Request, res: Response): Promise<void> {
