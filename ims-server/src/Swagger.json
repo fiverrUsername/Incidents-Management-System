@@ -97,6 +97,28 @@
                 }
             }
         },
+        "/incident/summary/{id}": {
+            "get": {
+                "tags": [
+                    "incident"
+                ],
+                "description": "Retrieve incident summary",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
+        },
         "/incident/addIncident": {
             "post": {
                 "tags": [
@@ -243,6 +265,97 @@
                     },
                     "404": {
                         "description": "Timeline Events not found"
+                    }
+                }
+            }
+        },
+        "/timelineEvent/getById/{id}":{
+            "get": {
+                "tags": [
+                    "timelineEvent"
+                ],
+                "description": "get a timeline event by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Timeline Event not found"
+                    },
+                    "500":{
+                        "description":"server error"
+                    }
+                }
+            }
+        },
+        "/timelineEvent/getFile/{id}": {
+            "get": {
+                "tags": [
+                    "timelineEvent"
+                ],
+                "description": "get a file of a timeline event by id and index",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path"
+                    },
+                    {
+                        "name":"index",
+                        "in":"query",
+                        "required":true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "not found"
+                    },
+                    "400":{
+                        "description":"BAD_REQUEST"
+                    },
+                    "500":{
+                        "description":"server error"
+                    }
+                }
+            }
+        },
+        "/timelineEvent/deleteFile/{id}": {
+            "delete": {
+                "tags": [
+                    "timelineEvent"
+                ],
+                "description": "delete a file of a timeline event by id and index",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path"
+                    },
+                    {
+                        "name":"index",
+                        "in":"query",
+                        "required":true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "not found"
+                    },
+                    "400":{
+                        "description":"BAD_REQUEST"
+                    },
+                    "500":{
+                        "description":"server error"
                     }
                 }
             }
