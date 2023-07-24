@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import { TimelineEventDto } from "../classValidator/timelineEventDto";
+import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import { constants } from "../loggers/constants";
-import { Request, Response, request, response } from 'express';
 import timelineEventService from "../services/timelineEventService";
 
 export default class TimelineEventController {
@@ -13,11 +12,12 @@ export default class TimelineEventController {
                 res.status(404).json({ message: timelineEvents, error: true });
             }
             else res.status(200).json(timelineEvents);
-        } catch (error: any) {
+        }
+        catch (error: any) {
             res.status(500).json({ message: error });
         }
     }
-  }
+
 
     async getTimelineEventsById(req: Request, res: Response): Promise<void> {
         try {
@@ -26,7 +26,8 @@ export default class TimelineEventController {
                 res.status(404).json({ message: timelineEvents, error: true });
             }
             else res.status(200).json(timelineEvents);
-        } catch (error: any) {
+        }
+        catch (error: any) {
             res.status(500).json({ message: error });
         }
     }
@@ -34,16 +35,16 @@ export default class TimelineEventController {
     async addTimelineEvent(req: Request, res: Response): Promise<Response> {
         try {
             const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
-            console.log(_timelineEvent )
+            console.log(_timelineEvent)
             if (_timelineEvent instanceof Error) {
-               return res.status(500).json({ message: _timelineEvent });
+                return res.status(500).json({ message: _timelineEvent });
             }
-           return res.status(201).json(_timelineEvent);
-        } catch (error: any) {
-           return res.status(500).json({ message: error.message });
+            return res.status(201).json(_timelineEvent);
+        }
+        catch (error: any) {
+            return res.status(500).json({ message: error.message });
         }
     }
-  }
 
     async deleteTimelineEvent(req: Request, res: Response): Promise<void> {
         try {
@@ -80,7 +81,7 @@ export default class TimelineEventController {
         }
     }
 
-    async getTimelineEventById(req: Request, res: Response): Promise<void> {        
+    async getTimelineEventById(req: Request, res: Response): Promise<void> {
         try {
             const _timelineEvent: ITimelineEvent | null = await timelineEventService.getTimelineEventById(req.params.id);
             if (_timelineEvent instanceof Error || _timelineEvent === null) {

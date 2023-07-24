@@ -1,8 +1,10 @@
-import { Request, Response } from "express";
-import { IncidentDto } from "../classValidator/incidentDto";
-import { constants } from "../loggers/constants";
-import incidentService from "../services/incidentService";
-import { ISummary } from "../interfaces/ISummary";
+import { Request, Response } from 'express';
+
+import { IIncident } from '../interfaces/IncidentInterface';
+import incidentService from '../services/incidentService';
+import { constants } from '../loggers/constants';
+import { ISummary } from '../interfaces/ISummary';
+import { IncidentDto } from '../dto/incidentDto';
 
 export default class IncidentController {
   async addIncident(req: Request, res: Response): Promise<void> {
