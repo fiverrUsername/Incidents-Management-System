@@ -1,4 +1,4 @@
-import { IncidentoptionalDto } from "../dto/incidentDto";
+import { IncidentDto } from "../dto/incidentDto";
 import { IIncident } from "../interfaces/IncidentInterface";
 import incidentModel from "../models/IncidentModel";
 
@@ -12,7 +12,7 @@ class IncidentRepository {
     }
   }
 
-  async updateIncident(id: String, data: IncidentoptionalDto): Promise<void | any> {
+  async updateIncident(id: String, data: IncidentDto): Promise<void | any> {
     try {
       return await incidentModel.findByIdAndUpdate(id, data);
     } catch (error: any) {
