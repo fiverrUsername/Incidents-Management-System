@@ -2,6 +2,7 @@ import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import { constants } from "../loggers/constants";
 import { Request, Response, request, response } from 'express';
 import timelineEventService from "../services/timelineEventService";
+import timelineEvent from "../models/timelineEvent";
 
 export default class TimelineEventController {
 
