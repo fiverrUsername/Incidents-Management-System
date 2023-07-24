@@ -1,82 +1,106 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import AddUpdate from './AddUpdate';
+import {render, screen, fireEvent  } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import AddUpdate, { FormData } from './AddUpdate';
+import apiCalls from '../../service/apiCalls';
+import IIncident from '../../interface/incidentInterface';
+
+describe('AddUpdate Component', () => {
+ // const onCloseMock = jest.fn();
+  //const mockIncident= await apiCalls.getIncidentById("8");
+  it('renders the component with given incident data', () => {
+    const inc:IIncident={
+      "id": "123456",
+      "name": "Unresolved Incident2",
+      "status": "Active",
+      "description": "Issue Description",
+      "priority": "P3",
+      "type": "technical",
+      "durationHours": 24,
+      "slackLink": "https://join.slack.com/t/fi-verr/shared_invite/zt-1xip09fur-ERWbAQen_A~dz5s42ltnvw",
+      "tags": [
+        {
+          "userId": "45sfeda992a5dd8bcf403m",
+          "name": "checkout"
+        }
+      ],
+      "date": new Date(),
+      "createdAt":new Date(),
+      "updatedAt": new Date(),
+      "cost": 900,
+      "createdBy":""
+    }
+    const f= () => {};
+    render(<AddUpdate open={true} onClose={f} incident={inc} />);
+  });
+});
+    // Assert that the component is rendered with the appropriate data
+    // expect(screen.getByText('Add Update')).toBeInTheDocument();
+    // expect(screen.getByLabelText('Text')).toBeInTheDocument();
+    // expect(screen.getByLabelText('Priority')).toBeInTheDocument();
+    // expect(screen.getByLabelText('Date (optional)')).toBeInTheDocument();
+    // expect(screen.getByLabelText('Type')).toBeInTheDocument();
+    // expect(screen.getByLabelText('Tags')).toBeInTheDocument();
+    // expect(screen.getByText('Update')).toBeInTheDocument();
 
 
-describe('Tabs', () => {
-    test('renders the component', () => {
-      render(<AddUpdate open={true} onClose={jest.fn()} incident={jest.fn()} />);
-    });
-})
+//   it('calls onClose when the close icon is clicked', () => {
+//     const incident = {
+//       priority: 'high',
+//       type: 'incident',
+//       tags: [{ id: 1, name: 'tag1' }, { id: 2, name: 'tag2' }],
+//     };
 
+//     render(
+//       <AddUpdate open={true} onClose={onCloseMock} incident={incident} />
+//     );
 
+//     // Simulate clicking on the close icon
+//     userEvent.click(screen.getByRole('button', { name: 'Close Icon' }));
 
+//     // Assert that the onClose function is called
+//     expect(onCloseMock).toHaveBeenCalledTimes(1);
+//   });
 
-// describe('AddUpdate component', () => {
-//     const onCloseMock = jest.fn();
+//   it('submits the form with the correct data when the Update button is clicked', () => {
+//     const incident = {
+//       priority: 'high',
+//       type: 'incident',
+//       tags: [{ id: 1, name: 'tag1' }, { id: 2, name: 'tag2' }],
+//     };
 
-//     beforeEach(() => {
-//         onCloseMock.mockClear();
+//     render(
+//       <AddUpdate open={true} onClose={onCloseMock} incident={incident} />
+//     );
+
+//     // Fill the form fields with some data
+//     userEvent.type(screen.getByLabelText('Text'), 'Sample text');
+//     userEvent.click(screen.getByLabelText('Priority'));
+//     userEvent.click(screen.getByText('High'));
+//     // Simulate selecting a date (if applicable)
+//     // userEvent.click(screen.getByLabelText('Date (optional)'));
+//     // userEvent.click(screen.getByText('Select'));
+//     // ... fill other form fields if needed ...
+
+//     // Simulate clicking the Update button
+//     userEvent.click(screen.getByText('Update'));
+
+//     // Assert that the form submission function is called with the correct data
+//     const expectedData: FormData = {
+//       text: 'Sample text',
+//       priority: 'high',
+//       date: null, // Set the expected date here if applicable
+//       type: 'incident',
+//       tags: [{ id: 1, name: 'tag1' }, { id: 2, name: 'tag2' }],
+//       files: [], // Set the expected files here if applicable
+//     };
+//     expect(submitTimeLine).toHaveBeenCalledWith({
+//       data: expectedData,
+//       incident,
 //     });
 
-    //   test('renders Add Incident title', () => {
-    //     render(<AddIncident open={true} onClose={onCloseMock} />);
-    //     const titleElement = screen.getByText(/Add Incident/i);
-    //     expect(titleElement).toBeInTheDocument();
-    //   });
-    
-
-    // test('renders the form fields', async () => {
-    //     const inc= await apiCalls.getIncidentById("106fb64d-81d2-4daa-9e95-b81ee4bd51d5");
-    //     render(<AddUpdate open={true} onClose={onCloseMock} incident={inc} />);
-    //     const textField = screen.getByLabelText(/Text/i);
-        // const priorityField = screen.getByLabelText(/Priority/i);
-        // const dateField = screen.getByLabelText(/Date \(optional\)/i);
-        // const typeField = screen.getByLabelText(/Type/i);
-        // const tagsField = screen.getByLabelText(/Tags/i);
-        // const filesField = screen.getByText(/Files/i);
-        // expect(textField).toBeInTheDocument();
-        // expect(priorityField).toBeInTheDocument();
-        // expect(dateField).toBeInTheDocument();
-        // expect(typeField).toBeInTheDocument();
-        // expect(tagsField).toBeInTheDocument();
-        // expect(filesField).toBeInTheDocument();
-    // });
-// })
-//   test('calls onClose function when close icon is clicked', () => {
-//     render(<AddIncident open={true} onClose={onCloseMock} />);
-//     const closeIcon = screen.getByLabelText(/Close/i);
-//     fireEvent.click(closeIcon);
-//     expect(onCloseMock).toHaveBeenCalledTimes(1);
+//     // Assert that the banner notification is displayed
+//     expect(
+//       screen.getByText('new update Added Successfully')
+//     ).toBeInTheDocument();
 //   });
-
-//   test('calls onSubmit function when the form is submitted', () => {
-//     render(<AddIncident open={true} onClose={onCloseMock} />);
-//     const addButton = screen.getByText(/Add/i);
-
-//     // Simulate form data
-//     const nameInput = screen.getByLabelText(/Incident Name/i);
-//     fireEvent.change(nameInput, { target: { value: 'Test Incident' } });
-
-//     const descriptionInput = screen.getByLabelText(/Description/i);
-//     fireEvent.change(descriptionInput, { target: { value: 'Test description' } });
-
-//     const priorityInput = screen.getByLabelText(/Priority/i);
-//     fireEvent.click(priorityInput);
-
-//     // ... Simulate filling in other form fields ...
-
-//     // Submit the form
-//     fireEvent.click(addButton);
-
-//     // Check if the onSubmit function is called with the correct form data
-//     expect(onCloseMock).toHaveBeenCalledTimes(1);
-//   });
-// });
-export { }
-
-
-
-
-
-
