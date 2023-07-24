@@ -69,7 +69,7 @@ class AwsRepository {
         });
       }));
     } catch (error) {
-      logger.info({ source: constants.DOWNLOAD_FILE_FAILED, msg: constants.METHOD.GET, error: true });
+      logger.info({ source: constants.SHOW_FAILED, msg: constants.METHOD.GET, error: true });
     }
   }
 

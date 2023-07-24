@@ -120,7 +120,8 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
                   size="medium"
                   {...register("text", {
                     required: "text is required",
-                  })} />
+                  })} 
+                  />
 
                 {errors.text && <span style={{ color: errorColor }}>{errors.text.message}</span>}
               </FormControl>

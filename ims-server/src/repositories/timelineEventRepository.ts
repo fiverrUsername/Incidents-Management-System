@@ -2,11 +2,12 @@ import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import timelineEvent from "../models/timelineEvent";
 
 class TimelineEventRepository {
-
-  async addTimelineEvent(newTimelineEvent: ITimelineEvent): Promise<void | any> {
+  async addTimelineEvent(
+    newTimelineEvent: ITimelineEvent
+  ): Promise<void | any> {
     try {
       await timelineEvent.create(newTimelineEvent);
-    } catch (error:any) {
+    } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
     }
@@ -15,7 +16,7 @@ class TimelineEventRepository {
   async getAllTimelineEvents(): Promise<ITimelineEvent[] | any> {
     try {
       return await timelineEvent.find();
-    } catch (error:any) {
+    } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
     }
@@ -34,7 +35,7 @@ class TimelineEventRepository {
   async deleteTimelineEvent(id: String): Promise<ITimelineEvent | any> {
     try {
       return await timelineEvent.findByIdAndDelete(id);
-    } catch (error:any) {
+    } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
     }
