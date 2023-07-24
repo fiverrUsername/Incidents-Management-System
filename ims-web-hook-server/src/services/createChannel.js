@@ -74,7 +74,7 @@ async function sendMessageToChannel(channelId, message) {
 }
 
 async function main() {
-  const channelName = 'channel_29';
+  const channelName = 'channel_30';
 
   //Todo- change the userIds list
   const userIds = ['U05HXKPD259'];
@@ -89,4 +89,9 @@ async function main() {
 }
 
 main();
+
+
+
+
+
 
