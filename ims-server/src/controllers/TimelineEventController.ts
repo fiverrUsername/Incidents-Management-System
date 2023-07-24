@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { TimelineEventDto } from "../classValidator/timelineEvent";
+import { TimelineEventDto } from "../classValidator/timelineEventDto";
 import { constants } from "../loggers/constants";
 import timelineEventService from "../services/timelineEventService";
 

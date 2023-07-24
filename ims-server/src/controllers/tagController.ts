@@ -1,5 +1,5 @@
 import { type Request, type Response } from "express";
-import { TagDto } from "../classValidator/tagValidation";
+import { TagDto } from "../classValidator/tagDto";
 import tagService from "../services/tagService";
 
 export default class TagController {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IncidentDto } from "../classValidator/incidentValidation";
+import { IncidentDto } from "../classValidator/incidentDto";
 import { constants } from "../loggers/constants";
 import incidentService from "../services/incidentService";
 

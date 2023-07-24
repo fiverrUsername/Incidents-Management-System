@@ -4,7 +4,7 @@ import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import incidentModel from "../models/IncidentModel";
 import incidentRepository from "../repositories/incidentRepository";
-import { IncidentDto } from "../classValidator/incidentValidation";
+import { IncidentDto } from "../classValidator/incidentDto";
 
 class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {

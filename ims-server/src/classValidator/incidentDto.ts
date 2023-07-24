@@ -8,7 +8,7 @@ import {
   ValidateNested,
 } from "class-validator";
 import { IIncident } from "../interfaces/IncidentInterface";
-import { TagDto } from "./tagValidation";
+import { TagDto } from "./tagDto";
 
 export class IncidentDto {
   constructor(init: IIncident) {
@@ -16,10 +16,10 @@ export class IncidentDto {
     this.name = "";
     this.status = "";
     this.description = "";
-    this.priority = "";
+    this.currentPriority = "";
     this.type = "";
     this.durationHours = 0;
-    this.tags = [];
+    this.currentTags = [];
     this.date = "";
     this.createdAt = "";
     this.updatedAt = "";
@@ -44,7 +44,7 @@ export class IncidentDto {
 
   @IsNotEmpty({ message: "priority is empty" })
   @IsString({ message: "invalid priority" })
-  priority: string;
+  currentPriority: string;
 
   @IsNotEmpty({ message: "type is empty" })
   @IsString({ message: "invalid type" })
@@ -62,7 +62,7 @@ export class IncidentDto {
   @IsNotEmpty({ message: "tags is empty" })
   @IsArray({ message: "is not an array" })
   @ValidateNested({ each: true })
-  tags: TagDto[];
+  currentTags: TagDto[];
 
   @IsNotEmpty({ message: "date is empty" })
   @IsISO8601()

@@ -21,7 +21,7 @@ export class TimelineEventDto {
     Object.assign(this, init);
   }
   @IsNotEmpty({ message: "id is empty" })
-  @IsString({ message: "invalid id" })
+  @IsString({ message: "invalid id" }) 
   _id: string;
 
   @IsNotEmpty({ message: "incidentId is empty" })

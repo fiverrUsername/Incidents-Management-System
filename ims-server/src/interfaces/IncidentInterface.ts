@@ -1,16 +1,16 @@
 import { ITag } from "./tagInterface";
 
-export interface IIncident extends Document {
+export interface IIncident {
   _id: string;
   id: string;
   name: string;
   status: string;
   description: string;
-  priority: string;
+  currentPriority: string;
   type: string;
   durationHours: number;
   slackLink?: string;
-  tags: ITag[];
+  currentTags: ITag[];
   date: string;
   createdAt: string;
   updatedAt: string;

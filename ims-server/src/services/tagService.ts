@@ -1,6 +1,6 @@
 import tagRepository from "../repositories/tagRepository";
 import { ITag } from "../interfaces/tagInterface";
-import { TagDto } from "../classValidator/tagValidation";
+import { TagDto } from "../classValidator/tagDto";
 import { validate } from "class-validator";
 import logger from "../loggers/log";
 import { constants } from "../loggers/constants";
