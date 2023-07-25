@@ -72,7 +72,6 @@ class AwsRepository {
       
       const allResponses: (AttachmentData | null)[] = await Promise.all(keys.map(
         (key) => this.getAllAttachmentByTimeline(key)));
-      console.log(`allResponses: ${allResponses}${allResponses[0]}-${allResponses[1]} ${allResponses[2]}`)
       logger.info({ source: constants.SHOW_SUCCESS, method: constants.METHOD.GET, err: true });
       return allResponses;
     } catch (error) {
