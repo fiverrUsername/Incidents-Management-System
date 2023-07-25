@@ -10,7 +10,7 @@ export interface IIncident {
   type: string;
   durationHours: number;
   channelId?:string;
-  slackLink: "string";
+  slackLink: string;
   channelName?: string;
   currentTags: ITag[];
   date: string;
