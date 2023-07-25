@@ -174,10 +174,10 @@
                     "200": {
                         "description": "successful operation"
                     },
-                    "422":{
-                        "description":"missing required fields"
+                    "422": {
+                        "description": "missing required fields"
                     },
-                    "404":{
+                    "404": {
                         "description": "incident not found"
                     },
                     "500": {
@@ -202,7 +202,7 @@
                 }
             }
         },
-        "/timelineEvent":{
+        "/timelineEvent": {
             "get": {
                 "tags": [
                     "timelineEvent"
@@ -218,7 +218,7 @@
                 }
             }
         },
-        "/timelineEvent/getById/{id}":{
+        "/timelineEvent/getById/{id}": {
             "get": {
                 "tags": [
                     "timelineEvent"
@@ -269,7 +269,7 @@
                 }
             }
         },
-        "/timelineEvent/{id}":{
+        "/timelineEvent/{id}": {
             "delete": {
                 "tags": [
                     "timelineEvent"
@@ -303,9 +303,9 @@
                         "in": "path"
                     },
                     {
-                        "name":"index",
-                        "in":"query",
-                        "required":true
+                        "name": "index",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -315,11 +315,11 @@
                     "404": {
                         "description": "not found"
                     },
-                    "400":{
-                        "description":"BAD_REQUEST"
+                    "400": {
+                        "description": "BAD_REQUEST"
                     },
-                    "500":{
-                        "description":"server error"
+                    "500": {
+                        "description": "server error"
                     }
                 }
             }
@@ -336,9 +336,9 @@
                         "in": "path"
                     },
                     {
-                        "name":"index",
-                        "in":"query",
-                        "required":true
+                        "name": "index",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -348,11 +348,11 @@
                     "404": {
                         "description": "not found"
                     },
-                    "400":{
-                        "description":"BAD_REQUEST"
+                    "400": {
+                        "description": "BAD_REQUEST"
                     },
-                    "500":{
-                        "description":"server error"
+                    "500": {
+                        "description": "server error"
                     }
                 }
             }
@@ -396,6 +396,9 @@
                             "type": "integer"
                         },
                         "caringTeam": {
+                            "type": "string"
+                        },
+                        "createdBy": {
                             "type": "string"
                         }
                     }

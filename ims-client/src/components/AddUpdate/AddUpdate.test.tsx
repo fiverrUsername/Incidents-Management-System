@@ -1,11 +1,11 @@
 import React from 'react';
 import {render, screen, fireEvent  } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import AddUpdate, { FormData } from './AddUpdate';
+import AddUpdate, { form_data } from './AddUpdate';
 import apiCalls from '../../service/apiCalls';
 import IIncident from '../../interface/incidentInterface';
 
-describe('AddUpdate Component', () => {
+fdescribe('AddUpdate Component', () => {
  // const onCloseMock = jest.fn();
   //const mockIncident= await apiCalls.getIncidentById("8");
   it('renders the component with given incident data', () => {
@@ -17,7 +17,9 @@ describe('AddUpdate Component', () => {
       "priority": "P3",
       "type": "technical",
       "durationHours": 24,
-      "slackLink": "https://join.slack.com/t/fi-verr/shared_invite/zt-1xip09fur-ERWbAQen_A~dz5s42ltnvw",
+      "channelId":"?",
+      "slackLink":"",
+      "channelName": "https://join.slack.com/t/fi-verr/shared_invite/zt-1xip09fur-ERWbAQen_A~dz5s42ltnvw",
       "tags": [
         {
           "userId": "45sfeda992a5dd8bcf403m",
@@ -32,6 +34,7 @@ describe('AddUpdate Component', () => {
     }
     const f= () => {};
     render(<AddUpdate open={true} onClose={f} incident={inc} />);
+
   });
 });
     // Assert that the component is rendered with the appropriate data

@@ -8,6 +8,6 @@ const awsController = new AwsController()
 
 awsRouter.get('/', awsController.getAllAttachmentByTimeline)
 awsRouter.post('/', upload.array('files'), awsController.uploadAttachment)
-awsRouter.delete('/:key', awsController.deleteAttachmentById)
+awsRouter.delete('/', awsController.deleteAttachmentById)
 
 export default awsRouter;

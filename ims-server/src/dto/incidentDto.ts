@@ -1,9 +1,11 @@
 import {
   IsArray,
   IsISO8601,
+  isNotEmpty,
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  isString,
   IsString,
   ValidateNested,
 } from "class-validator";
@@ -19,16 +21,18 @@ export class IncidentDto {
     this.description = "";
     this.currentPriority = "";
     this.type = "";
+    this.channelId ="";
     this.durationHours = 0;
     this.currentTags = [];
     this.date = "";
     this.createdAt = "";
     this.updatedAt = "";
     this.cost = 0;
+    this.createdBy = '';
     Object.assign(this, init);
   }
-  
-  @IsNotEmpty({ message: `id ${constants.EMPTY_OBJECT}` }) 
+
+  @IsNotEmpty({ message: `id ${constants.EMPTY_OBJECT}` })
   @IsString({ message: `id ${constants.INVALID_MESSAGE}` })
   id: string;
 
@@ -56,10 +60,21 @@ export class IncidentDto {
   @IsNumber()
   durationHours: number;
 
-  @IsNotEmpty({ message: `slackLink ${constants.EMPTY_OBJECT}` })
+  @IsNotEmpty({ message: `channelName ${constants.EMPTY_OBJECT}` })
+  @IsString({ message: `channelName ${constants.INVALID_MESSAGE}` })
+  @IsOptional({ message: `channelName ${constants.EMPTY_OBJECT}` })
+  channelName?: string;
+
+
   @IsString({ message: `slackLink ${constants.INVALID_MESSAGE}` })
   @IsOptional({ message: `slackLink ${constants.EMPTY_OBJECT}` })
   slackLink?: string;
+
+
+
+  @IsString({ message: `channelId ${constants.INVALID_MESSAGE}` })
+  @IsOptional({ message: `channelId ${constants.EMPTY_OBJECT}` })
+  channelId?: string;
 
   @IsNotEmpty({ message: `currentTags ${constants.EMPTY_OBJECT}` })
   @IsArray({ message: "is not an array" })
@@ -81,4 +96,8 @@ export class IncidentDto {
   @IsNotEmpty({ message: `cost ${constants.EMPTY_OBJECT}` })
   @IsNumber()
   cost: number;
+
+  @IsNotEmpty({ message: `createdBy ${constants.EMPTY_OBJECT}` })
+  @IsString()
+  createdBy: string
 }

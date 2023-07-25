@@ -9,7 +9,9 @@ export interface IIncident {
   currentPriority: string;
   type: string;
   durationHours: number;
-  slackLink?: string;
+  channelId?:string;
+  slackLink: string;
+  channelName?: string;
   currentTags: ITag[];
   date: string;
   createdAt: string;
