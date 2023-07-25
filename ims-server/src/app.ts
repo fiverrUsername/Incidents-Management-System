@@ -38,3 +38,12 @@ app.listen(port, () => {
 });
 
 export default app
+
+  const ws = new WebSocket('ws://localhost:7071/ws');
+  ws.send(JSON.stringify({name:"someone"}));
+  ws.onmessage = (webSocketMessage) => {
+    const messageBody = JSON.parse(webSocketMessage.data);
+    console.log(messageBody)
+};
+
+
