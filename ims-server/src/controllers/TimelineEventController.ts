@@ -3,6 +3,7 @@ import { constants } from "../loggers/constants";
 import { Request, Response, request, response } from 'express';
 import timelineEventService from "../services/timelineEventService";
 import logger from "../loggers/log";
+import axios from 'axios'
 
 export default class TimelineEventController {
 
@@ -33,8 +34,8 @@ export default class TimelineEventController {
     async addTimelineEvent(req: Request, res: Response): Promise<Response> {
         try {
             const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
-            
-            console.log(_timelineEvent)
+            const response = await axios.post('http://localhost:4500', req.body);
+            console.log(req.body)
             if (_timelineEvent instanceof Error) {
                 return res.status(500).json({ message: _timelineEvent });
             }
