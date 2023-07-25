@@ -19,10 +19,10 @@ class AwsService {
     }
   }
 
-  async getAllAttachmentByTimeline(filesKey: string[], res: Response): Promise<void | any> {
+  async getAllAttachmentByTimeline(filesKey:string[] ): Promise<void | any> {
     try {
       logger.info({ source: constants.SHOW_FILES, msg: constants.METHOD.GET, success: true });
-      const keys = await awsRepository.getAllAttachmentByTimeline(filesKey, res);
+      const  keys= await awsRepository.getAllAttachments(filesKey);
       return keys;
     } catch (error: any) {
       logger.error({ source: constants.SHOW_FILES, method: constants.METHOD.GET, err: true });
