@@ -1,10 +1,8 @@
-import { ITag } from '../interfaces/tagInterface';
-import tagModel from '../models/tagModel';
+import { ITag } from "../interfaces/tagInterface";
+import tagModel from "../models/tagModel";
 
 class TagRepository {
-
   async addTag(newTag: ITag): Promise<ITag | null> {
-
     try {
       const createdTag = await tagModel.create(newTag);
       return createdTag;
@@ -23,6 +21,5 @@ class TagRepository {
       return null;
     }
   }
-
 }
 export default new TagRepository();

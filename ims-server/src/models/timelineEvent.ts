@@ -1,6 +1,6 @@
-import mongoose, { Schema } from 'mongoose'
-import { v4 as uuidv4 } from 'uuid';
-import { ITimelineEvent } from '../interfaces/ItimelineEvent';
+import mongoose, { Schema } from "mongoose";
+import { v4 as uuidv4 } from "uuid";
+import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 
 export const TimelineEventSchema = new Schema<ITimelineEvent>({
   _id: {
@@ -17,29 +17,32 @@ export const TimelineEventSchema = new Schema<ITimelineEvent>({
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   priority: {
     type: String,
-    required: true
+    required: true,
   },
-  type:{
-    type:String,
-    required:true
+  type: {
+    type: String,
+    required: true,
   },
-  files:{
-    type:[String],
-    required:true
+  files: {
+    type: [String],
+    required: true,
   },
-  createdDate:{
-    type:Date,
-    required:false,
-    default:Date.now()
+  createdDate: {
+    type: Date,
+    required: false,
+    default: Date.now(),
   },
-  updatedDate:{
-    type:Date,
-    required:false,
-  }
+  updatedDate: {
+    type: Date,
+    required: false,
+  },
 });
 
-export default mongoose.model<ITimelineEvent>('timelineEvents', TimelineEventSchema);
+export default mongoose.model<ITimelineEvent>(
+  "timelineEvents",
+  TimelineEventSchema
+);

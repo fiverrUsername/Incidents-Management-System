@@ -1,15 +1,16 @@
-import express from 'express';
-import TimelineEventController from '../controllers/TimelineEventController';
+import express from "express";
 
-const router = express.Router()
-const timelineEventController = new TimelineEventController()
+import TimelineEventController from "../controllers/TimelineEventController";
 
+const router = express.Router();
+const timelineEventController = new TimelineEventController();
+
+router.get("/", timelineEventController.getAllTimelineEvents);
+router.post("/", timelineEventController.addTimelineEvent);
+router.delete("/:id", timelineEventController.deleteTimelineEvent);
 router.get('/', timelineEventController.getAllTimelineEvents);
 router.get('/getById/:id', timelineEventController.getTimelineEventsById);
-router.post('/', timelineEventController.addTimelineEvent);
-router.delete('/:id',timelineEventController.deleteTimelineEvent);
-
-router.get('/getFile/:id',timelineEventController.getFileInTimelineEventByIndex)
-router.delete('/deleteFile/:id',timelineEventController.deleteFileInTimelineEventByIndex)
-
+router.get('/getFile/:id', timelineEventController.getFileInTimelineEventByIndex)
+router.delete('/deleteFile/:id', timelineEventController.deleteFileInTimelineEventByIndex)
+router.put('/updateTimeLineEvent/:id', timelineEventController.updateTimelineEvent);
 export default router;

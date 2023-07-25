@@ -1,17 +1,16 @@
 import { validate } from "class-validator";
+import { IncidentDto } from "../dto/incidentDto";
 import { IIncident } from "../interfaces/IncidentInterface";
+import { ISummary } from "../interfaces/ISummary";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import incidentModel from "../models/IncidentModel";
 import incidentRepository from "../repositories/incidentRepository";
-import { Incident } from "../classValidator/incidentValidation";
-import { ISummary } from "../interfaces/ISummary";
 
 class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {
     try {
-      const incident = new Incident();
-      Object.assign(incident, newIncident);
+      const incident = new IncidentDto(newIncident);
       const validationErrors = await validate(incident);
       if (validationErrors.length > 0) {
         logger.error({
@@ -26,6 +25,7 @@ class IncidentService {
         msg: constants.ADD_INCIDENT_SUCCESS
       });
       return await incidentRepository.addIncident(newIncident);
+      // return await incidentRepository.addIncident(incident);
     } catch (error: any) {
       logger.error({
         source: constants.INCIDENT_COTROLLER,
@@ -36,10 +36,7 @@ class IncidentService {
     }
   }
 
-  async updateIncident(
-    id: String,
-    data: typeof incidentModel
-  ): Promise<void | any> {
+  async updateIncident(id: String, data: any): Promise<void | any> {
     try {
       const updatedIncident = await incidentRepository.updateIncident(id, data);
       if (updatedIncident) {
@@ -48,22 +45,27 @@ class IncidentService {
           msg: constants.UPDATE_INCIDENT_SUCCESS,
           incidetID: id,
         });
-        return updatedIncident;
+        throw new Error("Validation error");
       }
-      if (!data.name) {
-        logger.error({
-          source: constants.MISSNG_REQUIRED_FIELDS,
-          method: constants.METHOD.PUT,
-        });
-        throw new Error(constants.MISSNG_REQUIRED_FIELDS);
-      } else {
-        logger.error({
-          source: constants.INCIDENT_COTROLLER,
-          err: constants.INCIDENT_NOT_FOUND,
-          incidentId: id,
-        });
-        throw new Error(constants.INCIDENT_NOT_FOUND);
-      }
+      logger.info({
+        sourece: constants.INCIDENT_COTROLLER,
+        msg: constants.UPDATE_INCIDENT_SUCCESS
+      });
+      await incidentRepository.updateIncident(id, updatedIncident);
+      // if (!data.name) {
+      //   logger.error({
+      //     source: constants.MISSNG_REQUIRED_FIELDS,
+      //     method: constants.METHOD.PUT,
+      //   });
+      //   throw new Error(constants.MISSNG_REQUIRED_FIELDS);
+      // } else {
+      //   logger.error({
+      //     source: constants.INCIDENT_COTROLLER,
+      //     err: constants.INCIDENT_NOT_FOUND,
+      //     incidentId: id,
+      //   });
+      //   throw new Error(constants.INCIDENT_NOT_FOUND);
+      // }
     } catch (error: any) {
       logger.error({
         source: constants.INCIDENT_COTROLLER,
@@ -115,9 +117,9 @@ class IncidentService {
     }
   }
 
-  async getSummaryIncident(id: String): Promise<ISummary|any> {
+  async getSummaryIncident(id: String): Promise<ISummary | any> {
     try {
-      let summary={
+      let summary = {
         createdBy: '',
         createdAt: new Date(),
         currentPriority: '',
@@ -128,16 +130,16 @@ class IncidentService {
       if (incident) {
         //find user with userId from createdBy  ????
         //create summary
-         summary={
-          createdBy:incident.createdBy,
-          createdAt:incident.createdAt,
-          currentPriority:incident.priority,
-          tags:incident.tags
+        summary = {
+          createdBy: incident.createdBy,
+          createdAt: incident.createdAt,
+          currentPriority: incident.priority,
+          tags: incident.tags
         }
-        logger.info({source:constants.INCIDENT_COTROLLER,method:constants.METHOD.GET,incidentId:id})
+        logger.info({ source: constants.INCIDENT_COTROLLER, method: constants.METHOD.GET, incidentId: id })
       }
       return summary;
-    } catch (error:any) {
+    } catch (error: any) {
       logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentID: id });
       console.error(`error: ${error}`);
       return error;
