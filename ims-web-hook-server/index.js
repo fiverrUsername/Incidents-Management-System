@@ -1,3 +1,37 @@
+
+const SmeeClient = require('smee-client')
+
+const smee = new SmeeClient({
+    source: 'https://smee.io/tMCZxRp5bpvekDLe',
+    target: 'http://localhost:4000/events',
+    logger: console
+})
+
+const events = smee.start()
+events.addEventListener('message', (event) => {
+    console.log('Received event:', event.data)
+})
+
+events.onmessage = (event) => {
+    const webhookEvent = JSON.parse(event.data);
+    webhooks
+        .verifyAndReceive({
+            id: webhookEvent["x-request-id"],
+            name: webhookEvent["x-github-event"],
+            signature: webhookEvent["x-hub-signature"],
+            payload: webhookEvent.body,
+        })
+        .catch(console.error);
+};
+
+// Stop forwarding events
+// events.close()
+
+
+
+
+
+
 // const axios = require('axios');
 // // The Slack webhook URL
 // const webhookUrl = 'https://hooks.slack.com/services/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';
@@ -104,6 +138,8 @@
 
 // // The channel ID will be printed once the channel is created
 // console.log('Channel ID:', channelId);
+
+
 
 
 
