@@ -65,7 +65,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
     const formData = new FormData();
     files.map((file)=>{
       console.log(incident)
-      const newName = `incidence_${incident._id}_${file.name}`
+      const newName = `incidence_${incident.id}_${file.name}`
       setFilesString([...filesString, newName]);
       console.log("-----", newName)
       formData.append('files', file, newName);
@@ -83,7 +83,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       }
       setShowBanner(true);
     }
-  };
+  }
 
   const closeIconStyles: React.CSSProperties = {
     width: '17px',
