@@ -27,7 +27,6 @@ export interface FormData {
   type: string;
   tags: ITag[];
   files: string[];
-
 }
 interface Props {
   open: boolean;
@@ -45,7 +44,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   const [type, setType] = React.useState(incident.type);
   const [tags, setTags] = useState<ITag[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-  const [filesS, setFilesS] = useState<string[]>([]);
+  const [filesString, setFilesString] = useState<string[]>([]);
   const [severityValue, setSeverityValue] = useState<AlertColor>('error');
   const [messageValue, setMessageValue] = useState<string>("");
   const [text, setText] = useState<string>();
@@ -62,7 +61,10 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       data.date = date;
     data.type = type;
     data.tags = selectedTags;
-    data.files = filesS;
+    data.files = filesString;
+    //קריאה לשרת aws
+    
+    //עידכון מערך הסרינט
     if (type && tags) {
       const flag = await submitTimeLine({ data, incident });
       if (flag) {
@@ -76,6 +78,11 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       setShowBanner(true);
     }
   }
+  
+  convertToFormData(files:File[]){
+    fore
+  }
+
   const closeIconStyles: React.CSSProperties = {
     width: '17px',
     height: '17px',
