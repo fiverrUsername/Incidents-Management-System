@@ -18,16 +18,12 @@ const s3 = new AWS.S3();
 class AwsRepository {
   
   async uploadAttachment(files:Express.Multer.File []): Promise<AWS.S3.ManagedUpload.SendData | any> {
-    if (!process.env.BUCKET_NAME) {
-        logger.error({ source: constants.BUCKET_NAME, method: constants.METHOD.GET, err: true });
-        return;
-      }
       const uploadPromises = files.map((file) => {
         const fileName = file.originalname;
         const fileBuffer = fs.readFileSync(file.path);
         if (fileName && fileBuffer) {
           const params: AWS.S3.PutObjectRequest = {
-            Bucket: process.env.BUCKET_NAME? process.env.BUCKET_NAME.toString(): '',
+            Bucket: AwsRepository.getBucketName(),
             Key: fileName.toString().replace(/_/g, '/'),
             Body: fileBuffer,
           };
