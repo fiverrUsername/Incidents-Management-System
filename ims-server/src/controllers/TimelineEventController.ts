@@ -35,9 +35,11 @@ export default class TimelineEventController {
 
     async addTimelineEvent(req: Request, res: Response): Promise<Response> {
         try {
+            //remember to change:
+            req.body.updatedDate=new Date()
+            req.body.createdDate=new Date()
             const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
             const response = await axios.post('http://localhost:4700', req.body);
-            console.log(req.body)
             if (_timelineEvent instanceof Error) {
                 return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: _timelineEvent });
             }
@@ -97,38 +99,38 @@ export default class TimelineEventController {
 
     async getFileInTimelineEventByIndex(req: Request, res: Response): Promise<Response> {
         try {
-          const timelineEventId: string = req.params.id;
-          const index: number = parseInt(req.query.index as string);   
-          const file = await timelineEventService.getFileInTimelineEventByIndex(timelineEventId, index); 
-          if(file instanceof Error){
-                if(file.message=='Timeline event not found'){
+            const timelineEventId: string = req.params.id;
+            const index: number = parseInt(req.query.index as string);
+            const file = await timelineEventService.getFileInTimelineEventByIndex(timelineEventId, index);
+            if (file instanceof Error) {
+                if (file.message == 'Timeline event not found') {
                     return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id });
                 }
-                if(file.message=='Invalid index'){
+                if (file.message == 'Invalid index') {
                     return res.status(status.BAD_REQUEST).json({ message: constants.BAD_REQUEST, error: constants.INDEX_NOT_VALID });
                 }
                 return res.status(500).json({ message: constants.SERVER_ERROR });
-          } 
-          logger.info({ source: constants.TIMELINE_EVENT, msg: constants.SUCCESS, timelineEventId, indexFile: index, method: constants.METHOD.GET });
-          return res.status(status.SUCCESS).json(file);
+            }
+            logger.info({ source: constants.TIMELINE_EVENT, msg: constants.SUCCESS, timelineEventId, indexFile: index, method: constants.METHOD.GET });
+            return res.status(status.SUCCESS).json(file);
         } catch (error: any) {
             return res.status(500).json({ message: error });
         }
-      }
+    }
 
     async deleteFileInTimelineEventByIndex(req: Request, res: Response): Promise<Response> {
         try {
             const timelineEventId: string = req.params.id;
             const index: number = parseInt(req.query.index as string);
             const updatedTimelineEvent = await timelineEventService.deleteFileInTimelineEventByIndex(timelineEventId, index);
-            if(updatedTimelineEvent instanceof Error){
-                if(updatedTimelineEvent.message=='Timeline event not found'){
+            if (updatedTimelineEvent instanceof Error) {
+                if (updatedTimelineEvent.message == 'Timeline event not found') {
                     return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id });
                 }
-                if(updatedTimelineEvent.message=='Invalid index'){
+                if (updatedTimelineEvent.message == 'Invalid index') {
                     return res.status(status.BAD_REQUEST).json({ message: constants.BAD_REQUEST, error: constants.INDEX_NOT_VALID });
                 }
-                else{
+                else {
                     return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: constants.SERVER_ERROR });
                 }
             }
@@ -137,5 +139,20 @@ export default class TimelineEventController {
         } catch (error: any) {
             return res.status(500).json({ message: error });
         }
+    }
+    async compareIncidentChanges(req: Request, res: Response):Promise<void> {
+        const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventsById(req.body.incidentId);
+        let answer: string[] = ["", "", ""]
+        if (allTimelineEvents != null) {
+            let sortedDatesDescending: ITimelineEvent[] = allTimelineEvents.slice().sort((a, b) => b.updatedDate.getTime() - a.updatedDate.getTime());
+            const previousTimeLineEvent: ITimelineEvent = sortedDatesDescending[1]
+            console.log(req.body.incidentId + "previous")
+            answer[2] = req.body.description
+            if (previousTimeLineEvent?.priority != req.body.priority)
+                answer[0] ="priority changed: "+ previousTimeLineEvent.priority + " => " + req.body.priority+'\n'
+            if (previousTimeLineEvent?.type != req.body.type)
+                answer[1] ="type changed: "+ previousTimeLineEvent.type + " => " + req.body.type+'\n'
+        }
+        res.status(status.SUCCESS).json(answer);
     }
 }
