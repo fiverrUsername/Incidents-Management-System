@@ -58,10 +58,10 @@ class AwsRepository {
       return { key, data };
     } catch (error:any) {
       if(error.code === 'NoSuchKey'){
-        logger.info(`Key '${key}' does not exist in the S3 bucket. Skipping...`);
+        logger.info({source: constants.FILE_NOT_FOUND , msg: constants.METHOD.GET, key:key, error: true});
         return null
       }else{
-        logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, err: true });
+        logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, key:key, err: true });
       }
       throw error;
     }
@@ -69,9 +69,10 @@ class AwsRepository {
 
   async getAllAttachments(keys: string[]): Promise<(AttachmentData|null)[]|any> {
     try {
+      
       const allResponses: (AttachmentData | null)[] = await Promise.all(keys.map(
         (key) => this.getAllAttachmentByTimeline(key)));
-      //console.log(`allResponses: ${allResponses}${allResponses[0]}-${allResponses[1]} ${allResponses[2]}`)
+      console.log(`allResponses: ${allResponses}${allResponses[0]}-${allResponses[1]} ${allResponses[2]}`)
       logger.info({ source: constants.SHOW_SUCCESS, method: constants.METHOD.GET, err: true });
       return allResponses;
     } catch (error) {
