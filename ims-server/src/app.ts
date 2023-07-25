@@ -33,13 +33,12 @@ const corsOptions: cors.CorsOptions = {
   },
 };
 
-app.use(cors(corsOptions));
 
 
 
 connect()
 app.use(cors(corsOptions));
-app.use(authenticateToken);
+// app.use(authenticateToken);
 
 app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use(bodyParser.json())
