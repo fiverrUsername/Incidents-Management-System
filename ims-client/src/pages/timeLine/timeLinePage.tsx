@@ -12,7 +12,7 @@ import IIncident from "../../interface/incidentInterface";
 import { Grid, Typography } from "@mui/material";
 import users from '../../mockAPI/users.json';
 
-const TimeLinePage = ({ _id }: WithIdProps) => {
+const TimeLinePage = ({ id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<TimelineEvent[]>([]);
   const [summaryIncident, setSummaryIncident] = useState<ISummary>();
   const [incident, setIncident] = useState<IIncident>();
@@ -20,31 +20,31 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
   // const user = users.find((u) => u._id === incident?.createdBy);
   //when the functions in server are done
   useEffect(() => {
-    const FetchTimeline = async () => {
-      const getTimeLineEventsById = await apiCalls.getTimeLineEventsById(_id)
+    const fetchTimeline = async () => {
+      const getTimeLineEventsById = await apiCalls.getTimeLineEventsById(id)
       console.log(getTimeLineEventsById, "getTimeLineEventsById");
       setTimelineObjects(getTimeLineEventsById);
     };
-    FetchTimeline();
-    const FetchSummaryIncident = async () => {
-      const summary = await apiCalls.getSummaryIncident(_id);
+    fetchTimeline();
+    const fetchSummaryIncident = async () => {
+      const summary = await apiCalls.getSummaryIncident(id);
       console.log(summary, "summery")
       setSummaryIncident(summary)
     }
-    FetchSummaryIncident();
-    const FetchIncident = async () => {
-      const getIncidentById = await apiCalls.getIncidentById(_id);
+    fetchSummaryIncident();
+    const fetchIncident = async () => {
+      const getIncidentById = await apiCalls.getIncidentById(id);
       console.log(getIncidentById, "IncidentById");
       setIncident(getIncidentById);
     };
-    FetchIncident();
+    fetchIncident();
     //   const FetchUser = async () => {
     //     const getUserById = await apiCalls.getUserById(_id);
     //     console.log(getUserById,"getUserById");
     //     setUser(getUserById);
     //   };
     //   FetchUser();
-  }, [_id]);
+  }, [id]);
 
   const filterTimeLineBySearch = (array: TimelineEvent[], filterString: string): TimelineEvent[] => {
     return array.filter((item) => {
