@@ -96,7 +96,7 @@ export default function AddIncident({ open, onClose }: Props) {
   //   return undefined;
   // };
 
-  const validatechannelName = (value) => {
+  const validatechannelName = (value:string) => {
     const minLength = 1;
     const maxLength = 80;
     const allowedCharacters = /^[a-zA-Z0-9-_]+$/;
