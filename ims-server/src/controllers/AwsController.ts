@@ -20,7 +20,7 @@ export default class AwsController {
 
   async getAllAttachmentByTimeline(req: Request, res: Response): Promise<void> {
     try {
-      const filesKey = await awsService.getAllAttachmentByTimeline(req.body, res);
+      const filesKey = await awsService.getAllAttachmentByTimeline(req.body);
       if (filesKey instanceof Error) {
         res
           .status(status.PAGE_NOT_FOUND)
