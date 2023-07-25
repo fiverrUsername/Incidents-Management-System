@@ -20,7 +20,7 @@ export default class AwsController {
 
   async getAllAttachmentByTimeline(req: Request, res: Response): Promise<void> {
     try {
-      const filesKey = await awsService.getAllAttachmentByTimeline(req.body);
+      const filesKey = await awsService.getAllAttachmentByTimeline(req.body, res);
       if (filesKey instanceof Error) {
         res
           .status(status.PAGE_NOT_FOUND)
@@ -31,16 +31,7 @@ export default class AwsController {
     }
   }
 
-  async downloadAttachmentById(req: Request, res: Response): Promise<void> {
-    try {
-      const file = await awsService.downloadAttachmentById(req.params.key);
-      if (file instanceof Error) {
-        res.status(status.PAGE_NOT_FOUND).json({ message: file, error: true });
-      } else res.status(status.SUCCESS).json(file);
-    } catch (error: any) {
-      res.status(status.SERVER_ERROR).json({ message: error.message });
-    }
-  }
+
 
   async deleteAttachmentById(req: Request, res: Response): Promise<void> {
     try {
