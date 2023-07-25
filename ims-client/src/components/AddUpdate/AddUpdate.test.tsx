@@ -8,31 +8,31 @@ import IIncident from '../../interface/incidentInterface';
 fdescribe('AddUpdate Component', () => {
  // const onCloseMock = jest.fn();
   //const mockIncident= await apiCalls.getIncidentById("8");
-  const inc:IIncident={
-    "id": "123456",
-    "name": "Unresolved Incident2",
-    "status": "Active",
-    "description": "Issue Description",
-    "priority": "P3",
-    "type": "technical",
-    "durationHours": 24,
-    "slackLink": "https://join.slack.com/t/fi-verr/shared_invite/zt-1xip09fur-ERWbAQen_A~dz5s42ltnvw",
-    "tags": [
-      {
-        "userId": "45sfeda992a5dd8bcf403m",
-        "name": "checkout"
-      }
-    ],
-    "date": new Date(),
-    "createdAt":new Date(),
-    "updatedAt": new Date(),
-    "cost": 900,
-    "createdBy":""
-  };
-  const f= () => {};
-  test('renders the component with given incident data', () => {
-  
-    render(<AddUpdate open={true} onClose={jest.fn()} incident={inc} />);
+  it('renders the component with given incident data', () => {
+    const inc:IIncident={
+      "id": "123456",
+      "name": "Unresolved Incident2",
+      "status": "Active",
+      "description": "Issue Description",
+      "priority": "P3",
+      "type": "technical",
+      "durationHours": 24,
+      "channelName": "https://join.slack.com/t/fi-verr/shared_invite/zt-1xip09fur-ERWbAQen_A~dz5s42ltnvw",
+      "tags": [
+        {
+          "userId": "45sfeda992a5dd8bcf403m",
+          "name": "checkout"
+        }
+      ],
+      "date": new Date(),
+      "createdAt":new Date(),
+      "updatedAt": new Date(),
+      "cost": 900,
+      "createdBy":""
+    }
+    const f= () => {};
+    render(<AddUpdate open={true} onClose={f} incident={inc} />);
+
   });
 });
     // Assert that the component is rendered with the appropriate data

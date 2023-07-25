@@ -30,8 +30,10 @@ export interface Incident {
     description: string,
     priority: string
     type: string
-    durationHours: string,
-    slackLink: string
+    durationHours: string  ,
+    channelId: string,
+    slackLink:string,
+    channelName: string,
     tags: { id: string; name: string }[];
     date: Date,
     createdAt: Date,
