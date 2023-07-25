@@ -13,14 +13,18 @@ export default async function submitIncident(prop:FormData) {
         name: prop.name,
         status:"Active",
         description:prop.description,
-        priority: prop.priority,
+        currentPriority: prop.priority,
         type: prop.type,
         durationHours: 0,
-        slackLink: prop.slackLink,
+        slackLink:"",
+        channelName: prop.channelName,
+        channelId:"",
         tags: prop.tags.map(tag => ({ id: tag.userId, name: tag.name })),
         date: prop.date.toDate(),
         createdAt: new Date(),
         updatedAt: new Date(),
+        //TODO
+        createdBy:"?",
         cost: 0,
     }
 

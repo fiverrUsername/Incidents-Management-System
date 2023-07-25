@@ -17,7 +17,7 @@ describe('AddUpdate Component', () => {
       "priority": "P3",
       "type": "technical",
       "durationHours": 24,
-      "slackLink": "https://join.slack.com/t/fi-verr/shared_invite/zt-1xip09fur-ERWbAQen_A~dz5s42ltnvw",
+      "channelName": "https://join.slack.com/t/fi-verr/shared_invite/zt-1xip09fur-ERWbAQen_A~dz5s42ltnvw",
       "tags": [
         {
           "userId": "45sfeda992a5dd8bcf403m",
