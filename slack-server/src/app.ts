@@ -10,7 +10,6 @@ const port = 4700;
 app.use(bodyParser.json());
 app.get('/',()=>console.log("ssts"))
 app.post('/', (req:Request, res:Response) => {
-    console.log(req.body)
     addTimeLineEvent(req.body);
     res.json({ message: 'Timeline event added successfully'});
   });
