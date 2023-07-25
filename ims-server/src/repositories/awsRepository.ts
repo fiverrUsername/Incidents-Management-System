@@ -19,14 +19,13 @@ class AwsRepository {
         logger.error({ source: constants.BUCKET_NAME, method: constants.METHOD.GET, err: true });
         return;
       }
-
       const uploadPromises = files.map((file) => {
         const fileName = file.originalname;
         const fileBuffer = fs.readFileSync(file.path);
         if (fileName && fileBuffer) {
           const params: AWS.S3.PutObjectRequest = {
             Bucket: process.env.BUCKET_NAME? process.env.BUCKET_NAME.toString(): '',
-            Key: fileName.toString(),
+            Key: fileName.toString().replace(/_/g, '/'),
             Body: fileBuffer,
           };
           return s3.upload(params).promise();

@@ -19,8 +19,8 @@ import TypesSelect, { Types } from '../AddIncident/Types';
 import { ITag } from '../../interface/ITag';
 import { Tag } from 'styled-components/dist/sheet/types';
 import UploadFiles from '../uploadFiles/UploadFiles';
-
-export interface FormData {
+import awsService from '../../service/awsService';
+export interface form_data {
   text: string;
   priority: string;
   date: dayjs.Dayjs;
@@ -36,7 +36,7 @@ interface Props {
 
 export default function AddUpdate({ open, onClose, incident }: Props) {
   const priorityProp = incident.priority;
-  const { handleSubmit, register, formState: { errors } } = useForm<FormData>();
+  const { handleSubmit, register, formState: { errors } } = useForm<form_data>();
   const [priority, setPriority] = React.useState<string | null>("");
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [showBanner, setShowBanner] = useState(false);
@@ -51,7 +51,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
 
   const [selectedTags, setSelectedTags] = useState<ITag[]>(incident.tags);
 
-  async function onSubmit(data: FormData) {
+  async function onSubmit(data: form_data) {
     setIsSubmit(true);
     if (priority != null)
       data.priority = priority
@@ -62,10 +62,16 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
     data.type = type;
     data.tags = selectedTags;
     data.files = filesString;
-    //קריאה לשרת aws
-    
-    //עידכון מערך הסרינט
-    if (type && tags) {
+    const formData = new FormData();
+    files.map((file)=>{
+      console.log(incident)
+      const newName = `incidence_${incident._id}_${file.name}`
+      setFilesString([...filesString, newName]);
+      console.log("-----", newName)
+      formData.append('files', file, newName);
+    })
+    await awsService.uploadAttachment(formData);
+        if (type && tags) {
       const flag = await submitTimeLine({ data, incident });
       if (flag) {
         setSeverityValue('success');
@@ -77,11 +83,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       }
       setShowBanner(true);
     }
-  }
-  
-  convertToFormData(files:File[]){
-    fore
-  }
+  };
 
   const closeIconStyles: React.CSSProperties = {
     width: '17px',

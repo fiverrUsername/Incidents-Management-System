@@ -35,7 +35,8 @@ export default class AwsController {
 
   async deleteAttachmentById(req: Request, res: Response): Promise<void> {
     try {
-      const file = await awsService.deleteAttachmentById(req.params.key);
+      console.log("_--",req.body)
+      const file = await awsService.deleteAttachmentById(req.body.key);
       if (file instanceof Error) {
         res.status(status.PAGE_NOT_FOUND).json({ message: file, error: true });
       } else res.status(status.SUCCESS).json(file);
