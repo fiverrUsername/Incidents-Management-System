@@ -32,7 +32,9 @@ export const constants = {
   INVALID_MESSAGE: "INVALID",
   EMPTY_OBJECT: "IS_EMPTY",
   SUCCESS:'SUCCESS',
-  SERVER_ERROR:'SERVER_ERROR'
+  SERVER_ERROR:'SERVER_ERROR',
+  FILE_NOT_FOUND:'FILE_NOT_FOUND'
+  
 };
 export const status = {
   SUCCESS: 200,

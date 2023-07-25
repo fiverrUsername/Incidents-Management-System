@@ -1,9 +1,11 @@
 import {
   IsArray,
   IsISO8601,
+  isNotEmpty,
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  isString,
   IsString,
   ValidateNested,
 } from "class-validator";
@@ -26,6 +28,7 @@ export class IncidentDto {
     this.createdAt = "";
     this.updatedAt = "";
     this.cost = 0;
+    this.createdBy = '';
     Object.assign(this, init);
   }
 
@@ -93,4 +96,8 @@ export class IncidentDto {
   @IsNotEmpty({ message: `cost ${constants.EMPTY_OBJECT}` })
   @IsNumber()
   cost: number;
+
+  @IsNotEmpty({ message: `createdBy ${constants.EMPTY_OBJECT}` })
+  @IsString()
+  createdBy: string
 }
