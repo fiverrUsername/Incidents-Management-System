@@ -1,7 +1,7 @@
 import React from 'react';
 import {render, screen, fireEvent  } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import AddUpdate from './AddUpdate';
+import AddUpdate, { form_data } from './AddUpdate';
 import apiCalls from '../../service/apiCalls';
 import IIncident from '../../interface/incidentInterface';
 
