@@ -17,6 +17,8 @@ fdescribe('AddUpdate Component', () => {
       "priority": "P3",
       "type": "technical",
       "durationHours": 24,
+      "channelId":"?",
+      "slackLink":"",
       "channelName": "https://join.slack.com/t/fi-verr/shared_invite/zt-1xip09fur-ERWbAQen_A~dz5s42ltnvw",
       "tags": [
         {
