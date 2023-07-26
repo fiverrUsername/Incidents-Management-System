@@ -3,6 +3,7 @@ import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import { constants, status } from "../loggers/constants";
 import timelineEventService from "../services/timelineEventService";
 import logger from "../loggers/log";
+import { ActionType, ObjectType, sendToSocket } from "../services/socket";
 export default class TimelineEventController {
 
     async getAllTimelineEvents(req: Request, res: Response): Promise<void> {
@@ -39,6 +40,7 @@ export default class TimelineEventController {
             if (_timelineEvent instanceof Error) {
                 return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: _timelineEvent });
             }
+            sendToSocket(_timelineEvent as ITimelineEvent, ObjectType.TimelineEvent, ActionType.Add);
             return res.status(status.CREATED_SUCCESS).json(_timelineEvent);
         }
         catch (error: any) {
@@ -95,38 +97,38 @@ export default class TimelineEventController {
 
     async getFileInTimelineEventByIndex(req: Request, res: Response): Promise<Response> {
         try {
-          const timelineEventId: string = req.params.id;
-          const index: number = parseInt(req.query.index as string);   
-          const file = await timelineEventService.getFileInTimelineEventByIndex(timelineEventId, index); 
-          if(file instanceof Error){
-                if(file.message=='Timeline event not found'){
+            const timelineEventId: string = req.params.id;
+            const index: number = parseInt(req.query.index as string);
+            const file = await timelineEventService.getFileInTimelineEventByIndex(timelineEventId, index);
+            if (file instanceof Error) {
+                if (file.message == 'Timeline event not found') {
                     return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id });
                 }
-                if(file.message=='Invalid index'){
+                if (file.message == 'Invalid index') {
                     return res.status(status.BAD_REQUEST).json({ message: constants.BAD_REQUEST, error: constants.INDEX_NOT_VALID });
                 }
                 return res.status(500).json({ message: constants.SERVER_ERROR });
-          } 
-          logger.info({ source: constants.TIMELINE_EVENT, msg: constants.SUCCESS, timelineEventId, indexFile: index, method: constants.METHOD.GET });
-          return res.status(status.SUCCESS).json(file);
+            }
+            logger.info({ source: constants.TIMELINE_EVENT, msg: constants.SUCCESS, timelineEventId, indexFile: index, method: constants.METHOD.GET });
+            return res.status(status.SUCCESS).json(file);
         } catch (error: any) {
             return res.status(500).json({ message: error });
         }
-      }
+    }
 
     async deleteFileInTimelineEventByIndex(req: Request, res: Response): Promise<Response> {
         try {
             const timelineEventId: string = req.params.id;
             const index: number = parseInt(req.query.index as string);
             const updatedTimelineEvent = await timelineEventService.deleteFileInTimelineEventByIndex(timelineEventId, index);
-            if(updatedTimelineEvent instanceof Error){
-                if(updatedTimelineEvent.message=='Timeline event not found'){
+            if (updatedTimelineEvent instanceof Error) {
+                if (updatedTimelineEvent.message == 'Timeline event not found') {
                     return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id });
                 }
-                if(updatedTimelineEvent.message=='Invalid index'){
+                if (updatedTimelineEvent.message == 'Invalid index') {
                     return res.status(status.BAD_REQUEST).json({ message: constants.BAD_REQUEST, error: constants.INDEX_NOT_VALID });
                 }
-                else{
+                else {
                     return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: constants.SERVER_ERROR });
                 }
             }

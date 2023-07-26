@@ -6,16 +6,19 @@ import { constants } from '../loggers/constants';
 import { ISummary } from '../interfaces/ISummary';
 import { IncidentDto } from '../dto/incidentDto';
 
-import {getUsers} from '../../../slack-server/src/services/slack-api/actions/getUsers'
+import { getUsers } from '../../../slack-server/src/services/slack-api/actions/getUsers'
+import { ActionType, ObjectType, sendToSocket } from '../services/socket';
 export default class IncidentController {
   async addIncident(req: Request, res: Response): Promise<void> {
     try {
       const incident: IncidentDto = await incidentService.addIncident(req.body);
       if (incident instanceof Error) {
-        res.status(500).json({ message: incident, error: true });
-        // getUsers();
+        res.status(status.SERVER_ERROR).json({ message: incident, error: true });
       }
-      else res.status(201).json(incident);
+      else {
+        sendToSocket(incident as IIncident, ObjectType.Incident, ActionType.Add);
+        res.status(status.CREATED_SUCCESS).json(incident);
+      }
     } catch (error: any) {
       res.status(status.SERVER_ERROR).json({ message: error.message });
     }
@@ -50,7 +53,6 @@ export default class IncidentController {
       const incidents: IncidentDto = await incidentService.getAllIncidents();
       if (incidents instanceof Error) {
         res.status(404).json({ message: incidents.message, error: true });
-        getUsers();
       } else {
         res.status(status.SUCCESS).json(incidents);
       }
