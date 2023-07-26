@@ -4,6 +4,7 @@ import { constants, status } from "../loggers/constants";
 import timelineEventService from "../services/timelineEventService";
 import logger from "../loggers/log";
 import axios from "axios";
+import { ActionType, ObjectType, sendToSocket } from "../services/socket";
 export default class TimelineEventController {
 
     async getAllTimelineEvents(req: Request, res: Response): Promise<void> {
@@ -43,6 +44,7 @@ export default class TimelineEventController {
             if (_timelineEvent instanceof Error) {
                 return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: _timelineEvent });
             }
+            sendToSocket(_timelineEvent as ITimelineEvent, ObjectType.TimelineEvent, ActionType.Add);
             return res.status(status.CREATED_SUCCESS).json(_timelineEvent);
         }
         catch (error: any) {
