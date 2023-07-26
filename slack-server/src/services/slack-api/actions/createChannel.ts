@@ -21,16 +21,33 @@ export async function createNewChannel(incidentData: IIncident) {
     if (data.ok) {
       console.log('New public channel created:', data.channel.name);
       const channelId = data.channel.id;
+      try {
+        await updateChannelDescription(channelId, incidentData.description);
+        console.log('Channel description updated successfully.');
+      } catch (error) {
+        console.error('Error updating channel description:', error);
+      }
+
+
+      //TODO
+      //- send to the function in ims-server
+      // incidentData.channelId = channelId;
+      // incidentData.slackLink = data.channel.link; 
+      // await IncidentController.updateIncident(incidentData);
+
       await sendJoinMessageToUser(channelId, userIds);
       return channelId;
     } else {
       console.error('Failed to create channel:', data.error);
       return null;
     }
+
   } catch (error) {
     console.error('Error creating channel:', error);
     return null;
   }
+
+
 }
 const webhookUrl = 'https://hooks.slack.com/services/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';
 const axios = require('axios');
@@ -43,8 +60,7 @@ async function sendJoinMessageToUser(channelId: string, userId: string[]) {
   } catch (error) {
     console.error(`Error sending join invitation to user ${userId}:`, error);
   }
-  //TODO- send to the function in ims-server
-  // IncidentController.updateIncident
+
 }
 
 
@@ -77,6 +93,34 @@ async function sendMessageToChannel(channelId: string, message: string) {
 }
 
 
+
+
+async function getSlackUsers() {
+  try {
+    const response = await axios.get('https://slack.com/api/users.list', {
+      headers: {
+        Authorization: `Bearer ${slackApiToken}`,
+      },
+    });
+
+    const data = response.data;
+
+    console.log(data);
+    if (data.ok) {
+      return data.members;
+
+    } else {
+      console.error(`Failed to fetch users: ${data.error}`);
+      return [];
+    }
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    return [];
+  }
+}
+
+
+getSlackUsers()
 
 
 
