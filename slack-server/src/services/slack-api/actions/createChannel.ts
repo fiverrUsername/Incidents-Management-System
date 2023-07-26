@@ -4,7 +4,6 @@ import { IIncident } from '../../../../../ims-server/src/interfaces/IncidentInte
 const slackApiToken = 'xoxb-5609511342163-5604717800598-XAxj3F4jbNGLav6i5DkQZkJw';
 //TODO- change the userIds
 const userIds = ['U05HXKPD259'];
-// const userIds = ['C05JMDNMH1Q'];
 export async function createNewChannel(incidentData: IIncident) {
   try {
     const response = await axios.post('https://slack.com/api/conversations.create', {
