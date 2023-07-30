@@ -33,7 +33,7 @@ export default function AddIncident({ open, onClose }: Props) {
   const [priority, setPriority] = React.useState<string | null>('p0');
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [type, setType] = React.useState('');
-  const [selectedTags, setSelectedTags] = useState<IOption[]>([]);
+  const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
   const [tags, setTags] = useState<ITag[]>([]);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -178,7 +178,7 @@ export default function AddIncident({ open, onClose }: Props) {
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Tags</label>
                 <div id="tags">
-                <CustomAutocomplete options={tags} selectedOptions={selectedTags} setSelectedOptions={setSelectedTags} getOptionLabel={getOptionLabel}/>
+                <CustomAutocomplete options={tags} selectedOptions={selectedTags} getOptionLabel={getOptionLabel} setSelectedOptions={setSelectedTags}/>
                 </div>
                 {isSubmit && tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>}
               </FormControl>

@@ -20,7 +20,7 @@ describe('AddUpdate Component', () => {
       "slackLink": "https://join.slack.com/t/fi-verr/shared_invite/zt-1xip09fur-ERWbAQen_A~dz5s42ltnvw",
       "tags": [
         {
-          "userId": "45sfeda992a5dd8bcf403m",
+          "id": "45sfeda992a5dd8bcf403m",
           "name": "checkout"
         }
       ],
@@ -30,6 +30,7 @@ describe('AddUpdate Component', () => {
       "cost": 900,
       "createdBy":""
     }
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     const f= () => {};
     render(<AddUpdate open={true} onClose={f} incident={inc} />);
   });
