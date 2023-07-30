@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Dialog, FormControl, InputLabel, Grid, Button } from "@mui/material";
+import { Dialog, FormControl, Grid, Button } from "@mui/material";
 import { useForm } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
 import DateTimePickerValue from '../datePicker/datePicker';
 import TextFieldInput from './TextFields';
 import ToggleButtons from './PriorityButtons';
-import TypesSelect, { Types } from './Types';
 import DropDown from './DropDown';
 import CustomAutocomplete from '../autoCompleteTag/autoComplete';
-import Option from '../../interface/IOption';
+import IOption from '../../interface/IOption';
 import submitIncident from '../submitIncident/submitIncident';
 import theme from '../../theme';
-import { Tag } from 'styled-components/dist/sheet/types';
 import apiCalls from '../../service/apiCalls';
 import { ITag } from '../../interface/ITag';
 import BannerNotification from "../bannerNotification/BannerNotification"
@@ -42,6 +40,7 @@ export default function AddIncident({ open, onClose }: Props) {
   const [tags, setTags] = useState<ITag[]>([]);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
+  const getOptionLabel = (option: ITag) => option.name;
 
   function onSubmit(data: FormData) {
     setIsSubmit(true);
@@ -226,10 +225,9 @@ export default function AddIncident({ open, onClose }: Props) {
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Tags</label>
                 <div id="tags">
-                  <CustomAutocomplete options={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+                <CustomAutocomplete options={tags} selectedOptions={selectedTags} setSelectedOptions={setSelectedTags} getOptionLabel={getOptionLabel} placehOlderText={"Write to add"}/>
                 </div>
                 {isSubmit && tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>}
-
               </FormControl>
             </Grid>
             <Grid item xs={12}>

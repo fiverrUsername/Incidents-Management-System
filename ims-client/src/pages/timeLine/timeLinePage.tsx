@@ -10,60 +10,37 @@ import { TimelineEvent } from "./modules/interface";
 import { ISummary } from "../../interface/ISummary";
 import IIncident from "../../interface/incidentInterface";
 import { Grid, Typography } from "@mui/material";
+import filterTimeLineBySearch from "../../service/timeLineService";
 import users from '../../mockAPI/users.json';
 import { GetIncident } from "../../components/AddUpdate/AddUpdate";
 
-const TimeLinePage = ({ _id }: WithIdProps) => {
+const TimeLinePage = ({ id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<TimelineEvent[]>([]);
   const [summaryIncident, setSummaryIncident] = useState<ISummary>();
-  const [incident, setIncident] = useState<GetIncident>();
-  //const [user,setUser]=useState();
-  // const user = users.find((u) => u._id === incident?.createdBy);
-  //when the functions in server are done
+  const [incident, setIncident] = useState<IIncident>();
   useEffect(() => {
-    const FetchTimeline = async () => {
-      const getTimeLineEventsById = await apiCalls.getTimeLineEventsById(_id)
+    const fetchTimeline = async () => {
+      const getTimeLineEventsById = await apiCalls.getTimeLineEventsById(id)
       console.log(getTimeLineEventsById, "getTimeLineEventsById");
       setTimelineObjects(getTimeLineEventsById);
     };
-    FetchTimeline();
-    const FetchSummaryIncident = async () => {
-      const summary = await apiCalls.getSummaryIncident(_id);
+    fetchTimeline();
+    const fetchSummaryIncident = async () => {
+      const summary = await apiCalls.getSummaryIncident(id);
       console.log(summary, "summery")
       setSummaryIncident(summary)
     }
-    FetchSummaryIncident();
-    const FetchIncident = async () => {
-      const getIncidentById = await apiCalls.getIncidentById(_id);
-      console.log(getIncidentById);
+    fetchSummaryIncident();
+    const fetchIncident = async () => {
+      const getIncidentById = await apiCalls.getIncidentById(id);
+      console.log(getIncidentById, "IncidentById");
       setIncident(getIncidentById);
     };
-    FetchIncident();
-    //   const FetchUser = async () => {
-    //     const getUserById = await apiCalls.getUserById(_id);
-    //     console.log(getUserById,"getUserById");
-    //     setUser(getUserById);
-    //   };
-    //   FetchUser();
-  }, [_id]);
+    fetchIncident();
 
-  const filterTimeLineBySearch = (array: TimelineEvent[], filterString: string): TimelineEvent[] => {
-    return array.filter((item) => {
+  }, [id]);
 
-      for (const key in item) {
 
-        if ((key != 'createdAt') && (String(item[key as keyof TimelineEvent]).toLowerCase()).includes(filterString.toLowerCase())) {
-          console.log(key)
-          return true;
-        }
-        if ((key == 'userId') && (String(item[key as keyof TimelineEvent]).toLowerCase()).includes(filterString.toLowerCase())) {
-          console.log(key)
-          return true;
-        }
-      }
-      return false;
-    });
-  }
 
   const someFunction = () => {
     filter = filterTimeLineBySearch(timelineObjects, myValue);
@@ -76,7 +53,7 @@ const TimeLinePage = ({ _id }: WithIdProps) => {
 
   return (
     <>
-      {/* <StyledSearch onEvent={someFunction} setValue={setMyValue}></StyledSearch> */}
+
       <Search onEvent={someFunction} setValue={setMyValue}></Search>
       {summaryIncident && <DisplaySummary summaryIncident={{ ...summaryIncident }} ></DisplaySummary>}
       <StyledPaper>

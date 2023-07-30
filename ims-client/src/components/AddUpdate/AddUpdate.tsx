@@ -8,16 +8,14 @@ import ToggleButtons from '../AddIncident/PriorityButtons';
 import DropDown from '../AddIncident/DropDown';
 import CustomAutocomplete from '../autoCompleteTag/autoComplete';
 import dayjs from 'dayjs';
-import Option from '../../interface/IOption';
+import IOption from '../../interface/IOption';
 import submitTimeLine from './submitTimeLine'
 import theme from '../../theme';
 import apiCalls from '../../service/apiCalls';
 import BannerNotification from "../bannerNotification/BannerNotification"
 import { text } from 'node:stream/consumers';
 import IIncident from '../../interface/incidentInterface';
-import TypesSelect, { Types } from '../AddIncident/Types';
 import { ITag } from '../../interface/ITag';
-import { Tag } from 'styled-components/dist/sheet/types';
 import UploadFiles from '../uploadFiles/UploadFiles';
 import awsService from '../../service/awsService';
 export interface form_data {
@@ -69,6 +67,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   const [severityValue, setSeverityValue] = useState<AlertColor>('error');
   const [messageValue, setMessageValue] = useState<string>("");
   const [text, setText] = useState<string>();
+  const getOptionLabel = (option: ITag) => option.name;
 
   const [selectedTags, setSelectedTags] = useState<ITag[]>(incident.currentTags);
 
@@ -193,7 +192,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Tags</label>
                 <div id="tags">
-                  <CustomAutocomplete options={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+                <CustomAutocomplete options={tags} selectedOptions={selectedTags} setSelectedOptions={setSelectedTags} getOptionLabel={getOptionLabel} placehOlderText={"Write to add"} />
                 </div>
               </FormControl>
             </Grid>

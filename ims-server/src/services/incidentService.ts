@@ -11,15 +11,15 @@ class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {
     try {
       const incident = new IncidentDto(newIncident);
-      const validationErrors = await validate(incident);
-      if (validationErrors.length > 0) {
-        logger.error({
-          source: constants.INCIDENT_SERVICE,
-          err: "Validation error",
-          validationErrors: validationErrors.map((error) => error.toString()),
-        });
-        throw new Error("Validation error");
-      }
+      // const validationErrors = await validate(incident);
+      // if (validationErrors.length > 0) {
+      //   logger.error({
+      //     source: constants.INCIDENT_SERVICE,
+      //     err: "Validation error",
+      //     validationErrors: validationErrors.map((error) => error.toString()),
+      //   });
+      //   throw new Error("Validation error");
+      // }
       logger.info({
         sourece: constants.INCIDENT_COTROLLER,
         msg: constants.ADD_INCIDENT_SUCCESS
@@ -119,9 +119,9 @@ class IncidentService {
 
   async getSummaryIncident(id: String): Promise<ISummary | any> {
     try {
-      let summary = {
+      let summary:ISummary = {
         createdBy: '',
-        createdAt: new Date(),
+         createdAt: '',
         currentPriority: '',
         tags: []
       }
@@ -133,11 +133,13 @@ class IncidentService {
         summary = {
           createdBy: incident.createdBy,
           createdAt: incident.createdAt,
-          currentPriority: incident.priority,
-          tags: incident.tags
+          currentPriority: incident.currentPriority,
+          tags: incident.currentTags
         }
         logger.info({ source: constants.INCIDENT_COTROLLER, method: constants.METHOD.GET, incidentId: id })
       }
+      console.log(summary)
+      console.log(incident)
       return summary;
     } catch (error: any) {
       logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentID: id });
