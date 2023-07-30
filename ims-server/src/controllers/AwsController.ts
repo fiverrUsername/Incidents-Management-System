@@ -31,8 +31,6 @@ export default class AwsController {
     }
   }
 
-
-
   async deleteAttachmentById(req: Request, res: Response): Promise<void> {
     try {
       console.log("_--",req.body)

@@ -24,18 +24,18 @@ describe("timeline events", () => {
         describe("success", () => {
             it("should add a timeline event and return 201", async () => {
                 const newtimelineEvent = {
-                    incidentId: "649cbeda942a5d4d8bcf3044",
-                    userId: "14785",
-                    description: "description",
-                    priority: "P10",
-                    type: "technical",
-                    files: [
+                    "incidentId": "649cbeda942a5d4d8bcf3044",
+                    "userId": "14785",
+                    "description": "description",
+                    "priority": "P10",
+                    "type": "technical",
+                    "files": [
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB9hfMxrD1ywcTDkrqvYu2CPDaDifO3AtmLztsKh4ZqkvS1jZdEQ1DWupA9KJCrQ-wnZI&usqp=CAU",
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB9hfMxrD1ywcTDkrqvYu2CPDaDifO3AtmLztsKh4ZqkvS1jZdEQ1DWupA9KJCrQ-wnZI&usqp=CAU",
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB9hfMxrD1ywcTDkrqvYu2CPDaDifO3AtmLztsKh4ZqkvS1jZdEQ1DWupA9KJCrQ-wnZI&usqp=CAU"
                     ],
-                    createdDate: Date.now(),
-                    updatedDate: Date.now(),
+                    "createdDate": Date.now(),
+                    "updatedDate": Date.now()
                 }
                 const res = await supertest(app)
                     .post("/timelineEvent/")
@@ -44,16 +44,47 @@ describe("timeline events", () => {
             });
         });
         describe("error", () => {
+            it("should return 422 on missing required fields", async () => {
+                const newtimelineEvent = {
+                    "incidentId": "649cbeda942a5d4d8bcf3044",
+                    "userId": "14785",
+                    "description": "description",
+                    // "priority": "P10",
+                    "type": "technical",
+                    "files": [
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB9hfMxrD1ywcTDkrqvYu2CPDaDifO3AtmLztsKh4ZqkvS1jZdEQ1DWupA9KJCrQ-wnZI&usqp=CAU",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB9hfMxrD1ywcTDkrqvYu2CPDaDifO3AtmLztsKh4ZqkvS1jZdEQ1DWupA9KJCrQ-wnZI&usqp=CAU",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB9hfMxrD1ywcTDkrqvYu2CPDaDifO3AtmLztsKh4ZqkvS1jZdEQ1DWupA9KJCrQ-wnZI&usqp=CAU"
+                    ],
+                    "createdDate": Date.now(),
+                    "updatedDate": Date.now()
+                };
+                const res = await supertest(app)
+                    .post("/timelineEvent/")
+                    .send(newtimelineEvent);
+                expect(res.status).toBe(422);
+            });
             it("should return 500 on error", async () => {
                 jest.spyOn(timelineEvent, 'create').mockRejectedValueOnce(new Error());
                 const newtimelineEvent = {
-                    name: "i add this timeline event"
+                    "incidentId": "649cbeda942a5d4d8bcf3044",
+                    "userId": "14785",
+                    "description": "description",
+                    "priority": "P10",
+                    "type": "technical",
+                    "files": [
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB9hfMxrD1ywcTDkrqvYu2CPDaDifO3AtmLztsKh4ZqkvS1jZdEQ1DWupA9KJCrQ-wnZI&usqp=CAU",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB9hfMxrD1ywcTDkrqvYu2CPDaDifO3AtmLztsKh4ZqkvS1jZdEQ1DWupA9KJCrQ-wnZI&usqp=CAU",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB9hfMxrD1ywcTDkrqvYu2CPDaDifO3AtmLztsKh4ZqkvS1jZdEQ1DWupA9KJCrQ-wnZI&usqp=CAU"
+                    ],
+                    "createdDate": Date.now(),
+                    "updatedDate": Date.now()
                 };
                 const res = await supertest(app)
                     .post("/timelineEvent/")
                     .send(newtimelineEvent);
                 expect(res.status).toBe(500);
-            });
+            });  
         });
     })
     describe("delete a timeline event by id", () => {

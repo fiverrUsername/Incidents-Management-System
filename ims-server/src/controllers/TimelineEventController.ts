@@ -43,13 +43,21 @@ export default class TimelineEventController {
             const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
             const response = await axios.post('http://localhost:4700', req.body);
             if (_timelineEvent instanceof Error) {
-                return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: _timelineEvent });
+                if (_timelineEvent.message === constants.MISSNG_REQUIRED_FIELDS) {
+                    return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: _timelineEvent });
+                }
+                if(_timelineEvent.message ==="Validation error" ||_timelineEvent.message ==="Incident ID not found"){
+                    return res.status(status.BAD_REQUEST).json({message:constants.INVALID_MESSAGE})
+                }
+                else {
+                    return res.status(status.SERVER_ERROR).json({ message: constants.SERVER_ERROR });
+                }
             }
             sendToSocket(_timelineEvent as ITimelineEvent, ObjectType.TimelineEvent, ActionType.Add);
             return res.status(status.CREATED_SUCCESS).json(_timelineEvent);
         }
         catch (error: any) {
-            return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: error.message });
+            return res.status(status.SERVER_ERROR).json({ message: error.message });
         }
     }
 
