@@ -10,15 +10,11 @@ const meta = {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'fullscreen',
     tags: ['autodocs'],
-},
+  },
 } satisfies Meta<typeof incidentsPage>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-//export const LoggedOut: Story = {};
-
-//More on interaction testing: https://storybook.js.org/docs/react/writing-tests/interaction-testing
 export const Filter: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

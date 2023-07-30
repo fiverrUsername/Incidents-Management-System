@@ -1,7 +1,7 @@
 import { ITag } from "./tagInterface";
 
 export interface IIncident {
-  _id: string;
+  _id?: string;
   id: string;
   name: string;
   status: string;
@@ -9,7 +9,9 @@ export interface IIncident {
   currentPriority: string;
   type: string;
   durationHours: number;
-  slackLink?: string;
+  channelId?: string;
+  slackLink: string;
+  channelName?: string;
   currentTags: ITag[];
   date: string;
   createdAt: string;
@@ -17,3 +19,6 @@ export interface IIncident {
   cost: number;
   createdBy: string;
 }
+
+
+

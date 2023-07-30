@@ -11,6 +11,8 @@ import { ISummary } from "../../interface/ISummary";
 import IIncident from "../../interface/incidentInterface";
 import { Grid, Typography } from "@mui/material";
 import filterTimeLineBySearch from "../../service/timeLineService";
+import users from '../../mockAPI/users.json';
+import { GetIncident } from "../../components/AddUpdate/AddUpdate";
 
 const TimeLinePage = ({ id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<TimelineEvent[]>([]);

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import Option from '../../interface/IOption';
 import theme from '../../theme';
 import { IntervalHistogram } from 'perf_hooks';
 import  IOption  from '../../interface/IOption';
@@ -15,9 +14,13 @@ interface AutocompleteProps {
   disabled?:boolean
   placehOlderText:string
 }
-const CustomAutocomplete=({ options, selectedOptions, setSelectedOptions,getOptionLabel,disabled,placehOlderText }: AutocompleteProps) => {
+const CustomAutocomplete=({ options,
+   selectedOptions,
+   setSelectedOptions,
+  getOptionLabel,disabled,placehOlderText }: AutocompleteProps) => {
+  const selectedValues = selectedOptions.map((selected) => getOptionLabel(selected));
   const filteredOptions = options.filter(
-    (option) => !selectedOptions.some((selected) => selected.value === getOptionLabel(option))
+    (option) => !selectedValues.includes(getOptionLabel(option))
   );
 
   const readOnlyAttribute = disabled ? { readOnly: true } : {readOnly: false};
@@ -39,7 +42,7 @@ const CustomAutocomplete=({ options, selectedOptions, setSelectedOptions,getOpti
         },
       }}
       multiple
-      options={filteredOptions} // Use the filtered options
+      options={filteredOptions} 
       filterSelectedOptions
       value={selectedOptions}
       getOptionLabel={getOptionLabel}

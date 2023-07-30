@@ -21,7 +21,7 @@
 //     const descriptionField = screen.getByLabelText(/Description/i);
 //     const priorityField = screen.getByLabelText(/Priority/i);
 //     const dateField = screen.getByLabelText(/Date \(optional\)/i);
-//     const slackLinkField = screen.getByLabelText(/Channel Link/i);
+//     const channelNameField = screen.getByLabelText(/Channel Link/i);
 //     const typeField = screen.getByLabelText(/Type/i);
 //     const tagsField = screen.getByLabelText(/Tags/i);
 //     const addButton = screen.getByText(/Add/i);
@@ -30,7 +30,7 @@
 //     expect(descriptionField).toBeInTheDocument();
 //     expect(priorityField).toBeInTheDocument();
 //     expect(dateField).toBeInTheDocument();
-//     expect(slackLinkField).toBeInTheDocument();
+//     expect(channelNameField).toBeInTheDocument();
 //     expect(typeField).toBeInTheDocument();
 //     expect(tagsField).toBeInTheDocument();
 //     expect(addButton).toBeInTheDocument();

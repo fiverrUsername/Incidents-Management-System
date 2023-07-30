@@ -41,7 +41,8 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading }) => {
     tags: false,
     updatedAt: false,
     createdAt: false,
-    slackLink: false,
+    slackLink:false,
+    channelName: false,
   };
 
   const columns: GridColDef[] = [
@@ -81,7 +82,7 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading }) => {
         <ColumnHeader params={params} />
     },
     {
-      field: "slackLink", headerName: "Slack Link", minWidth: 200, maxWidth: 1700, flex: 1,
+      field: "channelName", headerName: "Slack Link", minWidth: 200, maxWidth: 1700, flex: 1,
       renderHeader: (params: GridColumnHeaderParams) =>
         <ColumnHeader params={params} />
     },

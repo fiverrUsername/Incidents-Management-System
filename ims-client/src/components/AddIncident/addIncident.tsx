@@ -19,7 +19,10 @@ export interface FormData {
   description: string;
   priority: string;
   date: dayjs.Dayjs;
-  slackLink: string;
+  ChannelId:string;
+  
+  // slackLink:string;
+  channelName: string;
   type: string;
   tags: ITag[];
 }
@@ -33,7 +36,7 @@ export default function AddIncident({ open, onClose }: Props) {
   const [priority, setPriority] = React.useState<string | null>('p0');
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [type, setType] = React.useState('');
-  const [selectedTags, setSelectedTags] = useState<IOption[]>([]);
+  const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
   const [tags, setTags] = useState<ITag[]>([]);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -78,20 +81,64 @@ export default function AddIncident({ open, onClose }: Props) {
     borderRadius: '20px',
   };
 
-  const validateSlackLink = (value: string) => {
+  // const validatechannelName = (value: string) => {
+  //   if (!value) {
+  //     return 'Slack Channel Link is required';
+  //   }
+
+  //   try {
+  //     new URL(value);
+  //   } catch (error) {
+  //     return 'Invalid Slack Channel Link';
+  //   }
+
+  //   return undefined;
+  // };
+
+  const validatechannelName = (value:string) => {
+    const minLength = 1;
+    const maxLength = 80;
+    const allowedCharacters = /^[a-zA-Z0-9-_]+$/;
+
+    //TODO- GetAllChannelsNames from slack server
+    const reservedNames = ["general", "random", "all"]; 
+  
     if (!value) {
-      return 'Slack Channel Link is required';
+      return "Slack Channel Name is required";
+    }
+  
+    if (value.length < minLength || value.length > maxLength) {
+      return "Slack Channel Name must be between 1 and 80 characters long";
+    }
+  
+    if (!allowedCharacters.test(value)) {
+      return "Invalid characters";
+    }
+  
+    if (reservedNames.includes(value.toLowerCase())) {
+      return "The channel name is already exists";
+    }
+  
+  
+    return true;
+  };
+  
+  
+
+
+  const validatechannelId = (value: string) => {
+    if (!value) {
+      return 'Slack Channel Id is required';
     }
 
     try {
       new URL(value);
     } catch (error) {
-      return 'Invalid Slack Channel Link';
+      return 'Invalid Slack Channel Id';
     }
 
     return undefined;
   };
-
   const backdropStyles: React.CSSProperties = {
     background: 'rgba(0, 48, 18, 0.84)',
   };
@@ -152,16 +199,16 @@ export default function AddIncident({ open, onClose }: Props) {
                 </Grid>
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
-                    <label htmlFor="slack-channel"> Channel Link</label>
+                    <label htmlFor="slack-channel"> Channel Name</label>
                     <TextFieldInput
                       id="slack-channel"
                       size="small"
                       rows={1}
                       multiline
-                      placeholder="Slack Channel Link"
-                      {...register("slackLink", { validate: validateSlackLink })}
+                      placeholder="Slack Channel name"
+                      {...register("channelName", { validate: validatechannelName })}
                     />
-                    {errors.slackLink && <span style={{ color: errorColor }}>{errors.slackLink.message}</span>}
+                    {errors.channelName && <span style={{ color: errorColor }}>{errors.channelName.message}</span>}
                   </FormControl>
                 </Grid>
               </Grid>

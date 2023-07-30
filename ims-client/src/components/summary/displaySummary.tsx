@@ -4,31 +4,16 @@ import { ISummary } from '../../interface/ISummary';
 import {  Box, Chip, Grid, colors } from '@mui/material';
 import theme from '../../theme';
 import dayjs from 'dayjs';
-import { StyledChip } from './displaySummary.style';
-import { BiBorderRadius } from 'react-icons/bi';
 import { ITag } from '../../interface/ITag';
 import CustomAutocomplete from '../autoCompleteTag/autoComplete';
-
-
-
 interface propsDisplaySummary {
     summaryIncident: ISummary
 }
 const DisplaySummary = ({ summaryIncident }: propsDisplaySummary) => {
-
-//  const mockOptions = [
-//   { userId: '1', name: 'Option1' },
-//   { userId: '2', name: 'Option2' },
-//   { userId: '3', name: 'Option3' },
-//   { userId: '1', name: 'Option1' },
-//   { userId: '2', name: 'Option2' },
-//   { userId: '3', name: 'Option3' },
-// ];
     const [selectedTags, setSelectedTags] = useState<ITag[]>(summaryIncident.tags);
     const [s, setS] = useState<ITag[]>([]);
     const getOptionLabel = (tag: ITag) => tag.name;
- 
-    const date = dayjs(summaryIncident.createdAt).format("DD/MM/YYYY") 
+    const date = dayjs(summaryIncident.createdAt).format("DD/MM/YYYY")
     return (
         <StyledPaper>
             <Grid container direction="row" justifyContent="center" alignItems="flex-start" flexWrap="nowrap">
@@ -41,7 +26,6 @@ const DisplaySummary = ({ summaryIncident }: propsDisplaySummary) => {
                 <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
                     <StyledBox>Current priority: <label style={{ color: theme.palette.primary.dark, fontSize: theme.typography.fontSize }}>{summaryIncident.currentPriority}</label></StyledBox>
                 </Grid>
-
                 <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
 
                     <StyledBox>Affected services:</StyledBox> 
@@ -57,5 +41,4 @@ const DisplaySummary = ({ summaryIncident }: propsDisplaySummary) => {
         </StyledPaper>
     );
 }; 
-
 export default DisplaySummary;
