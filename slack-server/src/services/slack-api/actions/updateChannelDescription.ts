@@ -1,9 +1,8 @@
-const { WebClient } = require('@slack/web-api');
-const slackToken ='xoxb-5609511342163-5604717800598-XAxj3F4jbNGLav6i5DkQZkJw'
-const web = new WebClient(slackToken);
+import { client } from "./const";
+
 async function updateChannelDescription(channelId:string, description:string) {
   try {
-    const result = await web.conversations.setPurpose({
+    const result = await client.conversations.setPurpose({
       channel: channelId,
       purpose: description,
     });

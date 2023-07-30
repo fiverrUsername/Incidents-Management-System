@@ -15,7 +15,6 @@ export interface ITimelineEvent{
 }
 
 export async function addTimeLineEvent(timeline:ITimelineEvent){
-    console.log(" slack no")
     const answer = await axios.post('http://localhost:7006/timelineEvent/compareIncidentChanges', timeline);
     console.log(answer.data+" slack answer")
     
