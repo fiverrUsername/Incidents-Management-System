@@ -22,7 +22,7 @@ class AwsService {
   async getAllAttachmentByTimeline(filesKey:string[]): Promise<void | any> {
     try {
       logger.info({ source: constants.SHOW_FILES, msg: constants.METHOD.GET, success: true });
-      const  keys= await awsRepository.getAllAttachments(filesKey);
+      const  keys= await awsRepository.getAllAttachmentsByTimeline(filesKey);
       return keys;
     } catch (error: any) {
       logger.error({ source: constants.SHOW_FILES, method: constants.METHOD.GET, err: true });
