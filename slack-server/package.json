@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "nodemon src/app.ts"
+    "start": "nodemon app.ts"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.2",
@@ -14,9 +14,9 @@
     "@slack/web-api": "^6.8.1",
     "axios": "^1.4.0",
     "body-parser": "^1.20.2",
-    "nodemon": "^3.0.1",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "nodemon": "^3.0.1",
     "ws": "^8.13.0"
   }
 }

@@ -11,7 +11,7 @@ ws.on('open', () => {
   console.log('WebSocket connection is open in slack-server.');
 });
 
-ws.onmessage = (webSocketMessage) => {
+ws.onmessage = (webSocketMessage:any) => {
   const messageBody: IMessage = JSON.parse(webSocketMessage.data.toString());
   switch (messageBody.objectType) {
     case ObjectType.Incident:
@@ -34,6 +34,7 @@ ws.onmessage = (webSocketMessage) => {
       switch (messageBody.actionType) {
         case ActionType.Add:
           addTimeLineEvent(messageBody.object as ITimelineEvent)
+          console.log("in socket")
           break;
         case ActionType.Update:
           // Perform some action for updating a TimelineEvent

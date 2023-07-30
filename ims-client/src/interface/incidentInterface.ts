@@ -1,4 +1,3 @@
-import { ITag } from "./ITag";
 
 export default interface IIncident {
   id: string;

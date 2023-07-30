@@ -20,7 +20,6 @@ export default async function submitIncident(prop:FormData) {
         channelName: prop.channelName,
         channelId:"",
         currentTags: prop.tags.map(tag => ({ id: tag.id, name: tag.name })),
-
         date: prop.date.toDate(),
         createdAt: new Date(),
         updatedAt: new Date(),
