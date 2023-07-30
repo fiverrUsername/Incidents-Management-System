@@ -30,7 +30,7 @@ ws.onmessage = (webSocketMessage: { data: { toString: () => string; }; }) => {
         case ActionType.Add:
           break;
         case ActionType.Update:
-          //incidentRepository.updateIncident(messageBody.object._id, messageBody.object as IIncident)
+          incidentRepository.updateIncident(messageBody.object._id, messageBody.object as IIncident)
           // Perform some action for updating a TimelineEvent
           break;
         case ActionType.Delete:
