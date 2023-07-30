@@ -36,14 +36,21 @@ export default class TimelineEventController {
     async addTimelineEvent(req: Request, res: Response): Promise<Response> {
         try {
             const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
-            console.log(_timelineEvent)
             if (_timelineEvent instanceof Error) {
-                return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: _timelineEvent });
+                if (_timelineEvent.message === constants.MISSNG_REQUIRED_FIELDS) {
+                    return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: _timelineEvent });
+                }
+                if(_timelineEvent.message ==="Validation error" ||_timelineEvent.message ==="Incident ID not found"){
+                    return res.status(status.BAD_REQUEST).json({message:constants.INVALID_MESSAGE})
+                }
+                else {
+                    return res.status(status.SERVER_ERROR).json({ message: constants.SERVER_ERROR });
+                }
             }
             return res.status(status.CREATED_SUCCESS).json(_timelineEvent);
         }
         catch (error: any) {
-            return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: error.message });
+            return res.status(status.SERVER_ERROR).json({ message: error.message });
         }
     }
 
@@ -96,38 +103,38 @@ export default class TimelineEventController {
 
     async getFileInTimelineEventByIndex(req: Request, res: Response): Promise<Response> {
         try {
-          const timelineEventId: string = req.params.id;
-          const index: number = parseInt(req.query.index as string);   
-          const file = await timelineEventService.getFileInTimelineEventByIndex(timelineEventId, index); 
-          if(file instanceof Error){
-                if(file.message=='Timeline event not found'){
+            const timelineEventId: string = req.params.id;
+            const index: number = parseInt(req.query.index as string);
+            const file = await timelineEventService.getFileInTimelineEventByIndex(timelineEventId, index);
+            if (file instanceof Error) {
+                if (file.message == 'Timeline event not found') {
                     return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id });
                 }
-                if(file.message=='Invalid index'){
+                if (file.message == 'Invalid index') {
                     return res.status(status.BAD_REQUEST).json({ message: constants.BAD_REQUEST, error: constants.INDEX_NOT_VALID });
                 }
                 return res.status(500).json({ message: constants.SERVER_ERROR });
-          } 
-          logger.info({ source: constants.TIMELINE_EVENT, msg: constants.SUCCESS, timelineEventId, indexFile: index, method: constants.METHOD.GET });
-          return res.status(status.SUCCESS).json(file);
+            }
+            logger.info({ source: constants.TIMELINE_EVENT, msg: constants.SUCCESS, timelineEventId, indexFile: index, method: constants.METHOD.GET });
+            return res.status(status.SUCCESS).json(file);
         } catch (error: any) {
             return res.status(500).json({ message: error });
         }
-      }
+    }
 
     async deleteFileInTimelineEventByIndex(req: Request, res: Response): Promise<Response> {
         try {
             const timelineEventId: string = req.params.id;
             const index: number = parseInt(req.query.index as string);
             const updatedTimelineEvent = await timelineEventService.deleteFileInTimelineEventByIndex(timelineEventId, index);
-            if(updatedTimelineEvent instanceof Error){
-                if(updatedTimelineEvent.message=='Timeline event not found'){
+            if (updatedTimelineEvent instanceof Error) {
+                if (updatedTimelineEvent.message == 'Timeline event not found') {
                     return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id });
                 }
-                if(updatedTimelineEvent.message=='Invalid index'){
+                if (updatedTimelineEvent.message == 'Invalid index') {
                     return res.status(status.BAD_REQUEST).json({ message: constants.BAD_REQUEST, error: constants.INDEX_NOT_VALID });
                 }
-                else{
+                else {
                     return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: constants.SERVER_ERROR });
                 }
             }
