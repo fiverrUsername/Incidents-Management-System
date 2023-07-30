@@ -1,7 +1,6 @@
 import { ITag } from "./tagInterface";
 
 export interface IIncident {
-  _id?: string;
   id: string;
   name: string;
   status: string;
