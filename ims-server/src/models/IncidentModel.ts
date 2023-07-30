@@ -1,5 +1,7 @@
 import mongoose, { Schema } from "mongoose";
-import { type IIncident } from "../interfaces/IncidentInterface";
+// import { type IIncident } from "../interfaces/IncidentInterface";
+import  {IIncident} from "../interfaces/IncidentInterface";
+
 import { v4 as uuidv4 } from "uuid";
 
 export const IncidentSchema = new Schema<IIncident>({
@@ -36,10 +38,19 @@ export const IncidentSchema = new Schema<IIncident>({
     type: Number,
     required: true,
   },
-  slackLink: {
+  channelId: {
+    type: String,
+    required: false,
+  },
+  channelName: {
     type: String,
     required: true,
   },
+  slackLink: {
+    type: String,
+    required: false,
+  },
+  
   currentTags: {
     type: [
       {

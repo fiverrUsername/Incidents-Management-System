@@ -3,6 +3,7 @@ import cors from 'cors';
 import express, { Request, Response } from 'express';
 import fs from 'fs';
 import swaggerUI from 'swagger-ui-express';
+import '../src/services/socket';
 import config from './config/config';
 import logger from './loggers/log';
 import { connect } from './models/db';
@@ -11,7 +12,8 @@ import aggregationRouter from './routes/aggrigationRouter';
 import tagRouter from './routes/tagRouter';
 import timelineEventRouter from './routes/timelineEventRouter';
 import awsRouter from './routes/awsRouter';
-import { authenticateToken } from './middle_wares/authentication';
+
+
 const port = config.server.port
 
 const app = express()
@@ -37,7 +39,18 @@ const corsOptions: cors.CorsOptions = {
 
 
 connect()
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors({
+  origin: true, // "true" will copy the domain of the request back
+  // to the reply. If you need more control than this
+  // use a function.
+  credentials: true, // This MUST be "true" if your endpoint is
+  // authenticated via either a session cookie
+  // or Authorization header. Otherwise the
+  // browser will block the response.
+  methods: 'POST,GET,PUT,OPTIONS,DELETE' // Make sure you're not blocking
+  // pre-flight OPTIONS requests
+}));
 // app.use(authenticateToken);
 
 app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
@@ -55,4 +68,4 @@ app.listen(port, () => {
   logger.info(`Server is listeningo on http://localhost:${port}`)
 });
 
-export default app
+export default app;

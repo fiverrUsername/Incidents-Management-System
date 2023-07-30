@@ -16,33 +16,30 @@ interface AttachmentData {
 dotenv.config()
 const s3 = new AWS.S3();
 class AwsRepository {
-
-  async uploadAttachment(files: Express.Multer.File[]): Promise<AWS.S3.ManagedUpload.SendData | any> {
-    if (!process.env.BUCKET_NAME) {
-      logger.error({ source: constants.BUCKET_NAME, method: constants.METHOD.GET, err: true });
-      return;
-    }
-    const uploadPromises = files.map((file) => {
-      const fileName = file.originalname;
-      const fileBuffer = fs.readFileSync(file.path);
-      if (fileName && fileBuffer) {
-        const params: AWS.S3.PutObjectRequest = {
-          Bucket: process.env.BUCKET_NAME ? process.env.BUCKET_NAME.toString() : '',
-          Key: fileName.toString(),
-          Body: fileBuffer,
-        };
-        return s3.upload(params).promise();
-      }
-    });
-    try {
-      const uploadResults = await Promise.all(uploadPromises);
-      uploadResults.forEach((result) => {
-        logger.info({ source: constants.UPLOAD_SUCCESS, msg: constants.METHOD.GET, success: true });
+  
+  async uploadAttachment(files:Express.Multer.File []): Promise<AWS.S3.ManagedUpload.SendData | any> {
+      const uploadPromises = files.map((file) => {
+        const fileName = file.originalname;
+        const fileBuffer = fs.readFileSync(file.path);
+        if (fileName && fileBuffer) {
+          const params: AWS.S3.PutObjectRequest = {
+            Bucket: AwsRepository.getBucketName(),
+            Key: fileName.toString().replace(/_/g, '/'),
+            Body: fileBuffer,
+          };
+          return s3.upload(params).promise();
+        }
       });
-    } catch (error) {
-      logger.info({ source: constants.UPLOAD_FAILED, msg: constants.METHOD.GET, error: true });
-    }
-
+  
+      try {
+        const uploadResults = await Promise.all(uploadPromises);
+        uploadResults.forEach((result) => {
+          logger.info({ source: constants.UPLOAD_SUCCESS, msg: constants.METHOD.GET, success: true });
+        });
+      } catch (error) {
+        logger.info({ source: constants.UPLOAD_FAILED, msg: constants.METHOD.GET, error: true });
+      }
+      
   }
 
   async getAllAttachmentByTimeline(key: string): Promise<AttachmentData|null> {

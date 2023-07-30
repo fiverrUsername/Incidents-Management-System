@@ -19,25 +19,45 @@ import TypesSelect, { Types } from '../AddIncident/Types';
 import { ITag } from '../../interface/ITag';
 import { Tag } from 'styled-components/dist/sheet/types';
 import UploadFiles from '../uploadFiles/UploadFiles';
-
-export interface FormData {
+import awsService from '../../service/awsService';
+export interface form_data {
   text: string;
   priority: string;
   date: dayjs.Dayjs;
   type: string;
   tags: ITag[];
   files: string[];
+} 
 
+export interface GetIncident {
+  _id: string;
+  id: string;
+  name: string;
+  status: string;
+  description: string;
+  currentPriority: string;
+  type: string;
+  durationHours: number;
+  channelId?:string;
+  slackLink: string;
+  channelName?: string;
+  currentTags: ITag[];
+  date: string;
+  createdAt: string;
+  updatedAt: string;
+  cost: number;
+  createdBy: string;
 }
+
 interface Props {
   open: boolean;
   onClose: () => void;
-  incident: IIncident;
+  incident: GetIncident;
 }
 
 export default function AddUpdate({ open, onClose, incident }: Props) {
-  const priorityProp = incident.priority;
-  const { handleSubmit, register, formState: { errors } } = useForm<FormData>();
+  const priorityProp = incident.currentPriority;
+  const { handleSubmit, register, formState: { errors } } = useForm<form_data>();
   const [priority, setPriority] = React.useState<string | null>("");
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [showBanner, setShowBanner] = useState(false);
@@ -45,14 +65,14 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   const [type, setType] = React.useState(incident.type);
   const [tags, setTags] = useState<ITag[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-  const [filesS, setFilesS] = useState<string[]>([]);
+  const [filesString, setFilesString] = useState<string[]>([]);
   const [severityValue, setSeverityValue] = useState<AlertColor>('error');
   const [messageValue, setMessageValue] = useState<string>("");
   const [text, setText] = useState<string>();
 
-  const [selectedTags, setSelectedTags] = useState<ITag[]>(incident.tags);
+  const [selectedTags, setSelectedTags] = useState<ITag[]>(incident.currentTags);
 
-  async function onSubmit(data: FormData) {
+  async function onSubmit(data: form_data) {
     setIsSubmit(true);
     if (priority != null)
       data.priority = priority
@@ -62,8 +82,17 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       data.date = date;
     data.type = type;
     data.tags = selectedTags;
-    data.files = filesS;
-    if (type && tags) {
+    data.files = filesString;
+    const formData = new FormData();
+    files.map((file)=>{
+      console.log(incident)
+      const newName = `incidence_${incident.id}_${file.name}`
+      setFilesString([...filesString, newName]);
+      console.log("-----", newName)
+      formData.append('files', file, newName);
+    })
+    await awsService.uploadAttachment(formData);
+        if (type && tags) {
       const flag = await submitTimeLine({ data, incident });
       if (flag) {
         setSeverityValue('success');
@@ -76,6 +105,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       setShowBanner(true);
     }
   }
+
   const closeIconStyles: React.CSSProperties = {
     width: '17px',
     height: '17px',

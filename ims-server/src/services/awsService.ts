@@ -19,7 +19,7 @@ class AwsService {
     }
   }
 
-  async getAllAttachmentByTimeline(filesKey:string[], res: Response ): Promise<void | any> {
+  async getAllAttachmentByTimeline(filesKey:string[]): Promise<void | any> {
     try {
       logger.info({ source: constants.SHOW_FILES, msg: constants.METHOD.GET, success: true });
       const  keys= await awsRepository.getAllAttachments(filesKey);

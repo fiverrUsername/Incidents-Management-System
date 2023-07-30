@@ -11,11 +11,12 @@ import { ISummary } from "../../interface/ISummary";
 import IIncident from "../../interface/incidentInterface";
 import { Grid, Typography } from "@mui/material";
 import users from '../../mockAPI/users.json';
+import { GetIncident } from "../../components/AddUpdate/AddUpdate";
 
 const TimeLinePage = ({ _id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<TimelineEvent[]>([]);
   const [summaryIncident, setSummaryIncident] = useState<ISummary>();
-  const [incident, setIncident] = useState<IIncident>();
+  const [incident, setIncident] = useState<GetIncident>();
   //const [user,setUser]=useState();
   // const user = users.find((u) => u._id === incident?.createdBy);
   //when the functions in server are done
