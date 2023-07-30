@@ -47,10 +47,12 @@ export interface GetIncident {
   createdBy: string;
 }
 
+
+
 interface Props {
   open: boolean;
   onClose: () => void;
-  incident: GetIncident;
+  incident: IIncident;
 }
 
 export default function AddUpdate({ open, onClose, incident }: Props) {

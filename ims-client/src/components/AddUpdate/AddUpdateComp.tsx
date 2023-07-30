@@ -4,7 +4,7 @@ import AddUpdate, { GetIncident } from "./AddUpdate";
 import IIncident from "../../interface/incidentInterface";
 
 interface Props {
-    incident:GetIncident;
+    incident:IIncident;
 }
 
 export default function AddUpdateComp({ incident }: Props) {
