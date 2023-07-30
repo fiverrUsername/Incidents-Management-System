@@ -28,7 +28,13 @@ describe("apiCalls", () => {
                     priority: "P0",
                     type: "securing",
                     durationHours: " 24",
-                    slackLink: "https://join.slack.com/t/fi-verr/shared_invite/zt-1xip09fur-ERWbAQen_A~dz5s42ltnvw",
+                    channelId: "",
+                    slackLink: "",
+
+                    channelName: "https://join.slack.com/t/fi-verr/shared_invite/zt-1xip09fur-ERWbAQen_A~dz5s42ltnvw",
+
+
+
                     tags:
                     {
                         _id: "64ad683127bcfa39135bf6cb",
