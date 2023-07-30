@@ -137,7 +137,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       setTags(getAllTags);
     }
     getTags();
-    setPriority(String(priorityProp.toLowerCase()));
+    setPriority(String(priorityProp).toLowerCase());
   }, []);
 
   return (

@@ -3,13 +3,25 @@ import { IMessage, ObjectType, ActionType } from '../../../ims-socket/src/interf
 import { Im } from '@slack/web-api/dist/response/RtmStartResponse';
 import { createNewChannel } from './slack-api/actions/createChannel';
 import { IIncident } from '../../../ims-server/src/interfaces/IncidentInterface';
-import { ITimelineEvent, addTimeLineEvent } from './slack-api/wrap/sendTimeLine';
+import { ITimelineEvent } from '../../../ims-server/src/interfaces/ItimelineEvent';
+
+import { addTimeLineEvent } from './slack-api/wrap/sendTimeLine';
 
 const ws = new WebSocket('ws://localhost:7071');
+const messageQueue: any[] = []; // Replace 'any' with the type of messages you are sending
 
 ws.on('open', () => {
-  console.log('WebSocket connection is open in slack-server.');
+  console.log('WebSocket connection is open in ims-slack.');
+  // Process the message queue
+  while (messageQueue.length > 0) {
+    const message = messageQueue.shift();
+    send(message);
+  }
 });
+
+const send = (message: IMessage) => {
+  ws.send(JSON.stringify(message));
+}
 
 ws.onmessage = (webSocketMessage) => {
   const messageBody: IMessage = JSON.parse(webSocketMessage.data.toString());
@@ -51,3 +63,12 @@ ws.onmessage = (webSocketMessage) => {
       break;
   }
 };
+
+export const sendToSocket = (object: ITimelineEvent | IIncident, objectType: ObjectType, actionType: ActionType) => {
+  const sendObj: IMessage = { objectType, actionType, object };
+  if (ws.readyState === WebSocket.OPEN) {
+    send(sendObj);
+  } else {
+    messageQueue.push(sendObj);
+  }
+}
