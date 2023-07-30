@@ -22,18 +22,14 @@ export async function addTimeLineEvent(timeline:ITimelineEvent){
     
     const requestConfig: AxiosRequestConfig = {};
   requestConfig.data = { files: timeline.files };
-  console.log(timeline.files+" slack no")
     const answer = await axios.post('http://localhost:7006/timelineEvent/compareIncidentChanges', timeline);
     await axios.get('http://localhost:7006/aws', requestConfig.data.files).then((response) => {
         console.log(response.data);
         console.log("sd");
-        var f:AttachmentData=response.data
-        console.log(f.key);
       }, (error) => {
         console.log(error);
       });
-
-    //console.log(files.data+" slack answer")
+   // console.log(requestConfig.data.files+" slack answer")
     
-   // sendMessageFromBot(timeline.channelId,answer.data.join(' '))
+    sendMessageFromBot(timeline.channelId,answer.data.description.join(' '))
 }

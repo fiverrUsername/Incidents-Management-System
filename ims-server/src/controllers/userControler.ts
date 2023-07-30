@@ -1,4 +1,4 @@
-import { type Request, type Response } from "express";
+import { Request, Response } from "express";
 import UserModel from "../models/user";
 import { status } from "../loggers/constants";
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

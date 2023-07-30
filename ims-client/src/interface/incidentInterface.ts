@@ -5,7 +5,7 @@ export default interface IIncident  {
     name: string;
     status: string;
     description: string;
-    priority: string;
+    currentPriority: string;
     type: string;
     durationHours: number;
     channelId: string;
