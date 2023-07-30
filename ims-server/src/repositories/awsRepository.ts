@@ -30,7 +30,6 @@ class AwsRepository {
           return s3.upload(params).promise();
         }
       });
-  
       try {
         const uploadResults = await Promise.all(uploadPromises);
         uploadResults.forEach((result) => {
@@ -42,7 +41,7 @@ class AwsRepository {
       
   }
 
-  async getAllAttachmentByTimeline(key: string): Promise<AttachmentData|null> {
+  async getAttachment(key: string): Promise<AttachmentData|null> {
     try {
       const s3 = new AWS.S3();
       const params: AWS.S3.GetObjectRequest = {
@@ -64,11 +63,11 @@ class AwsRepository {
     }
   }
 
-  async getAllAttachments(keys: string[]): Promise<(AttachmentData|null)[]|any> {
+  async getAllAttachmentsByTimeline(keys: string[]): Promise<(AttachmentData|null)[]|any> {
     try {
       
       const allResponses: (AttachmentData | null)[] = await Promise.all(keys.map(
-        (key) => this.getAllAttachmentByTimeline(key)));
+        (key) => this.getAttachment(key)));
       logger.info({ source: constants.SHOW_SUCCESS, method: constants.METHOD.GET, err: true });
       return allResponses;
     } catch (error) {
@@ -85,8 +84,12 @@ class AwsRepository {
     try {
       await s3.deleteObject(params).promise();
       logger.info({ source: constants.DELETE_FILE_SUCCESS, msg: constants.METHOD.GET, success: true });
-    } catch (error) {
-      logger.error({ source: constants.DELETE_FILE_FAILED, msg: constants.METHOD.GET, error: true });
+    } catch (error:any) {
+      if(error.code === 'NoSuchKey'){
+        logger.info({source: constants.FILE_NOT_FOUND , msg: constants.METHOD.GET, key:key, error: true});
+      }else{
+        logger.error({ source: constants.DELETE_FILE_FAILED, msg: constants.METHOD.GET, error: true });
+      }
     }
   }
 

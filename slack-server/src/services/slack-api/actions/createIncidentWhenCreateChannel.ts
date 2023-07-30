@@ -5,6 +5,8 @@ import axios from 'axios';
 import addIncident from '../../../../../ims-server/src/controllers/IncidentController';
 import { IIncident } from '../../../../../ims-server/src/interfaces/IncidentInterface';
 import {EncidentStatus,EncidentType} from '../../../../../ims-server/src/enums/enum';
+import { ActionType, ObjectType } from "../../../../../ims-socket/src/interfaces";
+import { sendToSocket } from "../../socket";
 
 export async function createIncident(channelId: string) {
     try {
@@ -35,10 +37,7 @@ export async function createIncident(channelId: string) {
             createdBy: '', //TODO
         };
 
-        //TODO
-        //Socket- call to updatedIncident in ims-server
-        // await addIncident(newIncident)
-
+        sendToSocket(newIncident, ObjectType.Incident, ActionType.Add);
 
         console.log('Incident created successfully');
     } catch (error) {

@@ -18,6 +18,10 @@ const port = config.server.port
 
 const app = express()
 
+process.on('uncaughtException', function (err) {
+  console.log(err);
+});
+
 const swaggerFile: any = (process.cwd() + "/src/Swagger.json");
 const swaggerData: any = fs.readFileSync(swaggerFile, 'utf8');
 const swaggerDocument = JSON.parse(swaggerData);
@@ -39,7 +43,18 @@ const corsOptions: cors.CorsOptions = {
 
 
 connect()
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors({
+  origin: true, // "true" will copy the domain of the request back
+  // to the reply. If you need more control than this
+  // use a function.
+  credentials: true, // This MUST be "true" if your endpoint is
+  // authenticated via either a session cookie
+  // or Authorization header. Otherwise the
+  // browser will block the response.
+  methods: 'POST,GET,PUT,OPTIONS,DELETE' // Make sure you're not blocking
+  // pre-flight OPTIONS requests
+}));
 // app.use(authenticateToken);
 
 app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
@@ -52,8 +67,6 @@ app.use('/aws', awsRouter)
 app.get('/', (req: Request, res: Response): void => {
   res.redirect('/swagger')
 });
-
-
 
 app.listen(port, () => {
   logger.info(`Server is listeningo on http://localhost:${port}`)

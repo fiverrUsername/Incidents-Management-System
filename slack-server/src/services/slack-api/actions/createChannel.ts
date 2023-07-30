@@ -1,7 +1,7 @@
 import { IIncident } from '../../../../../ims-server/src/interfaces/IncidentInterface';
+import { SLACK_API_TOKEN } from './const';
 
 
-const slackApiToken = 'xoxb-5609511342163-5604717800598-XAxj3F4jbNGLav6i5DkQZkJw';
 //TODO- change the userIds
 const userIds = ['U05HXKPD259'];
 export async function createNewChannel(incidentData: IIncident) {
@@ -12,7 +12,7 @@ export async function createNewChannel(incidentData: IIncident) {
       is_private: false,
     }, {
       headers: {
-        'Authorization': `Bearer ${slackApiToken}`,
+        'Authorization': `Bearer ${SLACK_API_TOKEN}`,
         'Content-Type': 'application/json'
       }
     });
@@ -73,7 +73,7 @@ async function sendMessageToChannel(channelId: string, message: string) {
       text: message
     }, {
       headers: {
-        'Authorization': `Bearer ${slackApiToken}`,
+        'Authorization': `Bearer ${SLACK_API_TOKEN}`,
         'Content-Type': 'application/json'
       }
     });
@@ -98,13 +98,11 @@ async function getSlackUsers() {
   try {
     const response = await axios.get('https://slack.com/api/users.list', {
       headers: {
-        Authorization: `Bearer ${slackApiToken}`,
+        Authorization: `Bearer ${SLACK_API_TOKEN}`,
       },
     });
 
     const data = response.data;
-
-    console.log(data);
     if (data.ok) {
       return data.members;
 
@@ -123,6 +121,10 @@ async function getSlackUsers() {
 
 
 
+
+function updateChannelDescription(channelId: any, description: string) {
+  throw new Error('Function not implemented.');
+}
 // const theIncident:IIncident={
 // "_id": "1111",
 // "id": "1",
