@@ -28,7 +28,6 @@ export interface form_data {
 } 
 
 export interface GetIncident {
-  _id: string;
   id: string;
   name: string;
   status: string;
@@ -40,9 +39,9 @@ export interface GetIncident {
   slackLink: string;
   channelName?: string;
   currentTags: ITag[];
-  date: string;
-  createdAt: string;
-  updatedAt: string;
+  date: Date;
+  createdAt: Date;
+  updatedAt: Date;
   cost: number;
   createdBy: string;
 }
