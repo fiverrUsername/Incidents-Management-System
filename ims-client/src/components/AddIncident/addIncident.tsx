@@ -178,7 +178,7 @@ export default function AddIncident({ open, onClose }: Props) {
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Tags</label>
                 <div id="tags">
-                <CustomAutocomplete options={tags} selectedOptions={selectedTags} setSelectedOptions={setSelectedTags} getOptionLabel={getOptionLabel}/>
+                <CustomAutocomplete options={tags} selectedOptions={selectedTags} setSelectedOptions={setSelectedTags} getOptionLabel={getOptionLabel} placehOlderText={"Write to add"}/>
                 </div>
                 {isSubmit && tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>}
               </FormControl>

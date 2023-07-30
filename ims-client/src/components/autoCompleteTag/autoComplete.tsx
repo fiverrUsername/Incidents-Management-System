@@ -4,19 +4,24 @@ import TextField from '@mui/material/TextField';
 import Option from '../../interface/IOption';
 import theme from '../../theme';
 import { IntervalHistogram } from 'perf_hooks';
-import { IOption } from '../../interface/IOption';
+import  IOption  from '../../interface/IOption';
 
 
 interface AutocompleteProps {
   options: any[];
-  selectedOptions: IOption[];
-  setSelectedOptions: React.Dispatch<React.SetStateAction<IOption[]>>;
+  selectedOptions: any[];
+  setSelectedOptions: React.Dispatch<React.SetStateAction<any[]>>;
   getOptionLabel: (option: any) => string;
+  disabled?:boolean
+  placehOlderText:string
 }
-const CustomAutocomplete=({ options, selectedOptions, setSelectedOptions,getOptionLabel }: AutocompleteProps) => {
+const CustomAutocomplete=({ options, selectedOptions, setSelectedOptions,getOptionLabel,disabled,placehOlderText }: AutocompleteProps) => {
   const filteredOptions = options.filter(
     (option) => !selectedOptions.some((selected) => selected.value === getOptionLabel(option))
   );
+
+  const readOnlyAttribute = disabled ? { readOnly: true } : {readOnly: false};
+
   return (
     <Autocomplete
       ChipProps={{
@@ -44,10 +49,13 @@ const CustomAutocomplete=({ options, selectedOptions, setSelectedOptions,getOpti
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder="Write to add"
+          placeholder={placehOlderText}
+        
         />
       )}
       sx={{ border: "1px solid #E1E1E1", borderRadius: "10px", background: theme.palette.primary.contrastText, width: "100%" }}
+      {...readOnlyAttribute}
+      freeSolo
     />
   );
 };
