@@ -3,8 +3,8 @@ import { IMessage, ObjectType, ActionType } from '../../../ims-socket/src/interf
 import { Im } from '@slack/web-api/dist/response/RtmStartResponse';
 import { createNewChannel } from './slack-api/actions/createChannel';
 import { IIncident } from '../../../ims-server/src/interfaces/IncidentInterface';
-import { ITimelineEvent, addTimeLineEvent } from './slack-api/wrap/sendTimeLine';
-
+import {  addTimeLineEvent } from './slack-api/wrap/sendTimeLine';
+import { ITimelineEvent } from '../../../ims-server/src/interfaces/ItimelineEvent';
 const ws = new WebSocket('ws://localhost:7071');
 
 ws.on('open', () => {
