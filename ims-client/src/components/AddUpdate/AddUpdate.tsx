@@ -56,7 +56,7 @@ interface Props {
 }
 
 export default function AddUpdate({ open, onClose, incident }: Props) {
-  const priorityProp = incident.currentPriority;
+  const priorityProp = incident.priority;
   const { handleSubmit, register, formState: { errors } } = useForm<form_data>();
   const [priority, setPriority] = React.useState<string | null>("");
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
@@ -137,6 +137,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       setTags(getAllTags);
     }
     getTags();
+    console.log(incident);
     setPriority(String(priorityProp.toLowerCase()));
   }, []);
 

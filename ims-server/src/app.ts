@@ -18,6 +18,10 @@ const port = config.server.port
 
 const app = express()
 
+process.on('uncaughtException', function (err) {
+  console.log(err);
+});
+
 const swaggerFile: any = (process.cwd() + "/src/Swagger.json");
 const swaggerData: any = fs.readFileSync(swaggerFile, 'utf8');
 const swaggerDocument = JSON.parse(swaggerData);

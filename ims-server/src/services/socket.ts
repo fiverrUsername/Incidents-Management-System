@@ -22,7 +22,7 @@ const send = (message: IMessage) => {
   ws.send(JSON.stringify(message));
 }
 
-ws.onmessage = (webSocketMessage) => {
+ws.onmessage = (webSocketMessage: { data: { toString: () => string; }; }) => {
   const messageBody: IMessage = JSON.parse(webSocketMessage.data.toString());
   switch (messageBody.objectType) {
     case ObjectType.Incident:
@@ -30,7 +30,7 @@ ws.onmessage = (webSocketMessage) => {
         case ActionType.Add:
           break;
         case ActionType.Update:
-          incidentRepository.updateIncident(messageBody.object._id, messageBody.object as IIncident)
+         // incidentRepository.updateIncident(messageBody.object._id, messageBody.object as IIncident)
           // Perform some action for updating a TimelineEvent
           break;
         case ActionType.Delete:
