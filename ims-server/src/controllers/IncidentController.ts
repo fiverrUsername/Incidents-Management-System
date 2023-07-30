@@ -5,11 +5,10 @@ import incidentService from '../services/incidentService';
 import { constants } from '../loggers/constants';
 import { ISummary } from '../interfaces/ISummary';
 import { IncidentDto } from '../dto/incidentDto';
-
-import { getUsers } from '../../../slack-server/src/services/slack-api/actions/getUsers'
-import { ActionType, ObjectType, sendToSocket } from '../services/socket';
+import { ActionType, ObjectType } from '../../../ims-socket/src/interfaces';
+import {sendToSocket} from '../services/socket'
 export default class IncidentController {
-  async addIncident(req: Request, res: Response): Promise<void> {
+ async addIncident(req: Request, res: Response): Promise<void> {
     try {
       const incident: IncidentDto = await incidentService.addIncident(req.body);
       if (incident instanceof Error) {
