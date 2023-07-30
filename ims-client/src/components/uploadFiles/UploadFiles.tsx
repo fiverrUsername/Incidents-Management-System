@@ -4,50 +4,44 @@ import BannerNotification from '../bannerNotification/BannerNotification';
 import { UploadStyles } from './UploadFiles.style';
 import Box from '@mui/material/Box';
 import BackupIcon from '@mui/icons-material/Backup';
-
 interface UploadFilesProps {
   files: File[];
   setFiles: Dispatch<SetStateAction<File[]>>;
 }
-
 export default function UploadFiles({ files, setFiles }: UploadFilesProps) {
   const [showNotification, setShowNotification] = useState(false);
-
+   const maxMB = 2 * 1024 * 1024;
+   const newFiles: File[] = [];
+   
+   function addToFiles(files:File[]){
+    for (let i = 0; i <  files.length; i++) {
+      const file = files[i];
+      if (file && file.size <= maxMB) {
+        newFiles.push(file);
+      } else {
+        setShowNotification(true);
+      }
+    }
+  }
   const handleFileDrop = (e: DragEvent<HTMLDivElement> | ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    const newFiles: File[] = [];
-
     if ('dataTransfer' in e) {
-      for (let i = 0; i < e.dataTransfer.files.length; i++) {
-        const file = e.dataTransfer.files[i];
-        if (file && file.size <= 2 * 1024 * 1024) {
-          newFiles.push(file);
-        } else {
-          setShowNotification(true);
-        }
-      }
+      const filesArray = Array.from(e.dataTransfer.files);
+      addToFiles(filesArray);
     } else {
-      const fileList = e.target?.files;
-      if (fileList) {
-        for (let i = 0; i < fileList.length; i++) {
-          const file = fileList[i];
-          if (file && file.size <= 2 * 1024 * 1024) {
-            newFiles.push(file);
-          } else {
-            setShowNotification(true);
-          }
-        }
+      const filesArray = e.target?.files;
+      if (filesArray) {
+        const filesArrayConverted = Array.from(filesArray);
+        addToFiles(filesArrayConverted);
       }
     }
     setFiles([...files, ...newFiles]);
   };
-
   const handleFileDelete = (index: number) => {
     const updatedFiles = [...files];
     updatedFiles.splice(index, 1);
     setFiles(updatedFiles);
   };
-
   return (
     <Box className="upload-container" sx={UploadStyles}>
       {showNotification && (
@@ -93,4 +87,3 @@ export default function UploadFiles({ files, setFiles }: UploadFilesProps) {
     </Box>
   );
 }
-
