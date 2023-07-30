@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { sendMessageFromBot } from "../actions/sendMessageFromBot";
 
 export interface ITimelineEvent{
@@ -13,11 +13,27 @@ export interface ITimelineEvent{
     createdDate:Date,
     updatedDate:Date,
 }
-
+interface AttachmentData {
+    key: string;
+    data: Buffer;
+  }
 export async function addTimeLineEvent(timeline:ITimelineEvent){
-    console.log(" slack no")
-    const answer = await axios.post('http://localhost:7006/timelineEvent/compareIncidentChanges', timeline);
-    console.log(answer.data+" slack answer")
     
-    sendMessageFromBot(timeline.channelId,answer.data.join(' '))
+    
+    const requestConfig: AxiosRequestConfig = {};
+  requestConfig.data = { files: timeline.files };
+  console.log(timeline.files+" slack no")
+    const answer = await axios.post('http://localhost:7006/timelineEvent/compareIncidentChanges', timeline);
+    await axios.get('http://localhost:7006/aws', requestConfig.data.files).then((response) => {
+        console.log(response.data);
+        console.log("sd");
+        var f:AttachmentData=response.data
+        console.log(f.key);
+      }, (error) => {
+        console.log(error);
+      });
+
+    //console.log(files.data+" slack answer")
+    
+   // sendMessageFromBot(timeline.channelId,answer.data.join(' '))
 }
