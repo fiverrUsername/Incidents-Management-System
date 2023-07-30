@@ -5,14 +5,9 @@ import  {IIncident} from "../interfaces/IncidentInterface";
 import { v4 as uuidv4 } from "uuid";
 
 export const IncidentSchema = new Schema<IIncident>({
-  _id: {
-    type: String,
-    default: uuidv4,
-  },
   id: {
     type: String,
-    required: true,
-    unique: true,
+    default: uuidv4,
   },
   name: {
     type: String,

@@ -41,4 +41,4 @@ export async function sendMassageToSlack({ channelId,userName,filesUrl,text}: IS
     console.error('Error sending message:', error);
   }
 }
-sendMassageToSlack({channelId:"C05JBDPBQ1H",userName:"avigail",filesUrl:['C:/Users/user1/Documents/4e42471b0fe408436af17b42a5a122d5.jpg'],text:"exlain my incidents"});
+// sendMassageToSlack({channelId:"C05JBDPBQ1H",userName:"avigail",filesUrl:['C:/Users/user1/Documents/4e42471b0fe408436af17b42a5a122d5.jpg'],text:"exlain my incidents"});

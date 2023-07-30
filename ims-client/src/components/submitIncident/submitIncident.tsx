@@ -19,9 +19,7 @@ export default async function submitIncident(prop:FormData) {
         slackLink:"",
         channelName: prop.channelName,
         channelId:"",
-        // tags: prop.tags.map(tag => ({ id: tag.userId, name: tag.name })),
-        tags: prop.tags.map(tag => ({ userId: tag.userId, name: tag.name })),
-
+        currentTags: prop.tags.map(tag => ({ id: tag.id, name: tag.name })),
         date: prop.date.toDate(),
         createdAt: new Date(),
         updatedAt: new Date(),

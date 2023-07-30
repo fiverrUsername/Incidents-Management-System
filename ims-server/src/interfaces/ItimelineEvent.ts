@@ -1,5 +1,5 @@
 export interface ITimelineEvent {
-  _id: string;
+  id: string;
   incidentId: string;
   userId: string;
   description: string;
