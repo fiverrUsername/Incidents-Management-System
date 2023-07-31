@@ -1,6 +1,6 @@
 import { ITag } from "./tagInterface";
 
-export interface IIncident {
+ export interface IIncident {
   id: string;
   name: string;
   status: string;
