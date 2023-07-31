@@ -3,11 +3,25 @@ import { IncidentDto } from "../dto/incidentDto";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import incidentModel from "../models/IncidentModel";
+import TimelineEventRepository from "../repositories/timelineEventRepository"
 
 class IncidentRepository {
   async addIncident(newIncident: IIncident): Promise<IIncident | any> {
+    const timeline:ITimelineEvent={
+      id:'sfgbddzf',
+      channelId:newIncident.channelId,
+      incidentId: newIncident.id,
+      userId: newIncident.createdBy,
+      description: 'Created new Incident',
+      priority: newIncident.currentPriority,
+      type: newIncident.type,
+      files: [],
+      createdDate: new Date(),
+      updatedDate: new Date()
+    }
     try {
-      const _newIncident:IIncident=await incidentModel.create(newIncident); 
+      const _newIncident:IIncident=await incidentModel.create(newIncident);
+      TimelineEventRepository.addTimelineEvent(timeline)
       console.log(_newIncident.id);     
       return  _newIncident;
     } catch (error: any) {
