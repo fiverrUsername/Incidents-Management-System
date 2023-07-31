@@ -1,7 +1,7 @@
 import { ITag } from "./ITag";
 
 export default interface IIncident {
-  id: string;
+  // id: string;
   name: string;
   status: string;
   description: string;
