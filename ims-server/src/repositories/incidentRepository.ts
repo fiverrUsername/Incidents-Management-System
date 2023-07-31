@@ -21,7 +21,8 @@ class IncidentRepository {
     }
     try {
       const _newIncident:IIncident=await incidentModel.create(newIncident);
-      TimelineEventRepository.addTimelineEvent(timeline)
+      timeline.incidentId=_newIncident.id
+      await TimelineEventRepository.addTimelineEvent(timeline)
       console.log(_newIncident.id);     
       return  _newIncident;
     } catch (error: any) {
