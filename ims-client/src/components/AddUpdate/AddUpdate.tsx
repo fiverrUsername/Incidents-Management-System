@@ -254,9 +254,9 @@ export interface GetIncident {
   slackLink: string;
   channelName?: string;
   currentTags: ITag[];
-  date: string;
-  createdAt: string;
-  updatedAt: string;
+  date: Date;
+  createdAt: Date;
+  updatedAt: Date;
   cost: number;
   createdBy: string;
 }
