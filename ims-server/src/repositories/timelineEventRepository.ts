@@ -52,8 +52,8 @@ class TimelineEventRepository {
 
   async getTimelineEventById(id: String): Promise<ITimelineEvent | any> {
     try {
-      const _timelineEvent:ITimelineEvent|null=await timelineEvent.findOne({id});
-      return _timelineEvent;
+      const _timelineevent =await timelineEvent.find({ incidentId: id });
+      return _timelineevent;
     } catch (error:any) {
       console.error(`error: ${error}`);
       return error;
