@@ -383,7 +383,7 @@
                             "type": "string"
                         },
                         "priority": {
-                            "type": "string"
+                            "type": "priority"
                         },
                         "date": {
                             "type": "string",

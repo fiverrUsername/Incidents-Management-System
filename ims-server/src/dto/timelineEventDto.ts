@@ -3,12 +3,13 @@ import { constants } from "../loggers/constants";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import { IsExistingIncidentId } from "./incidentIdValidators";
 import { IsExistingUserId } from "./userIdValidators";
+import { Priority } from "../enums/enum";
 
 export interface ITimelineEventDto {
     incidentId: string;
     userId: string;
     description: string;
-    priority: string;
+    priority: Priority;
     type: string;
     files: string[];
     createdDate: string;
@@ -21,7 +22,7 @@ export class ITimelineEventDto {
         this.incidentId = "";
         this.userId = "";
         this.description = "";
-        this.priority = "";
+        this.priority = Priority.P0;
         this.type = "";
         this.files = [];
         this.createdDate = Date.now().toString();
@@ -45,7 +46,7 @@ export class ITimelineEventDto {
 
     @IsNotEmpty({ message: `priority ${constants.EMPTY_OBJECT}` })
     @IsString({ message: `priority ${constants.INVALID_MESSAGE}` })
-    priority: string;
+    priority: Priority;
 
     @IsNotEmpty({ message: `type ${constants.EMPTY_OBJECT}` })
     @IsString({ message: `type ${constants.INVALID_MESSAGE}` })
