@@ -44,6 +44,7 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ _id }) => {
 
 const handleDownload = (bufferData:Buffer,fileName:string,mimeType:string) => {
     // Convert buffer data to Blob
+    
     const fileBlob = new Blob([bufferData], { type: mimeType });
     // Create URL for Blob
     const fileURL = URL.createObjectURL(fileBlob);
@@ -66,7 +67,10 @@ const handleDownload = (bufferData:Buffer,fileName:string,mimeType:string) => {
       setFilesData((prevFilesData) => {
         return [...prevFilesData, ...response];
       })
-      handleDownload(filesData[0]?.data, filesData[0]?.key, "application/docx")
+      const bufferData = new Uint8Array([72, 101, 108, 108, 111, 33]);
+      const emptyBuffer = Buffer.alloc(0);
+
+      handleDownload(filesData[0].data?filesData[0].data:emptyBuffer, filesData[0]?.key, "application/docx")
     } catch (error) {
       console.error('Error Getting Data:', error);
     }
