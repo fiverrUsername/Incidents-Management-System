@@ -15,7 +15,7 @@ interface AttachmentData {
 }
 dotenv.config()
 const s3 = new AWS.S3();
-class AwsRepository {
+class AttachmentsRepository {
   
   async uploadAttachment(files:Express.Multer.File []): Promise<AWS.S3.ManagedUpload.SendData | any> {
       const uploadPromises = files.map((file) => {
@@ -23,7 +23,7 @@ class AwsRepository {
         const fileBuffer = fs.readFileSync(file.path);
         if (fileName && fileBuffer) {
           const params: AWS.S3.PutObjectRequest = {
-            Bucket: AwsRepository.getBucketName(),
+            Bucket: AttachmentsRepository.getBucketName(),
             Key: fileName.toString().replace(/_/g, '/'),
             Body: fileBuffer,
           };
@@ -45,7 +45,7 @@ class AwsRepository {
     try {
       const s3 = new AWS.S3();
       const params: AWS.S3.GetObjectRequest = {
-        Bucket: AwsRepository.getBucketName(),
+        Bucket: AttachmentsRepository.getBucketName(),
         Key: key.replace(/_/g, '/')
       };
       console.log(params)
@@ -81,7 +81,7 @@ class AwsRepository {
 
   async deleteAttachmentById(key: string): Promise<void | any> {
     const params: AWS.S3.DeleteObjectRequest = {
-      Bucket: AwsRepository.getBucketName(),
+      Bucket: AttachmentsRepository.getBucketName(),
       Key: key.replace(/_/g, '/')
     };
     try {
@@ -107,4 +107,4 @@ class AwsRepository {
   } 
 
 }
-export default new AwsRepository();
+export default new AttachmentsRepository();

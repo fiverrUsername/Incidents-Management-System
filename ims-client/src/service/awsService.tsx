@@ -8,11 +8,11 @@ const attachmentService = {
     },
   }).then((response) => response.data),
 
-  // showAttachment: (files: string[]) => axios.post(`${baseUrl}/attachment/allAttachments`, files, {
-  // })
-  // .then((response) => response.data), 
-  showAttachment: (files: string[],set:React.Dispatch<React.SetStateAction<any[]>>)  => axios.post(`${baseUrl}/attachment/allAttachments`,files, { 
-  }).then((response) => set(response.data)),
+  showAttachment: (files: string[]) => axios.post(`${baseUrl}/attachment/allAttachments`, files, {
+  })
+  .then((response) => response.data), 
+  // showAttachment: (files: string[],set:React.Dispatch<React.SetStateAction<any[]>>)  => axios.post(`${baseUrl}/attachment/allAttachments`,files, { 
+  // }).then((response) => set(response.data)),
 
   deleteAttachment: (key: string) => axios.delete(`${baseUrl}/attachment`, {
     params: { key }

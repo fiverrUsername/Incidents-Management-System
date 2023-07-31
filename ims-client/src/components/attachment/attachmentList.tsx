@@ -34,22 +34,24 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ _id }) => {
 
   const getFilesdata = async (timeline: ITimeLineEvent) => {
     try {
-       await awsService.showAttachment([
-        "incidence/649cbeda942a5d4d8bcf303f/CV - Ester Rot (1).docx",
-        "sss"
-      ],setFilesData);
-      //console.log("response############3", response[0].data.data);
+      //  await awsService.showAttachment([
+      //   "incidence/649cbeda942a5d4d8bcf303f/CV - Ester Rot (1).docx",
+      //   "sss",
+      //   "incidence/undefined/111.jpg"
+      // ],setFilesData);
+      // console.log("response############3", response[0].data.data);
       // setFilesData((prevFilesData) => {
       //   return [...prevFilesData, ...response];
       // });
-      // const response = await awsService.showAttachment([
-      //   "incidence/649cbeda942a5d4d8bcf303f/CV - Ester Rot (1).docx",
-      //   "sss"
-      // ],setFilesData);
-      // console.log("response############3", response[0].data.data);
-      // // setFilesData((prevFilesData) => {
-      // //   return [...prevFilesData, ...response];
-      // // });
+      const response = await awsService.showAttachment([
+        "incidence/649cbeda942a5d4d8bcf303f/CV - Ester Rot (1).docx",
+        "sss",
+        "incidence/undefined/111.jpg"
+      ]);
+      console.log("response############3", response[0].data.data);
+      setFilesData((prevFilesData) => {
+        return [...prevFilesData, ...response];
+      });
       console.log(filesData);
     } catch (error) {
       console.error('Error Getting Data:', error);

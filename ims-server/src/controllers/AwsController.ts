@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import awsService from "../services/awsService";
+import attachmentsService from "../services/awsService";
 import { status } from "../loggers/constants";
 
 export default class AwsController {
   async uploadAttachment(req: Request, res: Response): Promise<void> {
     try {
-      const attachment = await awsService.uploadAttachment(
+      const attachment = await attachmentsService.uploadAttachment(
         req.files as Express.Multer.File[]
       );
       if (attachment instanceof Error) {
@@ -22,7 +22,7 @@ export default class AwsController {
     try {
       const files = req.body as string [];
       console.log("controller req.body"+files)
-      const filesKey = await awsService.getAllAttachmentByTimeline(files);
+      const filesKey = await attachmentsService.getAllAttachmentByTimeline(files);
       console.log("controller res " +filesKey.data)
       if (filesKey instanceof Error) {
         res
@@ -38,7 +38,7 @@ export default class AwsController {
     try {
       const key = req.query.key as string ;
       console.log("req-"+req.query.key)
-      const file = await awsService.deleteAttachmentById(key);
+      const file = await attachmentsService.deleteAttachmentById(key);
       if (file instanceof Error) {
         res.status(status.PAGE_NOT_FOUND).json({ message: file, error: true });
       } else res.status(status.SUCCESS).json(file);
