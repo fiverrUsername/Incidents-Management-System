@@ -43,7 +43,7 @@ class TimelineEventRepository {
 
   async updateTimelineEvent(id:string,newTimelineEvent:ITimelineEvent):Promise<void|any>{
     try {
-      await timelineEvent.findByIdAndUpdate(id,newTimelineEvent);
+      return await timelineEvent.findOneAndUpdate({id},newTimelineEvent);;
     } catch (error:any) {
       console.error(`error: ${error}`);
       return error;

@@ -5,6 +5,7 @@ import { createNewChannel } from './slack-api/actions/createChannel';
 import { IIncident } from '../../../ims-server/src/interfaces/IncidentInterface';
 import {  addTimeLineEvent } from './slack-api/wrap/sendTimeLine';
 import { ITimelineEvent } from '../../../ims-server/src/interfaces/ItimelineEvent';
+import { sendMassageOnChangePriority } from './slack-api/actions/sendMassageOnChangePriority';
 const ws = new WebSocket('ws://localhost:7071');
 
 ws.on('open', () => {
@@ -34,13 +35,15 @@ ws.onmessage = (webSocketMessage:any) => {
       switch (messageBody.actionType) {
         case ActionType.Add:
           addTimeLineEvent(messageBody.object as ITimelineEvent)
-          console.log("in socket")
           break;
         case ActionType.Update:
           // Perform some action for updating a TimelineEvent
           break;
         case ActionType.Delete:
           // Perform some action for deleting a TimelineEvent
+          break;
+        case ActionType.ChangePriority:
+          sendMassageOnChangePriority(messageBody.object.channelId,messageBody.object.priority)
           break;
         default:
           console.log('Received unknown action type for TimelineEvent:', messageBody);
