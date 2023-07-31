@@ -7,7 +7,7 @@ import ITimeLineEvent from '../../interface/timeLineInterface'
 
 interface Props {
   data: form_data;
-  incident: IIncident;
+  incident: GetIncident;
 }
 
 export default async function submitTimeLine(props: Props) {

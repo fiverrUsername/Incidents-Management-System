@@ -261,7 +261,7 @@ export interface GetIncident {
 interface Props {
   open: boolean;
   onClose: () => void;
-  incident: IIncident;
+  incident: GetIncident;
 }
 export default function AddUpdate({ open, onClose, incident }: Props) {
   const priorityProp = incident.currentPriority;
