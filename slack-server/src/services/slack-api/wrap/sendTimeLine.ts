@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
+import { sendMassageOnChangePriority } from "../actions/sendMassageOnChangePriority";
 import { sendMessageFromBot } from "../actions/sendMessageFromBot";
 
 export interface ITimelineEvent{
@@ -13,11 +14,11 @@ export interface ITimelineEvent{
     createdDate:Date,
     updatedDate:Date,
 }
-
+interface AttachmentData {
+    key: string;
+    data: Buffer;
+  }
 export async function addTimeLineEvent(timeline:ITimelineEvent){
-    console.log(" slack no")
     const answer = await axios.post('http://localhost:7006/timelineEvent/compareIncidentChanges', timeline);
-    console.log(answer.data+" slack answer")
-    
-    sendMessageFromBot(timeline.channelId,answer.data.join(' '))
+    sendMessageFromBot(timeline.channelId,answer.data.description.join(' '))
 }

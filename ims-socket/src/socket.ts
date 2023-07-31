@@ -2,6 +2,7 @@ import WebSocket from 'ws';
 
 const ws = new WebSocket.Server({ port: 7071 });
 const clients = new Map<string, WebSocket>();
+
 function uuidv4(): string {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = Math.random() * 16 | 0;
@@ -9,6 +10,7 @@ function uuidv4(): string {
     return v.toString(16);
   });
 }
+
 ws.on('connection', (ws: WebSocket) => {
   const id = uuidv4();
   clients.set(id, ws);
@@ -22,4 +24,5 @@ ws.on('connection', (ws: WebSocket) => {
     clients.delete(id);
   });
 });
+
 console.log('WebSocket server is up.');

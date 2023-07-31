@@ -1,7 +1,8 @@
+import { ITag } from "./tagInterface";
 
-export interface ISummary  extends Document{
+export interface ISummary {
     createdBy:string,
-    createdAt:Date,
+    createdAt:string,
     currentPriority:string,
-    tags: { id: string, name: string }[];
+    tags: ITag[];
   }

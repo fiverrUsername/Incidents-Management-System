@@ -17,12 +17,10 @@ const IncidentsPage = () => {
     FetchData();
     setIsLoading(false)
 
-  }, [incidents]);
+  }, []);
 
 
-  useEffect(() => {
-    console.log("incident", incidents);
-  }, [incidents]);
+
   
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>

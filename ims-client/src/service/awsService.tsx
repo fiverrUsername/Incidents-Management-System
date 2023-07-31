@@ -1,15 +1,18 @@
 import axios from 'axios'
-
 const baseUrl = process.env.REACT_APP_API_KEY
-
-const awsService = {
-
-  uploadAttachment:(forms:FormData) => axios.post(`${baseUrl}/aws`, forms, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }).then((response)=>response.data),
-  
-}
-
-export default awsService
+const attachmentService = {
+  uploadAttachment: (forms: FormData) => axios.post(`${baseUrl}/attachment`, forms, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  }).then((response) => response.data),
+  showAttachment: (files: string[]) => axios.post(`${baseUrl}/attachment/allAttachments`, files, {
+  })
+  .then((response) => response.data),
+  // showAttachment: (files: string[],set:React.Dispatch<React.SetStateAction<any[]>>)  => axios.post(`${baseUrl}/attachment/allAttachments`,files, {
+  // }).then((response) => set(response.data)),
+  deleteAttachment: (key: string) => axios.delete(`${baseUrl}/attachment`, {
+    params: { key }
+  }).then((response) => response.data),
+};
+export default attachmentService;

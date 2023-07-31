@@ -38,7 +38,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@slack/web-api": "^6.8.1",
+    "@types/aws-sdk": "^2.7.0",
     "aws-sdk": "^2.1420.0",
     "axios": "^1.4.0",
     "class-transformer": "^0.5.1",

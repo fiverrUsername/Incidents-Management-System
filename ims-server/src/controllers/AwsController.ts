@@ -1,11 +1,10 @@
 import { Request, Response } from "express";
-import awsService from "../services/awsService";
+import attachmentsService from "../services/awsService";
 import { status } from "../loggers/constants";
-
 export default class AwsController {
   async uploadAttachment(req: Request, res: Response): Promise<void> {
     try {
-      const attachment = await awsService.uploadAttachment(
+      const attachment = await attachmentsService.uploadAttachment(
         req.files as Express.Multer.File[]
       );
       if (attachment instanceof Error) {
@@ -17,10 +16,10 @@ export default class AwsController {
       res.status(status.SERVER_ERROR).json({ message: error.message });
     }
   }
-
   async getAllAttachmentByTimeline(req: Request, res: Response): Promise<void> {
     try {
-      const filesKey = await awsService.getAllAttachmentByTimeline(req.body);
+      const files = req.body as string [];
+      const filesKey = await attachmentsService.getAllAttachmentByTimeline(files);
       if (filesKey instanceof Error) {
         res
           .status(status.PAGE_NOT_FOUND)
@@ -30,13 +29,10 @@ export default class AwsController {
       res.status(status.SERVER_ERROR).json({ message: error.message });
     }
   }
-
-
-
   async deleteAttachmentById(req: Request, res: Response): Promise<void> {
     try {
-      console.log("_--",req.body)
-      const file = await awsService.deleteAttachmentById(req.body.key);
+      const key = req.query.key as string ;
+      const file = await attachmentsService.deleteAttachmentById(key);
       if (file instanceof Error) {
         res.status(status.PAGE_NOT_FOUND).json({ message: file, error: true });
       } else res.status(status.SUCCESS).json(file);
