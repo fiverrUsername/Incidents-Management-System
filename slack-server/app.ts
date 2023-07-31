@@ -20,4 +20,3 @@
 //   });
 
 import './src/services/socket'
-import './src/services/events'

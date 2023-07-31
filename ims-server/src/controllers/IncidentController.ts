@@ -7,8 +7,10 @@ import { ISummary } from '../interfaces/ISummary';
 import { IncidentDto } from '../dto/incidentDto';
 import { ActionType, ObjectType } from '../../../ims-socket/src/interfaces';
 import {sendToSocket} from '../services/socket'
+
 export default class IncidentController {
- async addIncident(req: Request, res: Response): Promise<void> {
+
+  async addIncident(req: Request, res: Response): Promise<void> {
     try {
       const incident: IncidentDto = await incidentService.addIncident(req.body);
       if (incident instanceof Error) {

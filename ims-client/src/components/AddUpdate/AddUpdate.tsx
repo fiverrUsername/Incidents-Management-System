@@ -241,8 +241,6 @@ export interface form_data {
   files: string[];
 }
 export interface GetIncident {
-  //TODO
-  // _id: string;
   id: string;
   name: string;
   status: string;

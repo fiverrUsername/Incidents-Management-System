@@ -1,8 +1,6 @@
 import bodyParser from 'body-parser';
 import express, { Request, Response } from 'express';
 import { addTimeLineEvent } from "./services/slack-api/wrap/sendTimeLine";
-
-
 const app = express();
 const port = 4700;
 console.log("000000000000")
