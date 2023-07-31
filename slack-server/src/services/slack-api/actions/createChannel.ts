@@ -125,24 +125,24 @@ async function getSlackUsers() {
 function updateChannelDescription(channelId: any, description: string) {
   throw new Error('Function not implemented.');
 }
-// const theIncident:IIncident={
-// "_id": "1111",
-// "id": "1",
-// "name": "ddd",
-// "status": "Active",
-// "description": "d",
-// "currentPriority": "p1",
-// "type": "technical",
-// "durationHours": 0,
-// "channelId": "",
-// "channelName": "ddd",
-// "slackLink": "",
-// "date": "2023-07-25T13:46:53.690Z",
-// "createdAt": "2023-07-25T13:46:53.690Z",
-// "updatedAt":"2023-07-25T13:46:53.690Z",
-// "cost": 0,
-// "createdBy": "?",
-// "currentTags": [],
-// }
 
-// createNewChannel(theIncident)
+
+const theIncident:IIncident={
+"name": "ddd",
+"status": "Active",
+"description": "d",
+"currentPriority": "p1",
+"type": "technical",
+"durationHours": 0,
+"channelId": "",
+"channelName": "try3",
+"slackLink": "",
+"date": "2023-07-25T13:46:53.690Z",
+"createdAt": "2023-07-25T13:46:53.690Z",
+"updatedAt":"2023-07-25T13:46:53.690Z",
+"cost": 0,
+"createdBy": "?",
+"currentTags": [],
+}
+
+createNewChannel(theIncident)
