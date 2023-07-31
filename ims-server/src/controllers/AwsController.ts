@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import attachmentsService from "../services/awsService";
 import { status } from "../loggers/constants";
 
-export default class AwsController {
+export default class AttachmentsController {
   async uploadAttachment(req: Request, res: Response): Promise<void> {
     try {
       const attachment = await attachmentsService.uploadAttachment(
