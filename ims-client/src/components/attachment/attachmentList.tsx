@@ -34,15 +34,6 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ _id }) => {
 
   const getFilesdata = async (timeline: ITimeLineEvent) => {
     try {
-      //  await awsService.showAttachment([
-      //   "incidence/649cbeda942a5d4d8bcf303f/CV - Ester Rot (1).docx",
-      //   "sss",
-      //   "incidence/undefined/111.jpg"
-      // ],setFilesData);
-      // console.log("response############3", response[0].data.data);
-      // setFilesData((prevFilesData) => {
-      //   return [...prevFilesData, ...response];
-      // });
       const response = await awsService.showAttachment([
         "incidence/649cbeda942a5d4d8bcf303f/CV - Ester Rot (1).docx",
         "sss",
@@ -57,20 +48,7 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ _id }) => {
       console.error('Error Getting Data:', error);
     }
   };
-  // const getFilesdata = async (timeline: ITimeLineEvent) => {
-  //   try {
-  //     const responses = await awsService.showAttachment([
-  //       "incidence/649cbeda942a5d4d8bcf303f/CV - Ester Rot (1).docx",
-  //       "sss"
-  //     ]);
-  //     const mergedResponses = responses.flat(); // Flatten the array of arrays to get a single array of responses
-  //     setFilesData((prevFilesData) => {
-  //       return [...prevFilesData, ...mergedResponses];
-  //     });
-  //   } catch (error) {
-  //     console.error('Error Getting Data:', error);
-  //   }
-  // };
+
   useEffect(() => {
     fetchTimelineData(_id);
   }, [_id]);
