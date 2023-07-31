@@ -1,8 +1,7 @@
 import { ITag } from "./ITag";
 
-export default interface IIncident  {
-  _id?: string;
-  id: string;
+export default interface IIncident {
+  // id: string;
   name: string;
   status: string;
   description: string;
@@ -18,4 +17,4 @@ export default interface IIncident  {
   updatedAt: Date;
   cost: number;
   createdBy: string;
-  }
+}

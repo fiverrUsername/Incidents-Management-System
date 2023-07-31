@@ -8,8 +8,8 @@ export async function sendMassageOnChangePriority (channelId:string, prod:string
       };
       try {
         const response = await axios.post('https://slack.com/api/chat.postMessage', {
-          channel: channelId,
-          text: 'Added a new incident in this priority. Click the link to watch: https://slack.com/app_redirect?channel=${channelId}'
+          channel: priorityChannel.prod,
+          text: `Added a new incident in this priority. Click the link to watch: https://slack.com/app_redirect?channel=${channelId}`
     }, {
           headers: {
             'Authorization': `Bearer ${SLACK_API_TOKEN}`,
@@ -30,7 +30,7 @@ export async function sendMassageOnChangePriority (channelId:string, prod:string
         return null;
       }
 }
-sendMassageOnChangePriority("C05J8AZ1Q3X", 'p1');
+//sendMassageOnChangePriority("C05J8AZ1Q3X", 'p1');
 
 
 

@@ -13,16 +13,22 @@ import { Grid, Typography } from "@mui/material";
 import filterTimeLineBySearch from "../../service/timeLineService";
 import users from '../../mockAPI/users.json';
 import { GetIncident } from "../../components/AddUpdate/AddUpdate";
+ 
 
 const TimeLinePage = ({ id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<TimelineEvent[]>([]);
   const [summaryIncident, setSummaryIncident] = useState<ISummary>();
-  const [incident, setIncident] = useState<IIncident>();
+  const [incident, setIncident] = useState<GetIncident>();
   useEffect(() => {
+
     const fetchTimeline = async () => {
+         // eslint-disable-next-line no-debugger
+         debugger
       const getTimeLineEventsById = await apiCalls.getTimeLineEventsById(id)
       console.log(getTimeLineEventsById, "getTimeLineEventsById");
       setTimelineObjects(getTimeLineEventsById);
+      // eslint-disable-next-line no-debugger
+      debugger
     };
     fetchTimeline();
     const fetchSummaryIncident = async () => {

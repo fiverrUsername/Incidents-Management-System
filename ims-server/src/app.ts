@@ -3,6 +3,8 @@ import cors from 'cors';
 import express, { Request, Response } from 'express';
 import fs from 'fs';
 import swaggerUI from 'swagger-ui-express';
+import schedule from 'node-schedule';
+
 import '../src/services/socket';
 import config from './config/config';
 import logger from './loggers/log';
@@ -11,18 +13,15 @@ import incidentRoute from './routes/IncidentRout';
 import aggregationRouter from './routes/aggrigationRouter';
 import tagRouter from './routes/tagRouter';
 import timelineEventRouter from './routes/timelineEventRouter';
-import awsRouter from './routes/awsRouter';
+import attachmentRouter from './routes/awsRouter';
 
 
 const port = config.server.port
-
 const app = express()
-
 const swaggerFile: any = (process.cwd() + "/src/Swagger.json");
 const swaggerData: any = fs.readFileSync(swaggerFile, 'utf8');
 const swaggerDocument = JSON.parse(swaggerData);
 swaggerDocument.servers[0].url = `http://localhost:${process.env.SERVER_PORT}`
-
 const whitelist = ['http://localhost:3000'];
 
 const corsOptions: cors.CorsOptions = {
@@ -34,6 +33,7 @@ const corsOptions: cors.CorsOptions = {
     }
   },
 };
+
 
 
 
@@ -59,13 +59,22 @@ app.use('/incident', incidentRoute)
 app.use('/aggregation', aggregationRouter)
 app.use('/tag', tagRouter)
 app.use('/timelineEvent', timelineEventRouter)
-app.use('/aws', awsRouter)
+app.use('/attachment', attachmentRouter)
 app.get('/', (req: Request, res: Response): void => {
   res.redirect('/swagger')
 });
 
 app.listen(port, () => {
   logger.info(`Server is listeningo on http://localhost:${port}`)
+});
+
+const rule = new schedule.RecurrenceRule();
+rule.hour = 0;
+rule.minute = 0;
+rule.tz = 'Etc/UTC';
+
+schedule.scheduleJob(rule, function(){
+  console.log('A new day has begun in the UTC timezone!');
 });
 
 export default app;
