@@ -27,6 +27,7 @@ export default class TimelineEventController {
     async getTimelineEventsById(req: Request, res: Response): Promise<void> {
         try {
             const timelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventsById(req.params.id);
+
             if (timelineEvents instanceof Error) {
                 res.status(status.PAGE_NOT_FOUND).json({ message: timelineEvents, error: true });
             }
@@ -100,7 +101,8 @@ export default class TimelineEventController {
 
     async getTimelineEventById(req: Request, res: Response): Promise<void> {
         try {
-            const _timelineEvent: ITimelineEvent | null = await timelineEventService.getTimelineEventById(req.params.id);            
+            const _timelineEvent: ITimelineEvent | null = await timelineEventService.getTimelineEventById(req.params.id);
+            console.log(req.params.id,"yyyyyyyyy")            
             if (_timelineEvent instanceof Error || _timelineEvent === null) {
                 res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, error: true });
             }
