@@ -12,7 +12,7 @@ const mockSummary:ISummary = {
   createdBy: 'John Doe',
   createdAt: new Date("2023-01-05T08:00:00"),
   currentPriority: 'p0',
-  tags: [{userId:"aaa", name: 'Tag 1' }, { userId:"bbb",name: 'Tag 2' }],
+  tags: [{id:"aaa", name: 'Tag 1' }, { id:"bbb",name: 'Tag 2' }],
 };
 
 test('renders the DisplaySummary component with correct information',async  () => {

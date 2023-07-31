@@ -11,6 +11,7 @@ import { constants } from "../loggers/constants";
 export class TimelineEventDto {
   constructor(init: ITimelineEvent) {
     this._id = "";
+ 
     this.incidentId = "";
     this.userId = "";
     this.description = "";

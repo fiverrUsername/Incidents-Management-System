@@ -8,8 +8,7 @@ export default async function submitIncident(prop:FormData) {
     
     const incidentcR:IIncident={
         //TODO
-        //Remove the id
-        id: "1",
+        // id: "1",
         name: prop.name,
         status:"Active",
         description:prop.description,
@@ -27,7 +26,7 @@ export default async function submitIncident(prop:FormData) {
         createdBy:"?",
         cost: 0,
     }
-
+ 
 
     await apiCalls.createIncident(incidentcR)
     console.log('I am in submit incident')
