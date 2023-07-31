@@ -291,7 +291,7 @@
                 }
             }
         },
-        "/timelineEvent/getFile/{id}": {
+        "/timelineEvent/{id}/files/": {
             "get": {
                 "tags": [
                     "timelineEvent"

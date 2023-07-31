@@ -40,10 +40,10 @@ export default class TimelineEventController {
     async addTimelineEvent(req: Request, res: Response): Promise<Response> {
         try {
             //remember to change:
-            req.body.updatedDate='2022-09-18T17:34:02.666Z'
-            req.body.createdDate='2022-09-18T17:34:02.666Z'
+
+            // req.body.updatedDate=new Date()
+            // req.body.createdDate=new Date()
             const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
-            //const response = await axios.post('http://localhost:4700', req.body);
             if (_timelineEvent instanceof Error) {
                 if (_timelineEvent.message === constants.MISSNG_REQUIRED_FIELDS) {
                     return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: _timelineEvent });
@@ -100,7 +100,7 @@ export default class TimelineEventController {
 
     async getTimelineEventById(req: Request, res: Response): Promise<void> {
         try {
-            const _timelineEvent: ITimelineEvent | null = await timelineEventService.getTimelineEventById(req.params.id);
+            const _timelineEvent: ITimelineEvent | null = await timelineEventService.getTimelineEventById(req.params.id);            
             if (_timelineEvent instanceof Error || _timelineEvent === null) {
                 res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, error: true });
             }
