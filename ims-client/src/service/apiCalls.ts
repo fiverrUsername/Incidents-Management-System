@@ -14,6 +14,8 @@ const apiCalls = {
     getTimeLineEventsById:(id:string)=>axios.get(`${baseUrl}/timelineEvent/getById/${id}`).then(response => response.data),
     getTimeLineForIncident:(id:string)=>axios.get(`${baseUrl}/incident/${id}`).then(response => response.data),
     addTimelineEvent:(timeLineEvent: ITimeLineEvent) => axios.post(`${baseUrl}/timelineEvent`, timeLineEvent).then(response => response.data),
+    getTimeLineEventById:(id: string) => {
+        return axios.get(`${baseUrl}/timelineEvent/getById/${id}`).then(response => response.data);},
 }
 
 export default apiCalls

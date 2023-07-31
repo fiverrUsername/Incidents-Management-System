@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react';
 import FileViewer from 'react-file-viewer';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
-import AwsService from '../../service/awsService'
-interface AttachmentData {
-  key: string;
-  data: Buffer;
-}
-
-
+import audio from '../../images/audio.png';
+import pdf from '../../images/pdf.png';
+import powerPoint from '../../images/powerPoint.png';
+import video from '../../images/video.png';
+import word from '../../images/word.webp';
+import excel from '../../images/excel.png';
+import awsService from '../../service/awsService';
 type SupportedFileTypes =
   | 'image'
   | 'pdf'
@@ -19,17 +19,6 @@ type SupportedFileTypes =
   | 'powerpoint'
   | 'excel'
   | 'default';
-  const [filesKey, setFilesKey] = useState<AttachmentData[]>([]);
-
-  const getAttachment = async (files: string[]) => {
-    try {
-      const attachment = await AwsService.showAttachment(files);
-      setFilesKey(attachment);
-    } catch (error) {
-      console.error(error)
-    }
-  };
-  
 const getFileTypeFromData = (file: string): SupportedFileTypes => {
   try {
     if (file.startsWith('data:')) {
@@ -87,81 +76,43 @@ const getFileTypeFromData = (file: string): SupportedFileTypes => {
     return 'default';
   }
 };
-
 export default function Attachment({ file }: { file: string }) {
   const [fileType, setFileType] = useState<SupportedFileTypes>('default');
-
   useEffect(() => {
     setFileType(getFileTypeFromData(file));
   }, [file]);
-
   const renderGeneric = () => {
     return <p> Open {fileType}</p>;
   };
-
   const handleDelete = () => {
-    AwsService.deleteAttachment(file)
+    awsService.deleteAttachment(file)
    // You must write a function that deletes the file visually in the client
     console.log('Deleting file:', file);
   };
-  
   const handleDownload = () => {
     // Implement your logic to handle file download here
     console.log('Downloading file:', file);
   };
-
   const renderFileContent = () => {
     switch (fileType) {
       case 'image':
         return <img src={file} alt="Attachment" />;
       case 'pdf':
-        return <FileViewer fileType={fileType} filePath={file} />;
+        return <img src={pdf} alt="pdf" />;
       case 'audio':
-        return (
-          <audio controls>
-            <source src={file} type={`audio/${file.split('.').pop()?.toLowerCase()}`} />
-            Your browser does not support the audio element.
-          </audio>
-        );
+        return <img src={audio} alt="audio" />;
       case 'video':
-        return (
-          <video controls>
-            <source src={file} type={`video/${file.split('.').pop()?.toLowerCase()}`} />
-            Your browser does not support the video element.
-          </video>
-        );
+        return <img src={video} alt="video" />;
       case 'word':
-        return (
-          <a href={file} target="_blank" rel="noopener noreferrer">
-            Open Word Document
-          </a>
-        );
+        return <img src={word} alt="word" />;
       case 'powerpoint':
-        return (
-          <a href={file} target="_blank" rel="noopener noreferrer">
-            Open PowerPoint Presentation
-          </a>
-        );
+        return <img src={powerPoint} alt="powerPoint" />;
       case 'excel':
-        return (
-          <a href={file} target="_blank" rel="noopener noreferrer">
-            Open Excel Spreadsheet
-          </a>
-        );
+        return <img src={audio} alt="audio" />;
       default:
-        return (
-          <>
-            <p>Open {fileType}</p>
-            
-          </>
-        );
+        return (renderGeneric());
     }
   };
-
-  // const DownloadAttachment = () =>{
-
-  // }
-
   return <div>{renderFileContent()}<Grid container spacing={2} alignItems="center">
   <Grid item>
     <IconButton onClick={handleDelete}>

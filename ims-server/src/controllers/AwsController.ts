@@ -20,7 +20,10 @@ export default class AwsController {
 
   async getAllAttachmentByTimeline(req: Request, res: Response): Promise<void> {
     try {
-      const filesKey = await awsService.getAllAttachmentByTimeline(req.body);
+      const files = req.body as string [];
+      console.log("controller req.body"+files)
+      const filesKey = await awsService.getAllAttachmentByTimeline(files);
+      console.log("controller res " +filesKey.data)
       if (filesKey instanceof Error) {
         res
           .status(status.PAGE_NOT_FOUND)
@@ -33,8 +36,9 @@ export default class AwsController {
 
   async deleteAttachmentById(req: Request, res: Response): Promise<void> {
     try {
-      console.log("_--",req.body)
-      const file = await awsService.deleteAttachmentById(req.body.key);
+      const key = req.query.key as string ;
+      console.log("req-"+req.query.key)
+      const file = await awsService.deleteAttachmentById(key);
       if (file instanceof Error) {
         res.status(status.PAGE_NOT_FOUND).json({ message: file, error: true });
       } else res.status(status.SUCCESS).json(file);

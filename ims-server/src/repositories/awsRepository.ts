@@ -46,9 +46,11 @@ class AwsRepository {
       const s3 = new AWS.S3();
       const params: AWS.S3.GetObjectRequest = {
         Bucket: AwsRepository.getBucketName(),
-        Key: key
+        Key: key.replace(/_/g, '/')
       };
+      console.log(params)
       const result = await s3.getObject(params).promise();
+      console.log("getAttachment  controllers-"+result.Body)
       const data: Buffer = result.Body as Buffer;
       logger.info({ source: constants.SHOW_SUCCESS, msg: constants.METHOD.GET, error: true });
       return { key, data };
@@ -65,10 +67,11 @@ class AwsRepository {
 
   async getAllAttachmentsByTimeline(keys: string[]): Promise<(AttachmentData|null)[]|any> {
     try {
-      
+      console.log(" Repository key"+keys)
       const allResponses: (AttachmentData | null)[] = await Promise.all(keys.map(
         (key) => this.getAttachment(key)));
       logger.info({ source: constants.SHOW_SUCCESS, method: constants.METHOD.GET, err: true });
+      console.log("Repository allResponses"+allResponses[0]?.key)
       return allResponses;
     } catch (error) {
       logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, err: true });
@@ -79,9 +82,10 @@ class AwsRepository {
   async deleteAttachmentById(key: string): Promise<void | any> {
     const params: AWS.S3.DeleteObjectRequest = {
       Bucket: AwsRepository.getBucketName(),
-      Key: key
+      Key: key.replace(/_/g, '/')
     };
     try {
+      console.log(params.Key)
       await s3.deleteObject(params).promise();
       logger.info({ source: constants.DELETE_FILE_SUCCESS, msg: constants.METHOD.GET, success: true });
     } catch (error:any) {
