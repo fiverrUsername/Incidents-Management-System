@@ -18,10 +18,15 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   const [summaryIncident, setSummaryIncident] = useState<ISummary>();
   const [incident, setIncident] = useState<GetIncident>();
   useEffect(() => {
+
     const fetchTimeline = async () => {
+         // eslint-disable-next-line no-debugger
+         debugger
       const getTimeLineEventsById = await apiCalls.getTimeLineEventsById(id)
       console.log(getTimeLineEventsById, "getTimeLineEventsById");
       setTimelineObjects(getTimeLineEventsById);
+      // eslint-disable-next-line no-debugger
+      debugger
     };
     fetchTimeline();
     const fetchSummaryIncident = async () => {
