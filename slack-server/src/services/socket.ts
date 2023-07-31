@@ -13,11 +13,14 @@ ws.on('open', () => {
 });
 
 ws.onmessage = (webSocketMessage:any) => {
+  console.log("Message")
+
   const messageBody: IMessage = JSON.parse(webSocketMessage.data.toString());
   switch (messageBody.objectType) {
     case ObjectType.Incident:
       switch (messageBody.actionType) {
         case ActionType.Add:
+          console.log("Create new channel")
           createNewChannel(messageBody.object as IIncident);
           break;
         case ActionType.Update:

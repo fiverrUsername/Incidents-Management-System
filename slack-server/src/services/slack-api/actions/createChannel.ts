@@ -1,11 +1,38 @@
-import { IIncident } from '../../../../../ims-server/src/interfaces/IncidentInterface';
+// import { IIncident } from '../../../../../ims-server/src/interfaces/IncidentInterface';
 import { SLACK_API_TOKEN } from './const';
+
+ interface ITag {
+  id: string;
+  name: string;
+}
+
+
+  interface IIncident {
+  name: string;
+  status: string;
+  description: string;
+  currentPriority: string;
+  type: string;
+  durationHours: number;
+  channelId?: string;
+  slackLink: string;
+  channelName?: string;
+  currentTags: ITag[];
+  date: string;
+  createdAt: string;
+  updatedAt: string;
+  cost: number;
+  createdBy: string;
+}
+
+
 
 
 //TODO- change the userIds
 const userIds = ['U05HXKPD259'];
 export async function createNewChannel(incidentData: IIncident) {
   try {
+    console.log("i am in create channel")
     const response = await axios.post('https://slack.com/api/conversations.create', {
       name: incidentData.channelName,
       user_ids: userIds,

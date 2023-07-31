@@ -77,12 +77,42 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++
 
 
-  
+
+ interface ITag {
+    id: string;
+    name: string;
+  }
+
+
+
+
+  interface IIncident {
+
+  name: string;
+  status: string;
+  description: string;
+  currentPriority: string;
+  type: string;
+  durationHours: number;
+  channelId?: string;
+  slackLink: string;
+  channelName?: string;
+  currentTags: ITag[];
+  date: string;
+  createdAt: string;
+  updatedAt: string;
+  cost: number;
+  createdBy: string;
+}
+
+
+
+
 
 import { SLACK_API_TOKEN } from "./const";
 import axios from 'axios';
 import addIncident from '../../../../../ims-server/src/controllers/IncidentController';
-import { IIncident } from '../../../../../ims-server/src/interfaces/IncidentInterface';
+// import { IIncident } from '../../../../../ims-server/src/interfaces/IncidentInterface';
 //  import { IIncident } from "./interfaces";
 import { EncidentStatus, EncidentType } from '../../../../../ims-server/src/enums/enum';
 export async function createIncident(channelId: string) {
