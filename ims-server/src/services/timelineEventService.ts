@@ -167,7 +167,7 @@ class TimelineEventService {
         return new Error('Invalid index');
       }
       timelineEvent.files.splice(index, 1);
-      return await timelineEventRepository.updateTimelineEvent(id, timelineEvent);
+      return await timelineEventRepository.updateTimelineEvent(id, timelineEvent);;
     } catch (error: any) {
       logger.error({ source: constants.TIMELINE_EVENT, err: constants.SERVER_ERROR, method: constants.METHOD.DELETE });
       return new Error(`Error deleting file in timeline event by index: ${error}`);
