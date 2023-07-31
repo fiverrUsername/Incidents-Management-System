@@ -51,7 +51,7 @@ const Table = <T extends object>({ columns, rows, isLoading, visibilityModel }: 
           setColumnVisibilityModel(newModel)
         }
         onRowSelectionModelChange={handleSelectionChange}
-        getRowId={(row) => row._id}
+        getRowId={(row) => row.id}
         disableColumnMenu
         columns={columns}
         rows={rows}

@@ -10,10 +10,11 @@ export enum ActionType {
   Add,
   Update,
   Delete,
+  ChangePriority
 }
 
 export interface IMessage {
   objectType: ObjectType,
   actionType: ActionType,
-  object: ITimelineEvent | IIncident
+  object: ITimelineEvent | IIncident | any
 }

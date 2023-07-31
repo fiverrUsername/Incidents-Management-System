@@ -40,8 +40,8 @@ export default class TimelineEventController {
     async addTimelineEvent(req: Request, res: Response): Promise<Response> {
         try {
             //remember to change:
-            req.body.updatedDate=new Date()
-            req.body.createdDate=new Date()
+            req.body.updatedDate='2022-09-18T17:34:02.666Z'
+            req.body.createdDate='2022-09-18T17:34:02.666Z'
             const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
             //const response = await axios.post('http://localhost:4700', req.body);
             if (_timelineEvent instanceof Error) {
@@ -160,7 +160,6 @@ export default class TimelineEventController {
             files: Buffer[];
           }
         const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventsById(req.body.incidentId);
-       // const aws1=new AwsService()
         const a=awsService.getAllAttachmentByTimeline(req.body.files)
         let file:Buffer[]=[]
         a.then(function(result:any) {
@@ -170,12 +169,11 @@ export default class TimelineEventController {
         if (allTimelineEvents != null) {
             let sortedDatesDescending: ITimelineEvent[] = allTimelineEvents.slice().sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
             const previousTimeLineEvent: ITimelineEvent = sortedDatesDescending[1]
-            console.log(sortedDatesDescending[0])
-            console.log(req.body.incidentId + "previous")
             answer.description[2] = req.body.description
-            if (previousTimeLineEvent?.priority != req.body.priority)
+            if (previousTimeLineEvent?.priority != req.body.priority){
                 answer.description[0] ="priority changed: "+ previousTimeLineEvent.priority + " => " + req.body.priority+'\n'
-                //socket
+                sendToSocket(req.body as ITimelineEvent, ObjectType.TimelineEvent, ActionType.ChangePriority);
+            }   
             if (previousTimeLineEvent?.type != req.body.type)
                 answer.description[1] ="type changed: "+ previousTimeLineEvent.type + " => " + req.body.type+'\n'
         }
