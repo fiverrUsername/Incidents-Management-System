@@ -1,11 +1,15 @@
+import mongoose from "mongoose";
 import { IncidentDto } from "../dto/incidentDto";
 import { IIncident } from "../interfaces/IncidentInterface";
+import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import incidentModel from "../models/IncidentModel";
 
 class IncidentRepository {
   async addIncident(newIncident: IIncident): Promise<IIncident | any> {
     try {
-      return await incidentModel.create(newIncident);
+      const _newIncident:IIncident=await incidentModel.create(newIncident); 
+      console.log(_newIncident.id);     
+      return  _newIncident;
     } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
@@ -30,9 +34,10 @@ class IncidentRepository {
     }
   }
 
-  async getIncidentById(id: String): Promise<IIncident | any> {
+  async getIncidentById(id: string): Promise<IIncident | any> {
     try {
-      return await incidentModel.findById(id);
+      const incident:IIncident|null=await incidentModel.findOne({id});
+      return incident;
     } catch (error: any) {
       console.error(`error: ${error}`);
       return error;

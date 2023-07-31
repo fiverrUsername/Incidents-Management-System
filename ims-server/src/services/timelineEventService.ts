@@ -34,6 +34,7 @@ class TimelineEventService {
         success: true
       });
       const timelineEvent = await timelineEventRepository.getTimelineEventsById(id);
+      
       return timelineEvent;
     } catch (error: any) {
       logger.error({
@@ -50,8 +51,6 @@ class TimelineEventService {
     try {
       const _timelineEvent = new ITimelineEventDto(newTimelineEvent);
       const validationErrors = await validate(_timelineEvent);
-      console.log(validationErrors);
-      console.log(validationErrors.length);
       if (validationErrors.length > 0) {
         logger.error({
           source: constants.TIMELINE_EVENT,
