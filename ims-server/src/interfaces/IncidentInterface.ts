@@ -8,7 +8,7 @@ import { ITag } from "./tagInterface";
   currentPriority: string;
   type: string;
   durationHours: number;
-  channelId?: string;
+  channelId: string;
   slackLink: string;
   channelName?: string;
   currentTags: ITag[];
