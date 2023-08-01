@@ -26,14 +26,14 @@ class TimelineEventService {
     }
   }
 
-  async getTimelineEventsById(id: string): Promise<ITimelineEvent[] | any> {
+  async getTimelineEventByIncidentId(id: string): Promise<ITimelineEvent[] | any> {
     try {
       logger.info({
         source: constants.TIMELINE_EVENT,
         msg: constants.METHOD.GET,
         success: true
       });
-      const timelineEvent = await timelineEventRepository.getTimelineEventsById(id);
+      const timelineEvent = await timelineEventRepository.getTimelineEventByIncidentId(id);
       
       return timelineEvent;
     } catch (error: any) {

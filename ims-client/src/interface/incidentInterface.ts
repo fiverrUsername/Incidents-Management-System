@@ -9,7 +9,7 @@ export default interface IIncident {
   currentPriority: Priority;
   type: string;
   durationHours: number;
-  channelId?: string;
+  channelId?:string;
   slackLink: string;
   channelName?: string;
   currentTags: ITag[];

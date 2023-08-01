@@ -12,6 +12,7 @@ const apiCalls = {
     getIncidentById:(id:string)=>axios.get(`${baseUrl}/incident/${id}`).then(response => response.data),
     getSummaryIncident:(id:string)=>axios.get(`${baseUrl}/incident/summary/${id}`).then(response => response.data),
     getTimeLineEventsById:(id:string)=>axios.get(`${baseUrl}/timelineEvent/${id}`).then(response => response.data),
+    timelineEventByIncidentId:(id:string)=>axios.get(`${baseUrl}/timelineEvent/timelineEventByIncidentId/${id}`).then(response => response.data),
     getTimeLineForIncident:(id:string)=>axios.get(`${baseUrl}/incident/${id}`).then(response => response.data),
     addTimelineEvent:(timeLineEvent: ITimeLineEvent) => axios.post(`${baseUrl}/timelineEvent`, timeLineEvent).then(response => response.data),
 }
