@@ -329,14 +329,14 @@
                 "tags": [
                     "timelineEvent"
                 ],
-                "description": "delete a file of a timeline event by id and index",
+                "description": "delete a file of a timeline event by id and string file",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path"
                     },
                     {
-                        "name": "index",
+                        "name": "fileString",
                         "in": "query",
                         "required": true
                     }

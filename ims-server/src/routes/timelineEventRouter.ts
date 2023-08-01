@@ -11,7 +11,7 @@ router.post("/compareIncidentChanges", timelineEventController.compareIncidentCh
 router.delete("/:id", timelineEventController.deleteTimelineEvent);
 router.get('/:id/', timelineEventController.getTimelineEventById);
 router.get('/:id/files/', timelineEventController.getFileInTimelineEventByIndex)
-router.delete('/:id/files', timelineEventController.deleteFileInTimelineEventByIndex)
 router.put('/updateTimeLineEvent/:id', timelineEventController.updateTimelineEvent);
+router.delete('/:id/files',timelineEventController.deleteFileInTimelineEventByValue)
 
 export default router;

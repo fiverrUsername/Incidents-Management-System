@@ -34,7 +34,7 @@ class TimelineEventRepository {
 
   async deleteTimelineEvent(id: String): Promise<ITimelineEvent | any> {
     try {
-      return await timelineEvent.findByIdAndDelete(id);
+      return await timelineEvent.findOneAndDelete({id});
     } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
