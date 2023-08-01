@@ -174,5 +174,20 @@ class TimelineEventService {
     }
   }
 
+  async deleteFileInTimelineEventByValue(id: string, file: string): Promise<ITimelineEvent | any> {
+    try {
+      const timelineEvent: ITimelineEvent | null = await this.getTimelineEventById(id);
+      if (timelineEvent === null) {
+        logger.error({ source: constants.TIMELINE_EVENT, err: constants.NOT_FOUND, timelineEventId: id,file:file,method:constants.METHOD.DELETE})
+        return new Error('Timeline event not found');
+      }
+      timelineEvent.files = timelineEvent.files.filter((v) => v !== file);    
+      return await timelineEventRepository.updateTimelineEvent(id, timelineEvent);;
+    } catch (error: any) {
+      logger.error({ source: constants.TIMELINE_EVENT, err: constants.SERVER_ERROR, method: constants.METHOD.DELETE });
+      return new Error(`Error deleting file in timeline event by index: ${error}`);
+    }
+  }
+
 }
 export default new TimelineEventService();

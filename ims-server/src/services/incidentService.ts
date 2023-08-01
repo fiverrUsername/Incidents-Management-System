@@ -39,42 +39,26 @@ class IncidentService {
     }
   }
 
-  async updateIncident(id: String, data: any): Promise<void | any> {
+  async updateIncident(id: string, data: any): Promise<IIncident | any> {
     try {
-      const updatedIncident = await incidentRepository.updateIncident(id, data);
-      if (updatedIncident) {
-        logger.info({
-          source: constants.INCIDENT_COTROLLER,
-          msg: constants.UPDATE_INCIDENT_SUCCESS,
-          incidetID: id,
-        });
-        throw new Error("Validation error");
+      const isValidId:IIncident|any =await incidentRepository.getIncidentByField(id);   
+      if (isValidId === null || isValidId instanceof Error) {
+        logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentId: id, });
+        return new Error(constants.INCIDENT_NOT_FOUND);
       }
-      logger.info({
-        sourece: constants.INCIDENT_COTROLLER,
-        msg: constants.UPDATE_INCIDENT_SUCCESS
-      });
-      await incidentRepository.updateIncident(id, updatedIncident);
-      // if (!data.name) {
-      //   logger.error({
-      //     source: constants.MISSNG_REQUIRED_FIELDS,
-      //     method: constants.METHOD.PUT,
-      //   });
-      //   throw new Error(constants.MISSNG_REQUIRED_FIELDS);
-      // } else {
-      //   logger.error({
-      //     source: constants.INCIDENT_COTROLLER,
-      //     err: constants.INCIDENT_NOT_FOUND,
-      //     incidentId: id,
-      //   });
-      //   throw new Error(constants.INCIDENT_NOT_FOUND);
-      // }
+      const updatedIncident:IIncident = await incidentRepository.updateIncident(id, data);
+      if (updatedIncident) {
+        logger.info({ source: constants.INCIDENT_COTROLLER, msg: constants.UPDATE_INCIDENT_SUCCESS, incidetID: id, });
+        return updatedIncident;
+      }
+      if (data.fields < 14) {
+        logger.error({ source: constants.MISSNG_REQUIRED_FIELDS, method: constants.METHOD.PUT });
+        return new Error(constants.MISSNG_REQUIRED_FIELDS);
+      }
+      logger.error({ source: constants.SERVER_ERROR, method: constants.METHOD.PUT, error: true })
+      return new Error(constants.SERVER_ERROR)
     } catch (error: any) {
-      logger.error({
-        source: constants.INCIDENT_COTROLLER,
-        method: constants.METHOD.PUT,
-        incidetID: id,
-      });
+      logger.error({ source: constants.INCIDENT_COTROLLER, method: constants.METHOD.PUT, incidetID: id, });
       console.error(`error: ${error}`);
       return error;
     }
@@ -122,7 +106,7 @@ class IncidentService {
 
   async getSummaryIncident(id: string): Promise<ISummary | any> {
     try {
-      let summary:ISummary = {
+      let summary: ISummary = {
         createdBy: '',
          createdAt: '',
         currentPriority: Priority.P0,
