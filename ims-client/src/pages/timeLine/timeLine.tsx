@@ -3,16 +3,16 @@ import React from 'react';
 import { ITimeLineEventprops, ITimelineEventListprops } from '../../interface/timeLineInterface';
 import userdata from '../../mockAPI/users.json';
 import { TimelineWarpper } from './timeLine.style';
-import TimeLineEvent from './timeLineEvent/timeLineEvent';
 import { Priority } from '../../interface/enum-priority';
-
+import TimeLineEvent from './timeLineEvent/timeLineEvent';
+import dayjs from 'dayjs';
 
 const TimeLine: React.FC<ITimelineEventListprops> = (props) => {
   const { timelineList } = props;
-  const timeLineEvents = timelineList.sort(
-    (a, b) => (b.createdDate).hour() - (a.createdDate).hour()
-  );
-
+  const timeLineEvents = timelineList.sort((a, b) => {
+    const diff = dayjs(a.createdDate).diff(dayjs(b.createdDate));
+    return diff;
+  });
   const timelineObjects = timeLineEvents.map((timeLine, index) => {
     const user = userdata.find((u) => u._id === timeLine.userId);
     const updatedTimeline: ITimeLineEventprops = {
