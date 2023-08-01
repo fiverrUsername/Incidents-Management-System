@@ -1,6 +1,6 @@
 import axios from "axios"
 import IIncident from "../interface/incidentInterface"
-import ITimeLineEvent from "../interface/timeLineInterface"
+import {ITimeLineEvent} from "../interface/timeLineInterface"
 const baseUrl = process.env.REACT_APP_API_KEY
 
 const apiCalls = {

@@ -1,4 +1,5 @@
 // import { IIncident } from '../../../../../ims-server/src/interfaces/IncidentInterface';
+import { Priority } from '../interfaces/priority-enum'
 import { SLACK_API_TOKEN } from './const';
 
  interface ITag {
@@ -11,7 +12,7 @@ import { SLACK_API_TOKEN } from './const';
   name: string;
   status: string;
   description: string;
-  currentPriority: string;
+  currentPriority: Priority;
   type: string;
   durationHours: number;
   channelId?: string;
@@ -158,7 +159,7 @@ const theIncident:IIncident={
 "name": "ddd",
 "status": "Active",
 "description": "d",
-"currentPriority": "p1",
+"currentPriority":Priority.P1,
 "type": "technical",
 "durationHours": 0,
 "channelId": "",

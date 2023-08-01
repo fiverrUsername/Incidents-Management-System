@@ -232,9 +232,10 @@ import IIncident from '../../interface/incidentInterface';
 import { ITag } from '../../interface/ITag';
 import UploadFiles from '../uploadFiles/UploadFiles';
 import awsService from '../../service/awsService';
+import { Priority } from '../../interface/enum-priority';
 export interface form_data {
   text: string;
-  priority: string;
+  priority: Priority;
   date: dayjs.Dayjs;
   type: string;
   tags: ITag[];
@@ -245,7 +246,7 @@ export interface GetIncident {
   name: string;
   status: string;
   description: string;
-  currentPriority: string;
+  currentPriority: Priority ;
   type: string;
   durationHours: number;
   channelId?:string;
@@ -266,7 +267,7 @@ interface Props {
 export default function AddUpdate({ open, onClose, incident }: Props) {
   const priorityProp = incident.currentPriority;
   const { handleSubmit, register, formState: { errors } } = useForm<form_data>();
-  const [priority, setPriority] = React.useState<string | null>("");
+  const [priority, setPriority] = React.useState<Priority>(Priority.P0);
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -342,7 +343,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       setTags(getAllTags);
     }
     getTags();
-    setPriority(String(priorityProp.toLowerCase()));
+    setPriority(priorityProp); 
   }, []);
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
@@ -371,7 +372,8 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
-                  <ToggleButtons setPriority={setPriority} priority={priority} />
+                <ToggleButtons setPriority={setPriority} priority={priority} />
+
                 </div>
               </FormControl>
             </Grid>
