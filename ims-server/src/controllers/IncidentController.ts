@@ -27,9 +27,7 @@ export default class IncidentController {
     try {
       const incident: IncidentDto = await incidentService.updateIncident(req.params.id, req.body);
       if (incident instanceof Error) {
-        if (incident.message === constants.MISSNG_REQUIRED_FIELDS) {
-          return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: constants.MISSNG_REQUIRED_FIELDS, error: true });
-        } else if (incident.message === constants.INCIDENT_NOT_FOUND) {
+        if (incident.message === constants.INCIDENT_NOT_FOUND) {
           return res.status(status.PAGE_NOT_FOUND).json({ message: constants.INCIDENT_NOT_FOUND });
         } else {
           return res.status(status.SERVER_ERROR).json({ message: incident, error: true });
@@ -64,16 +62,16 @@ export default class IncidentController {
       res.status(status.SERVER_ERROR).json({ message: error });
     }
   }
-  async getSummaryIncident(req: Request, res: Response): Promise<void> {
+  async getSummaryIncident(req: Request, res: Response): Promise<Response> {
     try {
-      const summary: ISummary | null = await incidentService.getSummaryIncident(
-        req.params.id
-      );
-      if (summary instanceof Error) {
-        res.status(status.PAGE_NOT_FOUND).json({ message: summary, error: true });
-      } else res.status(status.SUCCESS).json(summary);
+      const summary: ISummary | null = await incidentService.getSummaryIncident(req.params.id);
+      console.log(summary);
+      if (summary instanceof Error || summary === null) {
+        return res.status(status.PAGE_NOT_FOUND).json({ message: summary, error: true });
+      }
+      return res.status(status.SUCCESS).json(summary);
     } catch (error: any) {
-      res.status(status.SERVER_ERROR).json({ message: error });
+      return res.status(status.SERVER_ERROR).json({ message: error });
     }
   }
 
