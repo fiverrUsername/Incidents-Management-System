@@ -1,27 +1,33 @@
-import React, { useEffect, useState } from "react";
-import TimeLine from "./timeLine";
-import Search from "../../components/search/search";
-import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
-import { WithIdProps } from "../../HOC";
-import AddUpdateComp from "../../components/AddUpdate/AddUpdateComp"
-import DisplaySummary from "../../components/summary/displaySummary";
-import apiCalls from "../../service/apiCalls";
-import { TimelineEvent } from "./modules/interface";
-import { ISummary } from "../../interface/ISummary";
-import IIncident from "../../interface/incidentInterface";
 import { Grid, Typography } from "@mui/material";
-import filterTimeLineBySearch from "../../service/timeLineService";
-import users from '../../mockAPI/users.json';
+import React,{ useEffect, useState } from "react";
+
+import { WithIdProps } from "../../HOC";
 import { GetIncident } from "../../components/AddUpdate/AddUpdate";
+import AddUpdateComp from "../../components/AddUpdate/AddUpdateComp";
+import Search from "../../components/search/search";
+import DisplaySummary from "../../components/summary/displaySummary";
+import { ISummary } from "../../interface/ISummary";
+import { ITimeLineEvent } from "../../interface/timeLineInterface";
+import apiCalls from "../../service/apiCalls";
+import filterTimeLineBySearch from "../../service/timeLineService";
+import TimeLine from "./timeLine";
+import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
+ 
+
 const TimeLinePage = ({ id }: WithIdProps) => {
-  const [timelineObjects, setTimelineObjects] = useState<TimelineEvent[]>([]);
+  const [timelineObjects, setTimelineObjects] = useState<ITimeLineEvent[]>([]);
   const [summaryIncident, setSummaryIncident] = useState<ISummary>();
   const [incident, setIncident] = useState<GetIncident>();
   useEffect(() => {
+
     const fetchTimeline = async () => {
+         // eslint-disable-next-line no-debugger
+         debugger
       const getTimeLineEventsById = await apiCalls.getTimeLineEventsById(id)
       console.log(getTimeLineEventsById, "getTimeLineEventsById");
       setTimelineObjects(getTimeLineEventsById);
+      // eslint-disable-next-line no-debugger
+      debugger
     };
     fetchTimeline();
     const fetchSummaryIncident = async () => {
@@ -47,7 +53,7 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   };
 
   const [myValue, setMyValue] = useState<string>("");
-  let filter: TimelineEvent[] = []
+  let filter: ITimeLineEvent[] = []
   someFunction()
 
   return (

@@ -1,6 +1,6 @@
 import axios from "axios"
 import IIncident from "../interface/incidentInterface"
-import ITimeLineEvent from "../interface/timeLineInterface"
+import {ITimeLineEvent} from "../interface/timeLineInterface"
 const baseUrl = process.env.REACT_APP_API_KEY
 
 const apiCalls = {
@@ -11,7 +11,7 @@ const apiCalls = {
     getTags: () => axios.get(`${baseUrl}/tag`).then(response => response.data),
     getIncidentById:(id:string)=>axios.get(`${baseUrl}/incident/${id}`).then(response => response.data),
     getSummaryIncident:(id:string)=>axios.get(`${baseUrl}/incident/summary/${id}`).then(response => response.data),
-    getTimeLineEventsById:(id:string)=>axios.get(`${baseUrl}/timelineEvent/getById/${id}`).then(response => response.data),
+    getTimeLineEventsById:(id:string)=>axios.get(`${baseUrl}/timelineEvent/${id}`).then(response => response.data),
     getTimeLineForIncident:(id:string)=>axios.get(`${baseUrl}/incident/${id}`).then(response => response.data),
     addTimelineEvent:(timeLineEvent: ITimeLineEvent) => axios.post(`${baseUrl}/timelineEvent`, timeLineEvent).then(response => response.data),
 }

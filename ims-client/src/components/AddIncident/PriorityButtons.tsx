@@ -1,8 +1,6 @@
-
-
-
 import React from 'react';
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Priority } from '../../interface/enum-priority';
 
 const buttonStyles: React.CSSProperties = {
   flex: '1',
@@ -18,36 +16,40 @@ const selectedButtonStyles: React.CSSProperties = {
   border: '1px solid #2F854F',
   background: 'rgba(47, 133, 79, 0.10)',
 };
-interface Props{
-  priority:string|null;
-  setPriority:React.Dispatch<React.SetStateAction<string|null>>
+
+interface Props {
+  priority: Priority;
+  setPriority: React.Dispatch<React.SetStateAction<Priority>>;
 }
-export default function ToggleButtons({priority,setPriority}:Props) {
-  
-  const handlepriority = (
+
+export default function ToggleButtons({ priority, setPriority }: Props) {
+  const handlePriority = (
     event: React.MouseEvent<HTMLElement>,
-    newpriority: string | null,
+    newPriority: Priority | null,
   ) => {
-    setPriority(newpriority);
+    if (newPriority !== null) {
+      setPriority(newPriority);
+    }
   };
+
   return (
     <ToggleButtonGroup
       value={priority}
       exclusive
-      onChange={handlepriority}
+      onChange={handlePriority}
       aria-label="text priority"
       style={{ display: 'flex', gap: '10px' }}
     >
-      <ToggleButton value="p0" style={priority === 'p0' ? selectedButtonStyles : buttonStyles}>
+      <ToggleButton value={Priority.P0} style={priority === Priority.P0 ? selectedButtonStyles : buttonStyles}>
         p0
       </ToggleButton>
-      <ToggleButton value="p1" style={priority === 'p1' ? selectedButtonStyles : buttonStyles}>
+      <ToggleButton value={Priority.P1} style={priority === Priority.P1 ? selectedButtonStyles : buttonStyles}>
         p1
       </ToggleButton>
-      <ToggleButton value="p2" style={priority === 'p2' ? selectedButtonStyles : buttonStyles}>
+      <ToggleButton value={Priority.P2} style={priority === Priority.P2 ? selectedButtonStyles : buttonStyles}>
         p2
       </ToggleButton>
-      <ToggleButton value="p3" style={priority === 'p3' ? selectedButtonStyles : buttonStyles}>
+      <ToggleButton value={Priority.P3} style={priority === Priority.P3 ? selectedButtonStyles : buttonStyles}>
         p3
       </ToggleButton>
     </ToggleButtonGroup>

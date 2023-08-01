@@ -1,11 +1,39 @@
-import { IIncident } from '../../../../../ims-server/src/interfaces/IncidentInterface';
+// import { IIncident } from '../../../../../ims-server/src/interfaces/IncidentInterface';
+import { Priority } from '../interfaces/priority-enum'
 import { SLACK_API_TOKEN } from './const';
+
+ interface ITag {
+  id: string;
+  name: string;
+}
+
+
+  interface IIncident {
+  name: string;
+  status: string;
+  description: string;
+  currentPriority: Priority;
+  type: string;
+  durationHours: number;
+  channelId?: string;
+  slackLink: string;
+  channelName?: string;
+  currentTags: ITag[];
+  date: string;
+  createdAt: string;
+  updatedAt: string;
+  cost: number;
+  createdBy: string;
+}
+
+
 
 
 //TODO- change the userIds
 const userIds = ['U05HXKPD259'];
 export async function createNewChannel(incidentData: IIncident) {
   try {
+    console.log("i am in create channel")
     const response = await axios.post('https://slack.com/api/conversations.create', {
       name: incidentData.channelName,
       user_ids: userIds,
@@ -125,24 +153,24 @@ async function getSlackUsers() {
 function updateChannelDescription(channelId: any, description: string) {
   throw new Error('Function not implemented.');
 }
-// const theIncident:IIncident={
-// "_id": "1111",
-// "id": "1",
-// "name": "ddd",
-// "status": "Active",
-// "description": "d",
-// "currentPriority": "p1",
-// "type": "technical",
-// "durationHours": 0,
-// "channelId": "",
-// "channelName": "ddd",
-// "slackLink": "",
-// "date": "2023-07-25T13:46:53.690Z",
-// "createdAt": "2023-07-25T13:46:53.690Z",
-// "updatedAt":"2023-07-25T13:46:53.690Z",
-// "cost": 0,
-// "createdBy": "?",
-// "currentTags": [],
-// }
 
-// createNewChannel(theIncident)
+
+const theIncident:IIncident={
+"name": "ddd",
+"status": "Active",
+"description": "d",
+"currentPriority":Priority.P1,
+"type": "technical",
+"durationHours": 0,
+"channelId": "",
+"channelName": "try3",
+"slackLink": "",
+"date": "2023-07-25T13:46:53.690Z",
+"createdAt": "2023-07-25T13:46:53.690Z",
+"updatedAt":"2023-07-25T13:46:53.690Z",
+"cost": 0,
+"createdBy": "?",
+"currentTags": [],
+}
+
+createNewChannel(theIncident)

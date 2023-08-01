@@ -1,14 +1,15 @@
+import { Priority } from "../enums/enum";
 import { ITag } from "./tagInterface";
 
-export interface IIncident {
+ export interface IIncident {
   id: string;
   name: string;
   status: string;
   description: string;
-  currentPriority: string;
+  currentPriority: Priority;
   type: string;
   durationHours: number;
-  channelId?: string;
+  channelId: string;
   slackLink: string;
   channelName?: string;
   currentTags: ITag[];

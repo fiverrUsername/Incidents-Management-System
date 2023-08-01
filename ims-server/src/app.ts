@@ -3,6 +3,8 @@ import cors from 'cors';
 import express, { Request, Response } from 'express';
 import fs from 'fs';
 import swaggerUI from 'swagger-ui-express';
+import schedule from 'node-schedule';
+
 import '../src/services/socket';
 import config from './config/config';
 import logger from './loggers/log';
@@ -15,14 +17,11 @@ import attachmentRouter from './routes/awsRouter';
 
 
 const port = config.server.port
-
 const app = express()
-
 const swaggerFile: any = (process.cwd() + "/src/Swagger.json");
 const swaggerData: any = fs.readFileSync(swaggerFile, 'utf8');
 const swaggerDocument = JSON.parse(swaggerData);
 swaggerDocument.servers[0].url = `http://localhost:${process.env.SERVER_PORT}`
-
 const whitelist = ['http://localhost:3000'];
 
 const corsOptions: cors.CorsOptions = {
@@ -34,6 +33,7 @@ const corsOptions: cors.CorsOptions = {
     }
   },
 };
+
 
 
 
@@ -66,6 +66,15 @@ app.get('/', (req: Request, res: Response): void => {
 
 app.listen(port, () => {
   logger.info(`Server is listeningo on http://localhost:${port}`)
+});
+
+const rule = new schedule.RecurrenceRule();
+rule.hour = 0;
+rule.minute = 0;
+rule.tz = 'Asia/Jerusalem';
+
+schedule.scheduleJob(rule, function(){
+  console.log('A new day has begun in the UTC timezone!');
 });
 
 export default app;

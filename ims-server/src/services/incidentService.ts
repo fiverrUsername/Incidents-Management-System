@@ -6,6 +6,7 @@ import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import incidentModel from "../models/IncidentModel";
 import incidentRepository from "../repositories/incidentRepository";
+import { Priority } from "../enums/enum";
 
 class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {
@@ -124,7 +125,7 @@ class IncidentService {
       let summary:ISummary = {
         createdBy: '',
          createdAt: '',
-        currentPriority: '',
+        currentPriority: Priority.P0,
         tags: []
       }
       //check if get incident from repository or service
@@ -140,8 +141,6 @@ class IncidentService {
         }
         logger.info({ source: constants.INCIDENT_COTROLLER, method: constants.METHOD.GET, incidentId: id })
       }
-      console.log(summary)
-      console.log(incident)
       return summary;
     } catch (error: any) {
       logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentID: id });

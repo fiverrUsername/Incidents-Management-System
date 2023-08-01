@@ -12,8 +12,8 @@ async function updateChannelDescription(channelId:string, description:string) {
   }
 }
 
-const channelId = 'C05JPSL5TCL';
-const newDescription = 'This is the updated 2 description of the channel.';
+const channelId = 'C05JZP6D47R';
+const newDescription = 'This is the updated 3 description of the channel.';
 updateChannelDescription(channelId, newDescription);
 
 
