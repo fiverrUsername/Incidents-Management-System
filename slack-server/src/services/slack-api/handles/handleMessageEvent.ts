@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Priority } from '../../../../../ims-server/src/enums/enum';
 import { IIncident } from '../../../../../ims-server/src/interfaces/IncidentInterface';
 import { ITimelineEvent } from '../../../../../ims-server/src/interfaces/ItimelineEvent';
 import { SLACK_TOKEN } from '../actions/const';
@@ -12,7 +13,7 @@ import { SLACK_TOKEN } from '../actions/const';
           incidentId: answer.id,
           userId: '',
           description: event.text,
-          priority: decodeMessage(event.text) || "p0",
+          priority:Priority.P0,
           type: '',
           files: ["jdjsfhjdksjfhsdj","fdsug"],
           createdDate: new Date(),

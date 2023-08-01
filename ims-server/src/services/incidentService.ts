@@ -1,4 +1,4 @@
-import { validate } from "class-validator";
+//import { validate } from "class-validator";
 import { IncidentDto } from "../dto/incidentDto";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ISummary } from "../interfaces/ISummary";
@@ -41,7 +41,7 @@ class IncidentService {
 
   async updateIncident(id: string, data: any): Promise<IIncident | any> {
     try {
-      const isValidId:IIncident|any =await incidentRepository.getIncidentByField(id);   
+      const isValidId:IIncident|any =await incidentRepository.getIncidentByField(id,"id");   
       if (isValidId === null || isValidId instanceof Error) {
         logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentId: id, });
         return new Error(constants.INCIDENT_NOT_FOUND);
