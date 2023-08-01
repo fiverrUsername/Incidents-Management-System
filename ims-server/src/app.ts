@@ -35,10 +35,7 @@ const corsOptions: cors.CorsOptions = {
 };
 
 
-
-
-
-connect()
+connect();
 // app.use(cors(corsOptions));
 app.use(cors({
   origin: true, // "true" will copy the domain of the request back
