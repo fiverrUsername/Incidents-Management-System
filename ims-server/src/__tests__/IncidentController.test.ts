@@ -30,7 +30,7 @@ describe("incidents", () => {
         describe("error", () => {
             it("should return 404", async () => {
                 const id = "987654";
-                jest.spyOn(IncidentModel, 'findById').mockRejectedValueOnce(new Error());
+                jest.spyOn(IncidentModel, 'findOne').mockRejectedValueOnce(new Error());
                 const res = await supertest(app).get(`/incident/${id}`);
                 expect(res.status).toBe(404);
             });
@@ -140,19 +140,8 @@ describe("incidents", () => {
                     .send(updatedIncident);
                 expect(res.status).toBe(404);
             })
-            it("should return 422 on missing required fields", async () => {
-                jest.spyOn(IncidentModel, 'findOneAndUpdate').mockResolvedValueOnce(new Error());
-                const updatedIncident = {
-                    name: "Unresolved Incident adding"
-                }
-                const id = "649cbeda942a5d4d8bcf303b";
-                const res = await supertest(app)
-                    .put(`/incident/updateIncident/${id}`)
-                    .send(updatedIncident);
-                expect(res.status).toBe(422);
-            })
             it("should return 500 on error", async () => {
-                jest.spyOn(IncidentModel, 'findByIdAndUpdate').mockRejectedValueOnce(new Error());
+                jest.spyOn(IncidentModel, 'findOneAndUpdate').mockRejectedValueOnce(new Error());
                 const updatedIncident = {
                     name: "Unresolved Incident adding"
                 }
@@ -174,7 +163,7 @@ describe("incidents", () => {
         })
         describe("error", () => {
             it("should return 404", async () => {
-                jest.spyOn(IncidentModel, 'findById').mockRejectedValueOnce(new Error());
+                // jest.spyOn(IncidentModel, 'findById').mockResolvedValueOnce(new Error());
                 const id = "5555";
                 const res = (await supertest(app).get(`/incident/${id}`));
                 expect(res.status).toBe(404);

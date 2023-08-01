@@ -58,7 +58,14 @@ class IncidentRepository {
     }
   }
   
+  async  getIncidentById(id: string): Promise<IIncident | any> {
+    try {
+      return await incidentModel.findOne({ id });
+    } catch (error: any) {
+      console.error(`error: ${error}`);
+      return error;
+    }
+  }
   
-
 }
 export default new IncidentRepository();
