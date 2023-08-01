@@ -23,12 +23,10 @@ class SystemStatusRepository {
     //     }
     // }
 
-    async createLiveStatus(incident: IIncident): Promise<ISystemStatus | any> {
-        const ids=[];
-        ids.push(incident.id);
+    async createLiveStatus(incident: IIncident,tag:string): Promise<ISystemStatus | any> {
         const liveStatus:ISystemStatus={
-            systemName: incident.currentTags[0].name,
-            incidents: ids,
+            systemName: tag,
+            incidents: [incident.id],
             date: new Date(),
             maxPriority: incident.currentPriority
         }
@@ -42,14 +40,20 @@ class SystemStatusRepository {
         }
       }
       async updateLiveStatus(incident: IIncident,id:string ): Promise<ISystemStatus | any> {
-        //liveStatus.incidents.push(incident.id);
-        //check in enum which has an higher index
-        //liveStatus.maxPriority=
         try {
-            //i have to update something that was added today and has the name of the tags
-          //const updatedLiveStatus:ISystemStatus=await systemStatusModel.getSystemsByDate();
-          //console.log(updatedLiveStatus);     
-          //return  updatedLiveStatus;
+          const existingSystemStatus: ISystemStatus | null = await systemStatusModel.findById(id);
+          if (!existingSystemStatus) {
+            throw new Error(`ISystemStatus with ID ${id} not found.`);
+          }
+          existingSystemStatus.incidents.push(incident.id);
+          // Update the maxPriority based on the comparison with the incident's priority
+          if (incident.currentPriority > existingSystemStatus.maxPriority) {
+            existingSystemStatus.maxPriority = incident.currentPriority;
+          }
+          // Save the updated existing ISystemStatus back to the database
+          const updatedSystemStatus: ISystemStatus|null = await systemStatusModel.findByIdAndUpdate(id,existingSystemStatus);
+          console.log(updatedSystemStatus);
+          return updatedSystemStatus;
         } catch (error: any) {
           console.error(`error: ${error}`);
           return error;

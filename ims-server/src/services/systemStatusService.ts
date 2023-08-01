@@ -21,13 +21,13 @@ class SystemStatusService {
             return error;
         }
     }
-    async createLiveStatus(incident: IIncident): Promise<void | any> {
+    async createLiveStatus(incident: IIncident,tag:string): Promise<void | any> {
         try {
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,
                 msg: constants.ADD_SYSTEMS_SUCCESS
             });
-            return await systemStatusRepository.createLiveStatus(incident);
+            return await systemStatusRepository.createLiveStatus(incident,tag);
         } catch (error: any) {
             logger.error({
                 source: constants.SYSTEM_STATUS_SERVICE,

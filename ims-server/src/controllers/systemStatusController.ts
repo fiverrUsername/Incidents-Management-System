@@ -19,7 +19,8 @@ class systemStatusController {
     async createLiveStatus(req: Request, res: Response): Promise<void> {
         try {
             const incident: IIncident = req.body
-            const liveStatus = await systemStatusService.createLiveStatus(incident)
+            const tag:string=req.params.tag
+            const liveStatus = await systemStatusService.createLiveStatus(incident,tag)
             if (liveStatus instanceof Error) {
                 res.status(status.SERVER_ERROR).json({ message: liveStatus, error: true });
             } else res.status(status.CREATED_SUCCESS).json(liveStatus);
@@ -27,17 +28,18 @@ class systemStatusController {
             res.status(status.SERVER_ERROR).json({ message: error });
         }
     }
-    // async updateLiveStatus(req: Request, res: Response): Promise<void> {
-    //     try {
-    //         const incident: IIncident = req.body
-    //         const liveStatus = await systemStatusService.updateLiveStatus(incident,id)
-    //         if (liveStatus instanceof Error) {
-    //             res.status(status.SERVER_ERROR).json({ message: liveStatus, error: true });
-    //         } else res.status(status.CREATED_SUCCESS).json(liveStatus);
-    //     } catch (error: any) {
-    //         res.status(status.SERVER_ERROR).json({ message: error });
-    //     }
-    // }
+    async updateLiveStatus(req: Request, res: Response): Promise<void> {
+        try {
+            const incident: IIncident = req.body
+            const id =req.params.id
+            const liveStatus = await systemStatusService.updateLiveStatus(incident,id)
+            if (liveStatus instanceof Error) {
+                res.status(status.SERVER_ERROR).json({ message: liveStatus, error: true });
+            } else res.status(status.CREATED_SUCCESS).json(liveStatus);
+        } catch (error: any) {
+            res.status(status.SERVER_ERROR).json({ message: error });
+        }
+    }
 }
 
 export default new systemStatusController()
