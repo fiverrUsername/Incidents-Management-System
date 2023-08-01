@@ -13,7 +13,7 @@ import incidentRoute from './routes/IncidentRout';
 import aggregationRouter from './routes/aggrigationRouter';
 import tagRouter from './routes/tagRouter';
 import timelineEventRouter from './routes/timelineEventRouter';
-// import attachmentRouter from './routes/awsRouter';
+import attachmentRouter from './routes/attachmentRouter';
 
 
 const port = config.server.port
