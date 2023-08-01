@@ -24,7 +24,7 @@ const TimeLinePage = ({ id }: WithIdProps) => {
     const fetchTimeline = async () => {
          // eslint-disable-next-line no-debugger
          debugger
-      const getTimeLineEventsById = await apiCalls.getTimeLineEventsById(id)
+      const getTimeLineEventsById = await apiCalls.timelineEventByIncidentId(id)
       console.log(getTimeLineEventsById, "getTimeLineEventsById");
       setTimelineObjects(getTimeLineEventsById);
       // eslint-disable-next-line no-debugger

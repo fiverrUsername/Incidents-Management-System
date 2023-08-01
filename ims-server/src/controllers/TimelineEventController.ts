@@ -24,9 +24,9 @@ export default class TimelineEventController {
         }
     }
 
-    async getTimelineEventsById(req: Request, res: Response): Promise<void> {
+    async getTimelineEventByIncidentId(req: Request, res: Response): Promise<void> {
         try {
-            const timelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventsById(req.params.id);
+            const timelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventByIncidentId(req.params.id);
 
             if (timelineEvents instanceof Error) {
                 res.status(status.PAGE_NOT_FOUND).json({ message: timelineEvents, error: true });
@@ -161,7 +161,7 @@ export default class TimelineEventController {
             description: string[];
             files: Buffer[];
           }
-        const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventsById(req.body.incidentId);
+        const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventById(req.body.incidentId);
         const a=awsService.getAllAttachmentByTimeline(req.body.files)
         let file:Buffer[]=[]
         await a.then(function(result:any) {
