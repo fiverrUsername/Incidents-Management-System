@@ -5,9 +5,9 @@ import timelineEventService from "../services/timelineEventService";
 import logger from "../loggers/log";
 import axios from "axios";
 import { ActionType, ObjectType } from '../../../ims-socket/src/interfaces';
-import { sendToSocket } from '../services/socket';
-import AwsController from "./AwsController";
-import awsService from "../services/awsService";
+import {sendToSocket} from '../services/socket';
+import AwsController from "./attachmentController";
+import awsService from "../services/attachmentService";
 
 export default class TimelineEventController {
 
