@@ -1,10 +1,10 @@
 import express from 'express'
 import multer from 'multer'
-import AwsController from '../controllers/AwsController';
+import AttachmentController from '../controllers/attachmentController';
 
 const upload = multer({ dest: 'uploads/' });
 const attachmentsRouter = express.Router()
-const attachmentsController = new AwsController()
+const attachmentsController = new AttachmentController()
 
 attachmentsRouter.post('/allAttachments', attachmentsController.getAllAttachmentByTimeline)
 attachmentsRouter.post('/', upload.array('files'), attachmentsController.uploadAttachment)

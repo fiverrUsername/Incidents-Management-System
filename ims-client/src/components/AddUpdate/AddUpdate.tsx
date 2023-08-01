@@ -8,7 +8,6 @@ import ToggleButtons from '../AddIncident/PriorityButtons';
 import DropDown from '../AddIncident/DropDown';
 import CustomAutocomplete from '../autoCompleteTag/autoComplete';
 import dayjs from 'dayjs';
-import IOption from '../../interface/IOption';
 import submitTimeLine from './submitTimeLine'
 import theme from '../../theme';
 import apiCalls from '../../service/apiCalls';
@@ -17,7 +16,7 @@ import { text } from 'node:stream/consumers';
 import IIncident from '../../interface/incidentInterface';
 import { ITag } from '../../interface/ITag';
 import UploadFiles from '../uploadFiles/UploadFiles';
-import awsService from '../../service/awsService';
+import attachmentService from '../../service/attachmentService';
 import { Priority } from '../../interface/enum-priority';
 export interface form_data {
   text: string;
@@ -79,14 +78,14 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
     const formData = new FormData();
     files.map((file)=>{
       console.log(incident)
-      const newName = `incidence_${incident.id}_${file.name}`
+      const newName = `incidence_${incident.id}_${Date.now}${file.name}`
       setFilesString([...filesString, newName]);
       console.log("-----", newName)
       formData.append('files', file, newName);
     })
     data.files = filesString;
 
-    await awsService.uploadAttachment(formData);
+    await attachmentService.uploadAttachment(formData);
         if (type && tags) {
       const flag = await submitTimeLine({ data, incident });
       if (flag) {

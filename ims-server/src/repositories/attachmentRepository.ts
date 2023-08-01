@@ -34,6 +34,7 @@ class AttachmentsRepository {
         logger.info({ source: constants.UPLOAD_FAILED, msg: constants.METHOD.GET, error: true });
       }
   }
+  
   async getAttachment(key: string): Promise<AttachmentData|null> {
     try {
       const s3 = new AWS.S3();
@@ -57,6 +58,7 @@ class AttachmentsRepository {
       throw error;
     }
   }
+
   async getAllAttachmentsByTimeline(keys: string[]): Promise<(AttachmentData|null)[]|any> {
     try {
       const allResponses: (AttachmentData | null)[] = await Promise.all(keys.map(
@@ -68,6 +70,7 @@ class AttachmentsRepository {
       throw error;
     }
   }
+
   async deleteAttachmentById(key: string): Promise<void | any> {
     const params: AWS.S3.DeleteObjectRequest = {
       Bucket: AttachmentsRepository.getBucketName(),
@@ -85,6 +88,7 @@ class AttachmentsRepository {
       }
     }
   }
+
   static getBucketName():string {
     if (!process.env.BUCKET_NAME) {
       logger.error({ source: constants.BUCKET_NAME, method: constants.METHOD.GET, err: true });

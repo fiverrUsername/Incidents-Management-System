@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
-import attachmentsRepository from "../repositories/awsRepository";
+import attachmentsRepository from "../repositories/attachmentRepository";
 
 class AttachmentsService {
   async uploadAttachment(files: Express.Multer.File[]): Promise<void | any> {
@@ -14,6 +14,7 @@ class AttachmentsService {
       return error;
     }
   }
+
   async getAllAttachmentByTimeline(filesKey:string[]): Promise<void | any> {
     try {
       logger.info({ source: constants.SHOW_FILES, msg: constants.METHOD.GET, success: true });
@@ -23,6 +24,7 @@ class AttachmentsService {
       logger.error({ source: constants.SHOW_FILES, method: constants.METHOD.GET, err: true });
     }
   }
+  
   async deleteAttachmentById(key: string ): Promise<void | any> {
     try {
       logger.info({ sourece: constants.DELETE_FILE, method: constants.METHOD.DELETE, attachmentKey: key });

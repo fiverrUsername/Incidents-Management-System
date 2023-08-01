@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import FileViewer from 'react-file-viewer';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
-import AwsService from '../../service/awsService'
+import AwsService from '../../service/attachmentService'
 interface AttachmentData {
   key: string;
   data: Buffer;

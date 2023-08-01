@@ -7,7 +7,7 @@ import "./App.css";
 import LeftDrawer, { IIcon } from "./components/drawer/Drawer";
 import theme from "./theme";
 import Router from "./routes";
-import Table from "./components/table/table";
+
 function App() {
   const drawerIcons: IIcon[] = [
     { icon: BiHomeHeart, text: "home", navigation: "./" },
