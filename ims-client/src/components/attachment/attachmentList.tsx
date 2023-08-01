@@ -14,9 +14,11 @@ interface AttachmentData {
 };
 const Attachmentlist: React.FC<AttachmentlistProps> = ({ _id }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [filesData, setFilesData] = useState<(AttachmentData|null)[]>([]);
+  const [AllFilesData, setAllFilesData] = useState<(AttachmentData|null)[]>([]);
+  const [FilesData, setFilesData] = useState<AttachmentData[]>([]);
+
   const nextImage = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % filesData.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % AllFilesData.length);
   };
 //   const fetchTimelineData = async (id: string) => {
 //     try {
@@ -64,22 +66,39 @@ const handleDownload = (bufferData:Buffer,fileName:string,mimeType:string) => {
             "incidence/undefined/111.jpg"
         ]
       );
-      setFilesData((prevFilesData) => {
+      console.log("response",response);
+
+      
+      setAllFilesData((prevFilesData) => {
+        console.log(response+"+++++++++++++++")
         return [...prevFilesData, ...response];
       })
-      const bufferData = new Uint8Array([72, 101, 108, 108, 111, 33]);
-      const emptyBuffer = Buffer.alloc(0);
+      console.log("allData",AllFilesData);
+      AllFilesData.map((file:AttachmentData|null)=>
+        {
+          console.log(response+"----------")
+          if(file!=null)
+            setFilesData(oldArray=>[...oldArray, file])
+        }
+      )
+      console.log("Data",FilesData);
 
-      handleDownload(filesData[0].data?filesData[0].data:emptyBuffer, filesData[0]?.key, "application/docx")
+      // const bufferData = new Uint8Array([72, 101, 108, 108, 111, 33]);
+      // const emptyBuffer = Buffer.alloc(0); 
+
+      // handleDownload(filesData[0].data, filesData[0]?.key, "application/docx")
     } catch (error) {
       console.error('Error Getting Data:', error);
     }
   };
   useEffect(() => {
-    getFilesdata(),
+    getFilesdata()
+    
+  }, [FilesData])
+  useEffect(() => {
+    getFilesdata()
     
   }, [])
-
 //   useEffect(() => {
 //     fetchTimelineData(_id);
 //   }, [_id]);

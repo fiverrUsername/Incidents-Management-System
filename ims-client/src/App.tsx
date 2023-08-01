@@ -23,8 +23,8 @@ function App() {
           <LeftDrawer icons={drawerIcons} />
           <Box  component="main" sx={{ flexGrow: 1, p: 3, height: 'calc(100vh)', overflow: 'auto'  }}>
             {/* <Here put all the components /> */}
-            {/* <Router/> */}
-            <Attachmentlist _id={"3177dcba-2882-43f4-b809-897fcd162dc1"} />;
+            <Router/>
+            {/* <Attachmentlist _id={"3177dcba-2882-43f4-b809-897fcd162dc1"} />; */}
           </Box>
         </Box>
       </CssBaseline>

@@ -289,15 +289,17 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       data.date = date;
     data.type = type;
     data.tags = selectedTags;
-    data.files = filesString;
     const formData = new FormData();
     files.map((file)=>{
       console.log(incident)
       const newName = `incidence_${incident.id}_${file.name}`
-      setFilesString([...filesString, newName]);
+      setFilesString(filesString=>[...filesString, newName]);
       console.log("-----", newName)
       formData.append('files', file, newName);
     })
+    console.log("filesString-------------------------",filesString);
+    data.files = filesString;
+
     await awsService.uploadAttachment(formData);
         if (type && tags) {
       const flag = await submitTimeLine({ data, incident });
