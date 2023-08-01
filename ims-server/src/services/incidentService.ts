@@ -82,15 +82,23 @@ class IncidentService {
     }
   }
 
-  async getIncidentById(id: string): Promise<IIncident | any> {
+  async getIncidentByField(fieldValue: string,fieldName: string): Promise<IIncident | any> {
     try {
-      const incident = await incidentRepository.getIncidentById(id);
+      const incident = await incidentRepository.getIncidentByField(fieldValue,fieldName);
       if (incident) {
-        logger.info({ source: constants.INCIDENT_COTROLLER, method: constants.METHOD.GET, incidentId: id, });
+        logger.info({
+          source: constants.INCIDENT_COTROLLER,
+          method: constants.METHOD.GET,
+          incidentId: fieldValue,
+        });
       }
       return incident;
     } catch (error: any) {
-      logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentID: id, });
+      logger.error({
+        source: constants.INCIDENT_COTROLLER,
+        err: constants.INCIDENT_NOT_FOUND,
+        incidentID:fieldValue,
+      });
       console.error(`error: ${error}`);
       return error;
     }
@@ -105,7 +113,7 @@ class IncidentService {
         tags: []
       }
       //check if get incident from repository or service
-      const incident = await incidentRepository.getIncidentById(id);
+      const incident = await incidentRepository.getIncidentByField(id,"id");
       if (incident) {
         //find user with userId from createdBy  ????
         //create summary

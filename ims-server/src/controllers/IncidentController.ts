@@ -56,17 +56,16 @@ export default class IncidentController {
     }
   }
 
-  async getIncidentById(req: Request, res: Response): Promise<void> {
+  async getIncidentByField(req: Request, res: Response): Promise<void> {
     try {
-      const incident: IncidentDto = await incidentService.getIncidentById(req.params.id);
-      if (incident instanceof Error || incident === null) {
+      const incident: any/*: IncidentDto*/ = await incidentService.getIncidentByField(req.params.fieldvalue, req.params.fieldname || 'id');
+      if (incident instanceof Error) {
         res.status(status.PAGE_NOT_FOUND).json({ message: incident, error: true });
       } else res.status(status.SUCCESS).json(incident);
     } catch (error: any) {
       res.status(status.SERVER_ERROR).json({ message: error });
     }
   }
-  
   async getSummaryIncident(req: Request, res: Response): Promise<void> {
     try {
       const summary: ISummary | null = await incidentService.getSummaryIncident(
