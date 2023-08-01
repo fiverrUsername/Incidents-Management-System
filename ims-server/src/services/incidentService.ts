@@ -140,8 +140,6 @@ class IncidentService {
         }
         logger.info({ source: constants.INCIDENT_COTROLLER, method: constants.METHOD.GET, incidentId: id })
       }
-      console.log(summary)
-      console.log(incident)
       return summary;
     } catch (error: any) {
       logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentID: id });
