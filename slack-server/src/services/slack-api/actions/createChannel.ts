@@ -1,4 +1,7 @@
+
 // import { IIncident } from '../../../../../ims-server/src/interfaces/IncidentInterface';
+import { Priority } from '../interfaces/priority-enum'
+
 import { SLACK_API_TOKEN } from './const';
 
  interface ITag {
@@ -11,7 +14,7 @@ import { SLACK_API_TOKEN } from './const';
   name: string;
   status: string;
   description: string;
-  currentPriority: string;
+  currentPriority: Priority;
   type: string;
   durationHours: number;
   channelId?: string;
@@ -47,21 +50,28 @@ export async function createNewChannel(incidentData: IIncident) {
     if (data.ok) {
       console.log('New public channel created:', data.channel.name);
       const channelId = data.channel.id;
-      try {
-        await updateChannelDescription(channelId, incidentData.description);
-        console.log('Channel description updated successfully.');
-      } catch (error) {
-        console.error('Error updating channel description:', error);
-      }
+      //TODO
+      // try {
+      //   await updateChannelDescription(channelId, incidentData.description);
+      //   console.log('Channel description updated successfully.');
+      // } catch (error) {
+      //   console.error('Error updating channel description:', error);
+      // }
 
 
       //TODO
       //- send to the function in ims-server
       incidentData.channelId = channelId;
-      incidentData.slackLink = data.channel.link; 
+      incidentData.description = "y3";    
+      incidentData.slackLink = `https://slack.com/app_redirect?channel=${channelId}`;
+      console.log("slack link", incidentData.slackLink )
+
+
+
+      
       // await IncidentController.updateIncident(incidentData);
 
-      await sendJoinMessageToUser(channelId, userIds);
+      await sendJoinMessageToUser(channelId, userIds, incidentData.name);
       return channelId;
     } else {
       console.error('Failed to create channel:', data.error);
@@ -77,10 +87,10 @@ export async function createNewChannel(incidentData: IIncident) {
 }
 const webhookUrl = 'https://hooks.slack.com/services/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';
 const axios = require('axios');
-async function sendJoinMessageToUser(channelId: string, userId: string[]) {
+async function sendJoinMessageToUser(channelId: string, userId: string[], channelName:string) {
   try {
     await axios.post(webhookUrl, {
-      text: `You have been invited to join the channel. Click the link to join: https://slack.com/app_redirect?channel=${channelId}`,
+      text: `You have been invited to join the channel ${channelName}. Click the link to join: https://slack.com/app_redirect?channel=${channelId}`,
       channel: userId
     });
   } catch (error) {
@@ -158,7 +168,7 @@ const theIncident:IIncident={
 "name": "ddd",
 "status": "Active",
 "description": "d",
-"currentPriority": "p1",
+"currentPriority":Priority.P1,
 "type": "technical",
 "durationHours": 0,
 "channelId": "",

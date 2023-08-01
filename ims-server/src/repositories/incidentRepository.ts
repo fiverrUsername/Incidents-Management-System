@@ -31,9 +31,9 @@ class IncidentRepository {
     }
   }
 
-  async updateIncident(id: String, data: IncidentDto): Promise<void | any> {
+  async updateIncident(id: String, data: IncidentDto): Promise<IIncident | any> {
     try {
-      return await incidentModel.findByIdAndUpdate(id, data);
+      return await incidentModel.findOneAndUpdate({id}, data);
     } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
@@ -51,7 +51,7 @@ class IncidentRepository {
 
   async getIncidentById(id: string): Promise<IIncident | any> {
     try {
-      const incident:IIncident|null=await incidentModel.findOne({id});
+      const incident:IIncident|null=await incidentModel.findOne({id});      
       return incident;
     } catch (error: any) {
       console.error(`error: ${error}`);

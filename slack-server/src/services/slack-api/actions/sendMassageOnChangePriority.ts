@@ -1,10 +1,11 @@
 
 import axios from 'axios';
 import { SLACK_API_TOKEN } from './const';
+import { Priority } from '../interfaces/priority-enum';
 
-export async function sendMassageOnChangePriority (channelId:string, prod:string) {
+export async function sendMassageOnChangePriority (channelId:string, prod:Priority) {
     const priorityChannel = {
-        prod: prod === "p0" ? "C05JPSL5TCL" : prod === "p1" ? "C05JMDNMH1Q" : prod === "p2" ? "C05J6T6FKPH" : "C05JJFQRQ05"
+        prod: prod === Priority.P0 ? "C05JPSL5TCL" : prod === Priority.P1 ? "C05JMDNMH1Q" : prod === Priority.P2 ? "C05J6T6FKPH" : "C05JJFQRQ05"
       };
       try {
         const response = await axios.post('https://slack.com/api/chat.postMessage', {
@@ -30,7 +31,7 @@ export async function sendMassageOnChangePriority (channelId:string, prod:string
         return null;
       }
 }
-//sendMassageOnChangePriority("C05J8AZ1Q3X", 'p1');
+sendMassageOnChangePriority("C05J8AZ1Q3X", Priority.P2);
 
 
 

@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
+import { Priority } from "../enums/enum";
 
 export const TimelineEventSchema = new Schema<ITimelineEvent>({
   id: {
@@ -22,6 +23,7 @@ export const TimelineEventSchema = new Schema<ITimelineEvent>({
   priority: {
     type: String,
     required: true,
+    enum: Object.values(Priority),
   },
   type: {
     type: String,

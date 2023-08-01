@@ -1,7 +1,6 @@
-import { Response } from 'express';
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
-import attachmentsRepository from "../repositories/awsRepository";
+import attachmentsRepository from "../repositories/attachmentRepository";
 
 class AttachmentsService {
   async uploadAttachment(files: Express.Multer.File[]): Promise<void | any> {
@@ -34,7 +33,3 @@ class AttachmentsService {
   }
 }
 export default new AttachmentsService();
-
-
-
-

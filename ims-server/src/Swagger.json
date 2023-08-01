@@ -240,6 +240,28 @@
                 }
             }
         },
+        "/timelineEvent/timelineEventByIncidentId/{id}/": {
+            "get": {
+                "tags": [
+                    "timelineEvent"
+                ],
+                "description": "Retrieve all timeline events for specific id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Timeline Events not found for given id"
+                    }
+                }
+            }
+        },
         "/timelineEvent/": {
             "post": {
                 "tags": [
@@ -329,14 +351,14 @@
                 "tags": [
                     "timelineEvent"
                 ],
-                "description": "delete a file of a timeline event by id and index",
+                "description": "delete a file of a timeline event by id and string file",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path"
                     },
                     {
-                        "name": "index",
+                        "name": "fileString",
                         "in": "query",
                         "required": true
                     }
@@ -383,7 +405,7 @@
                             "type": "string"
                         },
                         "priority": {
-                            "type": "string"
+                            "type": "priority"
                         },
                         "date": {
                             "type": "string",

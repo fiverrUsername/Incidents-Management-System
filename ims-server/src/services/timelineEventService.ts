@@ -26,14 +26,14 @@ class TimelineEventService {
     }
   }
 
-  async getTimelineEventsById(id: string): Promise<ITimelineEvent[] | any> {
+  async getTimelineEventByIncidentId(id: string): Promise<ITimelineEvent[] | any> {
     try {
       logger.info({
         source: constants.TIMELINE_EVENT,
         msg: constants.METHOD.GET,
         success: true
       });
-      const timelineEvent = await timelineEventRepository.getTimelineEventsById(id);
+      const timelineEvent = await timelineEventRepository.getTimelineEventByIncidentId(id);
       
       return timelineEvent;
     } catch (error: any) {
@@ -167,6 +167,21 @@ class TimelineEventService {
         return new Error('Invalid index');
       }
       timelineEvent.files.splice(index, 1);
+      return await timelineEventRepository.updateTimelineEvent(id, timelineEvent);;
+    } catch (error: any) {
+      logger.error({ source: constants.TIMELINE_EVENT, err: constants.SERVER_ERROR, method: constants.METHOD.DELETE });
+      return new Error(`Error deleting file in timeline event by index: ${error}`);
+    }
+  }
+
+  async deleteFileInTimelineEventByValue(id: string, file: string): Promise<ITimelineEvent | any> {
+    try {
+      const timelineEvent: ITimelineEvent | null = await this.getTimelineEventById(id);
+      if (timelineEvent === null) {
+        logger.error({ source: constants.TIMELINE_EVENT, err: constants.NOT_FOUND, timelineEventId: id,file:file,method:constants.METHOD.DELETE})
+        return new Error('Timeline event not found');
+      }
+      timelineEvent.files = timelineEvent.files.filter((v) => v !== file);    
       return await timelineEventRepository.updateTimelineEvent(id, timelineEvent);;
     } catch (error: any) {
       logger.error({ source: constants.TIMELINE_EVENT, err: constants.SERVER_ERROR, method: constants.METHOD.DELETE });
