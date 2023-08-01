@@ -55,10 +55,3 @@ import { SLACK_TOKEN } from '../actions/const';
           return [];
         }
       }
-      
-      
-  
-      // Return the file content as a buffer
-
- 
-      
