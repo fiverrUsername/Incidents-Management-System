@@ -6,8 +6,7 @@ import { ISummary } from '../../interface/ISummary';
 import theme from '../../theme';
 import dayjs from 'dayjs';
 import DisplaySummary from './displaySummary';
-import { Priority } from '../../interface/enum-priority';
- 
+import { Priority } from '../../interface/enum-priority'; 
 
 const mockSummary:ISummary = {
   createdBy: 'John Doe',

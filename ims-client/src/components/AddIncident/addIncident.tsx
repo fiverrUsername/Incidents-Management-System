@@ -3,12 +3,12 @@ import { Dialog, FormControl, Grid, Button } from "@mui/material";
 import { useForm } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
+
 import DateTimePickerValue from '../datePicker/datePicker';
 import TextFieldInput from './TextFields';
 import ToggleButtons from './PriorityButtons';
 import DropDown from './DropDown';
 import CustomAutocomplete from '../autoCompleteTag/autoComplete';
-import IOption from '../../interface/IOption';
 import submitIncident from '../submitIncident/submitIncident';
 import theme from '../../theme';
 import apiCalls from '../../service/apiCalls';
