@@ -280,6 +280,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   const [text, setText] = useState<string>();
   const getOptionLabel = (option: ITag) => option.name;
   const [selectedTags, setSelectedTags] = useState<ITag[]>(incident.currentTags);
+  
   async function onSubmit(data: form_data) {
     setIsSubmit(true);
     if (priority != null)
@@ -293,7 +294,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
     const formData = new FormData();
     files.map((file)=>{
       console.log(incident)
-      const newName = `incidence_${incident.id}_${file.name}`
+      const newName = `incidence_${incident.id}_${Date.now()}"${file.name}`
       setFilesString(filesString=>[...filesString, newName]);
       console.log("-----", newName)
       formData.append('files', file, newName);
