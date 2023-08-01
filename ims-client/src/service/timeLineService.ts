@@ -1,21 +1,21 @@
-import { TimelineEvent } from "../pages/timeLine/modules/interface";
+import { ITimeLineEvent } from "../interface/timeLineInterface";
 
-const filterTimeLineBySearch = (array: TimelineEvent[], filterString: string): TimelineEvent[] => {
-    return array.filter((item) => {
+const filterTimeLineBySearch = (array: ITimeLineEvent[], filterString: string): ITimeLineEvent[] => {
+  return array.filter((item) => {
 
-      for (const key in item) {
+    for (const key in item) {
 
-        if ((key != 'createdAt') && (String(item[key as keyof TimelineEvent]).toLowerCase()).includes(filterString.toLowerCase())) {
-          console.log(key)
-          return true;
-        }
-        if ((key == 'userId') && (String(item[key as keyof TimelineEvent]).toLowerCase()).includes(filterString.toLowerCase())) {
-          console.log(key)
-          return true;
-        }
+      if ((key != 'createdAt') && (String(item[key as keyof ITimeLineEvent]).toLowerCase()).includes(filterString.toLowerCase())) {
+        console.log(key)
+        return true;
       }
-      return false;
-    });
-  }
+      if ((key == 'userId') && (String(item[key as keyof ITimeLineEvent]).toLowerCase()).includes(filterString.toLowerCase())) {
+        console.log(key)
+        return true;
+      }
+    }
+    return false;
+  });
+}
 
-  export default filterTimeLineBySearch
+export default filterTimeLineBySearch
