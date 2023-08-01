@@ -30,14 +30,16 @@ class IncidentRepository {
     }
   }
 
-  async getIncidentById(id: String): Promise<IIncident | any> {
+  async  getIncidentByField(fieldValue: string, fieldName: string): Promise<IIncident | any> {
     try {
-      return await incidentModel.findById(id);
+      return await incidentModel.findOne({ [fieldName]: fieldValue });
     } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
     }
   }
+  
+  
 
 }
 export default new IncidentRepository();

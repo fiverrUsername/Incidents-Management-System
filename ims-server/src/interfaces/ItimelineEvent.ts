@@ -1,6 +1,6 @@
 export interface ITimelineEvent {
   channelId: string;
-  _id: string;
+  id: string;
   incidentId: string;
   userId: string;
   description: string;

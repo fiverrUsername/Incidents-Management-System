@@ -32,7 +32,7 @@ ws.onmessage = (webSocketMessage: { data: { toString: () => string; }; }) => {
           incidentRepository.addIncident(messageBody.object as IIncident)
           break;
         case ActionType.Update:
-          incidentRepository.updateIncident(messageBody.object._id!, messageBody.object as IIncident)
+          incidentRepository.updateIncident(messageBody.object.id!, messageBody.object as IIncident)
           // Perform some action for updating a TimelineEvent
           break;
         case ActionType.Delete:
@@ -49,10 +49,10 @@ ws.onmessage = (webSocketMessage: { data: { toString: () => string; }; }) => {
           timelineEventRepository.addTimelineEvent(messageBody.object as ITimelineEvent)
           break;
         case ActionType.Update:
-          timelineEventRepository.updateTimelineEvent(messageBody.object._id!, messageBody.object as ITimelineEvent)
+          timelineEventRepository.updateTimelineEvent(messageBody.object.id!, messageBody.object as ITimelineEvent)
           break;
         case ActionType.Delete:
-          timelineEventRepository.deleteTimelineEvent(messageBody.object._id!)
+          timelineEventRepository.deleteTimelineEvent(messageBody.object.id!)
           break;
         default:
           console.log('Received unknown action type for TimelineEvent:', messageBody);

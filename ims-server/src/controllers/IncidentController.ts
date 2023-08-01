@@ -6,9 +6,9 @@ import { constants } from '../loggers/constants';
 import { ISummary } from '../interfaces/ISummary';
 import { IncidentDto } from '../dto/incidentDto';
 import { ActionType, ObjectType } from '../../../ims-socket/src/interfaces';
-import {sendToSocket} from '../services/socket'
+import { sendToSocket } from '../services/socket'
 export default class IncidentController {
- async addIncident(req: Request, res: Response): Promise<void> {
+  async addIncident(req: Request, res: Response): Promise<void> {
     try {
       const incident: IncidentDto = await incidentService.addIncident(req.body);
       if (incident instanceof Error) {
@@ -60,11 +60,9 @@ export default class IncidentController {
     }
   }
 
-  async getIncidentById(req: Request, res: Response): Promise<void> {
+  async getIncidentByField(req: Request, res: Response): Promise<void> {
     try {
-      const incident: IncidentDto = await incidentService.getIncidentById(
-        req.params.id
-      );
+      const incident: any/*: IncidentDto*/ = await incidentService.getIncidentByField(req.params.fieldvalue, req.params.fieldname || 'id');
       if (incident instanceof Error) {
         res.status(status.PAGE_NOT_FOUND).json({ message: incident, error: true });
       } else res.status(status.SUCCESS).json(incident);
@@ -72,6 +70,7 @@ export default class IncidentController {
       res.status(status.SERVER_ERROR).json({ message: error });
     }
   }
+
   async getSummaryIncident(req: Request, res: Response): Promise<void> {
     try {
       const summary: ISummary | null = await incidentService.getSummaryIncident(
