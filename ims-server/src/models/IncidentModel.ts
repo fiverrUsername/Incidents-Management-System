@@ -1,16 +1,15 @@
 import mongoose, { Schema } from "mongoose";
-import { type IIncident } from "../interfaces/IncidentInterface";
+// import { type IIncident } from "../interfaces/IncidentInterface";
+import  {IIncident} from "../interfaces/IncidentInterface";
+
 import { v4 as uuidv4 } from "uuid";
+import { Priority } from "../enums/enum";
+//import { Enumify } from "mongoose-enumify";
 
 export const IncidentSchema = new Schema<IIncident>({
-  _id: {
-    type: String,
-    default: uuidv4,
-  },
   id: {
     type: String,
-    required: true,
-    unique: true,
+    default: uuidv4,
   },
   name: {
     type: String,
@@ -27,6 +26,7 @@ export const IncidentSchema = new Schema<IIncident>({
   currentPriority: {
     type: String,
     required: true,
+    enum: Object.values(Priority),
   },
   type: {
     type: String,
@@ -36,10 +36,19 @@ export const IncidentSchema = new Schema<IIncident>({
     type: Number,
     required: true,
   },
-  slackLink: {
+  channelId: {
+    type: String,
+    required: false,
+  },
+  channelName: {
     type: String,
     required: true,
   },
+  slackLink: {
+    type: String,
+    required: false,
+  },
+  
   currentTags: {
     type: [
       {

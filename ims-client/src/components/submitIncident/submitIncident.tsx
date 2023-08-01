@@ -8,26 +8,26 @@ export default async function submitIncident(prop:FormData) {
     
     const incidentcR:IIncident={
         //TODO
-        //Remove the id
-        id: "1",
+        // id: "1",
         name: prop.name,
         status:"Active",
         description:prop.description,
-        priority: prop.priority,
+        currentPriority: prop.priority,
         type: prop.type,
         durationHours: 0,
-        slackLink: prop.slackLink,
-        tags: prop.tags.map(tag => ({ id: tag.userId, name: tag.name })),
+        slackLink:"",
+        channelName: prop.channelName,
+        channelId:"",
+        currentTags: prop.tags.map(tag => ({ id: tag.id, name: tag.name })),
         date: prop.date.toDate(),
         createdAt: new Date(),
         updatedAt: new Date(),
+        //TODO
+        createdBy:"?",
         cost: 0,
     }
-
+ 
 
     await apiCalls.createIncident(incidentcR)
     console.log('I am in submit incident')
-
-
-
 }

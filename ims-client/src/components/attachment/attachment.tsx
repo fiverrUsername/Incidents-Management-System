@@ -3,6 +3,12 @@ import React, { useEffect, useState } from 'react';
 import FileViewer from 'react-file-viewer';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
+import AwsService from '../../service/awsService'
+interface AttachmentData {
+  key: string;
+  data: Buffer;
+}
+
 
 type SupportedFileTypes =
   | 'image'
@@ -13,7 +19,17 @@ type SupportedFileTypes =
   | 'powerpoint'
   | 'excel'
   | 'default';
+  const [filesKey, setFilesKey] = useState<AttachmentData[]>([]);
 
+  const getAttachment = async (files: string[]) => {
+    try {
+      const attachment = await AwsService.showAttachment(files);
+      setFilesKey(attachment);
+    } catch (error) {
+      console.error(error)
+    }
+  };
+  
 const getFileTypeFromData = (file: string): SupportedFileTypes => {
   try {
     if (file.startsWith('data:')) {
@@ -84,7 +100,8 @@ export default function Attachment({ file }: { file: string }) {
   };
 
   const handleDelete = () => {
-    // Implement your logic to handle file deletion here
+    AwsService.deleteAttachment(file)
+   // You must write a function that deletes the file visually in the client
     console.log('Deleting file:', file);
   };
   
@@ -140,6 +157,10 @@ export default function Attachment({ file }: { file: string }) {
         );
     }
   };
+
+  // const DownloadAttachment = () =>{
+
+  // }
 
   return <div>{renderFileContent()}<Grid container spacing={2} alignItems="center">
   <Grid item>

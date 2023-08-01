@@ -3,12 +3,11 @@ import multer from 'multer'
 import AwsController from '../controllers/AwsController';
 
 const upload = multer({ dest: 'uploads/' });
-const awsRouter = express.Router()
-const awsController = new AwsController()
+const attachmentsRouter = express.Router()
+const attachmentsController = new AwsController()
 
-awsRouter.get('/', awsController.getAllAttachmentByTimeline)
-awsRouter.get('/:key', awsController.downloadAttachmentById)
-awsRouter.post('/', upload.array('files'), awsController.uploadAttachment)
-awsRouter.delete('/:key', awsController.deleteAttachmentById)
+attachmentsRouter.post('/allAttachments', attachmentsController.getAllAttachmentByTimeline)
+attachmentsRouter.post('/', upload.array('files'), attachmentsController.uploadAttachment)
+attachmentsRouter.delete('/', attachmentsController.deleteAttachmentById)
 
-export default awsRouter;
+export default attachmentsRouter;

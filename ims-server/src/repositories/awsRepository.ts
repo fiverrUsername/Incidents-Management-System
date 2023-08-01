@@ -1,36 +1,30 @@
 import AWS, { AWSError } from 'aws-sdk';
-import fs from 'fs';  
+import fs from 'fs';
 import dotenv from 'dotenv';
-import path from 'path';
 import logger from "../loggers/log";
 import { constants } from '../loggers/constants';
-import FormData from 'form-data';
-import { Blob } from 'buffer';
-import { Readable } from 'stream';
 
-  dotenv.config()
-  const s3 = new AWS.S3();
-class AwsRepository {
-  
+interface AttachmentData {
+  key: string;
+  data: Buffer;
+}
+dotenv.config()
+const s3 = new AWS.S3();
+
+class AttachmentsRepository {
   async uploadAttachment(files:Express.Multer.File []): Promise<AWS.S3.ManagedUpload.SendData | any> {
-    if (!process.env.BUCKET_NAME) {
-        logger.error({ source: constants.BUCKET_NAME, method: constants.METHOD.GET, err: true });
-        return;
-      }
-
       const uploadPromises = files.map((file) => {
         const fileName = file.originalname;
         const fileBuffer = fs.readFileSync(file.path);
         if (fileName && fileBuffer) {
           const params: AWS.S3.PutObjectRequest = {
-            Bucket: process.env.BUCKET_NAME? process.env.BUCKET_NAME.toString(): '',
-            Key: fileName.toString(),
+            Bucket: AttachmentsRepository.getBucketName(),
+            Key: fileName.toString().replace(/_/g, '/'),
             Body: fileBuffer,
           };
           return s3.upload(params).promise();
         }
       });
-  
       try {
         const uploadResults = await Promise.all(uploadPromises);
         uploadResults.forEach((result) => {
@@ -39,83 +33,65 @@ class AwsRepository {
       } catch (error) {
         logger.info({ source: constants.UPLOAD_FAILED, msg: constants.METHOD.GET, error: true });
       }
-      
   }
-  async getAllAttachmentByTimeline(keys: string[]): Promise<FormData | void> {
-    if (!process.env.BUCKET_NAME) {
-      logger.error({ source: constants.BUCKET_NAME, method: constants.METHOD.GET, err: true });
-      return;
-    }
-    const bucketName = process.env.BUCKET_NAME ? process.env.BUCKET_NAME.toString() : '';
-    const formData = new FormData();
+  async getAttachment(key: string): Promise<AttachmentData|null> {
     try {
-      for (const key of keys) {
-        const params: AWS.S3.GetObjectRequest = {
-          Bucket: bucketName,
-          Key: key
-        };
-        try {
-          const result = await s3.getObject(params).promise();
-          if (result.Body instanceof Buffer) {
-            const fileStream = new Readable();
-            fileStream.push(result.Body);
-            fileStream.push(null);
-            formData.append('key', fileStream, key);
-          }
-            console.log(`Fetched file with key '${key}'. Form data:`, formData);
-        } catch (error: any) {
-          if (error.code === 'NoSuchKey') {
-            console.error(`Key '${key}' does not exist in the S3 bucket. Skipping...`);
-            continue;
-          } else {
-            console.error('Error fetching file:', error);
-          }
-        }
+      const s3 = new AWS.S3();
+      const params: AWS.S3.GetObjectRequest = {
+        Bucket: AttachmentsRepository.getBucketName(),
+        Key: key.replace(/_/g, '/')
+      };
+      console.log(params)
+      const result = await s3.getObject(params).promise();
+      console.log("getAttachment  controllers-"+result.Body)
+      const data: Buffer = result.Body as Buffer;
+      logger.info({ source: constants.SHOW_SUCCESS, msg: constants.METHOD.GET, error: true });
+      return { key, data };
+    } catch (error:any) {
+      if(error.code === 'NoSuchKey'){
+        logger.info({source: constants.FILE_NOT_FOUND , msg: constants.METHOD.GET, key:key, error: true});
+        return null
+      }else{
+        logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, key:key, err: true });
       }
-      return formData;
+      throw error;
+    }
+  }
+  async getAllAttachmentsByTimeline(keys: string[]): Promise<(AttachmentData|null)[]|any> {
+    try {
+      const allResponses: (AttachmentData | null)[] = await Promise.all(keys.map(
+        (key) => this.getAttachment(key)));
+      logger.info({ source: constants.SHOW_SUCCESS, method: constants.METHOD.GET, err: true });
+      return allResponses;
     } catch (error) {
-      logger.info({ source: constants.SHOW_FAILED, msg: constants.METHOD.GET, success: true });
+      logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, err: true });
+      throw error;
     }
   }
-
-  async downloadAttachmentById( key: string): Promise<void | any> {
-    if (!process.env.BUCKET_NAME) {
-      logger.error({ source: constants.BUCKET_NAME, method: constants.METHOD.GET, err: true });
-        return;
-      }
-    const params:AWS.S3.GetObjectRequest= {
-      Bucket: process.env.BUCKET_NAME? process.env.BUCKET_NAME.toString(): '',
-      Key: key
-    };
-    try {
-        const downloadsDirectory = require('os').homedir() + '/Downloads';
-        const filePath = path.join(downloadsDirectory, key);
-        const fileStream = fs.createWriteStream(filePath);
-        const data = await s3.getObject(params).promise();
-        fileStream.write(data.Body);
-        fileStream.end();
-        logger.info({ source: constants.DOWNLOAD_FILE_SUCCESS, msg: constants.METHOD.GET, success: true });
-      } catch (error) {
-        logger.info({ source: constants.DOWNLOAD_FILE_FAILED, msg: constants.METHOD.GET, error: true });
-    }
-  }
-
-  async deleteAttachmentById(key:string):Promise<void | any> {
-    if (!process.env.BUCKET_NAME) {
-      logger.error({ source: constants.BUCKET_NAME, method: constants.METHOD.GET, err: true });
-      return;
-    }
+  async deleteAttachmentById(key: string): Promise<void | any> {
     const params: AWS.S3.DeleteObjectRequest = {
-      Bucket: process.env.BUCKET_NAME? process.env.BUCKET_NAME.toString(): '',
-      Key:key
+      Bucket: AttachmentsRepository.getBucketName(),
+      Key: key.replace(/_/g, '/')
     };
     try {
+      console.log(params.Key)
       await s3.deleteObject(params).promise();
       logger.info({ source: constants.DELETE_FILE_SUCCESS, msg: constants.METHOD.GET, success: true });
-  } catch (error) {
-    logger.info({ source: constants.DELETE_FILE_FAILED, msg: constants.METHOD.GET, error: true });
+    } catch (error:any) {
+      if(error.code === 'NoSuchKey'){
+        logger.info({source: constants.FILE_NOT_FOUND , msg: constants.METHOD.GET, key:key, error: true});
+      }else{
+        logger.error({ source: constants.DELETE_FILE_FAILED, msg: constants.METHOD.GET, error: true });
+      }
+    }
   }
+  static getBucketName():string {
+    if (!process.env.BUCKET_NAME) {
+      logger.error({ source: constants.BUCKET_NAME, method: constants.METHOD.GET, err: true });
+      return'';
+    }else{
+      return process.env.BUCKET_NAME ?process.env.BUCKET_NAME.toString():''
+    }
   }
-  
 }
-export default new AwsRepository();
+export default new AttachmentsRepository();

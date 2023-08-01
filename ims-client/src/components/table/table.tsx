@@ -51,7 +51,7 @@ const Table = <T extends object>({ columns, rows, isLoading, visibilityModel }: 
           setColumnVisibilityModel(newModel)
         }
         onRowSelectionModelChange={handleSelectionChange}
-        getRowId={(row) => row._id}
+        getRowId={(row) => row.id}
         disableColumnMenu
         columns={columns}
         rows={rows}
@@ -68,8 +68,8 @@ const Table = <T extends object>({ columns, rows, isLoading, visibilityModel }: 
           '& .MuiDataGrid-columnHeader': {
             backgroundColor: theme.palette.secondary.light
           },
-          marginLeft:2,
-          marginRight:2,
+          marginLeft: 2,
+          marginRight: 2,
           '& .MuiDataGrid-toolbarContainer': {
             marginBottom: '10px', // Add margin to the toolbar container
           },

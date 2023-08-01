@@ -4,6 +4,7 @@ import { ITimelineEventListprops } from './modules/interface';
 import { TimelineWarpper } from './timeLine.style';
 import TimeLineEvent from './timeLineEvent/timeLineEvent';
 import { ITimeLineEventprops } from './modules/interface';
+import { Priority } from '../../interface/enum-priority';
 
 const TimeLine: React.FC<ITimelineEventListprops> = (props) => {
   const { timelineList } = props;
@@ -17,8 +18,8 @@ const TimeLine: React.FC<ITimelineEventListprops> = (props) => {
       timeline: { ...timeLine },
       name: user?.name ?? '',
       profile: user?.profile ?? '',
-      previosPriority: "",
-      previousType: "",
+      previosPriority: Priority.P0,
+      previousType: Priority.P0,
       isTypeChanged: false,
       isPriorityChanged: false
     };

@@ -1,4 +1,4 @@
-export interface ITag extends Document {
+export interface ITag {
+    id: string;
     name: string;
-    userId: string;
 }

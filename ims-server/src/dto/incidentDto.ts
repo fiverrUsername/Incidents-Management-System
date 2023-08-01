@@ -12,6 +12,7 @@ import {
 import { constants } from "../loggers/constants";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { TagDto } from "./tagDto";
+import { Priority } from "../enums/enum";
 
 export class IncidentDto {
   constructor(init: IIncident) {
@@ -19,8 +20,9 @@ export class IncidentDto {
     this.name = "";
     this.status = "";
     this.description = "";
-    this.currentPriority = "";
+    this.currentPriority = Priority.P0;
     this.type = "";
+    this.channelId ="";
     this.durationHours = 0;
     this.currentTags = [];
     this.date = "";
@@ -30,7 +32,7 @@ export class IncidentDto {
     this.createdBy = '';
     Object.assign(this, init);
   }
-
+//TODO
   @IsNotEmpty({ message: `id ${constants.EMPTY_OBJECT}` })
   @IsString({ message: `id ${constants.INVALID_MESSAGE}` })
   id: string;
@@ -49,7 +51,7 @@ export class IncidentDto {
 
   @IsNotEmpty({ message: `currentPriority ${constants.EMPTY_OBJECT}` })
   @IsString({ message: `currentPriority ${constants.INVALID_MESSAGE}` })
-  currentPriority: string;
+  currentPriority: Priority;
 
   @IsNotEmpty({ message: `type ${constants.EMPTY_OBJECT}` })
   @IsString({ message: `type ${constants.INVALID_MESSAGE}` })
@@ -59,10 +61,21 @@ export class IncidentDto {
   @IsNumber()
   durationHours: number;
 
-  @IsNotEmpty({ message: `slackLink ${constants.EMPTY_OBJECT}` })
+  @IsNotEmpty({ message: `channelName ${constants.EMPTY_OBJECT}` })
+  @IsString({ message: `channelName ${constants.INVALID_MESSAGE}` })
+  @IsOptional({ message: `channelName ${constants.EMPTY_OBJECT}` })
+  channelName?: string;
+
+
   @IsString({ message: `slackLink ${constants.INVALID_MESSAGE}` })
   @IsOptional({ message: `slackLink ${constants.EMPTY_OBJECT}` })
   slackLink?: string;
+
+
+
+  @IsString({ message: `channelId ${constants.INVALID_MESSAGE}` })
+  @IsOptional({ message: `channelId ${constants.EMPTY_OBJECT}` })
+  channelId?: string;
 
   @IsNotEmpty({ message: `currentTags ${constants.EMPTY_OBJECT}` })
   @IsArray({ message: "is not an array" })

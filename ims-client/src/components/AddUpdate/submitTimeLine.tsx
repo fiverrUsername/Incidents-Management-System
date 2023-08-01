@@ -1,34 +1,36 @@
 import React from 'react'
 import IIncident from '../../interface/incidentInterface'
 import apiCalls from '../../service/apiCalls'
-import { FormData } from '../AddUpdate/AddUpdate'
+import { GetIncident, form_data } from '../AddUpdate/AddUpdate'
 import ITimeLineEvent from '../../interface/timeLineInterface'
-import { v4 as uuidv4 } from 'uuid';
-import { stringify } from 'querystring'
+
 
 interface Props {
-  data: FormData;
-  incident: IIncident
+  data: form_data;
+  incident: GetIncident;
 }
 
 export default async function submitTimeLine(props: Props) {
-
-  const timeLineEvent:ITimeLineEvent= {
+  let flag: boolean;
+  const timeLineEvent: ITimeLineEvent = {
     incidentId: props.incident.id,
     userId: "698cbeda854a5d4d8bcf303l",
     description: props.data.text,
     priority: props.data.priority,
     type: props.data.type,
-    tags:props.data.tags,
+    tags: props.data.tags,
     files: props.data.files,
     createdDate: props.data.date,
     updatedDate: new Date()
   }
-  try{
-  const res= await apiCalls.addTimelineEvent(timeLineEvent);
-  console.log(res);
+  try {
+    console.log("try")
+    await apiCalls.addTimelineEvent(timeLineEvent);
+    flag = true;
   }
-  catch{
-   console.log('there are some errors');
-}
+  catch (error) {
+    console.log(error);
+    flag = false;
+  }
+  return flag;
 }
