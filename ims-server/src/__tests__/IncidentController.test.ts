@@ -1,6 +1,7 @@
 import app from '../app';
 import supertest from 'supertest';
 import IncidentModel from '../models/IncidentModel';
+import { Priority } from '../enums/enum';
 
 describe("incidents", () => {
     describe("get all incidents", () => {
@@ -43,7 +44,7 @@ describe("incidents", () => {
                     name: "Unresolved Incident adding",
                     status: "Active",
                     description: "Issue Description",
-                    priority: "P3",
+                    priority: Priority.P3,
                     type: "technical",
                     durationHours: 24,
                     channelId: "",
@@ -89,7 +90,7 @@ describe("incidents", () => {
                     name: "Unresolved Incident adding",
                     status: "Active",
                     description: "Issue Description",
-                    priority: "P3",
+                    priority: Priority.P3,
                     type: "technical",
                     durationHours: 24,
                     channelId: "",
@@ -123,7 +124,7 @@ describe("incidents", () => {
                     name: "Unresolved Incident adding",
                     status: "Active",
                     description: "Issue Description",
-                    priority: "P3",
+                    priority: Priority.P3,
                     type: "technical",
                     durationHours: 24,
                     channelId: "",

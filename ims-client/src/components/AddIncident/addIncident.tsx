@@ -14,10 +14,11 @@ import theme from '../../theme';
 import apiCalls from '../../service/apiCalls';
 import { ITag } from '../../interface/ITag';
 import BannerNotification from "../bannerNotification/BannerNotification"
+import { Priority } from '../../interface/enum-priority';
 export interface FormData {
   name: string;
   description: string;
-  priority: string;
+  priority: Priority;
   date: dayjs.Dayjs;
   ChannelId:string;
   
@@ -33,7 +34,7 @@ interface Props {
 
 export default function AddIncident({ open, onClose }: Props) {
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>();
-  const [priority, setPriority] = React.useState<string | null>('p0');
+  const [priority, setPriority] = React.useState<Priority>(Priority.P0);
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [type, setType] = React.useState('');
   const [selectedTags, setSelectedTags] = useState<ITag[]>([]);

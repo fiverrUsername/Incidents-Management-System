@@ -3,6 +3,7 @@ import supertest from 'supertest';
 import timelineEvent from '../models/timelineEvent';
 import timelineEventService from '../services/timelineEventService';
 import timelineEventRepository from '../repositories/timelineEventRepository';
+import { Priority } from '../enums/enum';
 
 describe("timeline events", () => {
     describe("get all timeline events", () => {
@@ -27,7 +28,7 @@ describe("timeline events", () => {
                     "incidentId": "21d723cf-0ce9-4d37-9b76-e6d9873c8c57",
                     "userId": "14785",
                     "description": "description of a timeline event",
-                    "priority": "P10",
+                    "priority": Priority.P3,
                     "type": "technical",
                     "files": [
                       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB9hfMxrD1ywcTDkrqvYu2CPDaDifO3AtmLztsKh4ZqkvS1jZdEQ1DWupA9KJCrQ-wnZI&usqp=CAU",
@@ -70,7 +71,7 @@ describe("timeline events", () => {
                     "incidentId": "649cbeda942a5d4d8bcf3044",
                     "userId": "14785",
                     "description": "description",
-                    "priority": "P10",
+                    "priority": Priority.P3,
                     "type": "technical",
                     "files": [
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB9hfMxrD1ywcTDkrqvYu2CPDaDifO3AtmLztsKh4ZqkvS1jZdEQ1DWupA9KJCrQ-wnZI&usqp=CAU",
@@ -133,7 +134,7 @@ describe("timeline events", () => {
                     "incidentId": "649cbeda942a5d4d8bcf3044",
                     "userId": "14785",
                     "description": "description",
-                    "priority": "P10",
+                    "priority": Priority.P3,
                     "type": "technical",
                     "files": [
                       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB9hfMxrD1ywcTDkrqvYu2CPDaDifO3AtmLztsKh4ZqkvS1jZdEQ1DWupA9KJCrQ-wnZI&usqp=CAU"

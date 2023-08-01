@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { ISystemStatus } from "../interfaces/systemStatusInterface";
+import { Priority } from "../enums/enum";
 
 export const SystemStatusSchema = new Schema<ISystemStatus>({
     systemName: {
@@ -11,12 +12,13 @@ export const SystemStatusSchema = new Schema<ISystemStatus>({
         required: true
     },
     date: {
-        type: String,
+        type: Date,
         required: true
     },
     maxPriority: {
         type: String,
-        required: true
+        required: true,
+        enum: Object.values(Priority),
     }
 });
 export default mongoose.model<ISystemStatus>("systemStatus", SystemStatusSchema);

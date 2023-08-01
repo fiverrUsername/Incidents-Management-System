@@ -6,12 +6,13 @@ import { ISummary } from '../../interface/ISummary';
 import theme from '../../theme';
 import dayjs from 'dayjs';
 import DisplaySummary from './displaySummary';
+import { Priority } from '../../interface/enum-priority';
  
 
 const mockSummary:ISummary = {
   createdBy: 'John Doe',
   createdAt: new Date("2023-01-05T08:00:00"),
-  currentPriority: 'p0',
+  currentPriority: Priority.P0,
   tags: [{id:"aaa", name: 'Tag 1' }, { id:"bbb",name: 'Tag 2' }],
 };
 

@@ -1,9 +1,11 @@
+import { Priority } from "../../../interface/enum-priority";
+
 export interface ITimeLineEventprops {
     timeline: TimelineEvent;
     isPriorityChanged: boolean;
     isTypeChanged: boolean;
     previousType: string;
-    previosPriority: string;
+    previosPriority: Priority;
     name?: string;
     profile?: string;
 }
@@ -17,7 +19,7 @@ export interface TimelineEvent {
     incidentId: string;
     userId: string;
     description: string;
-    priority: string;
+    priority: Priority;
     type: string,
     files: string[];
     createdDate: string;
@@ -28,9 +30,9 @@ export interface Incident {
     name: string,
     status: string,
     description: string,
-    priority: string
-    type: string
-    durationHours: string  ,
+    priority: Priority,
+    type: string,
+    durationHours: string,
     channelId: string,
     slackLink:string,
     channelName: string,

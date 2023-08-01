@@ -1,8 +1,8 @@
-import { IIncident } from "./IncidentInterface";
+import { Priority } from "../enums/enum";
 
 export interface ISystemStatus {
     systemName: string
-    incidents: number[]
-    date: string
-    maxPriority: string
+    incidents: string[]
+    date: Date
+    maxPriority: Priority
 }
