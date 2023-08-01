@@ -1,15 +1,16 @@
 import React from 'react';
+
+import { ITimeLineEventprops, ITimelineEventListprops } from '../../interface/timeLineInterface';
 import userdata from '../../mockAPI/users.json';
-import { ITimelineEventListprops } from './modules/interface';
 import { TimelineWarpper } from './timeLine.style';
 import TimeLineEvent from './timeLineEvent/timeLineEvent';
-import { ITimeLineEventprops } from './modules/interface';
 import { Priority } from '../../interface/enum-priority';
+
 
 const TimeLine: React.FC<ITimelineEventListprops> = (props) => {
   const { timelineList } = props;
   const timeLineEvents = timelineList.sort(
-    (a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
+    (a, b) => (b.createdDate).hour() - (a.createdDate).hour()
   );
 
   const timelineObjects = timeLineEvents.map((timeLine, index) => {

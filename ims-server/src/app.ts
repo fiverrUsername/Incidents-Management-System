@@ -71,7 +71,7 @@ app.listen(port, () => {
 const rule = new schedule.RecurrenceRule();
 rule.hour = 0;
 rule.minute = 0;
-rule.tz = 'Etc/UTC';
+rule.tz = 'Asia/Jerusalem';
 
 schedule.scheduleJob(rule, function(){
   console.log('A new day has begun in the UTC timezone!');

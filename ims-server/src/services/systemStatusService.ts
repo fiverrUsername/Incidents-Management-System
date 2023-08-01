@@ -5,7 +5,7 @@ import logger from "../loggers/log";
 import systemStatusRepository from "../repositories/systemStatusRepository";
 
 class SystemStatusService {
-    async getAllIncidents(date: string): Promise<ISystemStatus[] | any> {
+    async getSystemsByDate(date: string): Promise<ISystemStatus[] | any> {
         try {
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,
