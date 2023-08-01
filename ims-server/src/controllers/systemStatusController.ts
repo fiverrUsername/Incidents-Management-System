@@ -4,10 +4,10 @@ import { status } from "../loggers/constants";
 import systemStatusService from "../services/systemStatusService";
 
 class systemStatusController {
-    async getAllTags(req: Request, res: Response): Promise<void> {
+    async getSystemsByDate(req: Request, res: Response): Promise<void> {
         try {
             const date: string = req.body
-            const systems = await systemStatusService.getAllIncidents(date);
+            const systems = await systemStatusService.getSystemsByDate(date);
             if (systems instanceof Error) {
                 res.status(status.SERVER_ERROR).json({ message: systems, error: true });
             } else res.status(status.CREATED_SUCCESS).json(systems);
