@@ -19,6 +19,10 @@ export const SystemStatusSchema = new Schema<ISystemStatus>({
         type: String,
         required: true,
         enum: Object.values(Priority),
+    },
+    incidentCounter: {
+        type: Number,
+        required: true,
     }
 });
 export default mongoose.model<ISystemStatus>("systemStatus", SystemStatusSchema);

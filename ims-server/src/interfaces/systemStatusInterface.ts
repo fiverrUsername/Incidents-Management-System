@@ -5,4 +5,5 @@ export interface ISystemStatus {
     incidents: string[]
     date: Date
     maxPriority: Priority
+    incidentCounter: Number
 }
