@@ -1,4 +1,5 @@
 import axios from 'axios'
+import FormData from 'form-data';
 import { Priority } from '../../../../../ims-server/src/enums/enum';
 import { IIncident } from '../../../../../ims-server/src/interfaces/IncidentInterface';
 import { ITimelineEvent } from '../../../../../ims-server/src/interfaces/ItimelineEvent';
@@ -6,29 +7,30 @@ import { SLACK_TOKEN } from '../actions/const';
 import moment from 'moment';
 
 export default async function handleMessageEvent(event: any) {
+  
+  console.log("--------------------}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}-------------------------");
   console.log(event);
   console.log("---------------------------------------------");
-
   const answer: IIncident = await axios.get(`http://localhost:7000/incident/${event.channel}/channelId`);
   const timelineEvent: ITimelineEvent = {
     channelId: event.channel,
-    incidentId: answer.id,
+    incidentId: answer.id!,
     userId: '',
     description: event.text,
-    priority: decodeMessage(event.text) || Priority.P0,
+    priority: decodeMessagePriority(event.text) || Priority.P0,
     type: '',
-    files: ["jdjsfhjdksjfhsdj", "fdsug"],
+    files: event.files && await fileResponse(event.files, answer.id!) || [],
     createdDate: new Date(),
-    updatedDate: findDateTimeInString(event.text) || new Date(),
-    id: ''
+    updatedDate: decodeMessageDate(event.text) || new Date(),
   };
-
+  console.log("????????????????????????????????????????????????")
+  console.log(timelineEvent)
 
 }
 
-export function findDateTimeInString(inputString: string): Date | null {
-  const datePattern = /\b\d{1,2}\/\d{1,2}\/\d{4}\b/;
-  const matches = inputString.match(datePattern);
+export function decodeMessageDate(message: string): Date | null {
+  const regex = /\b\d{1,2}\/\d{1,2}\/\d{4}\b/;
+  const matches = message.match(regex);
   if (matches && matches.length > 0) {
     const dateString = matches[0];
     const formattedDate = moment(dateString, 'DD/MM/YYYY').toDate();
@@ -37,7 +39,7 @@ export function findDateTimeInString(inputString: string): Date | null {
   return null;
 }
 
-export function decodeMessage(message: string): Priority | null {
+export function decodeMessagePriority(message: string): Priority | null {
   const regex = /\b[Pp][0-2]\b/;
   const match = message.match(regex);
 
@@ -58,22 +60,60 @@ export function decodeMessage(message: string): Priority | null {
   }
 }
 
+// async function fileResponse(files: any[], incidentId: string): Promise<string[]> {
+//   const filesKeys: string[] = [];
+//   const formData = new FormData();
 
+//   try {
+//     await Promise.all(files.map(async (file) => {
+//       const response = await axios.get(file.url_private_download, {
+//         headers: {
+//           Authorization: `Bearer ${SLACK_TOKEN}`,
+//         },
+//         responseType: 'blob',
+//       });
+//       const newName = `incidence_${incidentId}_${Date.now()}${file.name}`;
+//       filesKeys.push(newName);
+//       formData.append('files', new Blob([response.data]), newName);
+//     }));
 
-async function fileResponse(files: any[]): Promise<Buffer[]> {
+//     await axios.post('http://localhost:7000/attachment', formData, {
+//       headers: {
+//         'Content-Type': 'multipart/form-data',
+//       },
+//     });
+
+//     return filesKeys;
+//   } catch (error: any) {
+//     console.error('Error extracting files:', error.message);
+//     return [];
+//   }
+// }
+
+async function fileResponse(files: any[], incidentId: string): Promise<string[]> {
+  const filesKeys: string[] = [];
+  const formData = new FormData(); 
+
   try {
-    const fetchPromises = files.map(async (file) => {
+    await Promise.all(files.map(async (file) => {
       const response = await axios.get(file.url_private_download, {
         headers: {
           Authorization: `Bearer ${SLACK_TOKEN}`,
         },
-        responseType: 'arraybuffer', // This will ensure the response is treated as a buffer
+        responseType: 'blob',
       });
+      const newName = `incidence_${incidentId}_${Date.now()}${file.name}`;
+      filesKeys.push(newName);
+      formData.append('files', response.data, { filename: newName });
+    }));
 
-      return Buffer.from(response.data, 'binary');
+    await axios.post('http://localhost:7000/attachment', formData, {
+      headers: {
+        ...formData.getHeaders(),
+      },
     });
 
-    return Promise.all(fetchPromises);
+    return filesKeys;
   } catch (error: any) {
     console.error('Error extracting files:', error.message);
     return [];

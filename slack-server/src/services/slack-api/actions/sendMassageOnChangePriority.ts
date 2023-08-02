@@ -31,7 +31,7 @@ export async function sendMassageOnChangePriority (channelId:string, prod:Priori
         return null;
       }
 }
-sendMassageOnChangePriority("C05J8AZ1Q3X", Priority.P2);
+// sendMassageOnChangePriority("C05J8AZ1Q3X", Priority.P2);
 
 
 

@@ -4,7 +4,7 @@ import { sendMessageFromBot } from "../actions/sendMessageFromBot";
 
 export interface ITimelineEvent{
     _id?: string,
-    incidentId:string,
+    incidentId?:string,
     channelId:string,
     userId:string,
     description:string,
