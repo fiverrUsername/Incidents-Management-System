@@ -1,30 +1,33 @@
+import { createEventAdapter, SlackEventAdapter } from '@slack/events-api';
+import handleMessageEvent from './slack-api/handles/handleMessageEvent';
+import { createIncident } from './slack-api/actions/createIncidentWhenCreateChannel';
 
-import { createEventAdapter } from '@slack/events-api';
-import express from 'express';
+const slackSigningSecret = '6375bfe488c6d9b8d321dfbd8afae02d';
 
-const app = express();
+const slackEvents: SlackEventAdapter = createEventAdapter(slackSigningSecret);
 
-
-const slackEvents = createEventAdapter('sxzE9hZ9agbQmCgkADz8bJ9J');
-
-
-
-app.post('/webhook', (req, res) => {
-  const data = req.body;
-  console.log("data",data)
- if (data.challenge) {
-   
-    const challenge = data.challenge;
-    res.json({ challenge });
-  } else {
-   
-   res.json({ message: 'Webhook event received successfully.' });
+export default function events(data: any) {
+  const { event } = data;
+  switch (event.type) {
+    case 'message':
+      handleMessageEvent(event);
+      break;
+    case 'app_mention':
+      break;
+    case 'channel_created':
+      console.log('channel_created');
+      createIncident(event.channel.id);
+      break;
+    // Add more cases for other event types you want to handle
+    default:
+      // If the event type is not handled, do nothing or log an error.
+      console.log(`Unhandled event type: ${event.type}`);
   }
-});
 
+}
 
-const port1 = 4701; 
-slackEvents.start(port1).then(() => {
+const port = 4701;
+slackEvents.start(port).then(() => {
   console.log('Server started!');
 });
 

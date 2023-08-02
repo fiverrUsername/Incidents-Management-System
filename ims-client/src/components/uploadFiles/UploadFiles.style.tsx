@@ -5,11 +5,9 @@ export const UploadStyles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    // margin: '20px',
     width:'90%'
   },
   '.upload-area': {
-    // width: '100%',
     maxWidth: '100%',
     marginBottom:'10px',
     height: '100px',

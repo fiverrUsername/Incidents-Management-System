@@ -33,9 +33,9 @@ export class IncidentDto {
     Object.assign(this, init);
   }
 //TODO
-  @IsNotEmpty({ message: `id ${constants.EMPTY_OBJECT}` })
   @IsString({ message: `id ${constants.INVALID_MESSAGE}` })
-  id: string;
+  @IsOptional({ message: `id ${constants.EMPTY_OBJECT}` })
+  id?: string;
 
   @IsNotEmpty({ message: `name ${constants.EMPTY_OBJECT}` })
   @IsString({ message: `name ${constants.INVALID_MESSAGE}` })

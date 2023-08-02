@@ -7,7 +7,7 @@ export const SystemStatusSchema = new Schema<ISystemStatus>({
     id: {
         type: String,
         default: uuidv4,
-      },
+    },
     systemName: {
         type: String,
         required: true

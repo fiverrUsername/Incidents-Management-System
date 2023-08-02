@@ -23,7 +23,6 @@ class IncidentRepository {
       const _newIncident:IIncident=await incidentModel.create(newIncident);
       timeline.incidentId=_newIncident.id
       await TimelineEventRepository.addTimelineEvent(timeline)
-      console.log(_newIncident.id);     
       return  _newIncident;
     } catch (error: any) {
       console.error(`error: ${error}`);
@@ -31,9 +30,9 @@ class IncidentRepository {
     }
   }
 
-  async updateIncident(id: String, data: IncidentDto): Promise<void | any> {
+  async updateIncident(id: String, data: IncidentDto): Promise<IIncident | any> {
     try {
-      return await incidentModel.findByIdAndUpdate(id, data);
+      return await incidentModel.findOneAndUpdate({id}, data);
     } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
@@ -49,15 +48,23 @@ class IncidentRepository {
     }
   }
 
-  async getIncidentById(id: string): Promise<IIncident | any> {
+  async  getIncidentByField(fieldValue: string, fieldName: string): Promise<IIncident | any> {
     try {
-      const incident:IIncident|null=await incidentModel.findOne({id});
-      return incident;
+      return await incidentModel.findOne({ [fieldName]: fieldValue });
     } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
     }
   }
-
+  
+  async  getIncidentById(id: string): Promise<IIncident | any> {
+    try {
+      return await incidentModel.findOne({ id });
+    } catch (error: any) {
+      console.error(`error: ${error}`);
+      return error;
+    }
+  }
+  
 }
 export default new IncidentRepository();

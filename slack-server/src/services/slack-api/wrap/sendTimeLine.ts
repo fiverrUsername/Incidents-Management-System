@@ -1,10 +1,8 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { sendMassageOnChangePriority } from "../actions/sendMassageOnChangePriority";
-import { sendMessageFromBot } from "../actions/sendMessageFromBot";
-
+import { sendMassageToSlack } from "../actions/postMessage";
 export interface ITimelineEvent{
     _id?: string,
-    incidentId:string,
+    incidentId?:string,
     channelId:string,
     userId:string,
     description:string,
@@ -14,11 +12,9 @@ export interface ITimelineEvent{
     createdDate:Date,
     updatedDate:Date,
 }
-interface AttachmentData {
-    key: string;
-    data: Buffer;
-  }
+
 export async function addTimeLineEvent(timeline:ITimelineEvent){
-    const answer = await axios.post('http://localhost:7006/timelineEvent/compareIncidentChanges', timeline);
-    sendMessageFromBot(timeline.channelId,answer.data.description.join(' '))
+
+    const answer = await axios.post('http://localhost:7000/timelineEvent/compareIncidentChanges', timeline);
+    sendMassageToSlack({channelId:timeline.channelId,userName:"Tammy",filesUrl:answer.data.files,text:answer.data.description.join(' ')})
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import IIncident from '../../interface/incidentInterface'
 import apiCalls from '../../service/apiCalls'
 import { GetIncident, form_data } from '../AddUpdate/AddUpdate'
-import ITimeLineEvent from '../../interface/timeLineInterface'
+import {ITimeLineEvent} from '../../interface/timeLineInterface'
 
 
 interface Props {
@@ -24,12 +24,10 @@ export default async function submitTimeLine(props: Props) {
     updatedDate: new Date()
   }
   try {
-    console.log("try")
     await apiCalls.addTimelineEvent(timeLineEvent);
     flag = true;
   }
   catch (error) {
-    console.log(error);
     flag = false;
   }
   return flag;

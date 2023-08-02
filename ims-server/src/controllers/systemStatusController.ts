@@ -1,4 +1,4 @@
-import { type Request, type Response } from "express";
+import { Request, Response } from "express";
 
 import { status } from "../loggers/constants";
 import systemStatusService from "../services/systemStatusService";
@@ -34,4 +34,3 @@ export default class systemStatusController {
     }
 }
 
-// export default new systemStatusController()

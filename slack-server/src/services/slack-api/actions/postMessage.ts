@@ -1,41 +1,50 @@
+import FormData from 'form-data';
+import { SLACK_API_TOKEN } from "./const";
+import axios from "axios";
 const { WebClient } = require('@slack/web-api');
-const fs = require('fs');
-const { promisify } = require('util');
-
+interface AttachmentData {
+  key: string;
+  data: Buffer;
+}
 const userAccessToken = 'xoxb-5609511342163-5604717800598-XAxj3F4jbNGLav6i5DkQZkJw';
 const web = new WebClient(userAccessToken);
-const readFileAsync = promisify(fs.readFile);
- interface ISendMassageToSlack{
-    channelId:string;
-    userName:string;
-    filesUrl?:[string];
-    text?:string;
+interface ISendMassageToSlack {
+  channelId: string;
+  userName: string;
+  filesUrl?: AttachmentData[];
+  text?: string;
 }
-export async function sendMassageToSlack({ channelId,userName,filesUrl,text}: ISendMassageToSlack) {
+export async function sendMassageToSlack({ channelId, userName, filesUrl, text }: ISendMassageToSlack) {
   try {
-    const massage="name: @"+userName+"\n"+(text?text:"")
+    const massage = "name: @" + userName + "\n" + (text ? text : "")
     await web.chat.postMessage({
-        channel: channelId,
-        text: massage,
-        as_user: true, 
-        username:userName ,
+      channel: channelId,
+      text: massage,
+      as_user: true,
+      username: userName
+    });
+    if (filesUrl !== null) {
+      const fileUploads = filesUrl?.map(async (fileUrl: AttachmentData) => {
+        try {
+          const formData = new FormData();
+          formData.append('channels', channelId);
+          formData.append('file', Buffer.from(fileUrl.data), {
+            filename: fileUrl.key
+          });
+          const response = await axios.post('https://slack.com/api/files.upload', formData, {
+            headers: {
+              ...formData.getHeaders(),
+              Authorization: `Bearer ${SLACK_API_TOKEN}`
+            },
+          });
+          
+        } catch (error) {
+          console.error('Error uploading file:', error);
+          return null;
+        }
       });
-      if(filesUrl!==null){
-            const fileUploads = filesUrl?.map(async (fileUrl) => {
-            try {
-                const fileContent = await readFileAsync(fileUrl);
-                const response = await web.files.uploadV2({
-                channels: channelId,
-                file: fileContent,
-                filename: fileUrl.substring(fileUrl.lastIndexOf('/') + 1)
-                });
-            } catch (error) {
-                console.error('Error uploading file:', error);
-                return null;
-            }
-            });
-            await Promise.all(fileUploads?fileUploads:"");
-      }
+      await Promise.all(fileUploads ? fileUploads : "");
+    }
     console.log('Message and files sent successfully!');
   } catch (error) {
     console.error('Error sending message:', error);
