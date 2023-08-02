@@ -169,7 +169,7 @@ export default class TimelineEventController {
             description: string[];
             files: any;
           }
-        const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventsById(req.body.incidentId);
+        const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventByIncidentId(req.body.incidentId);
         const a=awsService.getAllAttachmentByTimeline(req.body.files)
         let file:any
         let answer:compare = { description:["", "", ""] ,files:file};
