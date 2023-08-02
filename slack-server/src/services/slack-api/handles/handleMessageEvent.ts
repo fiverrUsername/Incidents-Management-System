@@ -1,32 +1,32 @@
 import axios from 'axios'
 import FormData from 'form-data';
 import { Priority } from '../../../../../ims-server/src/enums/enum';
-import { IIncident } from '../../../../../ims-server/src/interfaces/IncidentInterface';
 import { ITimelineEvent } from '../../../../../ims-server/src/interfaces/ItimelineEvent';
 import { SLACK_TOKEN } from '../actions/const';
 import moment from 'moment';
+import { sendToSocket } from '../../socket';
+import { ActionType, ObjectType } from '../../../../../ims-socket/src/interfaces';
 
 export default async function handleMessageEvent(event: any) {
-  
-  console.log("--------------------}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}-------------------------");
-  console.log(event);
-  console.log("---------------------------------------------");
-  const answer: IIncident = await axios.get(`http://localhost:7000/incident/${event.channel}/channelId`);
-  const timelineEvent: ITimelineEvent = {
-    channelId: event.channel,
-    incidentId: answer.id!,
-    userId: '',
-    description: event.text,
-    priority: decodeMessagePriority(event.text) || Priority.P0,
-    type: '',
-    files: event.files && await fileResponse(event.files, answer.id!) || [],
-    createdDate: new Date(),
-    updatedDate: decodeMessageDate(event.text) || new Date(),
-  };
-  console.log("????????????????????????????????????????????????")
-  console.log(timelineEvent)
-
+  const answer = await axios.get(`http://localhost:7000/incident/${event.channel}/channelId`);
+  if (answer.data) {
+    const timelineEvent: ITimelineEvent = {
+      channelId: event.channel,
+      incidentId: answer.data.id!,
+      userId: '14785',
+      description: event.text,
+      priority: decodeMessagePriority(event.text) || Priority.P0,
+      type: 'security',
+      files: event.files && (await fileResponse(event.files, answer.data.id!)) || [],
+      createdDate: new Date(),
+      updatedDate: decodeMessageDate(event.text) || new Date(),
+    };
+    sendToSocket(timelineEvent, ObjectType.TimelineEvent, ActionType.Add);
+   console.log(timelineEvent)
+  }
 }
+
+
 
 export function decodeMessageDate(message: string): Date | null {
   const regex = /\b\d{1,2}\/\d{1,2}\/\d{4}\b/;
@@ -38,11 +38,9 @@ export function decodeMessageDate(message: string): Date | null {
   }
   return null;
 }
-
 export function decodeMessagePriority(message: string): Priority | null {
-  const regex = /\b[Pp][0-2]\b/;
+  const regex = /\b[Pp][0-3]\b/;
   const match = message.match(regex);
-
   if (match && match.length > 0) {
     const matchedValue = match[0].toUpperCase();
     switch (matchedValue) {
@@ -52,6 +50,8 @@ export function decodeMessagePriority(message: string): Priority | null {
         return Priority.P1;
       case "P2" || "p2":
         return Priority.P2;
+      case "P3" || "p3":
+        return Priority.P3;
       default:
         return null;
     }
@@ -60,40 +60,9 @@ export function decodeMessagePriority(message: string): Priority | null {
   }
 }
 
-// async function fileResponse(files: any[], incidentId: string): Promise<string[]> {
-//   const filesKeys: string[] = [];
-//   const formData = new FormData();
-
-//   try {
-//     await Promise.all(files.map(async (file) => {
-//       const response = await axios.get(file.url_private_download, {
-//         headers: {
-//           Authorization: `Bearer ${SLACK_TOKEN}`,
-//         },
-//         responseType: 'blob',
-//       });
-//       const newName = `incidence_${incidentId}_${Date.now()}${file.name}`;
-//       filesKeys.push(newName);
-//       formData.append('files', new Blob([response.data]), newName);
-//     }));
-
-//     await axios.post('http://localhost:7000/attachment', formData, {
-//       headers: {
-//         'Content-Type': 'multipart/form-data',
-//       },
-//     });
-
-//     return filesKeys;
-//   } catch (error: any) {
-//     console.error('Error extracting files:', error.message);
-//     return [];
-//   }
-// }
-
 async function fileResponse(files: any[], incidentId: string): Promise<string[]> {
   const filesKeys: string[] = [];
-  const formData = new FormData(); 
-
+  const formData = new FormData();
   try {
     await Promise.all(files.map(async (file) => {
       const response = await axios.get(file.url_private_download, {
@@ -106,18 +75,14 @@ async function fileResponse(files: any[], incidentId: string): Promise<string[]>
       filesKeys.push(newName);
       formData.append('files', response.data, { filename: newName });
     }));
-
     await axios.post('http://localhost:7000/attachment', formData, {
       headers: {
         ...formData.getHeaders(),
       },
     });
-
     return filesKeys;
   } catch (error: any) {
     console.error('Error extracting files:', error.message);
     return [];
   }
 }
-
-
