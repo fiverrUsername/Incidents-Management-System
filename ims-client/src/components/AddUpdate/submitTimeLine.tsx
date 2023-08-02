@@ -14,6 +14,7 @@ export default async function submitTimeLine(props: Props) {
   let flag: boolean;
   const timeLineEvent: ITimeLineEvent = {
     incidentId: props.incident.id,
+    channelId:props.incident.channelId,
     userId: "698cbeda854a5d4d8bcf303l",
     description: props.data.text,
     priority: props.data.priority,

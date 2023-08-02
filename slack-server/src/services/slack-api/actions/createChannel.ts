@@ -51,4 +51,4 @@ async function sendJoinMessageToUser(channelId: string, userId: string[], channe
   } catch (error) {
     console.error(`Error sending join invitation to user ${userId}:`, error);
   }
-
+}
