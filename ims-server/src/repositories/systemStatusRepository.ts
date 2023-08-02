@@ -12,15 +12,7 @@ class SystemStatusRepository {
             return null;
         }
     }
-    // async getAllLiveStatus(): Promise<ISystemStatus[] | any> {
-    //     try {
-    //         return await systemStatusModel.find()
-    //     }
-    //     catch (e) {
-    //         console.error(`error: ${e}`);
-    //         return null;
-    //     }
-    // }
+    
     async createLiveStatus(data: ISystemStatus, tag: string): Promise<ISystemStatus | any> {
         const liveStatus: ISystemStatus = {
             id: "new uuid",
@@ -31,7 +23,6 @@ class SystemStatusRepository {
         }
         try {
             const newLiveStatus: ISystemStatus = await systemStatusModel.create(liveStatus);
-            console.log(newLiveStatus);
             return newLiveStatus;
         } catch (error: any) {
             console.error(`error: ${error}`);
@@ -51,7 +42,6 @@ class SystemStatusRepository {
             }
             // Save the updated existing ISystemStatus back to the database
             const updatedSystemStatus: ISystemStatus | null = await systemStatusModel.findByIdAndUpdate(id, existingSystemStatus);
-            console.log(updatedSystemStatus);
             return updatedSystemStatus;
         } catch (error: any) {
             console.error(`error: ${error}`);

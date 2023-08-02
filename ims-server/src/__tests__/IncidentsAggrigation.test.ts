@@ -33,12 +33,8 @@ describe("aggregation", () => {
           json: jest.fn(),
         } as unknown as Response;
 
-        console.log('Before incidentAggregation');
-
         await controller.incidentAggregation(req, res);
-        console.log('After incidentAggregation');
 
-        console.log('Calls to aggregateIncident:', aggregationServiceMock.aggregateIncident.mock.calls);
         expect(aggregationServiceMock.aggregateIncident).toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(404);
         expect(res.json).toHaveBeenCalledWith(expectedResponse);

@@ -24,12 +24,10 @@ export default async function submitTimeLine(props: Props) {
     updatedDate: new Date()
   }
   try {
-    console.log("try")
     await apiCalls.addTimelineEvent(timeLineEvent);
     flag = true;
   }
   catch (error) {
-    console.log(error);
     flag = false;
   }
   return flag;

@@ -4,7 +4,6 @@ import {ITimeLineEvent} from "../interface/timeLineInterface"
 const baseUrl = process.env.REACT_APP_API_KEY
 
 const apiCalls = {
-    //להוסיף את כל הקריאות שרת
     getIncidents: () => axios.get(`${baseUrl}/incident`).then(response => response.data),
     getAggregation: () => axios.get(`${baseUrl}/aggregation`).then(response => response.data),
     createIncident: (incident: IIncident) => axios.post(`${baseUrl}/incident/addIncident`, incident).then(response => response.data),

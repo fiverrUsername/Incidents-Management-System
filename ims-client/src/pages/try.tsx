@@ -64,7 +64,6 @@ export default function SingleLineImageList({ images }: getAttachmentProps) {
           <ImageListItem key={item}>
             <img src={item} alt={item} />
             <ImageListItemBar
-             // title={item.title}
               classes={{
                 root: classes.titleBar,
                 title: classes.title,
