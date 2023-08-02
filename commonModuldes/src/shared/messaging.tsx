@@ -1,4 +1,4 @@
-import { ITimeLineEvent } from "./timelineEvents";
+import { ITimeLineEvent } from "./timelineevents";
 import { IIncident } from "./incidentManagement";
 
 export enum ObjectType {
