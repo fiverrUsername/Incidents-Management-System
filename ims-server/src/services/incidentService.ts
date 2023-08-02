@@ -7,6 +7,7 @@ import logger from "../loggers/log";
 import incidentModel from "../models/IncidentModel";
 import incidentRepository from "../repositories/incidentRepository";
 import { Priority } from "../enums/enum";
+import SystemStatusService from './systemStatusService';
 
 class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {
@@ -21,12 +22,14 @@ class IncidentService {
       //   });
       //   throw new Error("Validation error");
       // }
-
       logger.info({
         sourece: constants.INCIDENT_COTROLLER,
         msg: constants.ADD_INCIDENT_SUCCESS,
         incidentId: newIncident.id
       });
+      console.log("incident::::",newIncident)
+      const live=await SystemStatusService.logic(newIncident);
+      console.log("live:::",live)
       return await incidentRepository.addIncident(newIncident);
       // return await incidentRepository.addIncident(incident);
     } catch (error: any) {
