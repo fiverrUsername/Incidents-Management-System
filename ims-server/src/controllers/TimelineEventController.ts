@@ -7,7 +7,7 @@ import axios from "axios";
 import { ActionType, ObjectType } from '../../../ims-socket/src/interfaces';
 import { sendToSocket } from '../services/socket';
 import AwsController from "./attachmentController";
-import awsService from "../services/attachmentService";
+import attachmentService from "../services/attachmentService";
 
 export default class TimelineEventController {
 
@@ -170,7 +170,7 @@ export default class TimelineEventController {
             files: any;
           }
         const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventById(req.body.incidentId);
-        const a=awsService.getAllAttachmentByTimeline(req.body.files)
+        const a=attachmentService.getAllAttachmentByTimeline(req.body.files)
         let file:any
         let answer:compare = { description:["", "", ""] ,files:file};
         await a.then(function(result:any) {

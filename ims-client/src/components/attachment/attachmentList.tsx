@@ -3,7 +3,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import {ITimeLineEvent} from '../../interface/timeLineInterface';
 import Attachment from './attachment';
 import apiCalls from '../../service/apiCalls';
-import attachmentService from '../../service/awsService';
+import attachmentService from '../../service/attachmentService';
 // import AttachmentData from '../../interface/attachmentInterface';
 import { json } from 'stream/consumers';
 import { log } from 'console';

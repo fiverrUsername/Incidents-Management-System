@@ -10,7 +10,7 @@ import video from '../../images/video.png';
 import word from '../../images/word.png';
 import excel from '../../images/excel.png';
 import txt from '../../images/txt.jpg';
-import attachmentService from '../../service/awsService';
+import attachmentService from '../../service/attachmentService';
 import { log } from 'console';
 import logo from '../../images/logo.png'
 type SupportedFileTypes =

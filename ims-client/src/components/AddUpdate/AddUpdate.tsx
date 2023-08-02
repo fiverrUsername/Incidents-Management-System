@@ -17,7 +17,7 @@
 // import IIncident from '../../interface/incidentInterface';
 // import { ITag } from '../../interface/ITag';
 // import UploadFiles from '../uploadFiles/UploadFiles';
-// import awsService from '../../service/awsService';
+// import attachmentService from '../../service/attachmentService';
 // export interface form_data {
 //   text: string;
 //   priority: string;
@@ -90,7 +90,7 @@
 //       console.log("-----", newName)
 //       formData.append('files', file, newName);
 //     })
-//     await awsService.uploadAttachment(formData);
+//     await attachmentService.uploadAttachment(formData);
 //         if (type && tags) {
 //       const flag = await submitTimeLine({ data, incident });
 //       if (flag) {
@@ -220,7 +220,7 @@ import { useForm } from 'react-hook-form';
 import { ITag } from '../../interface/ITag';
 import { Priority } from '../../interface/enum-priority';
 import apiCalls from '../../service/apiCalls';
-import awsService from '../../service/awsService';
+import attachmentService from '../../service/attachmentService';
 import theme from '../../theme';
 import DropDown from '../AddIncident/DropDown';
 import ToggleButtons from '../AddIncident/PriorityButtons';
@@ -300,7 +300,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
     })
     data.files = filesString;
 
-    await awsService.uploadAttachment(formData);
+    await attachmentService.uploadAttachment(formData);
     if (type && tags) {
       const flag = await submitTimeLine({ data, incident });
       if (flag) {
