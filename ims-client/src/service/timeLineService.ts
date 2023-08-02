@@ -6,11 +6,9 @@ const filterTimeLineBySearch = (array: ITimeLineEvent[], filterString: string): 
     for (const key in item) {
 
       if ((key != 'createdAt') && (String(item[key as keyof ITimeLineEvent]).toLowerCase()).includes(filterString.toLowerCase())) {
-        console.log(key)
         return true;
       }
       if ((key == 'userId') && (String(item[key as keyof ITimeLineEvent]).toLowerCase()).includes(filterString.toLowerCase())) {
-        console.log(key)
         return true;
       }
     }

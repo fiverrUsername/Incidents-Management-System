@@ -2,7 +2,7 @@ import styled from "styled-components";
 import theme from "../../theme";
 import { Paper } from "@mui/material";
 import { Box } from "@mui/system";
-// import Search from "../../components/Search/Search";
+
 export const CustomScrollbar = styled.div`
   // max-height: 400px;
   max-height:300px;
@@ -39,14 +39,3 @@ export const StyledBox = styled(Box)`
 `;
  
 
-// export const StyleBox = styled( Box)`    
-//    display: 'flex'
- 
-// `;
-// export const StyledSearch = styled(Search)`
-// .Paper{
-//     border-radius: 250px;
-//     border: 1px solid #E1E1E1;
-//     background: #FFF;
-// }
-// `;

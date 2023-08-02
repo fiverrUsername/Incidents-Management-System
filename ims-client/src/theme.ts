@@ -1,6 +1,4 @@
-// import { colors } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import { hover } from '@testing-library/user-event/dist/hover';
 declare module '@mui/material/styles' {
   interface TypographyVariants {
     date: React.CSSProperties;
