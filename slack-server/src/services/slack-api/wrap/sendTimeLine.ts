@@ -6,7 +6,7 @@ import bufferToDataUrl from "buffer-to-data-url"
 
 export interface ITimelineEvent{
     _id?: string,
-    incidentId:string,
+    incidentId?:string,
     channelId:string,
     userId:string,
     description:string,

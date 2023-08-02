@@ -1,14 +1,15 @@
-import { type Request, type Response } from "express";
+import { Request, Response } from "express";
 
 import { status } from "../loggers/constants";
 import systemStatusService from "../services/systemStatusService";
 import { IIncident } from "../interfaces/IncidentInterface";
+import { ISystemStatus } from "../interfaces/systemStatusInterface";
 
-class systemStatusController {
-    async getAllTags(req: Request, res: Response): Promise<void> {
+class SystemStatusController {
+    async getLiveStatusSystemsByDate(req: Request, res: Response): Promise<void> {
         try {
             const date: string = req.body
-            const systems = await systemStatusService.getAllIncidents(date);
+            const systems = await systemStatusService.getLiveStatusSystemsByDate(date);
             if (systems instanceof Error) {
                 res.status(status.SERVER_ERROR).json({ message: systems, error: true });
             } else res.status(status.CREATED_SUCCESS).json(systems);
@@ -18,9 +19,9 @@ class systemStatusController {
     }
     async createLiveStatus(req: Request, res: Response): Promise<void> {
         try {
-            const incident: IIncident = req.body
-            const tag:string=req.params.tag
-            const liveStatus = await systemStatusService.createLiveStatus(incident,tag)
+            const data: ISystemStatus = req.body
+            const tag: string = req.params.tag
+            const liveStatus = await systemStatusService.createLiveStatus(data, tag)
             if (liveStatus instanceof Error) {
                 res.status(status.SERVER_ERROR).json({ message: liveStatus, error: true });
             } else res.status(status.CREATED_SUCCESS).json(liveStatus);
@@ -30,16 +31,20 @@ class systemStatusController {
     }
     async updateLiveStatus(req: Request, res: Response): Promise<void> {
         try {
-            const incident: IIncident = req.body
-            const id =req.params.id
-            const liveStatus = await systemStatusService.updateLiveStatus(incident,id)
+            const incident: IIncident = req.body;
+            const id = req.params.id;
+            const liveStatus = await systemStatusService.updateLiveStatus(
+                incident,
+                id
+            );
             if (liveStatus instanceof Error) {
-                res.status(status.SERVER_ERROR).json({ message: liveStatus, error: true });
+                res
+                    .status(status.SERVER_ERROR)
+                    .json({ message: liveStatus, error: true });
             } else res.status(status.CREATED_SUCCESS).json(liveStatus);
         } catch (error: any) {
             res.status(status.SERVER_ERROR).json({ message: error });
         }
     }
 }
-
-export default new systemStatusController()
+export default new SystemStatusController();

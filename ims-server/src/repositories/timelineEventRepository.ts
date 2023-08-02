@@ -21,7 +21,7 @@ class TimelineEventRepository {
     }
   }
 
-  async getTimelineEventsById(id: string): Promise<ITimelineEvent[] | any> {
+  async getTimelineEventByIncidentId(id: string): Promise<ITimelineEvent[] | any> {
     try {
       const _timelineEvent=await timelineEvent.find({ incidentId: id });
       return _timelineEvent;
@@ -34,7 +34,7 @@ class TimelineEventRepository {
 
   async deleteTimelineEvent(id: String): Promise<ITimelineEvent | any> {
     try {
-      return await timelineEvent.findByIdAndDelete(id);
+      return await timelineEvent.findOneAndDelete({id});
     } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
@@ -52,7 +52,7 @@ class TimelineEventRepository {
 
   async getTimelineEventById(id: String): Promise<ITimelineEvent | any> {
     try {
-      const _timelineevent =await timelineEvent.find({ incidentId: id });
+      const _timelineevent =await timelineEvent.findOne({id});
       return _timelineevent;
     } catch (error:any) {
       console.error(`error: ${error}`);
