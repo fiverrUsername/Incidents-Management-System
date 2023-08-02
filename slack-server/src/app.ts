@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import events from './services/events';
-// import './services/socket'
 import './services/events'
 import { addTimeLineEvent } from "./services/slack-api/wrap/sendTimeLine";
 import cors from 'cors';

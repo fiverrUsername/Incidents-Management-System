@@ -13,7 +13,6 @@ export default function events(data: any) {
       handleMessageEvent(event);
       break;
     case 'app_mention':
-      //handleAppMentionEvent(event);
       break;
     case 'channel_created':
       console.log('channel_created');

@@ -14,8 +14,4 @@ export async function updateChannelDescription(channelId: string, description: s
   }
 }
 
-// const channelId = 'C05JZP6D47R';
-// const newDescription = 'This is the updated 3 description of the channel.';
-// updateChannelDescription(channelId, newDescription);
-
 
