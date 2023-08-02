@@ -263,6 +263,12 @@
                     "201": {
                         "description": "successful operation"
                     },
+                    "400":{
+                        "description":"bad request"
+                    },
+                    "422":{
+                        "description":"missing required fields"
+                    },
                     "500": {
                         "description": "Invalid status value"
                     }

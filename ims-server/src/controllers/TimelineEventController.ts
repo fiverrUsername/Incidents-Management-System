@@ -5,7 +5,7 @@ import timelineEventService from "../services/timelineEventService";
 import logger from "../loggers/log";
 import axios from "axios";
 import { ActionType, ObjectType } from '../../../ims-socket/src/interfaces';
-import {sendToSocket} from '../services/socket';
+import { sendToSocket } from '../services/socket';
 import AwsController from "./attachmentController";
 import awsService from "../services/attachmentService";
 
@@ -40,21 +40,12 @@ export default class TimelineEventController {
 
     async addTimelineEvent(req: Request, res: Response): Promise<Response> {
         try {
-            //remember to change:
-
-            // req.body.updatedDate=new Date()
-            // req.body.createdDate=new Date()
             const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
             if (_timelineEvent instanceof Error) {
-                if (_timelineEvent.message === constants.MISSNG_REQUIRED_FIELDS) {
-                    return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: _timelineEvent });
-                }
                 if (_timelineEvent.message === "Validation error" || _timelineEvent.message === "Incident ID not found") {
                     return res.status(status.BAD_REQUEST).json({ message: constants.INVALID_MESSAGE })
                 }
-                else {
-                    return res.status(status.SERVER_ERROR).json({ message: constants.SERVER_ERROR });
-                }
+                return res.status(status.SERVER_ERROR).json({ message: constants.SERVER_ERROR });
             }
             sendToSocket(req.body as ITimelineEvent, ObjectType.TimelineEvent, ActionType.Add);
             return res.status(status.CREATED_SUCCESS).json(_timelineEvent);
@@ -161,10 +152,10 @@ export default class TimelineEventController {
             const file: string | any = req.query.fileString;
             const updatedTimelineEvent = await timelineEventService.deleteFileInTimelineEventByValue(timelineEventId, file);
             if (updatedTimelineEvent instanceof Error) {
-                if (updatedTimelineEvent.message == 'Timeline event not found') {
-                    return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id });
+                if (updatedTimelineEvent.message == 'Timeline event not found' || updatedTimelineEvent.message==='string file not exist') {
+                    return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id,stringFile:req.query.fileString });
                 }
-                return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: constants.SERVER_ERROR });
+                return res.status(status.SERVER_ERROR).json({ message: constants.SERVER_ERROR });
             }
             logger.info({ source: constants.TIMELINE_EVENT, msg: constants.SUCCESS, timelineEventId, file: file, method: constants.METHOD.DELETE });
             return res.status(status.SUCCESS).json(updatedTimelineEvent);
@@ -177,14 +168,14 @@ export default class TimelineEventController {
         interface compare {
             description: string[];
             files: Buffer[];
-          }
+        }
         const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventById(req.body.incidentId);
-        const a=awsService.getAllAttachmentByTimeline(req.body.files)
-        let file:Buffer[]=[]
-        await a.then(function(result:any) {
-            file=result
-         })
-         let answer:compare = { description:["", "", ""] ,files:file};
+        const a = awsService.getAllAttachmentByTimeline(req.body.files)
+        let file: Buffer[] = []
+        await a.then(function (result: any) {
+            file = result
+        })
+        let answer: compare = { description: ["", "", ""], files: file };
         if (allTimelineEvents != null) {
             let sortedDatesDescending: ITimelineEvent[] = allTimelineEvents.slice().sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
             const previousTimeLineEvent: ITimelineEvent = sortedDatesDescending[1]
