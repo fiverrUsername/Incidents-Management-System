@@ -172,4 +172,4 @@ const theIncident:IIncident={
 "currentTags": [],
 }
 
-createNewChannel(theIncident)
+//createNewChannel(theIncident)

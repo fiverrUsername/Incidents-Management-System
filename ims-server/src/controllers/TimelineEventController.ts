@@ -163,11 +163,12 @@ export default class TimelineEventController {
           }
         const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventsById(req.body.incidentId);
         const a=awsService.getAllAttachmentByTimeline(req.body.files)
-        let file:Buffer[]=[]
+        let file:any
+        let answer:compare = { description:["", "", ""] ,files:file};
         await a.then(function(result:any) {
             file=result
-         })
-         let answer:compare = { description:["", "", ""] ,files:file};
+            answer.files=file
+         }) 
         if (allTimelineEvents != null) {
             let sortedDatesDescending: ITimelineEvent[] = allTimelineEvents.slice().sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
             const previousTimeLineEvent: ITimelineEvent = sortedDatesDescending[1]
