@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ITimeLineEvent from '../../interface/timeLineInterface';
+// import ITimeLineEvent from '../../interface/timeLineInterface';
 import Attachment from './attachment';
 import apiCalls from '../../service/apiCalls';
 import attachmentService from '../../service/awsService';
 
 interface AttachmentlistProps {
   _id: string;
-};
+}
 interface AttachmentData {
     key: string;
     data: Buffer;
-};
+}
 const Attachmentlist: React.FC<AttachmentlistProps> = ({ _id }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [AllFilesData, setAllFilesData] = useState<(AttachmentData|null)[]>([]);
