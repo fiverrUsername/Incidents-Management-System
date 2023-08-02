@@ -8,7 +8,7 @@ export const SystemStatusSchema = new Schema<ISystemStatus>({
         required: true
     },
     incidents: {
-        type: [],
+        type: [[String]],
         required: true
     },
     date: {
