@@ -1,32 +1,35 @@
 
 // import { IIncident } from '../../../../../ims-server/src/interfaces/IncidentInterface';
+import { IIncident } from '../../../../../ims-server/src/interfaces/IncidentInterface';
+import { ActionType, ObjectType } from '../../../../../ims-socket/src/interfaces';
+import { sendToSocket } from '../../socket';
 import { Priority } from '../interfaces/priority-enum'
 
 import { SLACK_API_TOKEN } from './const';
 
- interface ITag {
+interface ITag {
   id: string;
   name: string;
 }
 
 
-  interface IIncident {
-  name: string;
-  status: string;
-  description: string;
-  currentPriority: Priority;
-  type: string;
-  durationHours: number;
-  channelId?: string;
-  slackLink: string;
-  channelName?: string;
-  currentTags: ITag[];
-  date: string;
-  createdAt: string;
-  updatedAt: string;
-  cost: number;
-  createdBy: string;
-}
+// interface IIncident {
+//   name: string;
+//   status: string;
+//   description: string;
+//   currentPriority: Priority;
+//   type: string;
+//   durationHours: number;
+//   channelId?: string;
+//   slackLink: string;
+//   channelName?: string;
+//   currentTags: ITag[];
+//   date: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   cost: number;
+//   createdBy: string;
+// }
 
 
 
@@ -62,13 +65,15 @@ export async function createNewChannel(incidentData: IIncident) {
       //TODO
       //- send to the function in ims-server
       incidentData.channelId = channelId;
-      incidentData.description = "y3";    
+      incidentData.description = "y3";
       incidentData.slackLink = `https://slack.com/app_redirect?channel=${channelId}`;
-      console.log("slack link", incidentData.slackLink )
+      sendToSocket(incidentData, ObjectType.Incident, ActionType.Update);
+
+      console.log("slack link", incidentData.slackLink)
 
 
 
-      
+
       // await IncidentController.updateIncident(incidentData);
 
       await sendJoinMessageToUser(channelId, userIds, incidentData.name);
@@ -87,7 +92,7 @@ export async function createNewChannel(incidentData: IIncident) {
 }
 const webhookUrl = 'https://hooks.slack.com/services/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';
 const axios = require('axios');
-async function sendJoinMessageToUser(channelId: string, userId: string[], channelName:string) {
+async function sendJoinMessageToUser(channelId: string, userId: string[], channelName: string) {
   try {
     await axios.post(webhookUrl, {
       text: `You have been invited to join the channel ${channelName}. Click the link to join: https://slack.com/app_redirect?channel=${channelId}`,
@@ -164,22 +169,22 @@ function updateChannelDescription(channelId: any, description: string) {
 }
 
 
-const theIncident:IIncident={
-"name": "ddd",
-"status": "Active",
-"description": "d",
-"currentPriority":Priority.P1,
-"type": "technical",
-"durationHours": 0,
-"channelId": "",
-"channelName": "try3",
-"slackLink": "",
-"date": "2023-07-25T13:46:53.690Z",
-"createdAt": "2023-07-25T13:46:53.690Z",
-"updatedAt":"2023-07-25T13:46:53.690Z",
-"cost": 0,
-"createdBy": "?",
-"currentTags": [],
-}
+// const theIncident: IIncident = {
+//   "name": "ddd",
+//   "status": "Active",
+//   "description": "d",
+//   "currentPriority": Priority.P1,
+//   "type": "technical",
+//   "durationHours": 0,
+//   "channelId": "",
+//   "channelName": "try3",
+//   "slackLink": "",
+//   "date": "2023-07-25T13:46:53.690Z",
+//   "createdAt": "2023-07-25T13:46:53.690Z",
+//   "updatedAt": "2023-07-25T13:46:53.690Z",
+//   "cost": 0,
+//   "createdBy": "?",
+//   "currentTags": [],
+// }
 
-createNewChannel(theIncident)
+// createNewChannel(theIncident)

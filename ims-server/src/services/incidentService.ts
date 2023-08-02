@@ -41,12 +41,12 @@ class IncidentService {
 
   async updateIncident(id: string, data: any): Promise<IIncident | any> {
     try {
-      const isValidId:IIncident|any =await incidentRepository.getIncidentById(id);   
+      const isValidId: IIncident | any = await incidentRepository.getIncidentById(id);
       if (isValidId === null || isValidId instanceof Error) {
         logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentId: id, });
         return new Error(constants.INCIDENT_NOT_FOUND);
       }
-      const updatedIncident:IIncident = await incidentRepository.updateIncident(id, data);
+      const updatedIncident: IIncident = await incidentRepository.updateIncident(id, data);
       if (updatedIncident) {
         logger.info({ source: constants.INCIDENT_COTROLLER, msg: constants.UPDATE_INCIDENT_SUCCESS, incidetID: id, });
         return updatedIncident;
@@ -78,9 +78,9 @@ class IncidentService {
     }
   }
 
-  async getIncidentByField(fieldValue: string,fieldName: string): Promise<IIncident | any> {
+  async getIncidentByField(fieldValue: string, fieldName: string): Promise<IIncident | any> {
     try {
-      const incident = await incidentRepository.getIncidentByField(fieldValue,fieldName);
+      const incident = await incidentRepository.getIncidentByField(fieldValue, fieldName);
       if (incident) {
         logger.info({
           source: constants.INCIDENT_COTROLLER,
@@ -93,7 +93,7 @@ class IncidentService {
       logger.error({
         source: constants.INCIDENT_COTROLLER,
         err: constants.INCIDENT_NOT_FOUND,
-        incidentID:fieldValue,
+        incidentID: fieldValue,
       });
       console.error(`error: ${error}`);
       return error;
@@ -102,19 +102,10 @@ class IncidentService {
 
   async getSummaryIncident(id: string): Promise<ISummary | any> {
     try {
-      let summary: ISummary|null=null; 
-      // = {
-      //   createdBy: '',
-      //    createdAt: '',
-      //   currentPriority: Priority.P0,
-      //   tags: []
-      // }
-      //check if get incident from repository or service
-      const incident = await incidentRepository.getIncidentByField(id,"id");   
-      console.log(incident);
+      let summary: ISummary | null = null;
+      const incident = await incidentRepository.getIncidentByField(id, "id");
       if (incident) {
         //find user with userId from createdBy  ????
-        //create summary
         summary = {
           createdBy: incident.createdBy,
           createdAt: incident.createdAt,
@@ -126,7 +117,7 @@ class IncidentService {
       }
       return summary;
     } catch (error: any) {
-      logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentID: id });
+      logger.error({ source: constants.INCIDENT_COTROLLER, err: true, incidentID: id });
       console.error(`error: ${error}`);
       return error;
     }
