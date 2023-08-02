@@ -15,6 +15,9 @@ const apiCalls = {
     timelineEventByIncidentId:(id:string)=>axios.get(`${baseUrl}/timelineEvent/timelineEventByIncidentId/${id}`).then(response => response.data),
     getTimeLineForIncident:(id:string)=>axios.get(`${baseUrl}/incident/${id}`).then(response => response.data),
     addTimelineEvent:(timeLineEvent: ITimeLineEvent) => axios.post(`${baseUrl}/timelineEvent`, timeLineEvent).then(response => response.data),
+    deleteFileInTimeLine:(id:string,key:string)=>axios.delete(`${baseUrl}/timelineEvent/${id}/files`, {
+        params: { key }
+      }).then(response => response.data),
 }
 
 export default apiCalls

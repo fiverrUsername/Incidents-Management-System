@@ -149,7 +149,7 @@ export default class TimelineEventController {
     async deleteFileInTimelineEventByValue(req: Request, res: Response): Promise<Response> {
         try {
             const timelineEventId: string = req.params.id;
-            const file: string | any = req.query.fileString;
+            const file: string | any = req.query.key;
             const updatedTimelineEvent = await timelineEventService.deleteFileInTimelineEventByValue(timelineEventId, file);
             if (updatedTimelineEvent instanceof Error) {
                 if (updatedTimelineEvent.message == 'Timeline event not found' || updatedTimelineEvent.message==='string file not exist') {
@@ -169,7 +169,7 @@ export default class TimelineEventController {
             description: string[];
             files: any;
           }
-        const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventByIncidentId(req.body.incidentId);
+        const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventById(req.body.incidentId);
         const a=awsService.getAllAttachmentByTimeline(req.body.files)
         let file:any
         let answer:compare = { description:["", "", ""] ,files:file};

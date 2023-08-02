@@ -293,7 +293,8 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
     files.map((file) => {
       console.log(incident)
       const newName = `incidence_${incident.id}_${Date.now()}${file.name}`
-      setFilesString(filesString => [...filesString, newName]);
+      // setFilesString(filesString=>[...filesString, newName]);
+      filesString.push(newName)
       console.log("-----", newName)
       formData.append('files', file, newName);
     })
