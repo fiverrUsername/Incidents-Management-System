@@ -167,15 +167,16 @@ export default class TimelineEventController {
     async compareIncidentChanges(req: Request, res: Response): Promise<void> {
         interface compare {
             description: string[];
-            files: Buffer[];
-        }
-        const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventById(req.body.incidentId);
-        const a = awsService.getAllAttachmentByTimeline(req.body.files)
-        let file: Buffer[] = []
-        await a.then(function (result: any) {
-            file = result
-        })
-        let answer: compare = { description: ["", "", ""], files: file };
+            files: any;
+          }
+        const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventsById(req.body.incidentId);
+        const a=awsService.getAllAttachmentByTimeline(req.body.files)
+        let file:any
+        let answer:compare = { description:["", "", ""] ,files:file};
+        await a.then(function(result:any) {
+            file=result
+            answer.files=file
+         }) 
         if (allTimelineEvents != null) {
             let sortedDatesDescending: ITimelineEvent[] = allTimelineEvents.slice().sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
             const previousTimeLineEvent: ITimelineEvent = sortedDatesDescending[1]

@@ -12,7 +12,6 @@ interface ITag {
   name: string;
 }
 
-
 // interface IIncident {
 //   name: string;
 //   status: string;
@@ -30,9 +29,6 @@ interface ITag {
 //   cost: number;
 //   createdBy: string;
 // }
-
-
-
 
 //TODO- change the userIds
 const userIds = ['U05HXKPD259'];
@@ -61,7 +57,6 @@ export async function createNewChannel(incidentData: IIncident) {
       //   console.error('Error updating channel description:', error);
       // }
 
-
       //TODO
       //- send to the function in ims-server
       incidentData.channelId = channelId;
@@ -70,10 +65,6 @@ export async function createNewChannel(incidentData: IIncident) {
       sendToSocket(incidentData, ObjectType.Incident, ActionType.Update);
 
       console.log("slack link", incidentData.slackLink)
-
-
-
-
       // await IncidentController.updateIncident(incidentData);
 
       await sendJoinMessageToUser(channelId, userIds, incidentData.name);
@@ -87,7 +78,6 @@ export async function createNewChannel(incidentData: IIncident) {
     console.error('Error creating channel:', error);
     return null;
   }
-
 
 }
 const webhookUrl = 'https://hooks.slack.com/services/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';
@@ -103,10 +93,6 @@ async function sendJoinMessageToUser(channelId: string, userId: string[], channe
   }
 
 }
-
-
-
-
 
 async function sendMessageToChannel(channelId: string, message: string) {
   try {
@@ -133,9 +119,6 @@ async function sendMessageToChannel(channelId: string, message: string) {
   }
 }
 
-
-
-
 async function getSlackUsers() {
   try {
     const response = await axios.get('https://slack.com/api/users.list', {
@@ -158,16 +141,11 @@ async function getSlackUsers() {
   }
 }
 
-
 // getSlackUsers()
-
-
-
 
 function updateChannelDescription(channelId: any, description: string) {
   throw new Error('Function not implemented.');
 }
-
 
 // const theIncident: IIncident = {
 //   "name": "ddd",
@@ -188,3 +166,4 @@ function updateChannelDescription(channelId: any, description: string) {
 // }
 
 // createNewChannel(theIncident)
+
