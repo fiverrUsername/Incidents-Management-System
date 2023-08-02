@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 // import ITimeLineEvent from '../../interface/timeLineInterface';
-import Attachment from './attachment';
-import apiCalls from '../../service/apiCalls';
 import attachmentService from '../../service/awsService';
 
 interface AttachmentlistProps {
