@@ -8,7 +8,6 @@ const slackEvents: SlackEventAdapter = createEventAdapter(slackSigningSecret);
 
 export default function events(data: any) {
   const { event } = data;
-  console.log("data-", data)
   switch (event.type) {
     case 'message':
       handleMessageEvent(event);
@@ -17,8 +16,8 @@ export default function events(data: any) {
       //handleAppMentionEvent(event);
       break;
     case 'channel_created':
-      console.log('channel_created');      
-      createIncident(event);
+      console.log('channel_created');
+      createIncident(event.channel.id);
       break;
     // Add more cases for other event types you want to handle
     default:
