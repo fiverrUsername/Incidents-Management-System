@@ -1,10 +1,8 @@
 import mongoose, { Schema } from "mongoose";
-// import { type IIncident } from "../interfaces/IncidentInterface";
-import  {IIncident} from "../interfaces/IncidentInterface";
-
 import { v4 as uuidv4 } from "uuid";
+
 import { Priority } from "../enums/enum";
-//import { Enumify } from "mongoose-enumify";
+import { IIncident } from "../interfaces/IncidentInterface ";
 
 export const IncidentSchema = new Schema<IIncident>({
   id: {
@@ -22,11 +20,6 @@ export const IncidentSchema = new Schema<IIncident>({
   description: {
     type: String,
     required: true,
-  },
-  currentPriority: {
-    type: String,
-    required: true,
-    enum: Object.values(Priority),
   },
   type: {
     type: String,
@@ -56,10 +49,6 @@ export const IncidentSchema = new Schema<IIncident>({
         name: { type: String, required: true },
       },
     ],
-    required: true,
-  },
-  date: {
-    type: String,
     required: true,
   },
   createdAt: {
