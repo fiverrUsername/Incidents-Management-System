@@ -12,8 +12,6 @@ const config = {
   }
 }
 
-// Write the updated swagger.json back to the file
-
 // CHECK FOR ENVIRONMENT
 
 // EXPORT
