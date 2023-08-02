@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import {ITag} from './ITag';
 import { Priority } from './enum-priority';
+import {ITag} from './ITag';
 
 export interface ITimeLineEvent  {
   incidentId: string,

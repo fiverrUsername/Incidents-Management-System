@@ -49,15 +49,23 @@ class IncidentRepository {
     }
   }
 
-  async getIncidentById(id: string): Promise<IIncident | any> {
+  async  getIncidentByField(fieldValue: string, fieldName: string): Promise<IIncident | any> {
     try {
-      const incident:IIncident|null=await incidentModel.findOne({id});      
-      return incident;
+      return await incidentModel.findOne({ [fieldName]: fieldValue });
     } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
     }
   }
-
+  
+  async  getIncidentById(id: string): Promise<IIncident | any> {
+    try {
+      return await incidentModel.findOne({ id });
+    } catch (error: any) {
+      console.error(`error: ${error}`);
+      return error;
+    }
+  }
+  
 }
 export default new IncidentRepository();

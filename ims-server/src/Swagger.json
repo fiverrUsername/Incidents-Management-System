@@ -75,28 +75,6 @@
                 }
             }
         },
-        "/incident/{id}": {
-            "get": {
-                "tags": [
-                    "incident"
-                ],
-                "description": "get incident by id",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation"
-                    },
-                    "404": {
-                        "description": "Invalid status value"
-                    }
-                }
-            }
-        },
         "/incident/summary/{id}": {
             "get": {
                 "tags": [

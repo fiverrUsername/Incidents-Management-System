@@ -5,9 +5,9 @@ import timelineEventService from "../services/timelineEventService";
 import logger from "../loggers/log";
 import axios from "axios";
 import { ActionType, ObjectType } from '../../../ims-socket/src/interfaces';
-import { sendToSocket } from '../services/socket';
-import AwsController from "./AwsController";
-import awsService from "../services/awsService";
+import {sendToSocket} from '../services/socket';
+import AwsController from "./attachmentController";
+import awsService from "../services/attachmentService";
 
 export default class TimelineEventController {
 
@@ -177,7 +177,6 @@ export default class TimelineEventController {
         interface compare {
             description: string[];
             files: Buffer[];
-<<<<<<< HEAD
           }
         const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventById(req.body.incidentId);
         const a=awsService.getAllAttachmentByTimeline(req.body.files)
@@ -186,16 +185,6 @@ export default class TimelineEventController {
             file=result
          })
          let answer:compare = { description:["", "", ""] ,files:file};
-=======
-        }
-        const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventsById(req.body.incidentId);
-        const a = awsService.getAllAttachmentByTimeline(req.body.files)
-        let file: Buffer[] = []
-        a.then(function (result: any) {
-            file = result.data // "Some User token"
-        })
-        let answer: compare = { description: ["", "", ""], files: file };
->>>>>>> IMS-30
         if (allTimelineEvents != null) {
             let sortedDatesDescending: ITimelineEvent[] = allTimelineEvents.slice().sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
             const previousTimeLineEvent: ITimelineEvent = sortedDatesDescending[1]

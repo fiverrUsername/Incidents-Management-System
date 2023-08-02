@@ -3,7 +3,6 @@ import cors from 'cors';
 import express, { Request, Response } from 'express';
 import fs from 'fs';
 import swaggerUI from 'swagger-ui-express';
-import schedule from 'node-schedule';
 
 import '../src/services/socket';
 import config from './config/config';
@@ -35,10 +34,7 @@ const corsOptions: cors.CorsOptions = {
 };
 
 
-
-
-
-connect()
+connect();
 // app.use(cors(corsOptions));
 app.use(cors({
   origin: true, // "true" will copy the domain of the request back
@@ -68,13 +64,5 @@ app.listen(port, () => {
   logger.info(`Server is listeningo on http://localhost:${port}`)
 });
 
-const rule = new schedule.RecurrenceRule();
-rule.hour = 0;
-rule.minute = 0;
-rule.tz = 'Asia/Jerusalem';
-
-schedule.scheduleJob(rule, function(){
-  console.log('A new day has begun in the UTC timezone!');
-});
 
 export default app;

@@ -1,7 +1,7 @@
 import { IsArray, IsISO8601, IsNotEmpty, IsString } from "class-validator";
 import { constants } from "../loggers/constants";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
-import { IsExistingIncidentId } from "./incidentIdValidators";
+//import { IsExistingIncidentId } from "./incidentIdValidators";
 import { IsExistingUserId } from "./userIdValidators";
 import { Priority } from "../enums/enum";
 
@@ -32,7 +32,7 @@ export class ITimelineEventDto {
 
     @IsNotEmpty({ message: `incidentId ${constants.EMPTY_OBJECT}` })
     @IsString({ message: `incidentId ${constants.INVALID_MESSAGE}` })
-    @IsExistingIncidentId({ message: `incidentId must be a valid existing incident ID` })
+   // @IsExistingIncidentId({ message: `incidentId must be a valid existing incident ID` })
     incidentId: string;
 
     @IsNotEmpty({ message: `userId ${constants.EMPTY_OBJECT}` })
