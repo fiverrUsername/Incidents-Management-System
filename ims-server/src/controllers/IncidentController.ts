@@ -62,6 +62,7 @@ export default class IncidentController {
       res.status(status.SERVER_ERROR).json({ message: error });
     }
   }
+
   async getSummaryIncident(req: Request, res: Response): Promise<Response> {
     try {
       const summary: ISummary | null = await incidentService.getSummaryIncident(req.params.id);
