@@ -31,7 +31,6 @@ class TimelineEventRepository {
     }
   }
   
-
   async deleteTimelineEvent(id: String): Promise<ITimelineEvent | any> {
     try {
       return await timelineEvent.findByIdAndDelete(id);
@@ -52,7 +51,9 @@ class TimelineEventRepository {
 
   async getTimelineEventById(id: String): Promise<ITimelineEvent | any> {
     try {
-      const _timelineevent =await timelineEvent.find({ incidentId: id });
+      console.log()
+      const _timelineevent =await timelineEvent.find({ id: id });
+      console.log("rep- response "+_timelineevent)
       return _timelineevent;
     } catch (error:any) {
       console.error(`error: ${error}`);

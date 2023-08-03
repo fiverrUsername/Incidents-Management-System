@@ -106,7 +106,8 @@ export default class TimelineEventController {
             if (_timelineEvent instanceof Error || _timelineEvent === null) {
                 res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, error: true });
             }
-            else res.status(status.SUCCESS).json(_timelineEvent);
+            
+            else { console.log("controller-"+_timelineEvent);res.status(status.SUCCESS).json(_timelineEvent);}
         } catch (error: any) {
             res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: error });
         }

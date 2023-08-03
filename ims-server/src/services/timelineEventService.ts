@@ -95,6 +95,7 @@ class TimelineEventService {
 
   async getTimelineEventById(id: String): Promise<ITimelineEvent | any> {
     try {
+      console.log("service id"+id)
       const _timelineEvent = await timelineEventRepository.getTimelineEventById(id);
       if (_timelineEvent) {
         logger.info({
@@ -103,6 +104,7 @@ class TimelineEventService {
           timelineEventId: id
         });
       }
+      console.log("_timelineEvent"+_timelineEvent)
       return _timelineEvent;
     } catch (error: any) {
       logger.error({
