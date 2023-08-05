@@ -35,5 +35,15 @@ export async function createNewChannel(incidentData: IIncident) {
     return null;
   }
 }
-
-
+const webhookUrl = 'https://hooks.slack.com/services/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';
+const axios = require('axios');
+async function sendJoinMessageToUser(channelId: string, userId: string[], channelName: string) {
+  try {
+    await axios.post(webhookUrl, {
+      text: `You have been invited to join the channel ${channelName}. Click the link to join: https://slack.com/app_redirect?channel=${channelId}`,
+      channel: userId
+    });
+  } catch (error) {
+    console.error(`Error sending join invitation to user ${userId}:`, error);
+  }
+}
