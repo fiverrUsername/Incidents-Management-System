@@ -1,5 +1,5 @@
 import { ITag } from "./ITag";
-import { Priority } from "./enum-priority";
+import { Priority } from "./enums";
   
 export default interface IIncident {
   // id: string;

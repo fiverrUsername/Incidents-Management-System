@@ -3,7 +3,7 @@ import React from 'react';
 import { ITimeLineEventprops, ITimelineEventListprops } from '../../interface/timeLineInterface';
 import userdata from '../../mockAPI/users.json';
 import { TimelineWarpper } from './timeLine.style';
-import { Priority } from '../../interface/enum-priority';
+import { Priority } from '../../interface/enums';
 import TimeLineEvent from './timeLineEvent/timeLineEvent';
 import dayjs from 'dayjs';
 

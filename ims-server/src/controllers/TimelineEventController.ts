@@ -185,6 +185,12 @@ export default class TimelineEventController {
                 answer.description[0] = "priority changed: " + previousTimeLineEvent.priority + " => " + req.body.priority + '\n'
                 sendToSocket(req.body as ITimelineEvent, ObjectType.TimelineEvent, ActionType.ChangePriority);
             }
+            //הוספנו שדה סטטוס לטיימליין אוונט ולכן נצטרך להוסיך כאן פונקציה בערך כזאת-
+            // if (previousTimeLineEvent?.status != req.body.status) {
+            //     answer.description[3] = "status changed: " + previousTimeLineEvent.status + " => " + req.body.status + '\n'
+            //     sendToSocket(req.body as ITimelineEvent, ObjectType.TimelineEvent, ActionType.ChangeStatus);
+            // }
+
             if (previousTimeLineEvent?.type != req.body.type)
                 answer.description[1] = "type changed: " + previousTimeLineEvent.type + " => " + req.body.type + '\n'
         }

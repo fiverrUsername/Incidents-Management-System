@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { Priority } from './enum-priority';
+import { Priority } from './enums';
 import {ITag} from './ITag';
 
 export interface ITimeLineEvent  {

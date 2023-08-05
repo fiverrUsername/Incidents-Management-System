@@ -12,13 +12,13 @@ import {
 import { constants } from "../loggers/constants";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { TagDto } from "./tagDto";
-import { Priority } from "../enums/enum";
+import { Priority, Status } from "../enums/enum";
 
 export class IncidentDto {
   constructor(init: IIncident) {
     this.id = "";
     this.name = "";
-    this.status = "";
+    this.status = Status.Active;
     this.description = "";
     this.currentPriority = Priority.P0;
     this.type = "";
@@ -43,7 +43,7 @@ export class IncidentDto {
 
   @IsNotEmpty({ message: `status ${constants.EMPTY_OBJECT}` })
   @IsString({ message: `status ${constants.INVALID_MESSAGE}` })
-  status: string;
+  status: Status;
 
   @IsNotEmpty({ message: `description ${constants.EMPTY_OBJECT}` })
   @IsString({ message: `description ${constants.INVALID_MESSAGE}` })

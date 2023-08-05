@@ -1,4 +1,4 @@
-import { Priority } from "../enums/enum";
+import { Priority, Status } from "../enums/enum";
 
 export interface ITimelineEvent {
   channelId: string;
@@ -11,4 +11,5 @@ export interface ITimelineEvent {
   files: string[];
   createdDate: Date;
   updatedDate: Date;
+  status:Status;
 }

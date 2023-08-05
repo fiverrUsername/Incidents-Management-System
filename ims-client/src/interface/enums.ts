@@ -4,3 +4,8 @@ export enum Priority {
   P1 = 'p1',
   P0 = 'p0',
 }
+
+export enum Status {
+  Active = "Active",
+  Resolved = "Resolved",
+}

@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ITag } from '../../interface/ITag';
-import { Priority } from '../../interface/enum-priority';
+import { Priority } from '../../interface/enums';
 import apiCalls from '../../service/apiCalls';
 import attachmentService from '../../service/attachmentService';
 import theme from '../../theme';
