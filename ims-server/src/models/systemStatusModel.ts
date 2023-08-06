@@ -17,7 +17,7 @@ export const SystemStatusSchema = new Schema<ISystemStatus>({
         required: true
     },
     date: {
-        type: Date,
+        type: String,
         required: true
     },
     maxPriority: {
