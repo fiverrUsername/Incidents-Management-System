@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 // import ITimeLineEvent from '../../interface/timeLineInterface';
 import { ITimeLineEvent } from '../../interface/timeLineInterface';
 import Attachment from './attachment';
