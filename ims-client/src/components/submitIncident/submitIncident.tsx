@@ -29,7 +29,6 @@ export default async function submitIncident(prop: FormData) {
 
     try {
         await apiCalls.createIncident(incidentcR);
-        console.log('Incident created successfully');
         return true;
     } catch (error) {
         console.error('Error creating incident:', error);

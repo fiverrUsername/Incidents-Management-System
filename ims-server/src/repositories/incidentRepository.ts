@@ -8,7 +8,6 @@ import TimelineEventRepository from "../repositories/timelineEventRepository"
 class IncidentRepository {
   async addIncident(newIncident: IIncident): Promise<IIncident | any> {
     const timeline:ITimelineEvent={
-      id:'sfgbddzf',
       channelId:newIncident.channelId,
       incidentId: newIncident.id,
       userId: newIncident.createdBy,
@@ -23,7 +22,6 @@ class IncidentRepository {
       const _newIncident:IIncident=await incidentModel.create(newIncident);
       timeline.incidentId=_newIncident.id
       await TimelineEventRepository.addTimelineEvent(timeline)
-      console.log(_newIncident.id);     
       return  _newIncident;
     } catch (error: any) {
       console.error(`error: ${error}`);

@@ -41,9 +41,7 @@ class AttachmentsRepository {
         Bucket: AttachmentsRepository.getBucketName(),
         Key: key.replace(/_/g, '/')
       };
-      console.log(params)
       const result = await s3.getObject(params).promise();
-      console.log("getAttachment  controllers-"+result.Body)
       const data: Buffer = result.Body as Buffer;
       logger.info({ source: constants.SHOW_SUCCESS, msg: constants.METHOD.GET, error: true });
       return { key, data };
@@ -74,7 +72,6 @@ class AttachmentsRepository {
       Key: key.replace(/_/g, '/')
     };
     try {
-      console.log(params.Key)
       await s3.deleteObject(params).promise();
       logger.info({ source: constants.DELETE_FILE_SUCCESS, msg: constants.METHOD.GET, success: true });
     } catch (error:any) {

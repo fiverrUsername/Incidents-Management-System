@@ -26,14 +26,6 @@ export async function sendMassageToSlack({ channelId, userName, filesUrl, text }
     if (filesUrl !== null) {
       const fileUploads = filesUrl?.map(async (fileUrl: AttachmentData) => {
         try {
-          
-          //const fileContent = await readFileAsync(fileUrl);
-          // const response = await web.files.uploadV2({
-          // channels: channelId,
-          // file: fileUrl,
-          // filename: fileUrl.substring(fileUrl.lastIndexOf('/') + 1)
-          // });
-
           const formData = new FormData();
           formData.append('channels', channelId);
           formData.append('file', Buffer.from(fileUrl.data), {

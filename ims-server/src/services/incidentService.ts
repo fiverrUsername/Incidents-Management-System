@@ -1,26 +1,12 @@
-//import { validate } from "class-validator";
-import { IncidentDto } from "../dto/incidentDto";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ISummary } from "../interfaces/ISummary";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
-import incidentModel from "../models/IncidentModel";
 import incidentRepository from "../repositories/incidentRepository";
-import { Priority } from "../enums/enum";
 
 class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {
     try {
-      // const incident = new IncidentDto(newIncident);
-      // const validationErrors = await validate(incident);
-      // if (validationErrors.length > 0) {
-      //   logger.error({
-      //     source: constants.INCIDENT_SERVICE,
-      //     err: "Validation error",
-      //     validationErrors: validationErrors.map((error) => error.toString()),
-      //   });
-      //   throw new Error("Validation error");
-      // }
 
       logger.info({
         sourece: constants.INCIDENT_COTROLLER,
@@ -28,7 +14,6 @@ class IncidentService {
         incidentId: newIncident.id
       });
       return await incidentRepository.addIncident(newIncident);
-      // return await incidentRepository.addIncident(incident);
     } catch (error: any) {
       logger.error({
         source: constants.INCIDENT_COTROLLER,
@@ -105,7 +90,6 @@ class IncidentService {
       let summary: ISummary | null = null;
       const incident = await incidentRepository.getIncidentByField(id, "id");
       if (incident) {
-        //find user with userId from createdBy  ????
         summary = {
           createdBy: incident.createdBy,
           createdAt: incident.createdAt,
