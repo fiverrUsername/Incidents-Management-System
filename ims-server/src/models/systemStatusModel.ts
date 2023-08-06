@@ -1,8 +1,13 @@
 import mongoose, { Schema } from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 import { ISystemStatus } from "../interfaces/systemStatusInterface";
 import { Priority } from "../enums/enum";
 
 export const SystemStatusSchema = new Schema<ISystemStatus>({
+    id: {
+        type: String,
+        default: uuidv4,
+    },
     systemName: {
         type: String,
         required: true
@@ -12,7 +17,7 @@ export const SystemStatusSchema = new Schema<ISystemStatus>({
         required: true
     },
     date: {
-        type: Date,
+        type: String,
         required: true
     },
     maxPriority: {

@@ -280,7 +280,9 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   const [text, setText] = useState<string>();
   const getOptionLabel = (option: ITag) => option.name;
   const [selectedTags, setSelectedTags] = useState<ITag[]>(incident.currentTags);
+
   async function onSubmit(data: form_data) {
+    console.log("onnnnnn sumbit")
     setIsSubmit(true);
     if (priority != null)
       data.priority = priority
@@ -290,15 +292,16 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       data.date = date;
     data.type = type;
     data.tags = selectedTags;
-    data.files = filesString;
     const formData = new FormData();
     files.map((file)=>{
       console.log(incident)
-      const newName = `incidence_${incident.id}_${file.name}`
-      setFilesString([...filesString, newName]);
+      const newName = `incidence_${incident.id}_${Date.now()}${file.name}`
+      setFilesString(filesString=>[...filesString, newName]);
       console.log("-----", newName)
       formData.append('files', file, newName);
     })
+    data.files = filesString;
+
     await awsService.uploadAttachment(formData);
         if (type && tags) {
       const flag = await submitTimeLine({ data, incident });

@@ -1,4 +1,8 @@
+
+
+
 import { render, screen } from '@testing-library/react';
+import React from 'react'; 
 import BannerNotification from './BannerNotification';
 
 test('should render BannerNotification with given message and severity', () => {
@@ -9,8 +13,6 @@ test('should render BannerNotification with given message and severity', () => {
   expect(alertElement).toBeInTheDocument();
   expect(alertElement).toHaveTextContent(message);
 });
-
-
 
 
  
