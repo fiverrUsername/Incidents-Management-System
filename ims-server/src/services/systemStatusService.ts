@@ -1,5 +1,3 @@
-import { Priority } from "../enums/enum";
-import { Priority } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ISystemStatus } from "../interfaces/systemStatusInterface";
 import { constants } from "../loggers/constants";
@@ -66,7 +64,6 @@ class SystemStatusService {
                 source: constants.SYSTEM_STATUS_SERVICE,
                 msg: constants.ADD_SYSTEMS_SUCCESS
             });
-            return await systemStatusRepository.createLiveStatus(data, tag);
             return await systemStatusRepository.createLiveStatus(data, tag);
         } catch (error: any) {
             logger.error({

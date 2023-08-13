@@ -4,7 +4,12 @@ import SystemStatusController from "../controllers/systemStatusController";
 const router = express.Router();
 const systemStatusControllers = new SystemStatusController();
 
-router.get("/", systemStatusControllers.getSystemsByDate);
+//remove after test
+router.get("/", systemStatusControllers.getLatestLiveStatus);
 router.post("/", systemStatusControllers.createLiveStatus);
-router.put("/", systemStatusControllers.updateLiveStatus);
+//router.put("/", systemStatusControllers.updateLiveStatus);
+
+//return to client
+[{inbox:[]},{checkout:[]}]
+
 export default router;

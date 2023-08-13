@@ -2,7 +2,8 @@ import { Priority } from "../enums/enum";
 import { ITag } from "./tagInterface";
 
  export interface IIncident {
-  id?: string;
+  // id?: string;//change it back its just for now...
+  id: string;
   name: string;
   status: string;
   description: string;
