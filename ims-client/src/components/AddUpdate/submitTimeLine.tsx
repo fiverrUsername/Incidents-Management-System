@@ -24,7 +24,7 @@ export default async function submitTimeLine(props: Props) {
     files: props.data.files,
     createdDate: props.data.date,
     updatedDate: new Date(),
-    status: Status.Active
+    status: props.data.status,
   }
   try {
     await apiCalls.addTimelineEvent(timeLineEvent);

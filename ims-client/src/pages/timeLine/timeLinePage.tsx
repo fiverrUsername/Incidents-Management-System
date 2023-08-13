@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import React,{ useEffect, useState } from "react";
 import { WithIdProps } from "../../HOC";
 import { GetIncident } from "../../components/AddUpdate/AddUpdate";
 import AddUpdateComp from "../../components/AddUpdate/AddUpdateComp";

@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import apiCalls from "./apiCalls";
+import { Status } from "../interface/enums";
 
 jest.mock("axios"); // Mock the axios module
 
@@ -23,7 +24,7 @@ describe("apiCalls", () => {
                 data: [{
                     _id: "649cbeda942a5d4d8bcf303c",
                     name: "Stuck Incident",
-                    status: " Resolved",
+                    status: Status.Active,
                     description: "Issue Description",
                     priority: "P0",
                     type: "securing",
