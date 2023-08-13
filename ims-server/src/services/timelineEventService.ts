@@ -56,11 +56,7 @@ class TimelineEventService {
       const _timelineEvent = new ITimelineEventDto(newTimelineEvent);
       const validationErrors = await validate(_timelineEvent);
       if (validationErrors.length > 0) {
-        logger.error({
-          source: constants.TIMELINE_EVENT,
-          err: "Validation error",
-          validationErrors: validationErrors.map((error) => error.toString()),
-        });
+        logger.error({ source: constants.TIMELINE_EVENT, err: "Validation error", validationErrors: validationErrors.map((error) => error.toString()), });
         return new Error("Validation error");
       }
       logger.info({ sourece: constants.TIMELINE_EVENT, method: constants.METHOD.POST, timelineEventId: newTimelineEvent.id });
