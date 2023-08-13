@@ -3,6 +3,7 @@ import { ISystemStatus } from "../interfaces/systemStatusInterface";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import systemStatusRepository from "../repositories/systemStatusRepository";
+import tagService from "./tagService";
 
 class SystemStatusService {
     // async getAllIncidents(date: string): Promise<ISystemStatus[] | any> {
@@ -21,7 +22,36 @@ class SystemStatusService {
     //         return error;
     //     }
     // }
-    async getLatestLiveStatus(tag: string): Promise<ISystemStatus[] | any> {
+    async getLatestLiveStatus(): Promise<Array<{ [tag: string]: ISystemStatus[] }> | any> {
+        try {
+            const tags = await tagService.getAllTags();
+            const systemStatuses: Array<{ [tag: string]: ISystemStatus[] }> = [];
+    
+            for (const tag of tags) {
+                console.log("Processing tag:", tag);
+    
+                const latestStatusForTag = await this.getLatestLiveStatusByTag(tag.name);
+                systemStatuses.push({ [tag.name]: latestStatusForTag });
+            }
+    
+            logger.info({
+                source: constants.SYSTEM_STATUS_SERVICE,
+                msg: constants.GET_SYSTEMS_BY_DATE_SUCCESS,
+            });
+    
+            return systemStatuses;
+        } catch (error: any) {
+            logger.error({
+                source: constants.SYSTEM_STATUS_SERVICE,
+                err: constants.GET_SYSTEMS_BY_DATE_FAILED,
+            });
+            console.error(`error: ${error}`);
+            return error;
+        }
+    }
+    
+    
+    async getLatestLiveStatusByTag(tag: string): Promise<ISystemStatus[] | any> {
         try {
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,

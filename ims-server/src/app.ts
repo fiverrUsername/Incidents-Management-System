@@ -13,7 +13,7 @@ import aggregationRouter from './routes/aggrigationRouter';
 import tagRouter from './routes/tagRouter';
 import timelineEventRouter from './routes/timelineEventRouter';
 import attachmentRouter from './routes/attachmentRouter';
-import liveStatusRouter from './routes/systemStatusRoute';
+import liveStatusRouter from './routes/systemStatusRouter';
 
 const port = config.server.port
 const app = express()

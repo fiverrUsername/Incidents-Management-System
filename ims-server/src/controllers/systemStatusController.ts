@@ -9,9 +9,7 @@ export default class systemStatusController {
     
     async getLatestLiveStatus(req: Request, res: Response): Promise<void> {
         try {
-            const tag: string = req.query.tag as string;
-            //const tag: string="inbox"
-            const systems = await systemStatusService.getLatestLiveStatus(tag);
+            const systems = await systemStatusService.getLatestLiveStatus();
             if (systems instanceof Error) {
                 res.status(status.SERVER_ERROR).json({ message: systems, error: true });
             } else res.status(status.SUCCESS).json(systems);
