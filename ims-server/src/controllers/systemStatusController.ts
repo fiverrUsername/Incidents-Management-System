@@ -5,8 +5,8 @@ import systemStatusService from "../services/systemStatusService";
 import { ISystemStatus } from "../interfaces/systemStatusInterface";
 
 export default class systemStatusController {
-    
-    async getLatestLiveStatus(req: Request, res: Response): Promise<void> {
+  
+   async getLatestLiveStatus(req: Request, res: Response): Promise<void> {
         try {
             const systems = await systemStatusService.getLatestLiveStatus();
             if (systems instanceof Error) {
@@ -30,4 +30,3 @@ export default class systemStatusController {
         }
     }
 }
-

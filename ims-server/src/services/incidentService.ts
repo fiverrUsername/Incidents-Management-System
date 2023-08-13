@@ -5,6 +5,7 @@ import logger from "../loggers/log";
 import incidentRepository from "../repositories/incidentRepository";
 import SystemStatusService from './systemStatusService';
 
+
 class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {
     try {

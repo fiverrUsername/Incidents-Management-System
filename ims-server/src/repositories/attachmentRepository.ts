@@ -57,10 +57,14 @@ class AttachmentsRepository {
   }
   async getAllAttachmentsByTimeline(keys: string[]): Promise<(AttachmentData|null)[]|any> {
     try {
+      if(keys.length<0)
+      {
       const allResponses: (AttachmentData | null)[] = await Promise.all(keys.map(
         (key) => this.getAttachment(key)));
       logger.info({ source: constants.SHOW_SUCCESS, method: constants.METHOD.GET, err: true });
       return allResponses;
+      }
+      return null;
     } catch (error) {
       logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, err: true });
       throw error;

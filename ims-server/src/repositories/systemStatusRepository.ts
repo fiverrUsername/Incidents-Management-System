@@ -1,18 +1,19 @@
 import { Priority } from "../enums/enum";
 import { ISystemStatus } from "../interfaces/systemStatusInterface";
 import systemStatusModel from "../models/systemStatusModel";
+import { IIncident } from "../interfaces/IncidentInterface";
 
 class SystemStatusRepository {
-  // async getSystemsByDate(_date: string): Promise<ISystemStatus[] | any> {
-  //   try {
-  //     return await systemStatusModel.find({ date: _date })
-  //   }
-  //   catch (e) {
-  //     console.error(`error: ${e}`);
-  //     return null;
-  //   }
-  // }
-  //ask margalit what she found out....
+    async getLiveStatusSystemsByDate(_date: string): Promise<ISystemStatus[] | any> {
+        try {
+            return await systemStatusModel.find({ date: _date })
+        }
+        catch (e) {
+            console.error(`error: ${e}`);
+            return null;
+        }
+    }
+    
   async getTodaysLiveStatusByTag(tag: string): Promise<ISystemStatus | null> {
     try {
       console.log("i'm in getTodaysLiveStatusByTag");
@@ -85,7 +86,6 @@ class SystemStatusRepository {
     }
   }
 
-//check...
   async updateLiveStatus(data: ISystemStatus, id: string): Promise<ISystemStatus | any> {
     try {
       console.log("i'm in updateLiveStatus")
@@ -99,10 +99,10 @@ class SystemStatusRepository {
         [Priority.P1]: 1,
         [Priority.P2]: 2,
         [Priority.P3]: 3,
-      };
-      const incidentIndex = priorityIndexMap[data.maxPriority];
-      existingSystemStatus.incidents = [...data.incidents];
-      existingSystemStatus.incidents[incidentIndex].push(data.id);
+    };
+       const incidentIndex = priorityIndexMap[data.maxPriority];
+       existingSystemStatus.incidents = [...data.incidents];
+       existingSystemStatus.incidents[incidentIndex].push(data.id);
       if (data.maxPriority > existingSystemStatus.maxPriority) {
         existingSystemStatus.maxPriority = data.maxPriority;
       }

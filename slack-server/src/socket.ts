@@ -1,11 +1,11 @@
 import { WebSocket } from 'ws'
-import { IMessage, ObjectType, ActionType } from '../../../ims-socket/src/interfaces'
-import { createNewChannel } from './slack-api/actions/createChannel';
-import { IIncident } from '../../../ims-server/src/interfaces/IncidentInterface';
-import { ITimelineEvent } from '../../../ims-server/src/interfaces/ItimelineEvent';
+import { IMessage, ObjectType, ActionType } from '../../ims-socket/src/interfaces'
+import { IMS_CreateChannel } from './actions/via-ims/createChannel';
+import { IIncident } from '../../ims-server/src/interfaces/IncidentInterface';
+import { ITimelineEvent } from '../../ims-server/src/interfaces/ItimelineEvent';
 
-import { addTimeLineEvent } from './slack-api/wrap/sendTimeLine';
-import { sendMassageOnChangePriority } from './slack-api/actions/sendMassageOnChangePriority';
+import { sendMessageOnAddTimelineEvent } from './actions/via-ims/sendMessageOnAddTimelineEvent';
+import { sendMassageOnChangePriority } from './actions/via-ims/sendMassageOnChangePriority';
 
 const ws = new WebSocket('ws://localhost:7071');
 const messageQueue: any[] = []; // Replace 'any' with the type of messages you are sending
@@ -29,7 +29,7 @@ ws.onmessage = (webSocketMessage) => {
     case ObjectType.Incident:
       switch (messageBody.actionType) {
         case ActionType.Add:
-          createNewChannel(messageBody.object as IIncident);
+          IMS_CreateChannel(messageBody.object as IIncident);
           break;
         case ActionType.Update:
           // Perform some action for updating a TimelineEvent
@@ -45,7 +45,7 @@ ws.onmessage = (webSocketMessage) => {
     case ObjectType.TimelineEvent:
       switch (messageBody.actionType) {
         case ActionType.Add:
-          addTimeLineEvent(messageBody.object as ITimelineEvent)
+          sendMessageOnAddTimelineEvent(messageBody.object as ITimelineEvent)
           break;
         case ActionType.Update:
           // Perform some action for updating a TimelineEvent
