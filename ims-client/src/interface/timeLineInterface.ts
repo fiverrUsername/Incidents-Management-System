@@ -5,6 +5,7 @@ import {ITag} from './ITag';
 export interface ITimeLineEvent  {
   incidentId: string,
   userId: string,
+  channelId?:string,
   description: string,
   priority:Priority,
   type:string,
