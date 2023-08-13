@@ -4,7 +4,7 @@ import SystemStatusController from "../controllers/systemStatusController";
 const router = express.Router();
 const systemStatusControllers = new SystemStatusController();
 
-router.get("/", systemStatusControllers.getSystemsByDate);
+router.get("/", systemStatusControllers.getLiveStatusSystemsByDate);
 router.post("/", systemStatusControllers.createLiveStatus);
 router.put("/", systemStatusControllers.updateLiveStatus);
 export default router;

@@ -7,15 +7,15 @@ import {
 } from "class-validator";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import { constants } from "../loggers/constants";
-import { Priority } from "../enums/enum";
+import { Priority, Status } from "../enums/enum";
 
 export class TimelineEventDto {
   constructor(init: ITimelineEvent) {
     this._id = "";
- 
     this.incidentId = "";
     this.userId = "";
     this.description = "";
+    this.status=Status.Active;
     this.priority = Priority.P0;
     this.type = "";
     this.files = [];
@@ -23,6 +23,9 @@ export class TimelineEventDto {
     this.updatedDate = "";
     Object.assign(this, init);
   }
+  @IsNotEmpty({ message: `status ${constants.EMPTY_OBJECT}` })
+  @IsString({ message: `status ${constants.INVALID_MESSAGE}` })
+  status: Status;
 
   @IsNotEmpty({ message: `id ${constants.EMPTY_OBJECT}` })
   @IsString({ message: `id ${constants.INVALID_MESSAGE}` })

@@ -2,6 +2,7 @@ import React from 'react'
 import IIncident from '../../interface/incidentInterface'
 import apiCalls from '../../service/apiCalls'
 import { FormData } from '../AddIncident/addIncident'
+import { Status } from '../../interface/enums'
 
 
 export default async function submitIncident(prop: FormData) {
@@ -10,7 +11,7 @@ export default async function submitIncident(prop: FormData) {
         //TODO
         // id: "1",
         name: prop.name,
-        status: "Active",
+        status: Status.Active,
         description: prop.description,
         currentPriority: prop.priority,
         type: prop.type,
@@ -29,7 +30,6 @@ export default async function submitIncident(prop: FormData) {
 
     try {
         await apiCalls.createIncident(incidentcR);
-        console.log('Incident created successfully');
         return true;
     } catch (error) {
         console.error('Error creating incident:', error);

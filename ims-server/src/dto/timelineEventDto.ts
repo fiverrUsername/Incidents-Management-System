@@ -1,9 +1,7 @@
 import { IsArray, IsISO8601, IsNotEmpty, IsString } from "class-validator";
 import { constants } from "../loggers/constants";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
-//import { IsExistingIncidentId } from "./incidentIdValidators";
-import { IsExistingUserId } from "./userIdValidators";
-import { Priority } from "../enums/enum";
+import { Priority, Status } from "../enums/enum";
 
 export interface ITimelineEventDto {
     incidentId: string;
@@ -14,6 +12,7 @@ export interface ITimelineEventDto {
     files: string[];
     createdDate: string;
     updatedDate: string;
+    status:Status;
 }
 
 export class ITimelineEventDto {
@@ -22,6 +21,7 @@ export class ITimelineEventDto {
         this.incidentId = "";
         this.userId = "";
         this.description = "";
+        this.status=Status.Active;
         this.priority = Priority.P0;
         this.type = "";
         this.files = [];
@@ -47,6 +47,10 @@ export class ITimelineEventDto {
     @IsNotEmpty({ message: `priority ${constants.EMPTY_OBJECT}` })
     @IsString({ message: `priority ${constants.INVALID_MESSAGE}` })
     priority: Priority;
+
+    @IsNotEmpty({ message: `status ${constants.EMPTY_OBJECT}` })
+    @IsString({ message: `status ${constants.INVALID_MESSAGE}` })
+    status: Status;
 
     @IsNotEmpty({ message: `type ${constants.EMPTY_OBJECT}` })
     @IsString({ message: `type ${constants.INVALID_MESSAGE}` })

@@ -1,6 +1,5 @@
 import { Grid, Typography } from "@mui/material";
 import React,{ useEffect, useState } from "react";
-
 import { WithIdProps } from "../../HOC";
 import { GetIncident } from "../../components/AddUpdate/AddUpdate";
 import AddUpdateComp from "../../components/AddUpdate/AddUpdateComp";
@@ -21,10 +20,8 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   useEffect(() => {
 
     const fetchTimeline = async () => {
-         // eslint-disable-next-line no-debugger
-         debugger
+      // eslint-disable-next-line no-debugger
       const getTimeLineEventsById = await apiCalls.timelineEventByIncidentId(id)
-      console.log(getTimeLineEventsById, "getTimeLineEventsById");
       setTimelineObjects(getTimeLineEventsById);
       // eslint-disable-next-line no-debugger
       debugger
@@ -32,13 +29,11 @@ const TimeLinePage = ({ id }: WithIdProps) => {
     fetchTimeline();
     const fetchSummaryIncident = async () => {
       const summary = await apiCalls.getSummaryIncident(id);
-      console.log(summary, "summery")
       setSummaryIncident(summary)
     }
     fetchSummaryIncident();
     const fetchIncident = async () => {
       const getIncidentById = await apiCalls.getIncidentById(id);
-      console.log(getIncidentById, "IncidentById");
       setIncident(getIncidentById);
     };
     fetchIncident();
@@ -49,7 +44,6 @@ const TimeLinePage = ({ id }: WithIdProps) => {
 
   const someFunction = () => {
     filter = filterTimeLineBySearch(timelineObjects, myValue);
-    console.log("The event was triggered!");
   };
 
   const [myValue, setMyValue] = useState<string>("");
@@ -58,7 +52,6 @@ const TimeLinePage = ({ id }: WithIdProps) => {
 
   return (
     <>
-
       <Search onEvent={someFunction} setValue={setMyValue}></Search>
       {summaryIncident && <DisplaySummary summaryIncident={{ ...summaryIncident }} ></DisplaySummary>}
       <StyledPaper>

@@ -1,21 +1,24 @@
-import { ITag } from "./ITag";
-import { Priority, Status } from "./enums";
-  
-export default interface IIncident {
-  // id: string;
+import { Priority, Status } from "../enums/enum";
+import { ITag } from "./tagInterface";
+
+ export interface IIncident {
+  id?: string;
   name: string;
   status: Status;
   description: string;
   currentPriority: Priority;
   type: string;
   durationHours: number;
-  channelId?:string;
+  channelId: string;
   slackLink: string;
   channelName?: string;
   currentTags: ITag[];
-  date: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  date: string;
+  createdAt: string;
+  updatedAt: string;
   cost: number;
   createdBy: string;
 }
+
+
+

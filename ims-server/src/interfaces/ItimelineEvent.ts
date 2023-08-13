@@ -1,9 +1,9 @@
-import { Priority } from "../enums/enum";
+import { Priority, Status } from "../enums/enum";
 
 export interface ITimelineEvent {
   channelId: string;
-  id: string;
-  incidentId: string;
+  id?: string;
+  incidentId?: string;
   userId: string;
   description: string;
   priority: Priority;
@@ -11,4 +11,5 @@ export interface ITimelineEvent {
   files: string[];
   createdDate: Date;
   updatedDate: Date;
+  status:Status;
 }

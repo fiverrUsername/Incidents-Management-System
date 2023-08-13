@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { Priority } from '../../../interface/enum-priority';
+import { Priority } from '../../../interface/enums';
 import TimelineEvent from './timeLineEvent';
 
 describe('TimelineEvent Component', () => {

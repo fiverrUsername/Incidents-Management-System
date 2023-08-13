@@ -14,7 +14,7 @@ import theme from '../../theme';
 import apiCalls from '../../service/apiCalls';
 import { ITag } from '../../interface/ITag';
 import BannerNotification from "../bannerNotification/BannerNotification"
-import { Priority } from '../../interface/enum-priority';
+import { Priority } from '../../interface/enums';
 export interface FormData {
   name: string;
   description: string;

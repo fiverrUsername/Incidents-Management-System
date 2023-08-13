@@ -1,5 +1,4 @@
 import { WebSocket } from 'ws'
-// import { IIncident } from '../interfaces/IncidentInterface';
 import {IIncident} from '../../../ims-server/src/interfaces/IncidentInterface'
 import { ITimelineEvent } from '../interfaces/ItimelineEvent';
 import { IMessage, ActionType, ObjectType } from '../../../ims-socket/src/interfaces';
