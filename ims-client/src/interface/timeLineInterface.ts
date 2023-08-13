@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { Priority } from './enums';
+import { Priority ,Status } from './enums';
 import {ITag} from './ITag';
 
 export interface ITimeLineEvent  {
@@ -8,6 +8,7 @@ export interface ITimeLineEvent  {
   channelId?:string,
   description: string,
   priority:Priority,
+  status: Status,
   type:string,
   tags:ITag[],
   files:string[],

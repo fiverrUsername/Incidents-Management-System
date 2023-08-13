@@ -1,11 +1,12 @@
 import React from 'react';
-
 import { ITimeLineEventprops, ITimelineEventListprops } from '../../interface/timeLineInterface';
 import userdata from '../../mockAPI/users.json';
 import { TimelineWarpper } from './timeLine.style';
-import { Priority } from '../../interface/enums';
+import { Priority,Status } from '../../interface/enums';
 import TimeLineEvent from './timeLineEvent/timeLineEvent';
 import dayjs from 'dayjs';
+
+//צריך לטפל בדף הזה בסטטוס שנוסף
 
 const TimeLine: React.FC<ITimelineEventListprops> = (props) => {
   const { timelineList } = props;
