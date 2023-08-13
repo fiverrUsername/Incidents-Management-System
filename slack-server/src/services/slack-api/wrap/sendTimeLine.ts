@@ -14,7 +14,6 @@ export interface ITimelineEvent{
 }
 
 export async function addTimeLineEvent(timeline:ITimelineEvent){
-
     const answer = await axios.post('http://localhost:7000/timelineEvent/compareIncidentChanges', timeline);
     sendMassageToSlack({channelId:timeline.channelId,userName:"Tammy",filesUrl:answer.data.files,text:answer.data.description.join(' ')})
 }

@@ -4,6 +4,7 @@ import timelineEvent from "../models/timelineEvent";
 class TimelineEventRepository {
   async addTimelineEvent(newTimelineEvent: ITimelineEvent): Promise<void | any> {
     try {
+      console.log (newTimelineEvent)
       const _timelineEvent=await timelineEvent.create(newTimelineEvent);      
       return _timelineEvent;
     } catch (error: any) {
