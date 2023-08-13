@@ -1,5 +1,5 @@
 import { ConversationsOpenResponse } from "@slack/web-api";
-import { SLACK_API_TOKEN, client } from "./const";
+import { SLACK_API_TOKEN, client } from "../../const";
 import { sendMessageFromBot } from "./sendMessageFromBot";
 
 export async function openDirectMessageWithBot(userId: string, text: string) {

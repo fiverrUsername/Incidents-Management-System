@@ -1,12 +1,11 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import events from './services/events';
-import './services/events'
-import { addTimeLineEvent } from "./services/slack-api/wrap/sendTimeLine";
+import events from './slackTracking';
+import './slackTracking'
+import { sendMessageOnAddTimelineEvent } from "./actions/via-ims/sendMessageOnAddTimelineEvent";
 import cors from 'cors';
-import './services/socket'
-import './services/events';
-
+import './socket';
+import './slackTracking';
 
 const app = express();
 const port = 4700;
@@ -18,7 +17,7 @@ app.use(cors({
   methods: 'POST,GET,PUT,OPTIONS,DELETE'
 }));
 
-app.post('/webhook', (req: Request, res: Response) => {
+app.post('/webhook', (req: Request, res: Response) => {  
   const data: any = req.body;
   if (data.challenge) {
     const challenge: string = data.challenge;
@@ -31,7 +30,7 @@ app.post('/webhook', (req: Request, res: Response) => {
 
 app.post('/', (req: Request, res: Response) => {
   console.log(req.body);
-  addTimeLineEvent(req.body);
+  sendMessageOnAddTimelineEvent(req.body);
   res.json({ message: 'Timeline event added successfully' });
 });
 

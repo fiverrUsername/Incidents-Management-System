@@ -1,13 +1,14 @@
 import { createEventAdapter, SlackEventAdapter } from '@slack/events-api';
-import handleMessageEvent from './slack-api/handles/handleMessageEvent';
-import { createIncident } from './slack-api/actions/createIncidentWhenCreateChannel';
-
-const slackSigningSecret = '6375bfe488c6d9b8d321dfbd8afae02d';
+import handleMessageEvent from './actions/via-slack/createTimeline';
+import { createIncident } from './actions/via-slack/createIncident';
+import { slackSigningSecret } from './const';
 
 const slackEvents: SlackEventAdapter = createEventAdapter(slackSigningSecret);
 
 export default function events(data: any) {
   const { event } = data;
+  console.log("event", event);
+
   switch (event.type) {
     case 'message':
       handleMessageEvent(event);
@@ -23,7 +24,6 @@ export default function events(data: any) {
       // If the event type is not handled, do nothing or log an error.
       console.log(`Unhandled event type: ${event.type}`);
   }
-
 }
 
 const port = 4701;

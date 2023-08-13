@@ -6,3 +6,4 @@ export const SLACK_API_TOKEN =
 export const client = new WebClient(SLACK_API_TOKEN, {
   logLevel: LogLevel.DEBUG,
 });
+export const slackSigningSecret = '6375bfe488c6d9b8d321dfbd8afae02d';

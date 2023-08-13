@@ -1,8 +1,8 @@
-import { client } from "./const";
+import { client } from "../../const";
 
 export async function sendMessageFromBot(channel: string, text: string) {
   try {
-    const result = await client.chat.postMessage({
+    await client.chat.postMessage({
       channel: channel,
       text: text,
     });
