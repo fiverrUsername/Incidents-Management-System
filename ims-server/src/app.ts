@@ -3,7 +3,6 @@ import cors from 'cors';
 import express, { Request, Response } from 'express';
 import fs from 'fs';
 import swaggerUI from 'swagger-ui-express';
-
 import '../src/services/socket';
 import config from './config/config';
 import logger from './loggers/log';

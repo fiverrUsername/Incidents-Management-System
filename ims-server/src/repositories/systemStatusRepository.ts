@@ -2,9 +2,7 @@ import { Priority } from "../enums/enum";
 import { ISystemStatus } from "../interfaces/systemStatusInterface";
 import systemStatusModel from "../models/systemStatusModel";
 
-
 class SystemStatusRepository {
-  //what do we need this for???
   // async getSystemsByDate(_date: string): Promise<ISystemStatus[] | any> {
   //   try {
   //     return await systemStatusModel.find({ date: _date })
@@ -34,7 +32,6 @@ class SystemStatusRepository {
       return null;
     }
   }
-
 
   async getLatestLiveStatus(tag: string): Promise<ISystemStatus[] | any> {
     try {

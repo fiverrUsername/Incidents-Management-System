@@ -5,7 +5,6 @@ import systemStatusService from "../services/systemStatusService";
 import { ISystemStatus } from "../interfaces/systemStatusInterface";
 
 export default class systemStatusController {
-    //think what i need to export...
     
     async getLatestLiveStatus(req: Request, res: Response): Promise<void> {
         try {
