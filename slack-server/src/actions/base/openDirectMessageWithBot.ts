@@ -1,6 +1,6 @@
 import { ConversationsOpenResponse } from "@slack/web-api";
 import { SLACK_API_TOKEN, client } from "../../const";
-import { sendMessageFromBot } from "./sendMessageFromBot";
+import { sendMessage } from "./sendMessage";
 
 export async function openDirectMessageWithBot(userId: string, text: string) {
   try {
@@ -8,7 +8,7 @@ export async function openDirectMessageWithBot(userId: string, text: string) {
       token: SLACK_API_TOKEN,
       users: userId,
     });
-    result.channel?.id && sendMessageFromBot(result.channel.id, text);
+    result.channel?.id && sendMessage({channelId:result.channel.id, text});
   } catch (error) {
     console.error(error);
   }
