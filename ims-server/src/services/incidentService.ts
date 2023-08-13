@@ -3,16 +3,21 @@ import { ISummary } from "../interfaces/ISummary";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import incidentRepository from "../repositories/incidentRepository";
+import { Priority } from "../enums/enum";
+import SystemStatusService from './systemStatusService';
+
 
 class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {
     try {
-
       logger.info({
         sourece: constants.INCIDENT_COTROLLER,
         msg: constants.ADD_INCIDENT_SUCCESS,
         incidentId: newIncident.id
       });
+      console.log("incident::::",newIncident)
+      const live=await SystemStatusService.logic(newIncident);
+      console.log("live:::",live)
       return await incidentRepository.addIncident(newIncident);
     } catch (error: any) {
       logger.error({

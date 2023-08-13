@@ -363,15 +363,37 @@
                 }
             }
         },
+        "/livestatus/": {
+            "get": {
+                "tags": [
+                    "systemStatus"
+                ],
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "not found"
+                    },
+                    "400": {
+                        "description": "BAD_REQUEST"
+                    },
+                    "500": {
+                        "description": "server error"
+                    }
+                }
+            }
+        },
         "components": {
             "schemas": {
                 "Tag": {
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "id": {
                             "type": "string"
                         },
-                        "userId": {
+                        "name": {
                             "type": "string"
                         }
                     }
