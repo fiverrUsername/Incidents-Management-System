@@ -1,7 +1,7 @@
 import app from '../app';
 import supertest from 'supertest';
 import IncidentModel from '../models/IncidentModel';
-import { Priority } from '../enums/enum';
+import { Priority, Status } from '../enums/enum';
 
 describe("incidents", () => {
     describe("get all incidents", () => {
@@ -41,7 +41,7 @@ describe("incidents", () => {
             it("should add an incident and return 201", async () => {
                 const newIncident = {
                     "name": "Stuck Incident",
-                    "status": "Active",
+                    "status": Status.Active,
                     "description": "Issue Description",
                     "currentPriority": "p0",
                     "type": "comment",
@@ -79,7 +79,7 @@ describe("incidents", () => {
             it("should update an incident and return 200", async () => {
                 const updatedIncident = {
                     "name": "Unresolved Incident adding",
-                    "status": "Active",
+                    "status": Status.Active,
                     "description": "Issue Description",
                     "currentPriority": "P3",
                     "type": "technical",
@@ -113,7 +113,7 @@ describe("incidents", () => {
                 const updatedIncident = {
                     id: "555",
                     name: "Unresolved Incident adding",
-                    status: "Active",
+                    status: Status.Active,
                     description: "Issue Description",
                     priority: Priority.P3,
                     type: "technical",

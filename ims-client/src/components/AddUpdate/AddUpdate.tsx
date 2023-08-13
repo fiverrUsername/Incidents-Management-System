@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ITag } from '../../interface/ITag';
-import { Priority } from '../../interface/enum-priority';
+import { Priority, Status} from '../../interface/enums';
 import apiCalls from '../../service/apiCalls';
 import attachmentService from '../../service/attachmentService';
 import theme from '../../theme';
@@ -16,6 +16,7 @@ import BannerNotification from "../bannerNotification/BannerNotification";
 import DateTimePickerValue from '../datePicker/datePicker';
 import UploadFiles from '../uploadFiles/UploadFiles';
 import submitTimeLine from './submitTimeLine';
+import StatusDropDown from './StatusDropDown';
 export interface form_data {
   text: string;
   priority: Priority;
@@ -23,11 +24,12 @@ export interface form_data {
   type: string;
   tags: ITag[];
   files: string[];
+  status:Status;
 }
 export interface GetIncident {
   id: string;
   name: string;
-  status: string;
+  status: Status;
   description: string;
   currentPriority: Priority;
   type: string;
@@ -55,6 +57,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [type, setType] = React.useState(incident.type);
+  const [status, setStatus] = React.useState<Status>(incident.status);
   const [tags, setTags] = useState<ITag[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [filesString, setFilesString] = useState<string[]>([]);
@@ -73,6 +76,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
     else
       data.date = date;
     data.type = type;
+    data.status=status;
     data.tags = selectedTags;
     const formData = new FormData();
     files.map((file) => {
@@ -176,6 +180,14 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
                 <label htmlFor="type">Type</label>
                 <DropDown type={type} setType={setType} />
                 {isSubmit && !type && <span style={{ color: errorColor }}>Type is required</span>}
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl
+                style={{ width: '100%' }}>
+                <label htmlFor="status">Status</label>
+                <StatusDropDown status={status} setStatus={setStatus} />
+                {isSubmit && !status && <span style={{ color: errorColor }}>Type is required</span>}
               </FormControl>
             </Grid>
             <Grid item xs={12}>

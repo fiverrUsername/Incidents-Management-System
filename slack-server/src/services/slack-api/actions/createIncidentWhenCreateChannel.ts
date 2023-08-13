@@ -1,11 +1,9 @@
 
-
-import { SLACK_API_TOKEN } from "./const";
-import axios from 'axios';
 import { EncidentStatus, EncidentType, Priority } from '../../../../../ims-server/src/enums/enum';
 import { IIncident } from "../../../../../ims-server/src/interfaces/IncidentInterface";
 import { sendToSocket } from "../../socket";
 import { ActionType, ObjectType } from "../../../../../ims-socket/src/interfaces";
+import { client } from './const';
 export async function createIncident(channelId: string) {
   try {
     const slackData = await getSlackDataByChannelId(channelId);
@@ -31,34 +29,30 @@ export async function createIncident(channelId: string) {
       cost: 0,
       createdBy: '', //TODO
     };
-    
     sendToSocket(newIncident, ObjectType.Incident, ActionType.Add);
     console.log('Incident created successfully');
   } catch (error) {
     console.error('Error creating incident:', error);
   }
 }
-
 async function getSlackDataByChannelId(channelId: string): Promise<{ name: string, description: string, channelId: string, channelLink: string } | null> {
   try {
-    const response = await axios.get(`https://slack.com/api/conversations.info?channel=${channelId}`, {
-      headers: {
-        Authorization: `Bearer ${SLACK_API_TOKEN}`,
-      },
-    });
-    const data = response.data;
-    console.log("data", data);
-    if (data.ok) {
-      return {
-        name: data.channel.name,
-        description: "This channel created in slack",
-        channelId: data.channel.id,
-        channelLink: `https://slack.com/app_redirect?channel=${data.channel.id}`,
-      };
-    } else {
-      return null;
-    }
-  } catch (error) {
+  const response = await client.conversations.info({
+    channel: channelId,
+  });
+  console.log("data", response);
+  if (response?.ok) {
+    return {
+      name: response.channel?.name||"no channel name",
+      description: "This channel created in slack",
+      channelId: response.channel?.id||"no channel id",
+      channelLink: `https://slack.com/app_redirect?channel=${response.channel?.id}`,
+    };
+  } else {
+    return null;
+  }
+} 
+  catch (error) {
     console.error('Error getting Slack data:', error);
     return null;
   }

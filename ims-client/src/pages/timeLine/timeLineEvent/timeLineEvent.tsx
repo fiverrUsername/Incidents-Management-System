@@ -8,6 +8,7 @@ import React from 'react';
 import { ITimeLineEventprops } from '../../../interface/timeLineInterface';
 import { TimelineConnectorWrapper, TimelineDotWrapper, TimelineItemWrapper } from './timeLineEvent.style';
 
+//צריך לטפל בדף הזה בסטטוס שנוסף
 
 const timeLineEvent: React.FC<ITimeLineEventprops> = (props) => {
     const { timeline, isPriorityChanged, isTypeChanged, previousType, previosPriority, name, profile } = props

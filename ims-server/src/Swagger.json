@@ -405,7 +405,7 @@
                             "type": "string"
                         },
                         "status": {
-                            "type": "string"
+                            "type": "Status"
                         },
                         "description": {
                             "type": "string"

@@ -1,10 +1,10 @@
 import { ITag } from "./ITag";
-import { Priority } from "./enum-priority";
+import { Priority, Status } from "./enums";
   
 export default interface IIncident {
   // id: string;
   name: string;
-  status: string;
+  status: Status;
   description: string;
   currentPriority: Priority;
   type: string;
