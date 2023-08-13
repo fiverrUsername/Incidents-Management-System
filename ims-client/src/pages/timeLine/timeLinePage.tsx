@@ -52,7 +52,6 @@ const TimeLinePage = ({ id }: WithIdProps) => {
 
   return (
     <>
-
       <Search onEvent={someFunction} setValue={setMyValue}></Search>
       {summaryIncident && <DisplaySummary summaryIncident={{ ...summaryIncident }} ></DisplaySummary>}
       <StyledPaper>
