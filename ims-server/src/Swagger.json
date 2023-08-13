@@ -75,28 +75,6 @@
                 }
             }
         },
-        "/incident/{id}": {
-            "get": {
-                "tags": [
-                    "incident"
-                ],
-                "description": "get incident by id",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation"
-                    },
-                    "404": {
-                        "description": "Invalid status value"
-                    }
-                }
-            }
-        },
         "/incident/summary/{id}": {
             "get": {
                 "tags": [
@@ -218,7 +196,29 @@
                 }
             }
         },
-        "/timelineEvent/getById/{id}": {
+        "/timelineEvent/{id}/": {
+            "get": {
+                "tags": [
+                    "timelineEvent"
+                ],
+                "description": "Retrieve all timeline events for specific id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Timeline Events not found for given id"
+                    }
+                }
+            }
+        },
+        "/timelineEvent/timelineEventByIncidentId/{id}/": {
             "get": {
                 "tags": [
                     "timelineEvent"
@@ -263,6 +263,12 @@
                     "201": {
                         "description": "successful operation"
                     },
+                    "400":{
+                        "description":"bad request"
+                    },
+                    "422":{
+                        "description":"missing required fields"
+                    },
                     "500": {
                         "description": "Invalid status value"
                     }
@@ -291,7 +297,7 @@
                 }
             }
         },
-        "/timelineEvent/getFile/{id}": {
+        "/timelineEvent/{id}/files/": {
             "get": {
                 "tags": [
                     "timelineEvent"
@@ -324,19 +330,19 @@
                 }
             }
         },
-        "/timelineEvent/deleteFile/{id}": {
+        "/timelineEvent/{id}/files": {
             "delete": {
                 "tags": [
                     "timelineEvent"
                 ],
-                "description": "delete a file of a timeline event by id and index",
+                "description": "delete a file of a timeline event by id and string file",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path"
                     },
                     {
-                        "name": "index",
+                        "name": "fileString",
                         "in": "query",
                         "required": true
                     }
@@ -377,13 +383,13 @@
                             "type": "string"
                         },
                         "status": {
-                            "type": "string"
+                            "type": "Status"
                         },
                         "description": {
                             "type": "string"
                         },
                         "priority": {
-                            "type": "string"
+                            "type": "priority"
                         },
                         "date": {
                             "type": "string",

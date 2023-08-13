@@ -5,7 +5,9 @@ import timelineEventService from "../services/timelineEventService";
 import logger from "../loggers/log";
 import axios from "axios";
 import { ActionType, ObjectType } from '../../../ims-socket/src/interfaces';
-import {sendToSocket} from '../services/socket';
+import { sendToSocket } from '../services/socket';
+import AwsController from "./attachmentController";
+import attachmentService from "../services/attachmentService";
 
 export default class TimelineEventController {
 
@@ -22,9 +24,10 @@ export default class TimelineEventController {
         }
     }
 
-    async getTimelineEventsById(req: Request, res: Response): Promise<void> {
+    async getTimelineEventByIncidentId(req: Request, res: Response): Promise<void> {
         try {
-            const timelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventsById(req.params.id);
+            const timelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventByIncidentId(req.params.id);
+
             if (timelineEvents instanceof Error) {
                 res.status(status.PAGE_NOT_FOUND).json({ message: timelineEvents, error: true });
             }
@@ -37,19 +40,18 @@ export default class TimelineEventController {
 
     async addTimelineEvent(req: Request, res: Response): Promise<Response> {
         try {
-            //remember to change:
-            req.body.updatedDate=new Date()
-            req.body.createdDate=new Date()
             const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
-            const response = await axios.post('http://localhost:4700', req.body);
             if (_timelineEvent instanceof Error) {
-                return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: _timelineEvent });
+                if (_timelineEvent.message === "Validation error" || _timelineEvent.message === "Incident ID not found") {
+                    return res.status(status.BAD_REQUEST).json({ message: constants.INVALID_MESSAGE })
+                }
+                return res.status(status.SERVER_ERROR).json({ message: constants.SERVER_ERROR });
             }
-            sendToSocket(_timelineEvent as ITimelineEvent, ObjectType.TimelineEvent, ActionType.Add);
+            sendToSocket(req.body as ITimelineEvent, ObjectType.TimelineEvent, ActionType.Add);
             return res.status(status.CREATED_SUCCESS).json(_timelineEvent);
         }
         catch (error: any) {
-            return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: error.message });
+            return res.status(status.SERVER_ERROR).json({ message: error.message });
         }
     }
 
@@ -143,19 +145,53 @@ export default class TimelineEventController {
             return res.status(500).json({ message: error });
         }
     }
-    
-    async compareIncidentChanges(req: Request, res: Response):Promise<void> {
-        const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventsById(req.body.incidentId);
-        let answer: string[] = ["", "", ""]
+
+    async deleteFileInTimelineEventByValue(req: Request, res: Response): Promise<Response> {
+        try {
+            const timelineEventId: string = req.params.id;
+            const file: string | any = req.query.key;
+            const updatedTimelineEvent = await timelineEventService.deleteFileInTimelineEventByValue(timelineEventId, file);
+            if (updatedTimelineEvent instanceof Error) {
+                if (updatedTimelineEvent.message == 'Timeline event not found' || updatedTimelineEvent.message==='string file not exist') {
+                    return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id,stringFile:req.query.fileString });
+                }
+                return res.status(status.SERVER_ERROR).json({ message: constants.SERVER_ERROR });
+            }
+            logger.info({ source: constants.TIMELINE_EVENT, msg: constants.SUCCESS, timelineEventId, file: file, method: constants.METHOD.DELETE });
+            return res.status(status.SUCCESS).json(updatedTimelineEvent);
+        } catch (error: any) {
+            return res.status(500).json({ message: error });
+        }
+    }
+
+    async compareIncidentChanges(req: Request, res: Response): Promise<void> {
+        interface compare {
+            description: string[];
+            files: any;
+          }
+        const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventByIncidentId(req.body.incidentId);
+        const a=attachmentService.getAllAttachmentByTimeline(req.body.files)
+        let file:any
+        let answer:compare = { description:["", "", req.body.description] ,files:file};
+        await a.then(function(result:any) {
+            file=result
+            answer.files=file
+         }) 
         if (allTimelineEvents != null) {
-            let sortedDatesDescending: ITimelineEvent[] = allTimelineEvents.slice().sort((a, b) => b.updatedDate.getTime() - a.updatedDate.getTime());
+            let sortedDatesDescending: ITimelineEvent[] = allTimelineEvents.slice().sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
             const previousTimeLineEvent: ITimelineEvent = sortedDatesDescending[1]
-            console.log(req.body.incidentId + "previous")
-            answer[2] = req.body.description
-            if (previousTimeLineEvent?.priority != req.body.priority)
-                answer[0] ="priority changed: "+ previousTimeLineEvent.priority + " => " + req.body.priority+'\n'
+            if (previousTimeLineEvent?.priority != req.body.priority) {
+                answer.description[0] = "priority changed: " + previousTimeLineEvent.priority + " => " + req.body.priority + '\n'
+                sendToSocket(req.body as ITimelineEvent, ObjectType.TimelineEvent, ActionType.ChangePriority);
+            }
+            //הוספנו שדה סטטוס לטיימליין אוונט ולכן נצטרך להוסיך כאן פונקציה בערך כזאת-
+            // if (previousTimeLineEvent?.status != req.body.status) {
+            //     answer.description[3] = "status changed: " + previousTimeLineEvent.status + " => " + req.body.status + '\n'
+            //     sendToSocket(req.body as ITimelineEvent, ObjectType.TimelineEvent, ActionType.ChangeStatus);
+            // }
+
             if (previousTimeLineEvent?.type != req.body.type)
-                answer[1] ="type changed: "+ previousTimeLineEvent.type + " => " + req.body.type+'\n'
+                answer.description[1] = "type changed: " + previousTimeLineEvent.type + " => " + req.body.type + '\n'
         }
         res.status(status.SUCCESS).json(answer);
     }

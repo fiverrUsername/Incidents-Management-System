@@ -1,29 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Dialog, FormControl, InputLabel, Grid, Button } from "@mui/material";
+import { Dialog, FormControl, Grid, Button } from "@mui/material";
 import { useForm } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
+
 import DateTimePickerValue from '../datePicker/datePicker';
 import TextFieldInput from './TextFields';
 import ToggleButtons from './PriorityButtons';
-import TypesSelect, { Types } from './Types';
 import DropDown from './DropDown';
 import CustomAutocomplete from '../autoCompleteTag/autoComplete';
-import Option from '../../interface/IOption';
 import submitIncident from '../submitIncident/submitIncident';
 import theme from '../../theme';
-import { Tag } from 'styled-components/dist/sheet/types';
 import apiCalls from '../../service/apiCalls';
 import { ITag } from '../../interface/ITag';
 import BannerNotification from "../bannerNotification/BannerNotification"
+import { Priority } from '../../interface/enums';
 export interface FormData {
   name: string;
   description: string;
-  priority: string;
+  priority: Priority;
   date: dayjs.Dayjs;
-  ChannelId:string;
-  
-  // slackLink:string;
+  ChannelId: string;
   channelName: string;
   type: string;
   tags: ITag[];
@@ -35,15 +32,18 @@ interface Props {
 
 export default function AddIncident({ open, onClose }: Props) {
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>();
-  const [priority, setPriority] = React.useState<string | null>('p0');
+  const [priority, setPriority] = React.useState<Priority>(Priority.P0);
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [type, setType] = React.useState('');
   const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
   const [tags, setTags] = useState<ITag[]>([]);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-  function onSubmit(data: FormData) {
+  const getOptionLabel = (option: ITag) => option.name;
+
+  async function onSubmit(data: FormData) {
     setIsSubmit(true);
     if (priority != null)
       data.priority = priority
@@ -55,10 +55,12 @@ export default function AddIncident({ open, onClose }: Props) {
     data.type = type
     data.tags = selectedTags
     if (type && tags) {
-      submitIncident(data)
+      const isSuccess = await submitIncident(data);
+      setIsSuccess(isSuccess);
       setShowBanner(true);
     }
   }
+
 
   const closeIconStyles: React.CSSProperties = {
     width: '17px',
@@ -82,49 +84,36 @@ export default function AddIncident({ open, onClose }: Props) {
     borderRadius: '20px',
   };
 
-  // const validatechannelName = (value: string) => {
-  //   if (!value) {
-  //     return 'Slack Channel Link is required';
-  //   }
 
-  //   try {
-  //     new URL(value);
-  //   } catch (error) {
-  //     return 'Invalid Slack Channel Link';
-  //   }
-
-  //   return undefined;
-  // };
-
-  const validatechannelName = (value:string) => {
+  const validatechannelName = (value: string) => {
     const minLength = 1;
     const maxLength = 80;
     const allowedCharacters = /^[a-zA-Z0-9-_]+$/;
 
     //TODO- GetAllChannelsNames from slack server
-    const reservedNames = ["general", "random", "all"]; 
-  
+    const reservedNames = ["general", "random", "all"];
+
     if (!value) {
       return "Slack Channel Name is required";
     }
-  
+
     if (value.length < minLength || value.length > maxLength) {
       return "Slack Channel Name must be between 1 and 80 characters long";
     }
-  
+
     if (!allowedCharacters.test(value)) {
       return "Invalid characters";
     }
-  
+
     if (reservedNames.includes(value.toLowerCase())) {
       return "The channel name is already exists";
     }
-  
-  
+
+
     return true;
   };
-  
-  
+
+
 
 
   const validatechannelId = (value: string) => {
@@ -226,10 +215,9 @@ export default function AddIncident({ open, onClose }: Props) {
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Tags</label>
                 <div id="tags">
-                  <CustomAutocomplete options={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+                  <CustomAutocomplete options={tags} selectedOptions={selectedTags} setSelectedOptions={setSelectedTags} getOptionLabel={getOptionLabel} placehOlderText={"Write to add"} />
                 </div>
                 {isSubmit && tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>}
-
               </FormControl>
             </Grid>
             <Grid item xs={12}>
@@ -239,8 +227,13 @@ export default function AddIncident({ open, onClose }: Props) {
         </form>
       </div>
       {showBanner && (
-        <BannerNotification message="Incident Added Successfully" severity="success" onClose={() => onClose()} />
+        <BannerNotification
+          message={isSuccess ? "Incident Added Successfully" : "Error Adding Incident"}
+          severity={isSuccess ? "success" : "error"}
+          onClose={() => onClose()}
+        />
       )}
     </Dialog>
   );
 }
+

@@ -3,6 +3,7 @@ import cors from 'cors';
 import express, { Request, Response } from 'express';
 import fs from 'fs';
 import swaggerUI from 'swagger-ui-express';
+
 import '../src/services/socket';
 import config from './config/config';
 import logger from './loggers/log';
@@ -11,22 +12,15 @@ import incidentRoute from './routes/IncidentRout';
 import aggregationRouter from './routes/aggrigationRouter';
 import tagRouter from './routes/tagRouter';
 import timelineEventRouter from './routes/timelineEventRouter';
-import awsRouter from './routes/awsRouter';
+import attachmentRouter from './routes/attachmentRouter';
 
 
 const port = config.server.port
-
 const app = express()
-
-process.on('uncaughtException', function (err) {
-  console.log(err);
-});
-
 const swaggerFile: any = (process.cwd() + "/src/Swagger.json");
 const swaggerData: any = fs.readFileSync(swaggerFile, 'utf8');
 const swaggerDocument = JSON.parse(swaggerData);
 swaggerDocument.servers[0].url = `http://localhost:${process.env.SERVER_PORT}`
-
 const whitelist = ['http://localhost:3000'];
 
 const corsOptions: cors.CorsOptions = {
@@ -40,9 +34,7 @@ const corsOptions: cors.CorsOptions = {
 };
 
 
-
-
-connect()
+connect();
 // app.use(cors(corsOptions));
 app.use(cors({
   origin: true, // "true" will copy the domain of the request back
@@ -63,7 +55,7 @@ app.use('/incident', incidentRoute)
 app.use('/aggregation', aggregationRouter)
 app.use('/tag', tagRouter)
 app.use('/timelineEvent', timelineEventRouter)
-app.use('/aws', awsRouter)
+app.use('/attachment', attachmentRouter)
 app.get('/', (req: Request, res: Response): void => {
   res.redirect('/swagger')
 });
@@ -72,13 +64,5 @@ app.listen(port, () => {
   logger.info(`Server is listeningo on http://localhost:${port}`)
 });
 
-export default app
 
-  const ws = new WebSocket('ws://localhost:7071/ws');
-  ws.send(JSON.stringify({name:"someone"}));
-  ws.onmessage = (webSocketMessage) => {
-    const messageBody = JSON.parse(webSocketMessage.data);
-    console.log(messageBody)
-};
-
-
+export default app;

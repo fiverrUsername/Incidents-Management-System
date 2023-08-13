@@ -1,19 +1,29 @@
 import React, { useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import Option from '../../interface/IOption';
 import theme from '../../theme';
 import { IntervalHistogram } from 'perf_hooks';
-import { ITag } from '../../interface/ITag';
+import  IOption  from '../../interface/IOption';
 
 
 interface AutocompleteProps {
-  options: ITag[];
-  selectedTags: ITag[];
-  setSelectedTags: React.Dispatch<React.SetStateAction<ITag[]>>;
+  options: any[];
+  selectedOptions: any[];
+  setSelectedOptions: React.Dispatch<React.SetStateAction<any[]>>;
+  getOptionLabel: (option: any) => string;
+  disabled?:boolean
+  placehOlderText:string
 }
-const CustomAutocomplete = ({ options, selectedTags, setSelectedTags }: AutocompleteProps) => {
-  const filteredOptions = options.filter((option) => !selectedTags.some((selectedTag) => selectedTag.userId === option.name));
+const CustomAutocomplete=({ options,
+   selectedOptions,
+   setSelectedOptions,
+  getOptionLabel,disabled,placehOlderText }: AutocompleteProps) => {
+  const selectedValues = selectedOptions.map((selected) => getOptionLabel(selected));
+  const filteredOptions = options.filter(
+    (option) => !selectedValues.includes(getOptionLabel(option))
+  );
+
+  const readOnlyAttribute = disabled ? { readOnly: true } : {readOnly: false};
 
   return (
     <Autocomplete
@@ -32,20 +42,23 @@ const CustomAutocomplete = ({ options, selectedTags, setSelectedTags }: Autocomp
         },
       }}
       multiple
-      options={filteredOptions} // Use the filtered options
+      options={filteredOptions} 
       filterSelectedOptions
-      value={selectedTags}
-      getOptionLabel={(option) => option.name}
+      value={selectedOptions}
+      getOptionLabel={getOptionLabel}
       onChange={(event, newValue) => {
-        setSelectedTags(newValue);
+      setSelectedOptions(newValue);
       }}
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder="Write to add"
+          placeholder={placehOlderText}
+        
         />
       )}
       sx={{ border: "1px solid #E1E1E1", borderRadius: "10px", background: theme.palette.primary.contrastText, width: "100%" }}
+      {...readOnlyAttribute}
+      freeSolo
     />
   );
 };

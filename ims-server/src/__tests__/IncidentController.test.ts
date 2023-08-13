@@ -1,6 +1,7 @@
 import app from '../app';
 import supertest from 'supertest';
 import IncidentModel from '../models/IncidentModel';
+import { Priority, Status } from '../enums/enum';
 
 describe("incidents", () => {
     describe("get all incidents", () => {
@@ -21,7 +22,7 @@ describe("incidents", () => {
     describe("get incident by ID", () => {
         describe("succeed", () => {
             it("should return data", async () => {
-                const id = "649cbeda942a5d4d8bcf3044"
+                const id = "649cbeda942a5d4d8bcf303b"
                 const res = await supertest(app).get(`/incident/${id}`);
                 expect(res.status).toBe(200);
             });
@@ -29,7 +30,7 @@ describe("incidents", () => {
         describe("error", () => {
             it("should return 404", async () => {
                 const id = "987654";
-                jest.spyOn(IncidentModel, 'findById').mockRejectedValueOnce(new Error());
+                jest.spyOn(IncidentModel, 'findOne').mockRejectedValueOnce(new Error());
                 const res = await supertest(app).get(`/incident/${id}`);
                 expect(res.status).toBe(404);
             });
@@ -39,28 +40,20 @@ describe("incidents", () => {
         describe("success", () => {
             it("should add an incident and return 201", async () => {
                 const newIncident = {
-                    id: "444",
-                    name: "Unresolved Incident adding",
-                    status: "Active",
-                    description: "Issue Description",
-                    priority: "P3",
-                    type: "technical",
-                    durationHours: 24,
-                    channelId: "",
-                    slackLink: "string",
-                    channelName: "https://join.slack.com/t/fi-verr/shared_invite/zt-1xip09fur-ERWbAQen_A~dz5s42ltnvw",
-                    tags: [
-                        {
-                            "id": "45sfeda992a5dd8bcf403m",
-                            "name": "checkout",
-                            "_id": "64b3b4e485111aaa57652310"
-                        }
-                    ],
-                    date: "2023-07-29T10:30:00.000Z",
-                    createdAt: "2023-07-05T10:30:00.000Z",
-                    updatedAt: "2023-08-15T10:30:00.000Z",
-                    cost: 800,
-                    createdBy: "ploni"
+                    "name": "Stuck Incident",
+                    "status": Status.Active,
+                    "description": "Issue Description",
+                    "currentPriority": "p0",
+                    "type": "comment",
+                    "durationHours": 71,
+                    "slackLink": "https://join.slack.com/t/fi-verr/shared_invite/zt-1xip09fur-ERWbAQen_A~dz5s42ltnvw",
+                    "currentTags": [],
+                    "date": "2023-07-29T13:30:00Z",
+                    "createdAt": "2023-07-01T13:30:00Z",
+                    "updatedAt": "2023-07-03T13:30:00Z",
+                    "cost": 1600,
+                    "createdBy": "aaa",
+                    "channelName": "channel name"
                 }
                 const res = await supertest(app)
                     .post("/incident/addIncident")
@@ -85,30 +78,29 @@ describe("incidents", () => {
         describe("success", () => {
             it("should update an incident and return 200", async () => {
                 const updatedIncident = {
-                    id: "555",
-                    name: "Unresolved Incident adding",
-                    status: "Active",
-                    description: "Issue Description",
-                    priority: "P3",
-                    type: "technical",
-                    durationHours: 24,
-                    channelId: "",
-                    slackLink: "",
-
-                    channelName: "https://join.slack.com/t/fi-verr/shared_invite/zt-1xip09fur-ERWbAQen_A~dz5s42ltnvw",
-                    tags: [
+                    "name": "Unresolved Incident adding",
+                    "status": Status.Active,
+                    "description": "Issue Description",
+                    "currentPriority": "P3",
+                    "type": "technical",
+                    "durationHours": 24,
+                    "channelId": "",
+                    "slackLink": "",
+                    "channelName": "https://join.slack.com/t/fi-verr/shared_invite/zt-1xip09fur-ERWbAQen_A~dz5s42ltnvw",
+                    "currentTags": [
                         {
                             "id": "45sfeda992a5dd8bcf403m",
                             "name": "checkout",
                             "_id": "64b3b4e485111aaa57652310"
                         }
                     ],
-                    date: "2023-07-29T10:30:00.000Z",
-                    createdAt: "2023-07-05T10:30:00.000Z",
-                    updatedAt: "2023-08-15T10:30:00.000Z",
-                    cost: 900
+                    "date": "2023-07-29T10:30:00.000Z",
+                    "createdAt": "2023-07-05T10:30:00.000Z",
+                    "updatedAt": "2023-08-15T10:30:00.000Z",
+                    "cost": 900,
+                    "createdBy":"someone"
                 }
-                const id = "aaaf742a-12a2-4599-8825-d0f15917f9eb";
+                const id = "649cbeda942a5d4d8bcf303b";
                 const res = await supertest(app)
                     .put(`/incident/updateIncident/${id}`)
                     .send(updatedIncident);
@@ -121,9 +113,9 @@ describe("incidents", () => {
                 const updatedIncident = {
                     id: "555",
                     name: "Unresolved Incident adding",
-                    status: "Active",
+                    status: Status.Active,
                     description: "Issue Description",
-                    priority: "P3",
+                    priority: Priority.P3,
                     type: "technical",
                     durationHours: 24,
                     channelId: "",
@@ -148,23 +140,12 @@ describe("incidents", () => {
                     .send(updatedIncident);
                 expect(res.status).toBe(404);
             })
-            it("should return 422 on missing required fields", async () => {
-                jest.spyOn(IncidentModel, 'findByIdAndUpdate').mockRejectedValueOnce(new Error(''));
-                const updatedIncident = {
-                    name: "Unresolved Incident adding"
-                }
-                const id = "aaaf742a-12a2-4599-8825-d0f15917f9eb";
-                const res = await supertest(app)
-                    .put(`/incident/updateIncident/${id}`)
-                    .send(updatedIncident);
-                expect(res.status).toBe(500);
-            })
             it("should return 500 on error", async () => {
-                jest.spyOn(IncidentModel, 'findByIdAndUpdate').mockRejectedValueOnce(new Error(''));
+                jest.spyOn(IncidentModel, 'findOneAndUpdate').mockRejectedValueOnce(new Error());
                 const updatedIncident = {
                     name: "Unresolved Incident adding"
                 }
-                const id = "aaaf742a-12a2-4599-8825-d0f15917f9eb";
+                const id = "649cbeda942a5d4d8bcf303b";
                 const res = await supertest(app)
                     .put(`/incident/updateIncident/${id}`)
                     .send(updatedIncident);
@@ -182,7 +163,7 @@ describe("incidents", () => {
         })
         describe("error", () => {
             it("should return 404", async () => {
-                jest.spyOn(IncidentModel, 'findById').mockRejectedValueOnce(new Error());
+                // jest.spyOn(IncidentModel, 'findById').mockResolvedValueOnce(new Error());
                 const id = "5555";
                 const res = (await supertest(app).get(`/incident/${id}`));
                 expect(res.status).toBe(404);

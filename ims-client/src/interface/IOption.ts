@@ -1,4 +1,4 @@
-export default interface Option{
+export default interface IOption{
     key: string;
     value: string;
   }

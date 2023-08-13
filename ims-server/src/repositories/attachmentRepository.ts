@@ -1,13 +1,8 @@
 import AWS, { AWSError } from 'aws-sdk';
 import fs from 'fs';
 import dotenv from 'dotenv';
-import path from 'path';
 import logger from "../loggers/log";
 import { constants } from '../loggers/constants';
-import FormData from 'form-data';
-import { Blob } from 'buffer';
-import { Readable } from 'stream';
-import { Response } from 'express';
 
 interface AttachmentData {
   key: string;
@@ -15,15 +10,15 @@ interface AttachmentData {
 }
 dotenv.config()
 const s3 = new AWS.S3();
-class AwsRepository {
-  
+
+class AttachmentsRepository {
   async uploadAttachment(files:Express.Multer.File []): Promise<AWS.S3.ManagedUpload.SendData | any> {
       const uploadPromises = files.map((file) => {
         const fileName = file.originalname;
         const fileBuffer = fs.readFileSync(file.path);
         if (fileName && fileBuffer) {
           const params: AWS.S3.PutObjectRequest = {
-            Bucket: AwsRepository.getBucketName(),
+            Bucket: AttachmentsRepository.getBucketName(),
             Key: fileName.toString().replace(/_/g, '/'),
             Body: fileBuffer,
           };
@@ -38,15 +33,13 @@ class AwsRepository {
       } catch (error) {
         logger.info({ source: constants.UPLOAD_FAILED, msg: constants.METHOD.GET, error: true });
       }
-      
   }
-
   async getAttachment(key: string): Promise<AttachmentData|null> {
     try {
       const s3 = new AWS.S3();
       const params: AWS.S3.GetObjectRequest = {
-        Bucket: AwsRepository.getBucketName(),
-        Key: key
+        Bucket: AttachmentsRepository.getBucketName(),
+        Key: key.replace(/_/g, '/')
       };
       const result = await s3.getObject(params).promise();
       const data: Buffer = result.Body as Buffer;
@@ -62,10 +55,8 @@ class AwsRepository {
       throw error;
     }
   }
-
   async getAllAttachmentsByTimeline(keys: string[]): Promise<(AttachmentData|null)[]|any> {
     try {
-      
       const allResponses: (AttachmentData | null)[] = await Promise.all(keys.map(
         (key) => this.getAttachment(key)));
       logger.info({ source: constants.SHOW_SUCCESS, method: constants.METHOD.GET, err: true });
@@ -75,11 +66,10 @@ class AwsRepository {
       throw error;
     }
   }
-
   async deleteAttachmentById(key: string): Promise<void | any> {
     const params: AWS.S3.DeleteObjectRequest = {
-      Bucket: AwsRepository.getBucketName(),
-      Key: key
+      Bucket: AttachmentsRepository.getBucketName(),
+      Key: key.replace(/_/g, '/')
     };
     try {
       await s3.deleteObject(params).promise();
@@ -92,7 +82,6 @@ class AwsRepository {
       }
     }
   }
-
   static getBucketName():string {
     if (!process.env.BUCKET_NAME) {
       logger.error({ source: constants.BUCKET_NAME, method: constants.METHOD.GET, err: true });
@@ -100,7 +89,9 @@ class AwsRepository {
     }else{
       return process.env.BUCKET_NAME ?process.env.BUCKET_NAME.toString():''
     }
-  } 
-
+  }
 }
-export default new AwsRepository();
+export default new AttachmentsRepository();
+
+
+

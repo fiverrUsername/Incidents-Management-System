@@ -1,64 +1,56 @@
-import React, { useEffect, useState } from 'react';
-import { Dialog, FormControl, InputLabel, Grid, Button, AlertColor } from "@mui/material";
-import { useForm } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
-import DateTimePickerValue from '../datePicker/datePicker';
-import TextFieldInput from '../AddIncident/TextFields'
-import ToggleButtons from '../AddIncident/PriorityButtons';
-import DropDown from '../AddIncident/DropDown';
-import CustomAutocomplete from '../autoCompleteTag/autoComplete';
+import { AlertColor, Button, Dialog, FormControl, Grid } from "@mui/material";
 import dayjs from 'dayjs';
-import Option from '../../interface/IOption';
-import submitTimeLine from './submitTimeLine'
-import theme from '../../theme';
-import apiCalls from '../../service/apiCalls';
-import BannerNotification from "../bannerNotification/BannerNotification"
-import { text } from 'node:stream/consumers';
-import IIncident from '../../interface/incidentInterface';
-import TypesSelect, { Types } from '../AddIncident/Types';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { ITag } from '../../interface/ITag';
-import { Tag } from 'styled-components/dist/sheet/types';
+import { Priority } from '../../interface/enums';
+import apiCalls from '../../service/apiCalls';
+import attachmentService from '../../service/attachmentService';
+import theme from '../../theme';
+import DropDown from '../AddIncident/DropDown';
+import ToggleButtons from '../AddIncident/PriorityButtons';
+import TextFieldInput from '../AddIncident/TextFields';
+import CustomAutocomplete from '../autoCompleteTag/autoComplete';
+import BannerNotification from "../bannerNotification/BannerNotification";
+import DateTimePickerValue from '../datePicker/datePicker';
 import UploadFiles from '../uploadFiles/UploadFiles';
-import awsService from '../../service/awsService';
+import submitTimeLine from './submitTimeLine';
 export interface form_data {
   text: string;
-  priority: string;
+  priority: Priority;
   date: dayjs.Dayjs;
   type: string;
   tags: ITag[];
   files: string[];
-} 
-
+}
 export interface GetIncident {
-  _id: string;
   id: string;
   name: string;
   status: string;
   description: string;
-  currentPriority: string;
+  currentPriority: Priority;
   type: string;
   durationHours: number;
-  channelId?:string;
+  channelId?: string;
   slackLink: string;
   channelName?: string;
   currentTags: ITag[];
-  date: string;
-  createdAt: string;
-  updatedAt: string;
+  date: Date;
+  createdAt: Date;
+  updatedAt: Date;
   cost: number;
   createdBy: string;
 }
-
 interface Props {
   open: boolean;
   onClose: () => void;
   incident: GetIncident;
 }
-
 export default function AddUpdate({ open, onClose, incident }: Props) {
-  //const priorityProp = incident.currentPriority;
+  const priorityProp = incident.currentPriority;
   const { handleSubmit, register, formState: { errors } } = useForm<form_data>();
-  const [priority, setPriority] = React.useState<string | null>("");
+  const [priority, setPriority] = React.useState<Priority>(Priority.P0);
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -69,7 +61,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   const [severityValue, setSeverityValue] = useState<AlertColor>('error');
   const [messageValue, setMessageValue] = useState<string>("");
   const [text, setText] = useState<string>();
-
+  const getOptionLabel = (option: ITag) => option.name;
   const [selectedTags, setSelectedTags] = useState<ITag[]>(incident.currentTags);
 
   async function onSubmit(data: form_data) {
@@ -82,17 +74,16 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       data.date = date;
     data.type = type;
     data.tags = selectedTags;
-    data.files = filesString;
     const formData = new FormData();
-    files.map((file)=>{
-      console.log(incident)
-      const newName = `incidence_${incident.id}_${file.name}`
-      setFilesString([...filesString, newName]);
-      console.log("-----", newName)
+    files.map((file) => {
+      const newName = `incidence_${incident.id}_${Date.now()}${file.name}`
+      filesString.push(newName)
       formData.append('files', file, newName);
     })
-    await awsService.uploadAttachment(formData);
-        if (type && tags) {
+    data.files = filesString;
+
+    await attachmentService.uploadAttachment(formData);
+    if (type && tags) {
       const flag = await submitTimeLine({ data, incident });
       if (flag) {
         setSeverityValue('success');
@@ -105,7 +96,6 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
       setShowBanner(true);
     }
   }
-
   const closeIconStyles: React.CSSProperties = {
     width: '17px',
     height: '17px',
@@ -130,16 +120,14 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
   const backdropStyles: React.CSSProperties = {
     background: 'rgba(0, 48, 18, 0.84)',
   };
-
   useEffect(() => {
     const getTags = async () => {
       const getAllTags = await apiCalls.getTags();
       setTags(getAllTags);
     }
     getTags();
-    setPriority(String(priority).toLowerCase());
+    setPriority(priorityProp);
   }, []);
-
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addUpdate" style={popupStyles}>
@@ -168,6 +156,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
                   <ToggleButtons setPriority={setPriority} priority={priority} />
+
                 </div>
               </FormControl>
             </Grid>
@@ -193,7 +182,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Tags</label>
                 <div id="tags">
-                  <CustomAutocomplete options={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+                  <CustomAutocomplete options={tags} selectedOptions={selectedTags} setSelectedOptions={setSelectedTags} getOptionLabel={getOptionLabel} placehOlderText={"Write to add"} />
                 </div>
               </FormControl>
             </Grid>

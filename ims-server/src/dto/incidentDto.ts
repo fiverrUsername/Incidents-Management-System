@@ -12,14 +12,15 @@ import {
 import { constants } from "../loggers/constants";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { TagDto } from "./tagDto";
+import { Priority, Status } from "../enums/enum";
 
 export class IncidentDto {
   constructor(init: IIncident) {
     this.id = "";
     this.name = "";
-    this.status = "";
+    this.status = Status.Active;
     this.description = "";
-    this.currentPriority = "";
+    this.currentPriority = Priority.P0;
     this.type = "";
     this.channelId ="";
     this.durationHours = 0;
@@ -31,10 +32,10 @@ export class IncidentDto {
     this.createdBy = '';
     Object.assign(this, init);
   }
-
-  @IsNotEmpty({ message: `id ${constants.EMPTY_OBJECT}` })
+//TODO
   @IsString({ message: `id ${constants.INVALID_MESSAGE}` })
-  id: string;
+  @IsOptional({ message: `id ${constants.EMPTY_OBJECT}` })
+  id?: string;
 
   @IsNotEmpty({ message: `name ${constants.EMPTY_OBJECT}` })
   @IsString({ message: `name ${constants.INVALID_MESSAGE}` })
@@ -42,7 +43,7 @@ export class IncidentDto {
 
   @IsNotEmpty({ message: `status ${constants.EMPTY_OBJECT}` })
   @IsString({ message: `status ${constants.INVALID_MESSAGE}` })
-  status: string;
+  status: Status;
 
   @IsNotEmpty({ message: `description ${constants.EMPTY_OBJECT}` })
   @IsString({ message: `description ${constants.INVALID_MESSAGE}` })
@@ -50,7 +51,7 @@ export class IncidentDto {
 
   @IsNotEmpty({ message: `currentPriority ${constants.EMPTY_OBJECT}` })
   @IsString({ message: `currentPriority ${constants.INVALID_MESSAGE}` })
-  currentPriority: string;
+  currentPriority: Priority;
 
   @IsNotEmpty({ message: `type ${constants.EMPTY_OBJECT}` })
   @IsString({ message: `type ${constants.INVALID_MESSAGE}` })

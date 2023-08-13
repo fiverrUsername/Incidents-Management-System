@@ -5,7 +5,6 @@ export function filterRowsBySearch(array: IIncident[], filterString: string): II
     return array.filter((item) => {
         for (const key in item) {
             if ((key!='date')&&(String(item[key as keyof IIncident]).toLowerCase()).includes(filterString.toLowerCase())) {
-                console.log(key)
                 return true;
             }
         }        

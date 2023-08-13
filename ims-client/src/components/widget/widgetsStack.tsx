@@ -33,7 +33,6 @@ export default function WidgetsStack() {
     try {
       const response = await apiCalls.getAggregation();
       setAggregateIncident(response);
-      console.log(aggregateIncident)
     } catch (error) {
       console.error('Error fetching data:', error);
     }

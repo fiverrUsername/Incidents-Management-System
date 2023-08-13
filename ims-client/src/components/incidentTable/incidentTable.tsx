@@ -67,7 +67,7 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading }) => {
         <ColumnHeader params={params} />
     },
     {
-      field: "priority", headerName: "Priority", minWidth: 150, maxWidth: 1700, flex: 1,
+      field: "currentPriority", headerName: "Priority", minWidth: 150, maxWidth: 1700, flex: 1,
       renderHeader: (params: GridColumnHeaderParams) =>
         <ColumnHeader params={params} />
     },
@@ -114,7 +114,6 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading }) => {
   ];
 
   const someFunction = () => {
-    console.log("The event was triggered!");
     filteredRows = filterRowsBySearch(rows, searchValue);
     filteredRows = filterRowsByStatus(filteredRows, statusValue);
   };

@@ -2,11 +2,11 @@ import mongoose, { Schema } from "mongoose";
 import { type ITag } from "../interfaces/tagInterface";
 
 export const TagSchema = new Schema<ITag>({
-  name: {
+  id: {
     type: String,
     required: true,
   },
-  id: {
+  name: {
     type: String,
     required: true,
   },

@@ -1,24 +1,27 @@
 import React from 'react';
+import { ITimeLineEventprops, ITimelineEventListprops } from '../../interface/timeLineInterface';
 import userdata from '../../mockAPI/users.json';
-import { ITimelineEventListprops } from './modules/interface';
 import { TimelineWarpper } from './timeLine.style';
+import { Priority,Status } from '../../interface/enums';
 import TimeLineEvent from './timeLineEvent/timeLineEvent';
-import { ITimeLineEventprops } from './modules/interface';
+import dayjs from 'dayjs';
+
+//צריך לטפל בדף הזה בסטטוס שנוסף
 
 const TimeLine: React.FC<ITimelineEventListprops> = (props) => {
   const { timelineList } = props;
-  const timeLineEvents = timelineList.sort(
-    (a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
-  );
-
+  const timeLineEvents = timelineList.sort((a, b) => {
+    const diff = dayjs(a.createdDate).diff(dayjs(b.createdDate));
+    return diff;
+  });
   const timelineObjects = timeLineEvents.map((timeLine, index) => {
     const user = userdata.find((u) => u._id === timeLine.userId);
     const updatedTimeline: ITimeLineEventprops = {
       timeline: { ...timeLine },
       name: user?.name ?? '',
       profile: user?.profile ?? '',
-      previosPriority: "",
-      previousType: "",
+      previosPriority: Priority.P0,
+      previousType: Priority.P0,
       isTypeChanged: false,
       isPriorityChanged: false
     };
