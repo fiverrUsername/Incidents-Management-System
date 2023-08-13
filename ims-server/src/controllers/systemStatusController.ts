@@ -5,7 +5,7 @@ import systemStatusService from "../services/systemStatusService";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ISystemStatus } from "../interfaces/systemStatusInterface";
 
-class SystemStatusController {
+export default class SystemStatusController {
     async getLiveStatusSystemsByDate(req: Request, res: Response): Promise<void> {
         try {
             const date: string = req.body
@@ -47,4 +47,3 @@ class SystemStatusController {
         }
     }
 }
-export default new SystemStatusController();

@@ -52,11 +52,7 @@ class TimelineEventService {
       const _timelineEvent = new ITimelineEventDto(newTimelineEvent);
       const validationErrors = await validate(_timelineEvent);
       if (validationErrors.length > 0) {
-        logger.error({
-          source: constants.TIMELINE_EVENT,
-          err: "Validation error",
-          validationErrors: validationErrors.map((error) => error.toString()),
-        });
+        logger.error({ source: constants.TIMELINE_EVENT, err: "Validation error", validationErrors: validationErrors.map((error) => error.toString()), });
         return new Error("Validation error");
       }
       logger.info({ sourece: constants.TIMELINE_EVENT, method: constants.METHOD.POST, timelineEventId: newTimelineEvent.id });
@@ -175,9 +171,9 @@ class TimelineEventService {
       if (timelineEvent === null) {
         logger.error({ source: constants.TIMELINE_EVENT, err: constants.NOT_FOUND, timelineEventId: id, file: file, method: constants.METHOD.DELETE })
         return new Error('Timeline event not found');
-      }      
+      }
       if (!timelineEvent.files.some((v) => v === file)) {
-            return new Error('string file not exist')
+        return new Error('string file not exist')
       }
       timelineEvent.files = timelineEvent.files.filter((v) => v !== file);
       return await timelineEventRepository.updateTimelineEvent(id, timelineEvent);;
