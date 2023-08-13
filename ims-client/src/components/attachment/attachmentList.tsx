@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import {ITimeLineEvent} from '../../interface/timeLineInterface';
 import Attachment from './attachment';
 import apiCalls from '../../service/apiCalls';
 import attachmentService from '../../service/attachmentService';
+import { log } from 'console';
 
 interface AttachmentlistProps {
   id: string;
@@ -20,9 +21,11 @@ const Attachmentlist: React.FC <AttachmentlistProps> = ({ id }) => {
   const nextImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % filesData.length);
   };
+
   const fetchTimelineData = async (id: string) => {
     try {
-      const timelineData:ITimeLineEvent = await apiCalls.getTimeLineEventsById(id)
+      const timelineData:ITimeLineEvent = await apiCalls.getTimeLineEventsById(id)   
+      console.log("timelineData    "+timelineData)
       getFilesdata(timelineData);
     } catch (error) {
       console.error('Error Fetching Timeline Data:', error);
@@ -30,10 +33,14 @@ const Attachmentlist: React.FC <AttachmentlistProps> = ({ id }) => {
   };
   const getFilesdata = async (timeline: ITimeLineEvent) => {
     try {
+      console.log("timeline   "+timeline)
       const response = await attachmentService.showAttachment(timeline.files)
+      console.log('response  '+response);
+      //filesData.push(response)
       setFilesData((prevFilesData) => {
         return [...prevFilesData, ...response];
       });
+      console.log('filesData  '+filesData);
     } catch (error) {
       console.error('Error Getting Data:', error);
     }
@@ -53,7 +60,7 @@ const Attachmentlist: React.FC <AttachmentlistProps> = ({ id }) => {
       <div style={{ display: 'flex', justifyContent: 'center' }}>
       {filesData && filesData.slice(currentIndex, currentIndex + 3).map((file,index) => (
           //eslint-disable-next-line react/jsx-key
-          <Attachment file={file} onDelete={handleDeleteFile} />
+          <Attachment key={index} file={file} onDelete={handleDeleteFile} />
           // eslint-disable-next-line react/jsx-key
           // <Attachment key={index} file={file}/>
         ))}
