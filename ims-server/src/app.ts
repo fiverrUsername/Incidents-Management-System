@@ -14,6 +14,7 @@ import tagRouter from './routes/tagRouter';
 import timelineEventRouter from './routes/timelineEventRouter';
 import liveStatusRoute from "./routes/systemStatusRoute"
 import attachmentRouter from './routes/attachmentRouter';
+import liveStatusRouter from './routes/systemStatusRoute';
 
 const port = config.server.port
 const app = express()
