@@ -15,7 +15,7 @@ class IncidentService {
         incidentId: newIncident.id
       });
       console.log("incident::::",newIncident)
-      const live=await SystemStatusService.logic(newIncident);
+      const live=await SystemStatusService.liveStatusByIncident(newIncident);
       console.log("live:::",live)
       return await incidentRepository.addIncident(newIncident);
     } catch (error: any) {

@@ -6,9 +6,9 @@ import { ISystemStatus } from "../interfaces/systemStatusInterface";
 
 export default class systemStatusController {
   
-   async getLatestLiveStatus(req: Request, res: Response): Promise<void> {
+   async getLiveStatus(req: Request, res: Response): Promise<void> {
         try {
-            const systems = await systemStatusService.getLatestLiveStatus();
+            const systems = await systemStatusService.getLiveStatus();
             if (systems instanceof Error) {
                 res.status(status.SERVER_ERROR).json({ message: systems, error: true });
             } else res.status(status.SUCCESS).json(systems);
@@ -19,9 +19,9 @@ export default class systemStatusController {
     //after test remove this
     async createLiveStatus(req: Request, res: Response): Promise<void> {
         try {
-            const tag: string = "inbox"
+            const tag: string = "checkout"
             const data:ISystemStatus=req.body
-            const systems = await systemStatusService.createLiveStatus(data,tag);
+            const systems = await systemStatusService.createOrUpdateLiveStatus(data,tag);
             if (systems instanceof Error) {
                 res.status(status.SERVER_ERROR).json({ message: systems, error: true });
             } else res.status(status.SUCCESS).json(systems);
