@@ -48,11 +48,12 @@ class AttachmentsRepository {
     }
     catch(error:any){
       if(error.code === 'NoSuchKey'){
-        logger.info({source: constants.FILE_NOT_FOUND , msg: constants.METHOD.GET, key:key, error: true});
+        logger.info({source: constants.FILE_NOT_FOUND , msg: constants.METHOD.GET, key:key, error: true})
         return null
       }else{
         logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, key:key, err: true });
       }
+
       throw error;
     }
     });
@@ -89,7 +90,7 @@ class AttachmentsRepository {
   }
   async getAllAttachmentsByTimeline(keys: string[]): Promise<(AttachmentData|null)[]|any> {
     try {
-      if(keys.length<0)
+      if(keys.length>0)
       {
       const allResponses: (AttachmentData | null)[] = await Promise.all(keys.map(
         (key) => this.getAttachment(key)));
@@ -98,8 +99,7 @@ class AttachmentsRepository {
       }
       return null;
     } catch (error) {
-      console.log("error", error)
-      logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, err: true, error:error });
+      logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, err: true, error:true });
       throw error;
     }
   }
