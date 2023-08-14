@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import IncidentsPage from './pages/incidents/incidentsPage';
 import {withId} from './HOC'
 import TimeLinePage from './pages/timeLine/timeLinePage';
+import HeatmapChar from './components/heatmapChar/heatmapChar';
 
 
 export default function Router() {
