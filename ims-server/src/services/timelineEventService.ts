@@ -196,7 +196,7 @@ class TimelineEventService {
       const incident:IIncident=await incidentRepository.getIncidentById(timeline.incidentId);
       incident.currentPriority=timeline.priority;
       incident.status=timeline.status;
-      return await incidentService.updateIncident(incident.id,incident);
+      return await incidentService.updateIncident(incident.id!,incident);
     }catch(err:any){      
       return new Error(err);
     }
