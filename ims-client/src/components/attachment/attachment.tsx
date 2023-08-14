@@ -1,19 +1,21 @@
-import { Grid, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import FileViewer from 'react-file-viewer';
+import { Grid, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
-import audio from '../../images/audio.png';
+// import audio from '../../images/audio.png';
 import pdf from '../../images/pdf.png';
-import powerPoint from '../../images/powerPoint.png';
+// import PowerPoint from '../../images/powerpoint.png';
 import video from '../../images/video.png';
-import word from '../../images/word.png';
-import excel from '../../images/excel.png';
-import txt from '../../images/txt.jpg';
+import word from '../../images/word.webp';
+// import excel from '../../images/excel.png';
+import txt from '../../images/txt.png';
 import attachmentService from '../../service/attachmentService';
+//import download from 'downloadjs';
 import { log } from 'console';
 import logo from '../../images/logo.png'
 
+import { IAttachmentData } from '../../interface/timeLineInterface';
+import { fileContainerStyle } from './attachment.style';
 type SupportedFileTypes =
   | 'image'
   | 'pdf'
@@ -24,136 +26,158 @@ type SupportedFileTypes =
   | 'excel'
   | 'txt'
   | 'default';
- interface AttachmentData {
-    key: string;
-    data: Buffer;
-}
-const getFileTypeFromData = (file: AttachmentData)  => {
+const getFileExtension = (fileName: string) => {
+  const parts = fileName.split('.');
+  if (parts.length > 1) {
+    return parts[parts.length - 1].toLowerCase();
+  }
+  return ''; // Default extension if not found
+};
+const getFileTypeFromData = (file: IAttachmentData) => {
   try {
-    if (file.key.startsWith('data:')) {
-      const mimeType = file.key.split(':')[1].split(';')[0];
-      switch (mimeType) {
-        case 'image/jpeg':
-        case 'image/png':
-        case 'image/gif':
-          return 'image';
-        case 'application/pdf':
-          return 'pdf';
-        case 'application/txt':
-          return 'txt';
-        case 'audio/mpeg':
-        case 'audio/wav':
-        case 'audio/ogg':
-        case 'audio/mp3':
-          return 'audio';
-        case 'video/mp4':
-        case 'video/mov':
-        case 'video/wmv':
-        case 'video/avi':
-        case 'video/webm':
-        case 'video/ogg':
-          return 'video';
-        case 'application/msword':
-        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-          return 'word';
-        case 'application/vnd.ms-powerpoint':
-        case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
-          return 'powerpoint';
-        case 'application/vnd.ms-excel':
-        case 'text.csv':
-        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-          return 'excel';
-        default:
-          return 'default';
-      }
-    } else if (file.key.endsWith('.pdf')) {
-      return 'pdf';
-    }else if (file.key.endsWith('.txt')) {
+    const parts = file.key.split('_');
+    const fileNamePart = parts[parts.length - 1]; // Get the last part after the last underscore
+    const extension = fileNamePart.split('.').pop()?.toLowerCase(); // Get the extension from the last part
+    switch (extension) {
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+        return 'image';
+      case 'pdf':
+        return 'pdf';
+      case 'txt':
         return 'txt';
-    } else if (file.key.endsWith('.mp3') || file.key.endsWith('.wav') || file.key.endsWith('.ogg')) {
-      return 'audio';
-    } else if (file.key.endsWith('.jpg') || file.key.endsWith('.jpeg') || file.key.endsWith('.png') || file.key.endsWith('.gif')) {
-      return 'image';
-    } else if (file.key.endsWith('.doc') || file.key.endsWith('.docx') || file.key.endsWith('.odt') || file.key.endsWith('.txt')) {
-      return 'word';
-    } else if (file.key.endsWith('.mp4') || file.key.endsWith('.webm') || file.key.endsWith('.ogg')) {
-      return 'video';
-    } else if (file.key.endsWith('.ppt') || file.key.endsWith('.pptx')) {
-      return 'powerpoint';
-    } else if (file.key.endsWith('.xls') || file.key.endsWith('.xlsx')|| file.key.endsWith('.csv')) {
-      return 'excel';
-    } else {
-      return 'default';
+      case 'mp3':
+      case 'wav':
+      case 'ogg':
+      case 'mpeg':
+        return 'audio';
+      case 'mp4':
+      case 'mov':
+      case 'wmv':
+      case 'avi':
+      case 'webm':
+        return 'video';
+      case 'doc':
+      case 'docx':
+      case 'odt':
+        return 'word';
+      case 'ppt':
+      case 'pptx':
+        return 'powerpoint';
+      case 'xls':
+      case 'xlsx':
+      case 'csv':
+        return 'excel';
+      default:
+        return 'default';
     }
   } catch (error) {
     console.error('Error detecting file type:', error);
     return 'default';
   }
 };
-export default function Attachment({ file, onDelete }: { file: AttachmentData, onDelete: (fileId: string) => void }) {
-  const [fileType, setFileType] = useState<SupportedFileTypes>('default');
-  
+export default function Attachment({
+  file,
+  onDelete,
+  style,
+}: {
+  file: IAttachmentData;
+  onDelete: (fileId: string) => void;
+  style?: React.CSSProperties;
+}){
+    const [fileType, setFileType] = useState<SupportedFileTypes>('default');
+  // Update the file type when the attachment data changes
   useEffect(() => {
     setFileType(getFileTypeFromData(file));
   }, [file]);
+  // Render the generic file content
   const renderGeneric = () => {
-    return <p> Open {fileType}</p>;
+    return <p>Open {fileType}</p>;
   };
+  // Handle delete button click
   const handleDelete = async () => {
     try {
-      await attachmentService.deleteAttachment(file.key);      onDelete(file.key);
+      await attachmentService.deleteAttachment(file.key);
+      onDelete(file.key);
     } catch (error) {
       console.error('Error deleting attachment:', error);
     }
   };
-  const handleDownload = () => {
-    // Convert buffer data to Blob
-    const fileBlob = new Blob([file.data], { type: fileType });
-    // Create URL for Blob
-    const fileURL = URL.createObjectURL(fileBlob);
-    // Create a download link
-    const downloadLink = document.createElement("a");
-    downloadLink.href = fileURL;
-    downloadLink.download = file.key;
-    downloadLink.click();
-  };
+  // // Handle download button click
+  // const handleDownload = () => {
+  //   // // Convert buffer data to Blob
+  //   // console.log("fileType",fileType)
+  //   // const fileBlob = new Blob([file.data], { type: fileType });
+  //   // console.log("fileBlob", fileBlob)
+  //   // // Create URL for Blob
+  //   // const fileURL = URL.createObjectURL(fileBlob);
+  //   // // Create a download link
+  //   // const downloadLink = document.createElement("a");
+  //   // downloadLink.href = fileURL;
+  //   // downloadLink.download = file.key;
+  //   // downloadLink.click();
+  //   console.log(file.data)
+  //   download(file.data, file.key)
+  // };
+  // Render the file content based on the file type
   const renderFileContent = () => {
     if (!file) {
       return null;
     }
-    if (fileType === 'image' && (file.key.endsWith('.jpg') ||
-        file.key.endsWith('.jpeg') || file.key.endsWith('.png') || file.key.endsWith('.gif'))) {
-         return <img src={file.key} alt="Attachment" />;
+    if (fileType === 'image') {
+      const imageType = getFileExtension(file.key);
+      const imageData = `data:image/${imageType};base64,${file.data.toString('base64')}`;
+      const imageContainerStyle: React.CSSProperties = {
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: '10px',
+      };
+      return (
+        <div style={{ ...fileContainerStyle, ...style }}>
+          <div style={imageContainerStyle}>
+            <img src={imageData} alt="Attachment" style={{ maxWidth: '100%', maxHeight: '100%' }} />
+          </div>
+        </div>
+      );
     }
     switch (fileType) {
       case 'pdf':
-        return <img src={logo} alt="pdf" />;
+        return <img src={pdf} alt="pdf" />;
       case 'txt':
-        return <img src={logo} alt="txt" />;
+        return <img src={txt} alt="txt" />;
       case 'audio':
-        return <img src={logo} alt="audio" />;
+        // return <img src={audio} alt="audio" />;
       case 'video':
-        return <img src={logo} alt="video" />;
+        return <img src={video} alt="video" />;
       case 'word':
-        return <img src={logo} alt="word" />;
+          return <img src={word} alt="word" />;
       case 'powerpoint':
-        return <img src={logo} alt="powerPoint" />;
+        // return <img src={PowerPoint} alt="powerpoint" />;
       case 'excel':
-        return <img src={logo} alt="excel" />;
+        // return <img src={excel} alt="excel" />;
       default:
         return renderGeneric();
     }
   };
-  return <div>{renderFileContent()}<Grid container spacing={2} alignItems="center">
-  <Grid item>
-    <IconButton onClick={handleDelete}>
-      <DeleteIcon />
-    </IconButton>
-  </Grid>
-  <Grid item>
-    <IconButton onClick={handleDownload}>
-      <DownloadIcon />
-    </IconButton>
-  </Grid>
-</Grid></div>;
-}
+  return (
+   <div style={{ ...fileContainerStyle, ...style }}>
+      {renderFileContent()}
+      <Grid container spacing={2} alignItems="center">
+        <Grid item>
+          <IconButton onClick={handleDelete}>
+            <DeleteIcon />
+          </IconButton>
+        </Grid>
+        <Grid item>
+          {/* <IconButton onClick={handleDownload}>
+            <DownloadIcon />
+          </IconButton> */}
+        </Grid>
+      </Grid>
+    </div>
+  )}

@@ -34,10 +34,42 @@ class AttachmentsRepository {
         logger.info({ source: constants.UPLOAD_FAILED, msg: constants.METHOD.GET, error: true });
       }
   }
+  async getAllAttachmentsByTimeline2(keys: string[]): Promise<(AttachmentData|null)[]|any> {
+    const getsPromises = keys.map(async (key) => {
+   try{
+      const params: AWS.S3.GetObjectRequest = {
+        Bucket: AttachmentsRepository.getBucketName(),
+        Key: key.replace(/_/g, '/')
+      };
+      const result = await s3.getObject(params).promise();
+      const data: Buffer = result.Body as Buffer;
+      logger.info({ source: constants.SHOW_SUCCESS, msg: constants.METHOD.GET, error: true });
+      return { key, data };
+    }
+    catch(error:any){
+      if(error.code === 'NoSuchKey'){
+        logger.info({source: constants.FILE_NOT_FOUND , msg: constants.METHOD.GET, key:key, error: true});
+        return null
+      }else{
+        logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, key:key, err: true });
+      }
+      throw error;
+    }
+    });
+    try {
+      const uploadResults = await Promise.all(getsPromises);
+      uploadResults.forEach((result) => {
+        logger.info({ source: constants.UPLOAD_SUCCESS, msg: constants.METHOD.GET, success: true });
+        return uploadResults;
+
+      });
+    } catch (error) {
+      logger.info({ source: constants.UPLOAD_FAILED, msg: constants.METHOD.GET, error: true });
+    }
+}
   async getAttachment(key: string): Promise<AttachmentData|null> {
     try {
-      const s3 = new AWS.S3();
-      const params: AWS.S3.GetObjectRequest = {
+        const params: AWS.S3.GetObjectRequest = {
         Bucket: AttachmentsRepository.getBucketName(),
         Key: key.replace(/_/g, '/')
       };
@@ -66,7 +98,8 @@ class AttachmentsRepository {
       }
       return null;
     } catch (error) {
-      logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, err: true });
+      console.log("error", error)
+      logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, err: true, error:error });
       throw error;
     }
   }

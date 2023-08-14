@@ -10,6 +10,7 @@ const attachmentService = {
   }).then((response) => response.data),
 
   showAttachment: (files: string[]) => axios.post(`${baseUrl}/attachment/allAttachments`, files, {
+    // responseType:'blob'
   })
   .then((response) => response.data),
 
