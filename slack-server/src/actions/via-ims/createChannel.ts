@@ -6,7 +6,7 @@ import { createChannel } from '../base/createChannel';
 const userIds = ['U05HXKPD259'];
 export async function IMS_CreateChannel(incidentData: IIncident) {
   try {
-    const name = incidentData.channelName || 'No channel name';
+    const name = incidentData.channelName?.toLocaleLowerCase() || 'No channel name';
     const channelId = await createChannel({
       currentPriority: incidentData.currentPriority,
       description: incidentData.description,

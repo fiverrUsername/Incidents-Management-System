@@ -12,26 +12,6 @@ class SystemStatusRepository {
             return null;
         }
     }
-    
-  async getTodaysLiveStatusByTag(tag: string): Promise<ISystemStatus | null> {
-    try {
-      console.log("i'm in getTodaysLiveStatusByTag");
-      // Get the start and end of the current day
-      const now = new Date();
-      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-      return await systemStatusModel.findOne({
-        date: {
-          $gte: startOfDay,
-          $lt: endOfDay
-        },
-        systemName: tag
-      });
-    } catch (e) {
-      console.error(`error: ${e}`);
-      return null;
-    }
-  }
 
   async getLiveStatus(tag: string): Promise<ISystemStatus[] | any> {
     try {
@@ -46,6 +26,25 @@ class SystemStatusRepository {
       return null;
     }
   }
+    async getTodaysLiveStatusByTag(tag: string): Promise<ISystemStatus | null> {
+        try {
+            console.log("i'm in getTodaysLiveStatusByTag");
+            // Get the start and end of the current day
+            const now = new Date();
+            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+            return await systemStatusModel.findOne({
+                date: {
+                    $gte: startOfDay,
+                    $lt: endOfDay
+                },
+                systemName: tag
+            });
+        } catch (e) {
+            console.error(`error: ${e}`);
+            return null;
+        }
+    }
 
   async createLiveStatus(data: ISystemStatus): Promise<ISystemStatus | any> {
     try {
