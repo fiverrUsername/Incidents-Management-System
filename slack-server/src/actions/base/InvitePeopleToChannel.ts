@@ -1,4 +1,4 @@
-import { client } from "../../const";
+import { client } from "../../constPage";
 
 export async function InvitePeopleToChannel(channelId:string,users:string[]){
     await client.conversations.invite({

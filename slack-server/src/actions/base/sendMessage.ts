@@ -1,5 +1,5 @@
 import FormData from 'form-data';
-import { SLACK_API_TOKEN, client } from "../../const";
+import { SLACK_UPLOAD_FILES, client } from '../../constPage';
 import axios from "axios";
 import { IAttachmentData } from '../../interfaces/attachmentData';
 import { IMessageData } from '../../interfaces/messageData';
@@ -21,10 +21,10 @@ export async function sendMessage(messageData: IMessageData) {
           formData.append('file', Buffer.from(fileUrl.data), {
             filename: fileUrl.key
           });
-          await axios.post('https://slack.com/api/files.upload', formData, {
+          await axios.post(SLACK_UPLOAD_FILES, formData, {
             headers: {
               ...formData.getHeaders(),
-              Authorization: `Bearer ${SLACK_API_TOKEN}`
+              Authorization: `Bearer ${process.env.SLACK_API_TOKEN}`
             },
           });
 
