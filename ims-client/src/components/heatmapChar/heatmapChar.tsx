@@ -4,16 +4,16 @@ import ReactApexChart from 'react-apexcharts';
 
 const HeatmapChar = () => {
 
-  const options:ApexOptions= {
+  const options: ApexOptions = {
     chart: {
-      width:600,
+      width: 600,
       height: 300,
       type: 'heatmap',
     },
-    stroke:{
-
+    stroke: {
+      
     },
-    grid:{
+    grid: {
       xaxis: {
         lines: {
           offsetX: 12,
@@ -32,7 +32,7 @@ const HeatmapChar = () => {
       column: {
         opacity: 12
       },
-    
+
     },
     plotOptions: {
       heatmap: {
@@ -78,52 +78,50 @@ const HeatmapChar = () => {
         show: true,
       },
     },
-    tooltip:{
+    tooltip: {
       x: {
         show: true,
         format: 'dd MMM',
         formatter: undefined,
-    },
-    y: {
-      formatter: undefined,
-      title: {
-          formatter: (seriesName) => seriesName,
       },
-  },
-  z: {
-      formatter: undefined,
-      title: 'Size: '
-  },
+      y: {
+        formatter: undefined,
+        title: {
+          formatter: (seriesName) => seriesName,
+        },
+      },
+      z: {
+        formatter: undefined,
+        title: 'Size: '
+      },
     }
   }
-  
 
- const series:ApexAxisChartSeries= [
-      {
-        name: 'Inbox',
-        data: [
-          { x: 'W1', y: 17 },
-          { x: 'W2', y: 100 },
-          { x: 'W3', y: 48 },
-          { x: 'W4', y: 32 },
-        ],
-      },
-      {
-        name: 'checkout',
-        data: [
-          { x: 'W1', y: 47 },
-          { x: 'W2', y: 29 },
-          { x: 'W3', y: 13 },
-          { x: 'W4', y: 100 },
-        ],
-      },
-    ]
- 
+  const series: ApexAxisChartSeries = [
+    {
+      name: 'Inbox',
+      data: [
+        { x: 'W1', y: 17 },
+        { x: 'W2', y: 100 },
+        { x: 'W3', y: 48 },
+        { x: 'W4', y: 32 },
+      ],
+    },
+    {
+      name: 'checkout',
+      data: [
+        { x: 'W1', y: 47 },
+        { x: 'W2', y: 29 },
+        { x: 'W3', y: 13 },
+        { x: 'W4', y: 100 },
+      ],
+    },
+  ]
 
   return (
     <div id="chart">
-      <ReactApexChart options={options} series={series} type={options.chart?.type} height={options.chart?.height} 
-      width={options.chart?.width} />
+      <ReactApexChart options={options} series={series} type={options.chart?.type} height={options.chart?.height}
+        width={options.chart?.width} />
     </div>
   );
 };
