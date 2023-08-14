@@ -47,6 +47,9 @@ class SystemStatusService {
             });
             const existingLiveStatus = await systemStatusRepository.getTodaysLiveStatusByTag(tag);
             if (existingLiveStatus) {
+                if (data.maxPriority > existingLiveStatus.maxPriority) {
+                    data.maxPriority = existingLiveStatus.maxPriority;
+                }
                 data.incidentCounter = existingLiveStatus.incidentCounter + 1;
                 const updatedIncidents = [...existingLiveStatus.incidents];
                 const incidentIndex = this.priorityIndexMap[data.maxPriority];
