@@ -5,6 +5,7 @@ import { sendToSocket } from '../../socket';
 import { createChannel } from '../base/createChannel';
 
 const userIds = ['U05HXKPD259'];
+
 export async function IMS_CreateChannel(incidentData: IIncident) {
   try {
     const name = incidentData.channelName?.toLocaleLowerCase() || NO_CHANNEL_NAME;
@@ -16,6 +17,7 @@ export async function IMS_CreateChannel(incidentData: IIncident) {
       userIds
     })
     incidentData.slackLink = `${CHANNEL_REDIRECT}${channelId}`;
+    incidentData.channelId = channelId || ''
     sendToSocket(incidentData, ObjectType.Incident, ActionType.Update);
   } catch (error) {
     console.error(ERROR_CREATING_CHANNEL, error);
