@@ -9,16 +9,16 @@ import { client } from './const';
 const userIds = ['U05HXKPD259'];
 export async function createNewChannel(incidentData: IIncident) {
   try {
-    const name = incidentData.channelName || 'No channel name';
-      const response = await client.conversations.create({
+    const name = incidentData.channelName?.toLocaleLowerCase() || 'No channel name';
+    const response = await client.conversations.create({
       name,
       user_ids: userIds,
       is_private: false,
     });
-    const data:any = response.data;
+    const data: any = response.data;
     if (response.ok) {
       console.log('New public channel created:', response.channel?.name);
-      const channelId = response.channel?.id||"no channel id";
+      const channelId = response.channel?.id || "no channel id";
       incidentData.channelId = channelId;
       await InvitePeopleToChannel(channelId, userIds);
       incidentData.description = await updateChannelDescription(channelId, incidentData.description) || "no description";

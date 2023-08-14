@@ -20,12 +20,14 @@ app.use(cors({
 
 app.post('/webhook', (req: Request, res: Response) => {
   const data: any = req.body;
+  console.log("challenge:",data.challenge)
   if (data.challenge) {
     const challenge: string = data.challenge;
     res.json({ challenge });
   } else {
     res.json({ message: 'Webhook event received successfully.' });
   }
+ 
   events(data);
 });
 
