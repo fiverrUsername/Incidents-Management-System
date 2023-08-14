@@ -9,7 +9,7 @@ import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 export default class systemStatusController {
   
    async getLatestLiveStatus(req: Request, res: Response): Promise<void> {
-        try {
+        try {            
             const systems = await systemStatusService.getLatestLiveStatus();
             if (systems instanceof Error) {
                 res.status(status.SERVER_ERROR).json({ message: systems, error: true });
