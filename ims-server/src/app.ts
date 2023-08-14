@@ -62,7 +62,7 @@ app.get('/', (req: Request, res: Response): void => {
 });
 
 app.listen(port, () => {
-  logger.info(`Server is listeningo on http://localhost:${port}`)
+  logger.info(`Server is listening on http://localhost:${port}`)
 });
 
 
