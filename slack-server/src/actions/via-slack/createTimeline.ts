@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Priority } from '../../../../ims-server/src/enums/enum';
+import { Priority, Status } from '../../../../ims-server/src/enums/enum';
 import { ITimelineEvent } from '../../../../ims-server/src/interfaces/ItimelineEvent';
 import { ActionType, ObjectType } from '../../../../ims-socket/src/interfaces';
 import { decodeMessageDate } from '../base/decode/decodeMessageDate';
@@ -20,6 +20,7 @@ export default async function createTimeline(event: any) {
       files: event.files && (await fileResponse(event.files, answer.data.id!)) || [],
       createdDate: new Date(),
       updatedDate: decodeMessageDate(event.text) || new Date(),
+      status: Status.Active
     };
     sendToSocket(timelineEvent, ObjectType.TimelineEvent, ActionType.Add);
   }
