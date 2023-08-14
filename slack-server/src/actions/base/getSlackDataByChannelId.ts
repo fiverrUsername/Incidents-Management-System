@@ -1,4 +1,4 @@
-import { client } from '../../const';
+import { ERROR_GETTING_SLACK_CHANNEL_DATA, client } from "../../constPage";
 
 export async function getSlackDataByChannelId(channelId: string) {
     try {
@@ -8,7 +8,7 @@ export async function getSlackDataByChannelId(channelId: string) {
         return response;
     }
     catch (error) {
-        console.error('Error getting Slack Channel data:', error);
+        console.error(ERROR_GETTING_SLACK_CHANNEL_DATA, error);
         return null;
     }
 }

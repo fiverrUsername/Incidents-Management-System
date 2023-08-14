@@ -1,4 +1,4 @@
-import { client } from "../../const";
+import  {ERROR_UPDATING_CHANNEL_DESCRIPTION, client}  from "../../constPage";
 
 export async function updateChannelDescription(channelId: string, description: string) {
   try {
@@ -9,7 +9,7 @@ export async function updateChannelDescription(channelId: string, description: s
     console.log(`Channel description updated: ${result.purpose}`);
     return description
   } catch (error) {
-    console.error('Error updating channel description:', error);
+    console.error(ERROR_UPDATING_CHANNEL_DESCRIPTION, error);
   }
 }
 

@@ -3,8 +3,8 @@ import { IIncident } from '../../../../ims-server/src/interfaces/IncidentInterfa
 import { ActionType, ObjectType } from '../../../../ims-socket/src/interfaces';
 import { sendToSocket } from '../../socket';
 import { updateChannelDescription } from './updateChannelDescription'
-import { sendMassageOnChangePriority } from '../via-ims/sendMassageOnChangePriority';
-import { client } from '../../const';
+import {  sendMassageOnSpecificPriorityChannel } from '../via-ims/sendMassageOnChangePriority';
+import { ERROR_CREATING_CHANNEL, client } from '../../constPage';
 import { IChannelData } from '../../interfaces/channelData';
 const userIds = ['U05HXKPD259'];
 export async function createChannel(data: IChannelData) {
@@ -18,10 +18,10 @@ export async function createChannel(data: IChannelData) {
         const channelId = response.channel?.id || "no channel id";
         await InvitePeopleToChannel(channelId, userIds);
         await updateChannelDescription(channelId, data.description) || "no description";
-        await sendMassageOnChangePriority(channelId, data.currentPriority);
+        await sendMassageOnSpecificPriorityChannel(channelId, data.currentPriority);
         return channelId;
     } catch (error) {
-        console.error('Error creating channel:', error);
+        console.error(ERROR_CREATING_CHANNEL, error);
         return null;
     }
 }

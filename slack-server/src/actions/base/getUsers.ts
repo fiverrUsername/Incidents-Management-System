@@ -1,4 +1,4 @@
-import { client } from "../../const";
+import { client } from "../../constPage";
 
 export async function getUsers() {
   try {
