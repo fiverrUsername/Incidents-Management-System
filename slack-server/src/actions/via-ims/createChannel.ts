@@ -15,7 +15,9 @@ export async function IMS_CreateChannel(incidentData: IIncident) {
       userIds
     })
     incidentData.slackLink = `https://slack.com/app_redirect?channel=${channelId}`;
+    incidentData.channelId = channelId || ''
     sendToSocket(incidentData, ObjectType.Incident, ActionType.Update);
+
   } catch (error) {
     console.error('Error creating channel:', error);
     return null;

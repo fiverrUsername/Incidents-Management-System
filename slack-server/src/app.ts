@@ -28,12 +28,6 @@ app.post('/webhook', (req: Request, res: Response) => {
   events(data);
 });
 
-app.post('/', (req: Request, res: Response) => {
-  console.log(req.body);
-  sendMessageOnAddTimelineEvent(req.body);
-  res.json({ message: 'Timeline event added successfully' });
-});
-
 app.listen(port, () => {
   console.log(`Server is on http://localhost:${port}`);
 });

@@ -1,5 +1,5 @@
 
-import { EncidentStatus, EncidentType, Priority } from '../../../../ims-server/src/enums/enum';
+import { Status, EncidentType, Priority } from '../../../../ims-server/src/enums/enum';
 import { IIncident } from "../../../../ims-server/src/interfaces/IncidentInterface";
 import { sendToSocket } from "../../socket";
 import { ActionType, ObjectType } from "../../../../ims-socket/src/interfaces";
@@ -8,24 +8,27 @@ import { ConversationsInfoResponse } from '@slack/web-api';
 import { getSlackDataByChannelId } from '../base/getSlackDataByChannelId';
 export async function createIncident(channelId: string) {
   try {
-    const slackData:ConversationsInfoResponse|null = await getSlackDataByChannelId(channelId);
+    const slackData: ConversationsInfoResponse | null = await getSlackDataByChannelId(channelId);
+    if (!slackData) {
+      throw new Error('Channel not found in Slack');
+    }
     const newIncident: IIncident = {
       //TODO
       name: slackData?.channel?.name || "no incident name",
-      status: EncidentStatus.Active,
+      status: Status.Active,
       description: "This channel created in slack",
       currentPriority: Priority.P0,
-      type: EncidentType.Technical,//TODO
+      type: EncidentType.Technical,
       durationHours: 0,
       channelId: channelId,
       slackLink: `https://slack.com/app_redirect?channel=${channelId}`,
       channelName: slackData?.channel?.name,
-      currentTags: [],//TODO
+      currentTags: [],
       date: new Date().toISOString(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       cost: 0,
-      createdBy: '', //TODO
+      createdBy: '',
     };
     sendToSocket(newIncident, ObjectType.Incident, ActionType.Add);
     console.log('Incident created successfully');
@@ -33,5 +36,8 @@ export async function createIncident(channelId: string) {
     console.error('Error creating incident:', error);
   }
 }
+
+
+
 
 
