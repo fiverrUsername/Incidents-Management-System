@@ -20,7 +20,7 @@ export default class systemStatusController {
     //after test remove this
     async createLiveStatus(req: Request, res: Response): Promise<void> {
         try {
-            const tag: string = "checkout"
+            const tag: string = "inbox"
             const data:ISystemStatus=req.body
             const systems = await systemStatusService.createOrUpdateLiveStatus(data,tag);
             if (systems instanceof Error) {

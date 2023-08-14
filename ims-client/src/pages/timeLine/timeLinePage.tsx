@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material";
-import React,{ useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { WithIdProps } from "../../HOC";
 import { GetIncident } from "../../components/AddUpdate/AddUpdate";
 import AddUpdateComp from "../../components/AddUpdate/AddUpdateComp";
@@ -11,20 +11,18 @@ import apiCalls from "../../service/apiCalls";
 import filterTimeLineBySearch from "../../service/timeLineService";
 import TimeLine from "./timeLine";
 import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
- 
+import mockUsers from '../../mockAPI/users.json';
 
 const TimeLinePage = ({ id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<ITimeLineEvent[]>([]);
   const [summaryIncident, setSummaryIncident] = useState<ISummary>();
   const [incident, setIncident] = useState<GetIncident>();
+  const user= mockUsers.find(u=>u._id==id)
   useEffect(() => {
 
     const fetchTimeline = async () => {
-      // eslint-disable-next-line no-debugger
       const getTimeLineEventsById = await apiCalls.timelineEventByIncidentId(id)
       setTimelineObjects(getTimeLineEventsById);
-      // eslint-disable-next-line no-debugger
-      debugger
     };
     fetchTimeline();
     const fetchSummaryIncident = async () => {
@@ -39,8 +37,6 @@ const TimeLinePage = ({ id }: WithIdProps) => {
     fetchIncident();
 
   }, [id]);
-
-
 
   const someFunction = () => {
     filter = filterTimeLineBySearch(timelineObjects, myValue);

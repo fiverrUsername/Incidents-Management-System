@@ -1,11 +1,11 @@
 import express from "express";
-import SystemStatusController from "../controllers/systemStatusController";
+import systemStatusController from "../controllers/systemStatusController";
 
 const router = express.Router();
-const systemStatusControllers = new SystemStatusController();
+const systemStatus = new systemStatusController();
 
-router.get("/", systemStatusControllers.getLiveStatus);
-router.post("/", systemStatusControllers.createLiveStatus);
-//router.put("/", systemStatusControllers.updateLiveStatus);
+router.get("/", systemStatus.getLiveStatus);
+//testing
+router.post("/", systemStatus.createLiveStatus);
 
 export default router;

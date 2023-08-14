@@ -2,6 +2,12 @@ import { ApexOptions } from 'apexcharts';
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 
+
+interface HeatmapCharProps{
+    data:[],
+    colors?:[]
+    date:Date[]
+}
 const HeatmapChar = () => {
 
   const options: ApexOptions = {
@@ -49,7 +55,7 @@ const HeatmapChar = () => {
               from: 21,
               to: 45,
               name: 'p2',
-              color: '#ffc000',
+              color: '#ffc000', 
             },
             {
               from: 46,
@@ -72,6 +78,9 @@ const HeatmapChar = () => {
     },
     xaxis: {
       categories: ['03/08/2023', '04/08/2023', '05/08/2023', '06/08/2023'],
+      labels: {
+        show: false,
+      }
     },
     yaxis: {
       labels: {
@@ -124,6 +133,7 @@ const HeatmapChar = () => {
         width={options.chart?.width} />
     </div>
   );
+  
 };
 
 export default HeatmapChar;

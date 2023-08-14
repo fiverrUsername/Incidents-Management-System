@@ -3,6 +3,7 @@ import { Priority ,Status } from './enums';
 import {ITag} from './ITag';
 
 export interface ITimeLineEvent  {
+  id?:string,
   incidentId: string,
   userId: string,
   channelId?:string,
@@ -29,4 +30,8 @@ export interface ITimeLineEventprops {
   previosPriority: string;
   name?: string;
   profile?: string;
+}
+export interface IAttachmentData{
+  key: string;
+  data: Buffer;
 }

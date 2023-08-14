@@ -1,6 +1,7 @@
 import axios from "axios";
-import { SLACK_TOKEN } from "../../const";
+
 import FormData from 'form-data';
+import { ERROR_EXTRACTING_FILES, IMS_SERVER_ROUTING } from "../../constPage";
 
 export async function fileResponse(files: any[], incidentId: string): Promise<string[]> {
     const filesKeys: string[] = [];
@@ -9,7 +10,7 @@ export async function fileResponse(files: any[], incidentId: string): Promise<st
       await Promise.all(files.map(async (file) => {
         const response = await axios.get(file.url_private_download, {
           headers: {
-            Authorization: `Bearer ${SLACK_TOKEN}`,
+            Authorization: `Bearer ${process.env.SLACK_TOKEN}`,
           },
           responseType: 'blob',
         });
@@ -17,14 +18,14 @@ export async function fileResponse(files: any[], incidentId: string): Promise<st
         filesKeys.push(newName);
         formData.append('files', response.data, { filename: newName });
       }));
-      await axios.post('http://localhost:7000/attachment', formData, {
+      await axios.post(`${IMS_SERVER_ROUTING}attachment`, formData, {
         headers: {
           ...formData.getHeaders(),
         },
       });
       return filesKeys;
     } catch (error: any) {
-      console.error('Error extracting files:', error.message);
+      console.error(ERROR_EXTRACTING_FILES, error.message);
       return [];
     }
   }

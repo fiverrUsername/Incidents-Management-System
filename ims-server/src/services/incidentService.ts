@@ -92,7 +92,7 @@ class IncidentService {
   async getSummaryIncident(id: string): Promise<ISummary | any> {
     try {
       let summary: ISummary | null = null;
-      const incident = await incidentRepository.getIncidentByField(id, "id");
+      const incident = await incidentRepository.getIncidentByField(id, 'id');
       if (incident) {
         summary = {
           createdBy: incident.createdBy,
