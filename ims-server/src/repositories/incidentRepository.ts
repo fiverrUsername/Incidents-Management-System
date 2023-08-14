@@ -10,7 +10,7 @@ class IncidentRepository {
   async addIncident(newIncident: IIncident): Promise<IIncident | any> {
     const timeline:ITimelineEvent={
       channelId:newIncident.channelId,
-      incidentId: newIncident.id,
+      incidentId: newIncident.id || "",
       userId: newIncident.createdBy,
       description: 'Created new Incident',
       priority: newIncident.currentPriority,
@@ -22,7 +22,7 @@ class IncidentRepository {
     }
     try {
       const _newIncident:IIncident=await incidentModel.create(newIncident);
-      timeline.incidentId=_newIncident.id
+      timeline.incidentId=_newIncident.id || ""
       await TimelineEventRepository.addTimelineEvent(timeline)
       return  _newIncident;
     } catch (error: any) {
