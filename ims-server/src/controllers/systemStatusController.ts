@@ -4,6 +4,7 @@ import { status } from "../loggers/constants";
 import systemStatusService from "../services/systemStatusService";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ISystemStatus } from "../interfaces/systemStatusInterface";
+import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 
 export default class SystemStatusController {
     async getLiveStatusSystemsByDate(req: Request, res: Response): Promise<void> {

@@ -1,3 +1,4 @@
+import { TimelineEvent } from "aws-sdk/clients/ssmincidents";
 import { ITimelineEventDto } from "../dto/timelineEventDto";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
@@ -6,6 +7,7 @@ import logger from "../loggers/log";
 import incidentRepository from "../repositories/incidentRepository";
 import timelineEventRepository from "../repositories/timelineEventRepository";
 import { validate } from "class-validator";
+import incidentService from "./incidentService";
 
 class TimelineEventService {
   async getAllTimelineEvents(): Promise<ITimelineEvent[] | any> {
@@ -186,6 +188,17 @@ class TimelineEventService {
       return new Error(`Error deleting file in timeline event by string file: ${error}`);
     }
   }
+
+  async updateStatusAndPriorityOfIncidentById(timeline:ITimelineEvent):Promise<IIncident|any>{
+    try{
+      const incident:IIncident=await incidentRepository.getIncidentById(timeline.incidentId);
+      incident.currentPriority=timeline.priority;
+      incident.status=timeline.status;
+      return await incidentService.updateIncident(incident.id,incident);
+    }catch(err:any){      
+      return new Error(err);
+    }
+  } 
 
 }
 export default new TimelineEventService();

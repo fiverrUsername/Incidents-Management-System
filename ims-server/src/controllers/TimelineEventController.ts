@@ -48,6 +48,7 @@ export default class TimelineEventController {
                 return res.status(status.SERVER_ERROR).json({ message: constants.SERVER_ERROR });
             }
             sendToSocket(req.body as ITimelineEvent, ObjectType.TimelineEvent, ActionType.Add);
+            await timelineEventService.updateStatusAndPriorityOfIncidentById(_timelineEvent);
             return res.status(status.CREATED_SUCCESS).json(_timelineEvent);
         }
         catch (error: any) {
