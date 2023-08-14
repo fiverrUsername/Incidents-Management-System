@@ -21,7 +21,9 @@ export default async function createTimeline(event: any) {
       files: event.files && (await fileResponse(event.files, answer.data.id!)) || [],
       createdDate: new Date(),
       updatedDate: decodeMessageDate(event.text) || new Date(),
-      status:Status.Active
+
+      status: Status.Active
+
     };
     sendToSocket(timelineEvent, ObjectType.TimelineEvent, ActionType.Add);
   }

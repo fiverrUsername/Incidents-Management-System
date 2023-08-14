@@ -107,21 +107,19 @@ class SystemStatusService {
         }
     }
 
-    async getUpdatedMaxPriority(incidentsId: string[][]): Promise<Priority> {
+    async getUpdatedMaxPriority(incidentsIds: string[][]): Promise<Priority> {
         let maxPriority = Priority.P3
-        const incidentsDetails = incidentsId.map((incidentId) => {/* TODO*/ })
-        // const incidents: ISystemStatus[] = await Promise.all(incidentsDetails)
-        const incidents = [new systemStatusModel()]//TODO
-        incidents.forEach((incident) => {
-            if (incident.maxPriority > maxPriority) {
-                maxPriority = incident.maxPriority
-            }
+        const priorityValues = Object.values(Priority) as string[];
+        incidentsIds.map((incidentsId, index: number) => {
+            if (incidentsId.length > 0)
+                maxPriority = priorityValues[index] as Priority;
         })
         return maxPriority;
     }
+
     async autoUpdateLiveStatus() {
         const yesterday = ((new Date()).getDate() - 1).toString()
-        const systems = [new systemStatusModel()]//TODO
+        const systems: any = systemStatusRepository.getLiveStatusSystemsByDate(yesterday)//TODO -check types
         systems.map(async (system: ISystemStatus) => {
             system.date = new Date(yesterday)
             system.maxPriority = await this.getUpdatedMaxPriority(system.incidents)

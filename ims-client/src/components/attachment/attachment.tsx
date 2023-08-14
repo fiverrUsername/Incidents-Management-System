@@ -13,6 +13,7 @@ import txt from '../../images/txt.jpg';
 import attachmentService from '../../service/attachmentService';
 import { log } from 'console';
 import logo from '../../images/logo.png'
+
 type SupportedFileTypes =
   | 'image'
   | 'pdf'

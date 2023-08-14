@@ -1,5 +1,5 @@
 
-import { EncidentStatus, EncidentType, Priority } from '../../../../ims-server/src/enums/enum';
+import { Status, EncidentType, Priority } from '../../../../ims-server/src/enums/enum';
 import { IIncident } from "../../../../ims-server/src/interfaces/IncidentInterface";
 import { sendToSocket } from "../../socket";
 import { ActionType, ObjectType } from "../../../../ims-socket/src/interfaces";
@@ -12,8 +12,9 @@ export async function createIncident(channelId: string) {
     const slackData:ConversationsInfoResponse|null = await getSlackDataByChannelId(channelId);
     const newIncident: IIncident = {
       //TODO
+
       name: slackData?.channel?.name || NO_INCIDENT_NAME,
-      status: EncidentStatus.Active,
+      status: Status.Active,
       description: "This channel created in slack",
       currentPriority: Priority.P0,
       type: EncidentType.Technical,//TODO
