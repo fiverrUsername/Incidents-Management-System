@@ -11,9 +11,8 @@ import incidentRoute from './routes/IncidentRout';
 import aggregationRouter from './routes/aggrigationRouter';
 import tagRouter from './routes/tagRouter';
 import timelineEventRouter from './routes/timelineEventRouter';
-import liveStatusRoute from "./routes/systemStatusRoute"
+import liveStatusRouter from "./routes/systemStatusRouter"
 import attachmentRouter from './routes/attachmentRouter';
-import liveStatusRouter from './routes/systemStatusRoute';
 
 const port = config.server.port
 const app = express()
@@ -68,7 +67,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-app.use('/livestatus',liveStatusRoute)
+app.use('/livestatus',liveStatusRouter)
 app.get('/', (req: Request, res: Response): void => {
   res.redirect('/swagger')
 });
