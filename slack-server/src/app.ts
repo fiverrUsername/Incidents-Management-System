@@ -6,9 +6,9 @@ import { sendMessageOnAddTimelineEvent } from "./actions/via-ims/sendMessageOnAd
 import cors from 'cors';
 import './socket';
 import './slackTracking';
-
+import { TIMELINE_EVENT_ADDED_SUCCESSFULLY, WEBHOOK_EVENT_RECEIVED_SUCCESSFULLY, port } from './constPage';
 const app = express();
-const port = 4700;
+
 
 app.use(bodyParser.json());
 app.use(cors({
@@ -23,7 +23,7 @@ app.post('/webhook', (req: Request, res: Response) => {
     const challenge: string = data.challenge;
     res.json({ challenge });
   } else {
-    res.json({ message: 'Webhook event received successfully.' });
+    res.json({ message: WEBHOOK_EVENT_RECEIVED_SUCCESSFULLY });
   }
   events(data);
 });
@@ -31,7 +31,7 @@ app.post('/webhook', (req: Request, res: Response) => {
 app.post('/', (req: Request, res: Response) => {
   console.log(req.body);
   sendMessageOnAddTimelineEvent(req.body);
-  res.json({ message: 'Timeline event added successfully' });
+  res.json({ message: TIMELINE_EVENT_ADDED_SUCCESSFULLY });
 });
 
 app.listen(port, () => {

@@ -7,6 +7,7 @@ import logger from "../loggers/log";
 import incidentRepository from "../repositories/incidentRepository";
 import timelineEventRepository from "../repositories/timelineEventRepository";
 import { validate } from "class-validator";
+import systemStatusService from "./systemStatusService";
 import incidentService from "./incidentService";
 
 class TimelineEventService {
@@ -61,6 +62,7 @@ class TimelineEventService {
         logger.error({ source: constants.TIMELINE_EVENT, err: "Validation error", validationErrors: validationErrors.map((error) => error.toString()), });
         return new Error("Validation error");
       }
+      // systemStatusService.updateLiveStatus({},"")
       logger.info({ sourece: constants.TIMELINE_EVENT, method: constants.METHOD.POST, timelineEventId: newTimelineEvent.id });
       return await timelineEventRepository.addTimelineEvent(newTimelineEvent);
     } catch (error: any) {
@@ -194,7 +196,7 @@ class TimelineEventService {
       const incident:IIncident=await incidentRepository.getIncidentById(timeline.incidentId);
       incident.currentPriority=timeline.priority;
       incident.status=timeline.status;
-      return await incidentService.updateIncident(incident.id,incident);
+      return await incidentService.updateIncident(incident.id!,incident);
     }catch(err:any){      
       return new Error(err);
     }

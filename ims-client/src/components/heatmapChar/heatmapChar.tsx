@@ -10,35 +10,35 @@ interface HeatmapCharProps{
 }
 const HeatmapChar = () => {
 
-  const options:ApexOptions= {
+  const options: ApexOptions = {
     chart: {
-      width:600,
+      width: 600,
       height: 300,
       type: 'heatmap',
     },
-    stroke:{
-
+    stroke: {
+      
     },
-    grid:{
-      // xaxis: {
-      //   lines: {
-      //     offsetX: 50,
-      //     offsetY: 12
-      //   }
-      // },
-      // yaxis: {
-      //   lines: {
-      //     offsetX: 12,
-      //     offsetY: 12
-      //   }
-      // },
-      // row: {
-      //   opacity: 12
-      // },
-      // column: {
-      //   opacity: 12
-      // },
-    
+    grid: {
+      xaxis: {
+        lines: {
+          offsetX: 12,
+          offsetY: 12
+        }
+      },
+      yaxis: {
+        lines: {
+          offsetX: 12,
+          offsetY: 12
+        }
+      },
+      row: {
+        opacity: 12
+      },
+      column: {
+        opacity: 12
+      },
+
     },
     plotOptions: {
       heatmap: {
@@ -78,7 +78,7 @@ const HeatmapChar = () => {
     },
     xaxis: {
       categories: ['03/08/2023', '04/08/2023', '05/08/2023', '06/08/2023'],
-      labels:{
+      labels: {
         show: false,
       }
     },
@@ -87,45 +87,53 @@ const HeatmapChar = () => {
         show: true,
       },
     },
-    tooltip:{
+    tooltip: {
       x: {
         show: true,
         format: 'dd MMM',
         formatter: undefined,
-    },
-    y: {
-      formatter: undefined,
-      title: {
-          formatter: (seriesName) => seriesName,
       },
-  },
-  z: {
-      formatter: undefined,
-      title: 'Size: '
-  },
+      y: {
+        formatter: undefined,
+        title: {
+          formatter: (seriesName) => seriesName,
+        },
+      },
+      z: {
+        formatter: undefined,
+        title: 'Size: '
+      },
     }
   }
-  
 
- const series:ApexAxisChartSeries= [
-      {
-         
-        name: 'Inbox',
-        data: [ 17  ,100  , 48 ,32],
-      },
-      {
-        name: 'checkout',
-        data: [ 17  ,100  , 48 ,32],
-      },
-    ]
- 
+  const series: ApexAxisChartSeries = [
+    {
+      name: 'Inbox',
+      data: [
+        { x: 'W1', y: 17 },
+        { x: 'W2', y: 100 },
+        { x: 'W3', y: 48 },
+        { x: 'W4', y: 32 },
+      ],
+    },
+    {
+      name: 'checkout',
+      data: [
+        { x: 'W1', y: 47 },
+        { x: 'W2', y: 29 },
+        { x: 'W3', y: 13 },
+        { x: 'W4', y: 100 },
+      ],
+    },
+  ]
 
   return (
     <div id="chart">
-      <ReactApexChart options={options} series={series} type={options.chart?.type} height={options.chart?.height} 
-      width={options.chart?.width} />
+      <ReactApexChart options={options} series={series} type={options.chart?.type} height={options.chart?.height}
+        width={options.chart?.width} />
     </div>
   );
+  
 };
 
 export default HeatmapChar;
