@@ -14,6 +14,7 @@ import word from '../../images/word.jpg';
 import { IAttachmentData } from '../../interface/timeLineInterface';
 import attachmentService from '../../service/attachmentService';
 import { SingleAttachment, StyledImage } from './attachment.style';
+
 type SupportedFileTypes =
   | 'image'
   | 'pdf'
@@ -24,6 +25,7 @@ type SupportedFileTypes =
   | 'excel'
   | 'txt'
   | 'default';
+
 
 const getFileName = (fileName: string) => {
   const parts = fileName.split('_');
@@ -37,9 +39,7 @@ const getFileName = (fileName: string) => {
 
 const getFileTypeFromData = (file: IAttachmentData) => {
   try {
-    const parts = file.key.split('_');
-    const fileNamePart = parts[parts.length - 1];
-    const extension = fileNamePart.split('.').pop()?.toLowerCase();
+    const extension = getFileName(file.key).split('.').pop()?.toLowerCase();
     switch (extension) {
       case 'jpg':
       case 'jpeg':
@@ -104,27 +104,34 @@ export default function Attachment({
   };
 
   const handleDownload = () => {
-    // // Convert buffer data to Blob
-    // console.log("fileType",fileType)
-    // const fileBlob = new Blob([file.data], { type: fileType });
-    // console.log("fileBlob", fileBlob)
-    // // Create URL for Blob
+    // const fileBlob = new Blob([file.data], { type: fileType });    
     // const fileURL = URL.createObjectURL(fileBlob);
     // // Create a download link
+    // console.log(fileURL)
     // const downloadLink = document.createElement("a");
     // downloadLink.href = fileURL;
     // downloadLink.download = file.key;
     // downloadLink.click();
-    console.log(file.data)
-    download(file.data, file.key)
+    // console.log(file.data)
+    download(file.data, getFileName(file.key))
   };
-  
+
   const renderImageContent = () => {
-        const imageData = URL.createObjectURL(
-          new Blob([file.data], { type: 'image/jpeg/png' }) 
-        );
-       return <img className="blob-to-image" src={"data:image/png;base64," + imageData} title={getFileName(file.key)}></img>
+    const imageData = URL.createObjectURL(
+      new Blob([file.data], { type: 'image/jpeg/png' })
+    );
+    return (
+      <div>
+        <img
+          className="blob-to-image"
+          src={imageData}
+          title={getFileName(file.key)}
+        />
+        <p>{getFileName(file.key)}</p>
+      </div>
+    );
   };
+
 
   const renderFileContent = () => {
     if (!file) {
@@ -144,7 +151,7 @@ export default function Attachment({
       case 'word':
         return <StyledImage src={word} alt="word" title={getFileName(file.key)} />;
       case 'powerpoint':
-        return <StyledImage src={PowerPoint} alt="powerpoint" title={getFileName(file.key)} />;
+        return <StyledImage src={PowerPoint} alt="powerPoint" title={getFileName(file.key)} />;
       case 'excel':
         return <StyledImage src={excel} alt="excel" title={getFileName(file.key)} />;
       default:
@@ -152,7 +159,6 @@ export default function Attachment({
     }
   };
   return (
-    // <div style={{ ...fileContainerStyle, ...style }}>
     <SingleAttachment>
       {renderFileContent()}
       <Grid container spacing={2} alignItems="center">
@@ -167,8 +173,6 @@ export default function Attachment({
           </IconButton>
         </Grid>
       </Grid>
-
     </SingleAttachment>
-    // </div>
   )
 }
