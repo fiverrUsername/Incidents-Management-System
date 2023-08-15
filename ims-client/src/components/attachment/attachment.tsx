@@ -8,7 +8,7 @@ import excel from '../../images/excel.png';
 import logo from '../../images/logo.png';
 import pdf from '../../images/pdf.png';
 import PowerPoint from '../../images/powerPoint.png';
-import txt from '../../images/txt.jpg';
+import txt from '../../images/txt.png';
 import video from '../../images/video.png';
 import word from '../../images/word.jpg';
 import { IAttachmentData } from '../../interface/timeLineInterface';
@@ -139,7 +139,10 @@ export default function Attachment({
     }
     switch (fileType) {
       case 'image':
-        return renderImageContent();
+        return <StyledImage src={`data:image/${fileType};base64,${file.data.toString('base64')}`} alt="image" title={getFileName(file.key)} />;
+
+      // case 'image':
+      //   return renderImageContent();
       case 'pdf':
         return <img src={pdf} alt="pdf" title={getFileName(file.key)} />;
       case 'txt':

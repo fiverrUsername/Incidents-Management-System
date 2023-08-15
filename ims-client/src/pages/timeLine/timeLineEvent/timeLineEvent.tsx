@@ -4,11 +4,8 @@ import { Avatar } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
 import React from 'react';
-
 import { ITimeLineEventprops } from '../../../interface/timeLineInterface';
 import { TimelineConnectorWrapper, TimelineDotWrapper, TimelineItemWrapper } from './timeLineEvent.style';
-
-//צריך לטפל בדף הזה בסטטוס שנוסף
 import Attachmentlist from '../../../components/attachment/attachmentList';
 
 const timeLineEvent: React.FC<ITimeLineEventprops> = (props) => {

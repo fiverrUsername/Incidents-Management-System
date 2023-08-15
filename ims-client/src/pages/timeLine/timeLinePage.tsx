@@ -11,11 +11,6 @@ import apiCalls from "../../service/apiCalls";
 import filterTimeLineBySearch from "../../service/timeLineService";
 import TimeLine from "./timeLine";
 import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
-import mockUsers from '../../mockAPI/users.json';
-//import { Dayjs } from "dayjs";
-import dayjs from 'dayjs';
-import { Priority, Status } from "../../interface/enums";
-import timeLineEvent from "./timeLineEvent/timeLineEvent";
 import AddUpdateBtn from "../../components/AddUpdate/AddUpdateBtn";
 
 
@@ -31,7 +26,6 @@ const TimeLinePage = ({ id }: WithIdProps) => {
     const fetchTimeline = async () => {
       const getTimeLineEventsById = await apiCalls.timelineEventByIncidentId(id)
       setTimelineObjects(getTimeLineEventsById);
-      // eslint-disable-next-line no-debugger
     };
     fetchTimeline();
     const fetchSummaryIncident = async () => {
@@ -55,6 +49,8 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   someFunction();
   const addNewTimeline = (newTimeline: ITimeLineEvent) => {
     setTimelineObjects([...timelineObjects, newTimeline]);
+    //The summary should be updated
+    window.location.reload()
   }
   return (
     <>

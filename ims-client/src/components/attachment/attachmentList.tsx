@@ -26,9 +26,12 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
     if (timeline.files.length > 0) {
       try {
         const response = await attachmentService.showAttachment(timeline.files)
+        console.log("response",response);
+
         setFilesData((prevFilesData) => {
           return [...prevFilesData, ...response];
         });
+        console.log("response",response);
       } catch (error) {
         console.error('Error Getting Data:', error);
       }
