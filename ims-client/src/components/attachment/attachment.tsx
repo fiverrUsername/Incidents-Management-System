@@ -27,13 +27,15 @@ type SupportedFileTypes =
   | 'txt'
   | 'default';
 
-const getFileName = (fileName: string) => {
-  const parts = fileName.split('_');
-  if (parts.length > 1) {
-    return parts[parts.length - 1];
-  }
-  return '';
-};
+  const getFileName = (fileName: string) => {
+    const parts = fileName.split('_');
+    if (parts.length > 1) {
+      const remainingString = parts[parts.length - 1];
+      const trimmedString = remainingString.substring(13);
+      return trimmedString;
+    }
+    return '';
+  };
 
 const getFileTypeFromData = (file: IAttachmentData) => {
   try {
@@ -124,13 +126,23 @@ export default function Attachment({
       return null;
     }
     switch (fileType) {
-      case 'image':
-        return (
-          <div>
-           <img src={`data:image/${fileType};base64,${file.data.toString('base64')}`} alt="image" title={getFileName(file.key)}/>;
-            <p>{getFileName(file.key)}</p>
-          </div>
-        );
+      // case 'image':
+        // return (
+        //   <div>
+        //    <img src={`data:image/${fileType};base64,${file.data.toString('base64')}`} alt="image" title={getFileName(file.key)}/>;
+        //     <p>{getFileName(file.key)}</p>
+        //   </div>
+        // );
+        case 'image':{
+          const arrayBufferView = new Uint8Array(file.data);
+          const blob = new Blob([arrayBufferView], { type: `image/${fileType}` });
+          const imageUrl = URL.createObjectURL(blob);
+          return (
+            <div>
+              <img src={imageUrl} alt="image" title={getFileName(file.key)} />
+              <p>{getFileName(file.key)}</p>
+            </div>
+          );}
       case 'pdf':
         return (
           <div>
