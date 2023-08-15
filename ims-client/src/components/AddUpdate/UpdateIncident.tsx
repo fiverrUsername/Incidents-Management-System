@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ITag } from '../../interface/ITag';
-import { Priority, Status} from '../../interface/enums';
+import { Priority, Status } from '../../interface/enums';
 import apiCalls from '../../service/apiCalls';
 import attachmentService from '../../service/attachmentService';
 import theme from '../../theme';
@@ -18,16 +18,19 @@ import UploadFiles from '../uploadFiles/UploadFiles';
 import submitTimeLine from './submitTimeLine';
 import StatusDropDown from './StatusDropDown';
 import { ITimeLineEvent } from '../../interface/timeLineInterface';
-export interface form_data {
+import Backdrop from '@mui/material/Backdrop';
+
+
+export interface dataFromForm {
   text: string;
   priority: Priority;
   date: dayjs.Dayjs;
   type: string;
   tags: ITag[];
   files: string[];
-  status:Status;
+  status: Status;
 }
-export interface GetIncident {
+export interface receivedIncident {
   id: string;
   name: string;
   status: Status;
@@ -47,14 +50,15 @@ export interface GetIncident {
 }
 interface Props {
   open: boolean;
+  incident: receivedIncident;
   onClose: () => void;
-  incident: GetIncident;
   addNewTimelineFunction: (newTimeline: ITimeLineEvent) => void;
 }
-export default function UpdateIncident({ open, onClose, incident, addNewTimelineFunction }: Props) {
-  const priorityProp = incident.currentPriority;
-  const { handleSubmit, register, formState: { errors } } = useForm<form_data>();
-  const [priority, setPriority] = React.useState<Priority>(Priority.P0);
+export default function UpdateIncident({ open, incident, onClose, addNewTimelineFunction }: Props) {
+
+  const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();
+
+  const [priority, setPriority] = React.useState<Priority>(incident.currentPriority);
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -65,11 +69,11 @@ export default function UpdateIncident({ open, onClose, incident, addNewTimeline
   const [filesString, setFilesString] = useState<string[]>([]);
   const [severityValue, setSeverityValue] = useState<AlertColor>('error');
   const [messageValue, setMessageValue] = useState<string>("");
-  const [text, setText] = useState<string>();
-  const getOptionLabel = (option: ITag) => option.name;
   const [selectedTags, setSelectedTags] = useState<ITag[]>(incident.currentTags);
 
-  async function onSubmit(data: form_data) {
+  const getOptionLabel = (option: ITag) => option.name;
+
+  async function onSubmit(data: dataFromForm) {
     setIsSubmit(true);
     if (priority != null)
       data.priority = priority
@@ -78,7 +82,7 @@ export default function UpdateIncident({ open, onClose, incident, addNewTimeline
     else
       data.date = date;
     data.type = type;
-    data.status=status;
+    data.status = status;
     data.tags = selectedTags;
     const formData = new FormData();
     files.map((file) => {
@@ -87,10 +91,9 @@ export default function UpdateIncident({ open, onClose, incident, addNewTimeline
       formData.append('files', file, newName);
     })
     data.files = filesString;
-
     await attachmentService.uploadAttachment(formData);
-    if (type && tags) {
-      const flag = await submitTimeLine({ data, incident ,addNewTimelineFunction });
+    if (type && tags && status) {
+      const flag = await submitTimeLine({ data, incident, addNewTimelineFunction });
       if (flag) {
         setSeverityValue('success');
         setMessageValue('new update Added Successfully');
@@ -102,6 +105,7 @@ export default function UpdateIncident({ open, onClose, incident, addNewTimeline
       setShowBanner(true);
     }
   }
+
   const closeIconStyles: React.CSSProperties = {
     width: '17px',
     height: '17px',
@@ -132,7 +136,6 @@ export default function UpdateIncident({ open, onClose, incident, addNewTimeline
       setTags(getAllTags);
     }
     getTags();
-    setPriority(priorityProp);
   }, []);
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
@@ -162,7 +165,6 @@ export default function UpdateIncident({ open, onClose, incident, addNewTimeline
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
                   <ToggleButtons setPriority={setPriority} priority={priority} />
-
                 </div>
               </FormControl>
             </Grid>

@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import StatusSelect, { Statuses } from './Status';
 import { useForm } from 'react-hook-form';
-import { form_data } from './UpdateIncident';
+import { dataFromForm } from './UpdateIncident';
 import { Status } from '../../interface/enums';
 
 interface Props {
@@ -18,16 +18,12 @@ export default function DropDown({ status, setStatus }: Props) {
     const handleChange = (event: SelectChangeEvent) => {
         setStatus(event.target.value as Status);
     };
-    const { handleSubmit, register, formState: { errors } } = useForm<form_data>();
+    const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();
 
 
     return (
         <FormControl>
             <Select
-
-                // {...register("type", {
-                //     required: "type is required",
-                // })}
                 placeholder="Select Status"
                 labelId="demo-simple-select-placeholder-label"
                 id="demo-simple-select-placeholder"

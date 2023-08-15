@@ -26,7 +26,6 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
     if (timeline.files.length > 0) {
       try {
         const response = await attachmentService.showAttachment(timeline.files)
-        debugger
         console.log("response",response);
 
         setFilesData((prevFilesData) => {
