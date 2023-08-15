@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import StatusSelect, { Statuses } from './Status';
 import { useForm } from 'react-hook-form';
-import { form_data } from './AddUpdate';
+import { form_data } from './UpdateIncident';
 import { Status } from '../../interface/enums';
 
 interface Props {

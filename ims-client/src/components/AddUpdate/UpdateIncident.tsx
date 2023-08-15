@@ -51,7 +51,7 @@ interface Props {
   incident: GetIncident;
   addNewTimelineFunction: (newTimeline: ITimeLineEvent) => void;
 }
-export default function AddUpdate({ open, onClose, incident, addNewTimelineFunction }: Props) {
+export default function UpdateIncident({ open, onClose, incident, addNewTimelineFunction }: Props) {
   const priorityProp = incident.currentPriority;
   const { handleSubmit, register, formState: { errors } } = useForm<form_data>();
   const [priority, setPriority] = React.useState<Priority>(Priority.P0);

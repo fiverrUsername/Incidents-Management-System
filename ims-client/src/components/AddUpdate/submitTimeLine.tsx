@@ -1,9 +1,8 @@
 import React from 'react'
 import IIncident from '../../interface/incidentInterface'
 import apiCalls from '../../service/apiCalls'
-import { GetIncident, form_data } from '../AddUpdate/AddUpdate'
+import { GetIncident, form_data } from './UpdateIncident'
 import {ITimeLineEvent} from '../../interface/timeLineInterface'
-import { Status } from '../../interface/enums'
 
 
 interface Props {
