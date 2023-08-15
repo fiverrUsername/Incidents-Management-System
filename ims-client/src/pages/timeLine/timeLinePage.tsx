@@ -17,6 +17,8 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<ITimeLineEvent[]>([]);
   const [summaryIncident, setSummaryIncident] = useState<ISummary>();
   const [incident, setIncident] = useState<GetIncident>();
+  //gets incident id
+  
   const user= mockUsers.find(u=>u._id==id)
   useEffect(() => {
 

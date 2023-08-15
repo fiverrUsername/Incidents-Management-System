@@ -8,6 +8,7 @@ import {
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import { constants } from "../loggers/constants";
 import { Priority, Status } from "../enums/enum";
+import { TagDto } from "./tagDto";
 
 export class TimelineEventDto {
   constructor(init: ITimelineEvent) {
@@ -21,6 +22,7 @@ export class TimelineEventDto {
     this.files = [];
     this.createdDate = "";
     this.updatedDate = "";
+    this.tags = [];
     Object.assign(this, init);
   }
   @IsNotEmpty({ message: `status ${constants.EMPTY_OBJECT}` })
@@ -63,4 +65,9 @@ export class TimelineEventDto {
   @IsNotEmpty({ message: `updatedDate ${constants.EMPTY_OBJECT}` })
   @IsISO8601()
   updatedDate: string;
+
+  @IsNotEmpty({ message: `currentTags ${constants.EMPTY_OBJECT}` })
+  @IsArray({ message: "is not an array" })
+  @ValidateNested({ each: true })
+  tags: TagDto[];
 }

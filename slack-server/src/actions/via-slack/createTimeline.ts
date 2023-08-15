@@ -22,6 +22,7 @@ export default async function handleMessageEvent(event: any) {
       createdDate: new Date(),
       updatedDate: decodeMessageDate(event.text) || new Date(),
       status: Status.Active,
+      tags: []
     };
     sendToSocket(timelineEvent, ObjectType.TimelineEvent, ActionType.Add);
     console.log(timelineEvent)

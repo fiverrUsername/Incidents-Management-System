@@ -11,7 +11,7 @@ import incidentRoute from './routes/IncidentRout';
 import aggregationRouter from './routes/aggrigationRouter';
 import tagRouter from './routes/tagRouter';
 import timelineEventRouter from './routes/timelineEventRouter';
-import liveStatusRouter from "./routes/systemStatusRouter"
+import liveStatusRouter from "./routes/systemStatusRouter";
 import attachmentRouter from './routes/attachmentRouter';
 
 const port = config.server.port
@@ -57,7 +57,7 @@ app.use('/aggregation', aggregationRouter)
 app.use('/tag', tagRouter)
 app.use('/timelineEvent', timelineEventRouter)
 app.use('/attachment', attachmentRouter)
-
+app.use('/livestatus',liveStatusRouter)
 // בדיקה אם השרת מורשה לגשת לשרת
 app.use((req: Request, res: Response, next: NextFunction) => {
   if (req.headers.authorization === `Bearer ${apiKey}`) {
@@ -67,7 +67,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-app.use('/livestatus',liveStatusRouter)
+
 app.get('/', (req: Request, res: Response): void => {
   res.redirect('/swagger')
 });

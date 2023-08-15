@@ -18,7 +18,8 @@ class IncidentRepository {
       files: [],
       createdDate: new Date(),
       updatedDate: new Date(),
-      status:newIncident.status
+      status:newIncident.status,
+      tags:newIncident.currentTags
     }
     try {
       const _newIncident:IIncident=await incidentModel.create(newIncident);
