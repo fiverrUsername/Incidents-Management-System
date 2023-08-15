@@ -1,5 +1,5 @@
 import FormData from 'form-data';
-import { SLACK_UPLOAD_FILES, client } from '../../constPage';
+import { SLACK_UPLOAD_FILES, client, SLACK_API_TOKEN } from '../../constPage';
 import axios from "axios";
 import { IAttachmentData } from '../../interfaces/attachmentData';
 import { IMessageData } from '../../interfaces/messageData';
@@ -24,7 +24,7 @@ export async function sendMessage(messageData: IMessageData) {
           await axios.post(SLACK_UPLOAD_FILES, formData, {
             headers: {
               ...formData.getHeaders(),
-              Authorization: `Bearer ${process.env.SLACK_API_TOKEN}`
+              Authorization: `Bearer ${SLACK_API_TOKEN}`
             },
           });
 
