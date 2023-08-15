@@ -1,7 +1,7 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { InvitePeopleToChannel } from './InvitePeopleToChannel';
-import { IIncident } from '../../../../ims-server/src/interfaces/IncidentInterface';
-import { ActionType, ObjectType } from '../../../../ims-socket/src/interfaces';
-import { sendToSocket } from '../../socket';
 import { updateChannelDescription } from './updateChannelDescription'
 import {  sendMassageOnSpecificPriorityChannel } from '../via-ims/sendMassageOnChangePriority';
 import { ERROR_CREATING_CHANNEL, client } from '../../constPage';
