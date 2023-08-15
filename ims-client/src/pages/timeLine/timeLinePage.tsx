@@ -41,10 +41,7 @@ const TimeLinePage = ({ id }: WithIdProps) => {
       setIncident(getIncidentById);
     };
     fetchIncident();
-
   }, [id]);
-
-
 
   const someFunction = () => {
     filter = filterTimeLineBySearch(timelineObjects, myValue);
@@ -54,8 +51,7 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   let filter: ITimeLineEvent[] = [];
   someFunction();
   const addNewTimeline = (newTimeline: ITimeLineEvent) => {
-    console.log("from the funccccccc")
-    setTimelineObjects([...timelineObjects,newTimeline]);
+    setTimelineObjects([...timelineObjects, newTimeline]);
   }
   return (
     <>

@@ -43,7 +43,7 @@ const timeLineEvent: React.FC<ITimeLineEventprops> = (props) => {
 
             </TimelineContent>
         </TimelineItemWrapper>
-        <Attachmentlist id={timeline.id?timeline.id:""}/>;
+        <Attachmentlist id={timeline.id?timeline.id:""}/>
 
         {/* <Attachment /> */}
     </div>
