@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Grid, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
+import { Grid, IconButton } from '@mui/material';
+import download from 'downloadjs';
+import React, { useEffect, useState } from 'react';
 import audio from '../../images/audio.png';
+import excel from '../../images/excel.png';
+import logo from '../../images/logo.png';
 import pdf from '../../images/pdf.png';
 import PowerPoint from '../../images/powerPoint.png';
+import txt from '../../images/txt.jpg';
 import video from '../../images/video.png';
 import word from '../../images/word.jpg';
-import excel from '../../images/excel.png';
-import txt from '../../images/txt.jpg';
-import attachmentService from '../../service/attachmentService';
-import download from 'downloadjs';
-import { log } from 'console';
-import logo from '../../images/logo.png'
 import { IAttachmentData } from '../../interface/timeLineInterface';
-import { fileContainerStyle } from './attachment.style';
-
+import attachmentService from '../../service/attachmentService';
+import { SingleAttachment, StyledImage } from './attachment.style';
 type SupportedFileTypes =
   | 'image'
   | 'pdf'
@@ -124,7 +122,7 @@ export default function Attachment({
     const arrayBufferView = new Uint8Array(file.data);
     const blob = new Blob([arrayBufferView], { type: `image/${fileType}` });
     const imageUrl = URL.createObjectURL(blob);
-    return  <img src={imageUrl} alt="image" title={getFileName(file.key)} />
+    return <img src={imageUrl} alt="image" title={getFileName(file.key)} />
   };
   const renderFileContent = () => {
     if (!file) {
@@ -132,33 +130,31 @@ export default function Attachment({
     }
     switch (fileType) {
       case 'image':
-        return <img src={`data:image/${fileType};base64,${file.data.toString('base64')}`} alt="image" title={getFileName(file.key)}/>;
-  
+        return <StyledImage src={`data:image/${fileType};base64,${file.data.toString('base64')}`} alt="image" title={getFileName(file.key)} />;
+
       // case 'image':
       //   return renderImageContent();
       case 'pdf':
-        return  <img src={pdf} alt="pdf" title={getFileName(file.key)} />;
+        return <img src={pdf} alt="pdf" title={getFileName(file.key)} />;
       case 'txt':
-        return  <img src={txt} alt="txt" title={getFileName(file.key)} />;
+        return <StyledImage src={txt} alt="txt" title={getFileName(file.key)} />;
       case 'audio':
-        return   <img src={audio} alt="audio" title={getFileName(file.key)} />
+        return <StyledImage src={audio} alt="audio" title={getFileName(file.key)} />;
       case 'video':
-        return <img src={video} alt="video" title={getFileName(file.key)} />;
+        return <StyledImage src={video} alt="video" title={getFileName(file.key)} />;
       case 'word':
-        return <img src={word} alt="word" title={getFileName(file.key)} />;
+        return <StyledImage src={word} alt="word" title={getFileName(file.key)} />;
       case 'powerpoint':
-        return <img src={PowerPoint} alt="powerpoint" title={getFileName(file.key)} />;
+        return <StyledImage src={PowerPoint} alt="powerpoint" title={getFileName(file.key)} />;
       case 'excel':
-        return <img src={excel} alt="excel" title={getFileName(file.key)} />;
+        return <StyledImage src={excel} alt="excel" title={getFileName(file.key)} />;
       default:
-        return <img src={logo} alt="default" title={getFileName(file.key)} />;
+        return <StyledImage src={logo} alt="default" title={getFileName(file.key)} />;
     }
-
-
-
   };
   return (
-    <div style={{ ...fileContainerStyle, ...style }}>
+    // <div style={{ ...fileContainerStyle, ...style }}>
+    <SingleAttachment>
       {renderFileContent()}
       <Grid container spacing={2} alignItems="center">
         <Grid item>
@@ -172,6 +168,8 @@ export default function Attachment({
           </IconButton>
         </Grid>
       </Grid>
-    </div>
+
+    </SingleAttachment>
+    // </div>
   )
 }
