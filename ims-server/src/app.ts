@@ -57,6 +57,16 @@ app.use('/aggregation', aggregationRouter)
 app.use('/tag', tagRouter)
 app.use('/timelineEvent', timelineEventRouter)
 app.use('/attachment', attachmentRouter)
+
+// בדיקה אם השרת מורשה לגשת לשרת
+app.use((req: Request, res: Response, next: NextFunction) => {
+  if (req.headers.authorization === `Bearer ${apiKey}`) {
+    next(); 
+  } else {
+    res.status(401).json({ error: 'Unauthorized' });
+  }
+});
+
 app.use('/livestatus',liveStatusRouter)
 // בדיקה אם השרת מורשה לגשת לשרת
 app.use((req: Request, res: Response, next: NextFunction) => {
