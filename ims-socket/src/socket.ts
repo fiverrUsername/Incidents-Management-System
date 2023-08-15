@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
 
-const ws = new WebSocket.Server({ port: 7071 });
+const ws = new WebSocket.Server({ port: 7072 });
 const clients = new Map<string, WebSocket>();
 
 function uuidv4(): string {

@@ -148,18 +148,23 @@ export default function Attachment({
     switch (fileType) {
       case 'pdf':
         return <img src={pdf} alt="pdf" />;
+        break;
       case 'txt':
         return <img src={txt} alt="txt" />;
+        break
       case 'audio':
         // return <img src={audio} alt="audio" />;
+        break
       case 'video':
         return <img src={video} alt="video" />;
       case 'word':
           return <img src={word} alt="word" />;
       case 'powerpoint':
         // return <img src={PowerPoint} alt="powerpoint" />;
+        break
       case 'excel':
         // return <img src={excel} alt="excel" />;
+        break
       default:
         return renderGeneric();
     }
