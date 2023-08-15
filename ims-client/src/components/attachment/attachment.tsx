@@ -27,21 +27,21 @@ type SupportedFileTypes =
   | 'txt'
   | 'default';
 
-  const getFileName = (fileName: string) => {
-    const parts = fileName.split('_');
-    if (parts.length > 1) {
-      const remainingString = parts[parts.length - 1];
-      const trimmedString = remainingString.substring(13);
-      return trimmedString;
-    }
-    return '';
-  };
+const getFileName = (fileName: string) => {
+  const parts = fileName.split('_');
+  if (parts.length > 1) {
+    const remainingString = parts[parts.length - 1];
+    const trimmedString = remainingString.substring(13);
+    return trimmedString;
+  }
+  return '';
+};
 
 const getFileTypeFromData = (file: IAttachmentData) => {
   try {
     const parts = file.key.split('_');
-    const fileNamePart = parts[parts.length - 1]; 
-    const extension = fileNamePart.split('.').pop()?.toLowerCase(); 
+    const fileNamePart = parts[parts.length - 1];
+    const extension = fileNamePart.split('.').pop()?.toLowerCase();
     switch (extension) {
       case 'jpg':
       case 'jpeg':
@@ -120,106 +120,58 @@ export default function Attachment({
     console.log(file.data)
     download(file.data, file.key)
   };
-
+  const renderImageContent = () => {
+    const arrayBufferView = new Uint8Array(file.data);
+    const blob = new Blob([arrayBufferView], { type: `image/${fileType}` });
+    const imageUrl = URL.createObjectURL(blob);
+    return  <img src={imageUrl} alt="image" title={getFileName(file.key)} />
+  };
   const renderFileContent = () => {
     if (!file) {
       return null;
     }
     switch (fileType) {
+      case 'image':
+        return <img src={`data:image/${fileType};base64,${file.data.toString('base64')}`} alt="image" title={getFileName(file.key)}/>;
+  
       // case 'image':
-        // return (
-        //   <div>
-        //    <img src={`data:image/${fileType};base64,${file.data.toString('base64')}`} alt="image" title={getFileName(file.key)}/>;
-        //     <p>{getFileName(file.key)}</p>
-        //   </div>
-        // );
-        case 'image':{
-          const arrayBufferView = new Uint8Array(file.data);
-          const blob = new Blob([arrayBufferView], { type: `image/${fileType}` });
-          const imageUrl = URL.createObjectURL(blob);
-          return (
-            <div>
-              <img src={imageUrl} alt="image" title={getFileName(file.key)} />
-              <p>{getFileName(file.key)}</p>
-            </div>
-          );}
+      //   return renderImageContent();
       case 'pdf':
-        return (
-          <div>
-            <img src={pdf} alt="pdf" title={getFileName(file.key)} />
-            <p>{getFileName(file.key)}</p>
-          </div>
-        );
+        return  <img src={pdf} alt="pdf" title={getFileName(file.key)} />;
       case 'txt':
-        return (
-          <div>
-            <img src={txt} alt="txt" title={getFileName(file.key)} />
-            <p>{getFileName(file.key)}</p>
-          </div>
-        );
+        return  <img src={txt} alt="txt" title={getFileName(file.key)} />;
       case 'audio':
-        return (
-          <div>
-            <img src={audio} alt="audio" title={getFileName(file.key)} />
-            <p>{getFileName(file.key)}</p>
-          </div>
-        );
+        return   <img src={audio} alt="audio" title={getFileName(file.key)} />
       case 'video':
-        return (
-          <div>
-            <img src={video} alt="video" title={getFileName(file.key)} />
-            <p>{getFileName(file.key)}</p>
-          </div>
-        );
+        return <img src={video} alt="video" title={getFileName(file.key)} />;
       case 'word':
-        return (
-          <div>
-            <img src={word} alt="word" title={getFileName(file.key)} />
-            <p>{getFileName(file.key)}</p>
-          </div>
-        );
+        return <img src={word} alt="word" title={getFileName(file.key)} />;
       case 'powerpoint':
-        return (
-          <div>
-            <img src={PowerPoint} alt="powerpoint" title={getFileName(file.key)} />;
-            <p>{getFileName(file.key)}</p>
-          </div>
-        );
+        return <img src={PowerPoint} alt="powerpoint" title={getFileName(file.key)} />;
       case 'excel':
-        return (
-          <div>
-            <img src={excel} alt="excel" title={getFileName(file.key)} />;
-            <p>{getFileName(file.key)}</p>
-          </div>
-        );
+        return <img src={excel} alt="excel" title={getFileName(file.key)} />;
       default:
-        return (
-          <div>
-            
-            <img src={logo} alt="default" title={getFileName(file.key)} />;
-            <p>{getFileName(file.key)}</p>
-          </div>
-        );
+        return <img src={logo} alt="default" title={getFileName(file.key)} />;
     }
 
 
-  
-};
-return (
-  <div style={{ ...fileContainerStyle, ...style }}>
-    {renderFileContent()}
-    <Grid container spacing={2} alignItems="center">
-      <Grid item>
-        <IconButton onClick={handleDelete}>
-          <DeleteIcon />
-        </IconButton>
+
+  };
+  return (
+    <div style={{ ...fileContainerStyle, ...style }}>
+      {renderFileContent()}
+      <Grid container spacing={2} alignItems="center">
+        <Grid item>
+          <IconButton onClick={handleDelete}>
+            <DeleteIcon />
+          </IconButton>
+        </Grid>
+        <Grid item>
+          <IconButton onClick={handleDownload}>
+            <DownloadIcon />
+          </IconButton>
+        </Grid>
       </Grid>
-      <Grid item>
-        <IconButton onClick={handleDownload}>
-          <DownloadIcon />
-        </IconButton>
-      </Grid>
-    </Grid>
-  </div>
-)
+    </div>
+  )
 }
