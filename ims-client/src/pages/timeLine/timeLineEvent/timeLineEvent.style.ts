@@ -9,7 +9,7 @@ export const TimelineConnectorWrapper = styled(TimelineConnector)`
 `
 export const TimelineItemWrapper = styled(TimelineItem)(({ theme }) => ({
     ' &': {
-        flex: 1,
+        flex: 2,
     },
 }))
 
