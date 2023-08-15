@@ -53,7 +53,7 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-       
+
         {filesData &&
           filesData.slice(currentIndex, currentIndex + 3).map((file) => (
             <Attachment
