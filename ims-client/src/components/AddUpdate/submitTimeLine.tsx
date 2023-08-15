@@ -14,7 +14,6 @@ interface Props {
 export default async function submitTimeLine(props: Props) {
   let flag: boolean;
   const timeLineEvent: ITimeLineEvent = {
-    id:"666",
     incidentId: props.incident.id,
     channelId: props.incident.channelId,
     userId: "698cbeda854a5d4d8bcf303l",
@@ -28,8 +27,8 @@ export default async function submitTimeLine(props: Props) {
     status: props.data.status,
   }
   try {
-    props.addNewTimelineFunction(timeLineEvent);
-    await apiCalls.addTimelineEvent(timeLineEvent);
+   const newTimeLine= await apiCalls.addTimelineEvent(timeLineEvent);
+   props.addNewTimelineFunction(newTimeLine);
     flag = true;
   }
   catch (error) {
