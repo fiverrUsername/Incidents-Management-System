@@ -9,6 +9,7 @@ import { Status } from '../../interface/enums'
 interface Props {
   data: form_data;
   incident: GetIncident;
+  addNewTimelineFunction: (newTimeline: ITimeLineEvent) => void
 }
 
 export default async function submitTimeLine(props: Props) {
@@ -27,6 +28,7 @@ export default async function submitTimeLine(props: Props) {
     status: props.data.status,
   }
   try {
+    props.addNewTimelineFunction(timeLineEvent);
     await apiCalls.addTimelineEvent(timeLineEvent);
     flag = true;
   }

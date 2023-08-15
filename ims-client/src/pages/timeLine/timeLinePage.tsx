@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material";
-import React,{ useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { WithIdProps } from "../../HOC";
 import { GetIncident } from "../../components/AddUpdate/AddUpdate";
 import AddUpdateComp from "../../components/AddUpdate/AddUpdateComp";
@@ -11,7 +11,11 @@ import apiCalls from "../../service/apiCalls";
 import filterTimeLineBySearch from "../../service/timeLineService";
 import TimeLine from "./timeLine";
 import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
- 
+//import { Dayjs } from "dayjs";
+import dayjs from 'dayjs';
+import { Priority, Status } from "../../interface/enums";
+import timeLineEvent from "./timeLineEvent/timeLineEvent";
+
 
 const TimeLinePage = ({ id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<ITimeLineEvent[]>([]);
@@ -47,9 +51,12 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   };
 
   const [myValue, setMyValue] = useState<string>("");
-  let filter: ITimeLineEvent[] = []
-  someFunction()
-
+  let filter: ITimeLineEvent[] = [];
+  someFunction();
+  const addNewTimeline = (newTimeline: ITimeLineEvent) => {
+    console.log("from the funccccccc")
+    setTimelineObjects([...timelineObjects,newTimeline]);
+  }
   return (
     <>
       <Search onEvent={someFunction} setValue={setMyValue}></Search>
@@ -57,7 +64,7 @@ const TimeLinePage = ({ id }: WithIdProps) => {
       <StyledPaper>
         <Grid container direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="nowrap">
           <Typography variant='bold'>Consectetur massa</Typography>
-          {incident && <AddUpdateComp incident={{ ...incident }} />}
+          {incident && <AddUpdateComp addNewTimelineFunction={addNewTimeline} incident={{ ...incident }} />}
         </Grid>
         {timelineObjects && (
           <CustomScrollbar>
