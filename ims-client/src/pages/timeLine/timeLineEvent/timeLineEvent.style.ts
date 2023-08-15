@@ -13,6 +13,8 @@ export const TimelineItemWrapper = styled(TimelineItem)(({ theme }) => ({
     },
 }))
 
+
+
 export const TimelineDotWrapper = styled(TimelineDot)`
     border-color:black;
     border-width:1px;

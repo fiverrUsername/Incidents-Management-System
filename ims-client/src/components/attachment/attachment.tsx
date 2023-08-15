@@ -8,10 +8,9 @@ import PowerPoint from '../../images/powerPoint.png';
 import video from '../../images/video.png';
 import word from '../../images/word.jpg';
 import excel from '../../images/excel.png';
-import txt from '../../images/txt.jpg';
+import txt from '../../images/txt.png';
 import attachmentService from '../../service/attachmentService';
 import download from 'downloadjs';
-import { log } from 'console';
 import logo from '../../images/logo.png'
 import { IAttachmentData } from '../../interface/timeLineInterface';
 import { fileContainerStyle } from './attachment.style';
@@ -104,30 +103,37 @@ export default function Attachment({
   };
 
   const handleDownload = () => {
-    // // Convert buffer data to Blob
-    // console.log("fileType",fileType)
-    // const fileBlob = new Blob([file.data], { type: fileType });
-    // console.log("fileBlob", fileBlob)
-    // // Create URL for Blob
+    const fileBlob = new Blob([file.data], { type: fileType });
     // const fileURL = URL.createObjectURL(fileBlob);
-    // // Create a download link
     // const downloadLink = document.createElement("a");
     // downloadLink.href = fileURL;
     // downloadLink.download = file.key;
     // downloadLink.click();
-    console.log(file.data)
-    download(file.data, file.key)
+    download(fileBlob, file.key)
   };
-
+  const renderImageContent = () => {
+    // const arrayBufferView = new Uint8Array(file.data);
+    // const blob = new Blob([arrayBufferView], { type: `image/${fileType}` });
+        // const imageUrl = URL.createObjectURL(blob);
+    const imageData = URL.createObjectURL(
+      new Blob([file.data], { type: 'image/jpeg/png' })
+    );
+    console.log(imageData)
+    return  <img src={imageData} alt="image" title={getFileName(file.key)} />
+  };
   const renderFileContent = () => {
+    // const base64Image = Buffer.from(file.data).toString('base64');
     if (!file) {
       return null;
     }
     switch (fileType) {
       case 'image':
+        renderImageContent()
+
         return (
           <div>
-           <img src={`data:image/${fileType};base64,${file.data.toString('base64')}`} alt="image" title={getFileName(file.key)}/>;
+          {/* <img src={`data:image/jpeg;base64,${base64Image}`} alt="Image" /> */}
+          {/* <img src={`data:image/${fileType};base64,${file.data.toString('base64')}`} alt="image" title={getFileName(file.key)}/>; */}
             <p>{getFileName(file.key)}</p>
           </div>
         );
@@ -182,8 +188,7 @@ export default function Attachment({
         );
       default:
         return (
-          <div>
-            
+          <div>        
             <img src={logo} alt="default" title={getFileName(file.key)} />;
             <p>{getFileName(file.key)}</p>
           </div>
