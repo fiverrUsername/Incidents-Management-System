@@ -1,4 +1,3 @@
-
 import { Status, EncidentType, Priority } from '../../../../ims-server/src/enums/enum';
 import { IIncident } from "../../../../ims-server/src/interfaces/IncidentInterface";
 import { sendToSocket } from "../../socket";

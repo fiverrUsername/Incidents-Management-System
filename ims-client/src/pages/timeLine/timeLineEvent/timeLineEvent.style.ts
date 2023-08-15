@@ -1,4 +1,4 @@
-import { TimelineConnector, TimelineDot, TimelineItem, TimelineSeparator } from '@mui/lab';
+import { TimelineConnector, TimelineDot, TimelineItem } from '@mui/lab';
 import { styled } from '@mui/material';
 
 export const TimelineConnectorWrapper = styled(TimelineConnector)`
@@ -9,9 +9,11 @@ export const TimelineConnectorWrapper = styled(TimelineConnector)`
 `
 export const TimelineItemWrapper = styled(TimelineItem)(({ theme }) => ({
     ' &': {
-        flex: 1,
+        flex: 2,
     },
 }))
+
+
 
 export const TimelineDotWrapper = styled(TimelineDot)`
     border-color:black;

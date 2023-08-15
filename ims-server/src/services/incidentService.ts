@@ -3,7 +3,6 @@ import { ISummary } from "../interfaces/ISummary";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import incidentRepository from "../repositories/incidentRepository";
-import { Priority } from "../enums/enum";
 import SystemStatusService from './systemStatusService';
 
 
@@ -16,7 +15,7 @@ class IncidentService {
         incidentId: newIncident.id
       });
       console.log("incident::::",newIncident)
-      const live=await SystemStatusService.logic(newIncident);
+      const live=await SystemStatusService.liveStatusByIncident(newIncident);
       console.log("live:::",live)
       return await incidentRepository.addIncident(newIncident);
     } catch (error: any) {

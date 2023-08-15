@@ -24,3 +24,4 @@ export async function IMS_CreateChannel(incidentData: IIncident) {
     return null;
   }
 }
+

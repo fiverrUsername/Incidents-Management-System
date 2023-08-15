@@ -21,6 +21,7 @@ export type EventProps = {
 export interface IInceidentTableProps {
   rows: IIncident[];
   isLoading: boolean;
+  handleRefresh: () => void;
 }
 export interface ICollumnHeader {
   params: GridColumnHeaderParams
@@ -31,7 +32,7 @@ const ColumnHeader: React.FC<ICollumnHeader> = ({ params }) => {
       {params.colDef.headerName}
     </Typography>)
 }
-const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading }) => {
+const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading, handleRefresh}) => {
 
   const visibilityModel: GridColumnVisibilityModel =
   {
@@ -41,7 +42,7 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading }) => {
     tags: false,
     updatedAt: false,
     createdAt: false,
-    slackLink:false,
+    slackLink: false,
     channelName: false,
   };
 
@@ -134,7 +135,7 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading }) => {
           <Box style={{ marginRight: '8px' }}>
             <Search onEvent={someFunction} setValue={setSearchValue} />
           </Box>
-          <AddIncidentComp />
+          <AddIncidentComp handleRefresh={handleRefresh}  />
         </Box>
       </Box>
       <Table columns={columns} rows={filteredRows} isLoading={isLoading} visibilityModel={visibilityModel} />

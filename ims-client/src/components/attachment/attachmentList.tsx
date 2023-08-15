@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { ITimeLineEvent } from '../../interface/timeLineInterface';
-import Attachment from './attachment';
+import React, { useEffect, useState } from 'react';
+import { IAttachmentData, ITimeLineEvent } from '../../interface/timeLineInterface';
 import apiCalls from '../../service/apiCalls';
 import attachmentService from '../../service/attachmentService';
-import { json } from 'stream/consumers';
-import { log } from 'console';
-import { IAttachmentData } from '../../interface/timeLineInterface';
-import { fileContainerStyle } from './attachment.style';
+import Attachment from './attachment';
 interface AttachmentlistProps {
   id: string;
 }
@@ -20,7 +16,6 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
   };
   const fetchTimelineData = async (id: string) => {
     try {
-      console.log("fetchTimelineData");
       const timelineData: ITimeLineEvent = await apiCalls.getTimeLineEventsById(id)
       getFilesdata(timelineData);
     } catch (error) {
@@ -31,9 +26,12 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
     if (timeline.files.length > 0) {
       try {
         const response = await attachmentService.showAttachment(timeline.files)
+        console.log("response",response);
+
         setFilesData((prevFilesData) => {
           return [...prevFilesData, ...response];
         });
+        console.log("response",response);
       } catch (error) {
         console.error('Error Getting Data:', error);
       }
@@ -51,24 +49,20 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
   }, []);
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-
-        {filesData &&
-          filesData.slice(currentIndex, currentIndex + 3).map((file) => (
-            <Attachment
-              key={file.key}
-              file={file}
-              onDelete={handleDeleteFile}
-              style={fileContainerStyle}
-            />
-          ))}
-        {filesData && filesData.length > 3 && (
-          <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-            <ArrowForwardIosIcon onClick={nextImage} />
-          </div>
-        )}
-      </div>
+    <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', flex: 3 }}>
+      {filesData &&
+        filesData.slice(currentIndex, currentIndex + 3).map((file,index) => (
+          <Attachment
+            key={index}
+            file={file}
+            onDelete={handleDeleteFile}
+          />
+        ))}
+      {filesData && filesData.length > 3 && (
+        <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+          <ArrowForwardIosIcon onClick={nextImage} />
+        </div>
+      )}
     </div>
   );
 }

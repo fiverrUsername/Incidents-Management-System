@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import theme from '../../theme';
-import { IntervalHistogram } from 'perf_hooks';
-import  IOption  from '../../interface/IOption';
-
 
 interface AutocompleteProps {
   options: any[];
