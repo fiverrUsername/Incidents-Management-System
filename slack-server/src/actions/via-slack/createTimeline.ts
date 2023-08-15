@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Priority, Status } from '../../../../ims-server/src/enums/enum';
+import { EncidentType, Priority, Status } from '../../../../ims-server/src/enums/enum';
 import { ITimelineEvent } from '../../../../ims-server/src/interfaces/ItimelineEvent';
 import { ActionType, ObjectType } from '../../../../ims-socket/src/interfaces';
 import { decodeMessageDate } from '../base/decode/decodeMessageDate';
@@ -23,7 +23,7 @@ export default async function handleMessageEvent(event: any) {
       userId: '14785',
       description: event.text,
       priority: decodeMessagePriority(event.text) || Priority.P0,
-      type: 'security',
+      type: EncidentType.Securing,
       files: event.files && (await fileResponse(event.files, answer.data.id!)) || [],
       createdDate: new Date(),
       updatedDate: decodeMessageDate(event.text) || new Date(),
@@ -34,5 +34,7 @@ export default async function handleMessageEvent(event: any) {
     console.log(timelineEvent)
   }
 }
+
+
 
 
