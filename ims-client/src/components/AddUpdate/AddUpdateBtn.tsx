@@ -1,7 +1,6 @@
-import { Box, Button } from "@mui/material";
-import React, { useState } from "react";
+import {Button } from "@mui/material";
+import React,{ useState } from "react";
 import UpdateIncident, { GetIncident } from "./UpdateIncident";
-import IIncident from "../../interface/incidentInterface";
 import { ITimeLineEvent } from "../../interface/timeLineInterface";
 
 interface Props {
