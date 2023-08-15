@@ -17,6 +17,7 @@ import DateTimePickerValue from '../datePicker/datePicker';
 import UploadFiles from '../uploadFiles/UploadFiles';
 import submitTimeLine from './submitTimeLine';
 import StatusDropDown from './StatusDropDown';
+import { ITimeLineEvent } from '../../interface/timeLineInterface';
 export interface form_data {
   text: string;
   priority: Priority;
@@ -48,8 +49,9 @@ interface Props {
   open: boolean;
   onClose: () => void;
   incident: GetIncident;
+  addNewTimelineFunction: (newTimeline: ITimeLineEvent) => void;
 }
-export default function AddUpdate({ open, onClose, incident }: Props) {
+export default function UpdateIncident({ open, onClose, incident, addNewTimelineFunction }: Props) {
   const priorityProp = incident.currentPriority;
   const { handleSubmit, register, formState: { errors } } = useForm<form_data>();
   const [priority, setPriority] = React.useState<Priority>(Priority.P0);
@@ -88,7 +90,7 @@ export default function AddUpdate({ open, onClose, incident }: Props) {
 
     await attachmentService.uploadAttachment(formData);
     if (type && tags) {
-      const flag = await submitTimeLine({ data, incident });
+      const flag = await submitTimeLine({ data, incident ,addNewTimelineFunction });
       if (flag) {
         setSeverityValue('success');
         setMessageValue('new update Added Successfully');

@@ -1,21 +1,22 @@
 // import type { Meta, StoryObj } from '@storybook/react';
 // import { within, userEvent } from '@storybook/testing-library';
 // import UpTabs from '../../components/tabs/Tabs';
-// import addUpdate from './AddUpdate';
+// import addUpdate from './UpdateIncident';
+// import UpdateIncident from './UpdateIncident';
 
 // const meta = {
-//   title: 'components/addUpdate',
-//   component: addUpdate,
+//   title: 'components/UpdateIncident',
+//   component: UpdateIncident,
 //   parameters: {
 //     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
 //     layout: 'fullscreen',
 //     tags: ['autodocs'],
 //   },
-// } satisfies Meta<typeof addUpdate>;
+// } satisfies Meta<typeof UpdateIncident>;
 // export default meta;
 // type Story = StoryObj<typeof meta>;
 // export const form: Story = {
-// //   play: async ({ canvasElement }) => {
+// //   play: async ({ canvasElement}) => {
 // //     const canvas = within(canvasElement);
 // //     const activeIncidents = await canvas.getByText('Active Incidents');
 // //     await userEvent.click(activeIncidents);

@@ -1,14 +1,14 @@
 import React from 'react'
 import IIncident from '../../interface/incidentInterface'
 import apiCalls from '../../service/apiCalls'
-import { GetIncident, form_data } from '../AddUpdate/AddUpdate'
+import { GetIncident, form_data } from './UpdateIncident'
 import {ITimeLineEvent} from '../../interface/timeLineInterface'
-import { Status } from '../../interface/enums'
 
 
 interface Props {
   data: form_data;
   incident: GetIncident;
+  addNewTimelineFunction: (newTimeline: ITimeLineEvent) => void
 }
 
 export default async function submitTimeLine(props: Props) {
@@ -27,7 +27,8 @@ export default async function submitTimeLine(props: Props) {
     status: props.data.status,
   }
   try {
-    await apiCalls.addTimelineEvent(timeLineEvent);
+   const newTimeLine= await apiCalls.addTimelineEvent(timeLineEvent);
+   props.addNewTimelineFunction(newTimeLine);
     flag = true;
   }
   catch (error) {

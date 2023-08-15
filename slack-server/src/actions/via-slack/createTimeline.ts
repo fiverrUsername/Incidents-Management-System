@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Priority, Status, EncidentType } from '../../../../ims-server/src/enums/enum';
+import { EncidentType, Priority, Status } from '../../../../ims-server/src/enums/enum';
 import { ITimelineEvent } from '../../../../ims-server/src/interfaces/ItimelineEvent';
 import { ActionType, ObjectType } from '../../../../ims-socket/src/interfaces';
 import { decodeMessageDate } from '../base/decode/decodeMessageDate';
@@ -7,12 +7,15 @@ import { decodeMessagePriority } from '../base/decode/decodeMessagePriority';
 import { fileResponse } from './fileResponse';
 import { sendToSocket } from '../../socket';
 import { IMS_SERVER_ROUTING } from '../../constPage';
+import dotenv from 'dotenv';
 
-export let date:Date;
-
+// Load environment variables from .env file
+dotenv.config();
 export default async function handleMessageEvent(event: any) {
-  date=new Date()
-  const answer = await axios.get(`${IMS_SERVER_ROUTING}incident/${event.channel}/channelId`);
+  const headers = {
+    Authorization: `Bearer ${process.env.API_KEY}`
+  };
+  const answer = await axios.get(`${IMS_SERVER_ROUTING}incident/${event.channel}/channelId`, { headers });
   if (answer.data) {
     const timelineEvent: ITimelineEvent = {
       channelId: event.channel,
@@ -25,8 +28,13 @@ export default async function handleMessageEvent(event: any) {
       createdDate: date,
       updatedDate: decodeMessageDate(event.text) || date,
       status: Status.Active,
+      tags: []
     };
     sendToSocket(timelineEvent, ObjectType.TimelineEvent, ActionType.Add);
     console.log(timelineEvent)
   }
 }
+
+
+
+
