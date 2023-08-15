@@ -4,11 +4,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
 import audio from '../../images/audio.png';
 import pdf from '../../images/pdf.png';
-import PowerPoint from '../../images/powerpoint.png';
+import PowerPoint from '../../images/powerPoint.png';
 import video from '../../images/video.png';
-import word from '../../images/word.webp';
+import word from '../../images/word.jpg';
 import excel from '../../images/excel.png';
-import txt from '../../images/txt.png';
+import txt from '../../images/txt.jpg';
 import attachmentService from '../../service/attachmentService';
 import download from 'downloadjs';
 import { log } from 'console';
@@ -90,21 +90,10 @@ export default function Attachment({
   style?: React.CSSProperties;
 }) {
   const [fileType, setFileType] = useState<SupportedFileTypes>('default');
-<<<<<<< HEAD
-
-=======
->>>>>>> e577043f8e815c58faa46a9d8e4cc602c1c60d79
   useEffect(() => {
     setFileType(getFileTypeFromData(file));
   }, [file]);
 
-<<<<<<< HEAD
-  const renderGeneric = () => {
-    return <p>Open {fileType}</p>;
-  };
-
-=======
->>>>>>> e577043f8e815c58faa46a9d8e4cc602c1c60d79
   const handleDelete = async () => {
     try {
       await attachmentService.deleteAttachment(file.key);
@@ -115,8 +104,6 @@ export default function Attachment({
   };
 
   const handleDownload = () => {
-<<<<<<< HEAD
-=======
     // // Convert buffer data to Blob
     // console.log("fileType",fileType)
     // const fileBlob = new Blob([file.data], { type: fileType });
@@ -129,7 +116,6 @@ export default function Attachment({
     // downloadLink.download = file.key;
     // downloadLink.click();
     console.log(file.data)
->>>>>>> e577043f8e815c58faa46a9d8e4cc602c1c60d79
     download(file.data, file.key)
   };
 
@@ -160,16 +146,12 @@ export default function Attachment({
           </div>
         );
       case 'audio':
-<<<<<<< HEAD
-        return <img src={audio} alt="audio" />;
-=======
         return (
           <div>
             <img src={audio} alt="audio" title={getFileName(file.key)} />
             <p>{getFileName(file.key)}</p>
           </div>
         );
->>>>>>> e577043f8e815c58faa46a9d8e4cc602c1c60d79
       case 'video':
         return (
           <div>
@@ -178,26 +160,19 @@ export default function Attachment({
           </div>
         );
       case 'word':
-<<<<<<< HEAD
-        return <img src={word} alt="word" />;
-      case 'powerpoint':
-        return <img src={PowerPoint} alt="powerpoint" />;
-      case 'excel':
-        return <img src={excel} alt="excel" />;
-=======
         return (
           <div>
             <img src={word} alt="word" title={getFileName(file.key)} />
             <p>{getFileName(file.key)}</p>
           </div>
         );
-      // case 'powerpoint':
-      //   return (
-      //     <div>
-      //       <img src={PowerPoint} alt="powerpoint" title={getFileName(file.key)} />;
-      //       <p>{getFileName(file.key)}</p>
-      //     </div>
-      //   );
+      case 'powerpoint':
+        return (
+          <div>
+            <img src={PowerPoint} alt="powerpoint" title={getFileName(file.key)} />;
+            <p>{getFileName(file.key)}</p>
+          </div>
+        );
       case 'excel':
         return (
           <div>
@@ -205,7 +180,6 @@ export default function Attachment({
             <p>{getFileName(file.key)}</p>
           </div>
         );
->>>>>>> e577043f8e815c58faa46a9d8e4cc602c1c60d79
       default:
         return (
           <div>
@@ -215,26 +189,6 @@ export default function Attachment({
           </div>
         );
     }
-<<<<<<< HEAD
-  };
-  return (
-    <div style={{ ...fileContainerStyle, ...style }}>
-      {renderFileContent()}
-      <Grid container spacing={2} alignItems="center">
-        <Grid item>
-          <IconButton onClick={handleDelete}>
-            <DeleteIcon />
-          </IconButton>
-        </Grid>
-        <Grid item>
-          <IconButton onClick={handleDownload}>
-            <DownloadIcon />
-          </IconButton>
-        </Grid>
-      </Grid>
-    </div>
-  )
-=======
 
 
   
@@ -256,5 +210,4 @@ return (
     </Grid>
   </div>
 )
->>>>>>> e577043f8e815c58faa46a9d8e4cc602c1c60d79
 }
