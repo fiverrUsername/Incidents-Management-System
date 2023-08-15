@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 import apiCalls from '../../../service/apiCalls'
 import { actions } from './slice'
-import { SystemStatusCollection } from '../../../interface/ISytemStatus'
+import { SystemStatusCollection } from '../../../interface/ISystemStatus'
 
 
 function* onGetSystemsStatus() {

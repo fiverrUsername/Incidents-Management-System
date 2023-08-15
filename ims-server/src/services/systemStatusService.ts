@@ -33,7 +33,6 @@ class SystemStatusService {
         }
     }
 
-
     async getLatestLiveStatusByTag(tag: string): Promise<ISystemStatus[] | any> {
         try {
             logger.info({
@@ -154,7 +153,9 @@ class SystemStatusService {
         }
     }
 
-
+    // async updateIncidentsByPriorityWhenAddingTimeline(): Promise<void> {
+        
+    // }
 }
 
 export default new SystemStatusService()
