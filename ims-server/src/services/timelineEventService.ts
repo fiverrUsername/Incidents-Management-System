@@ -62,7 +62,9 @@ class TimelineEventService {
         logger.error({ source: constants.TIMELINE_EVENT, err: "Validation error", validationErrors: validationErrors.map((error) => error.toString()), });
         return new Error("Validation error");
       }
-      // systemStatusService.updateLiveStatus({},"")
+      newTimelineEvent.tags.map((tag) => {
+        systemStatusService.updateLiveStatusFromEvent()
+      })
       logger.info({ sourece: constants.TIMELINE_EVENT, method: constants.METHOD.POST, timelineEventId: newTimelineEvent.id });
       return await timelineEventRepository.addTimelineEvent(newTimelineEvent);
     } catch (error: any) {
@@ -200,7 +202,7 @@ class TimelineEventService {
     }catch(err:any){      
       return new Error(err);
     }
-  } 
+  }
 
 }
 export default new TimelineEventService();

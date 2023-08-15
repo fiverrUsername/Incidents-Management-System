@@ -15,6 +15,7 @@ class IncidentRepository {
       description: 'Created new Incident',
       priority: newIncident.currentPriority,
       type: newIncident.type,
+      tags:[],
       files: [],
       createdDate: new Date(),
       updatedDate: new Date(),

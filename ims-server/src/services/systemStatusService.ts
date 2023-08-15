@@ -1,4 +1,4 @@
-import { Priority } from "../enums/enum";
+import { Priority, Status } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ISystemStatus } from "../interfaces/systemStatusInterface";
 import { constants } from "../loggers/constants";
@@ -32,7 +32,6 @@ class SystemStatusService {
             return error;
         }
     }
-
 
     async getLatestLiveStatusByTag(tag: string): Promise<ISystemStatus[] | any> {
         try {
@@ -107,6 +106,28 @@ class SystemStatusService {
         }
     }
 
+    async updateLiveStatusFromEvent(systemName: string, pervPriority: Priority, priority: Priority, incidentID: string, status: Status, id: string): Promise<void | any> {
+        try {
+            logger.info({
+                source: constants.SYSTEM_STATUS_SERVICE,
+                msg: constants.UPDATE_SYSTEMS_SUCCESS,
+            })
+            const existingSystemStatus: ISystemStatus | null = await systemStatusModel.findById(id);
+            if (!existingSystemStatus) {
+                throw new Error(`ISystemStatus with ID ${id} not found.`);
+            }
+            if (status = Status.Resolved)
+                existingSystemStatus.incidents[pervPriority] = [...existingSystemStatus.incidents[pervPriority], incidentID]
+        } catch (error: any) {
+            logger.error({
+                source: constants.SYSTEM_STATUS_SERVICE,
+                err: constants.UPDATE_SYSTEMS_FAILED,
+            });
+            console.error(`error: ${error}`);
+            return error;
+        }
+    }
+
     async getUpdatedMaxPriority(incidentsIds: string[][]): Promise<Priority> {
         let maxPriority = Priority.P3
         const priorityValues = Object.values(Priority) as string[];
@@ -153,8 +174,6 @@ class SystemStatusService {
             return [error];
         }
     }
-
-
 }
 
 export default new SystemStatusService()
