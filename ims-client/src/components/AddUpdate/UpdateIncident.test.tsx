@@ -1,11 +1,11 @@
 // import React from 'react';
 // import {render, screen, fireEvent  } from '@testing-library/react';
 // import userEvent from '@testing-library/user-event';
-// import AddUpdate, { form_data } from './AddUpdate';
+// import AddUpdate, { form_data } from './UpdateIncident';
 // import apiCalls from '../../service/apiCalls';
 // import IIncident from '../../interface/incidentInterface';
 
-// fdescribe('AddUpdate Component', () => {
+// fdescribe('UpdateIncident Component', () => {
 //  // const onCloseMock = jest.fn();
 //   //const mockIncident= await apiCalls.getIncidentById("8");
 //   it('renders the component with given incident data', () => {
@@ -107,4 +107,4 @@
 // //       screen.getByText('new update Added Successfully')
 // //     ).toBeInTheDocument();
 // //   });
-export{};
+ export{};
