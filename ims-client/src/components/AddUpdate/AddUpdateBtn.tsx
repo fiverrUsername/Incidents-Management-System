@@ -1,5 +1,5 @@
 import {Button } from "@mui/material";
-import { useState } from "react";
+import React,{ useState } from "react";
 import UpdateIncident, { GetIncident } from "./UpdateIncident";
 import { ITimeLineEvent } from "../../interface/timeLineInterface";
 
@@ -11,7 +11,7 @@ interface Props {
 export default function AddUpdateBtn({ incident,addNewTimelineFunction }: Props) {
     const [open, setOpen] = useState(false);
     const handleClick = () => {
-        setOpen(!open);
+        setOpen(true);
     };
     const handleClose = () => {
         setOpen(false);
