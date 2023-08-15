@@ -1,9 +1,7 @@
 import React from 'react'
-import IIncident from '../../interface/incidentInterface'
 import apiCalls from '../../service/apiCalls'
 import { receivedIncident, dataFromForm } from './UpdateIncident'
 import {ITimeLineEvent} from '../../interface/timeLineInterface'
-
 
 interface Props {
   data: dataFromForm;
