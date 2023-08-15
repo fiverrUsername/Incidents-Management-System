@@ -6,6 +6,8 @@ import { ActionType, ObjectType } from "../../../../ims-socket/src/interfaces";
 import { ConversationsInfoResponse } from '@slack/web-api';
 import { getSlackDataByChannelId } from '../base/getSlackDataByChannelId';
 import { CHANNEL_REDIRECT, ERROR_CREATING_INCIDENT, NO_INCIDENT_NAME } from '../../constPage';
+import axios from 'axios';
+import { IMS_SERVER_ROUTING } from '../../constPage';
 
 export async function createIncident(channelId: string) {
   try {
@@ -13,6 +15,9 @@ export async function createIncident(channelId: string) {
     if (!slackData) {
       throw new Error('Channel not found in Slack');
     }
+    const headers = {
+      Authorization: `Bearer ${process.env.API_KEY}`
+    };
     const newIncident: IIncident = {
       //TODO
       name: slackData?.channel?.name || NO_INCIDENT_NAME,
@@ -31,14 +36,10 @@ export async function createIncident(channelId: string) {
       cost: 0,
       createdBy: '',
     };
+    const answer = await axios.get(`${IMS_SERVER_ROUTING}incident/${newIncident.channelId}/channelId`, { headers });
     sendToSocket(newIncident, ObjectType.Incident, ActionType.Add);
     console.log('Incident created successfully');
   } catch (error) {
     console.error(ERROR_CREATING_INCIDENT, error);
   }
 }
-
-
-
-
-
