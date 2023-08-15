@@ -1,7 +1,5 @@
-import { useSelector } from "react-redux";
+import React,{ useEffect, useState } from "react";
 import { SystemStatusCollection } from "../../interface/ISytemStatus";
-import { SYSTEM_STATUS_STATE_KEY } from "./modules/slice";
-import React, { useEffect, useState } from "react";
 import apiCalls from "../../service/apiCalls";
 
 

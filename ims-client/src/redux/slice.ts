@@ -7,7 +7,7 @@ const createdAppReducer = combineReducers({
     //-צריך להוסיף כאן את כל ה
     //slice
     [INCIDENT_STATE_KEY]: incidentsSlice,
-    [SYSTEM_STATUS_STATE_KEY]:systemsStatusSlice
+    [SYSTEM_STATUS_STATE_KEY]: systemsStatusSlice
 })
 
 const reducer = (state: any, action: any) => {

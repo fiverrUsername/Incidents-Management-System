@@ -1,11 +1,10 @@
-import * as React from 'react';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { Types } from './Types';
+import * as React from 'react';
 import { useForm } from 'react-hook-form';
+import { Types } from './Types';
 import { FormData } from './addIncident';
 
 interface Props {

@@ -1,5 +1,6 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit"
-import { ISystemStatus, SystemStatusCollection } from "../../../interface/ISytemStatus"
+
+import { SystemStatusCollection } from "../../../interface/ISytemStatus"
 
 export const SYSTEM_STATUS_STATE_KEY = 'SYSTEM_STATUS'
 

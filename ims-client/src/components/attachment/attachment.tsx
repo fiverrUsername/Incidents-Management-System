@@ -86,8 +86,8 @@ export default function Attachment({
   file: IAttachmentData;
   onDelete: (fileId: string) => void;
   style?: React.CSSProperties;
-}){
-    const [fileType, setFileType] = useState<SupportedFileTypes>('default');
+}) {
+  const [fileType, setFileType] = useState<SupportedFileTypes>('default');
   // Update the file type when the attachment data changes
   useEffect(() => {
     setFileType(getFileTypeFromData(file));
@@ -152,20 +152,23 @@ export default function Attachment({
         return <img src={txt} alt="txt" />;
       case 'audio':
         // return <img src={audio} alt="audio" />;
+        break;
       case 'video':
         return <img src={video} alt="video" />;
       case 'word':
-          return <img src={word} alt="word" />;
+        return <img src={word} alt="word" />;
       case 'powerpoint':
         // return <img src={PowerPoint} alt="powerpoint" />;
+        break;
       case 'excel':
         // return <img src={excel} alt="excel" />;
+        break;
       default:
         return renderGeneric();
     }
   };
   return (
-   <div style={{ ...fileContainerStyle, ...style }}>
+    <div style={{ ...fileContainerStyle, ...style }}>
       {renderFileContent()}
       <Grid container spacing={2} alignItems="center">
         <Grid item>
@@ -180,4 +183,5 @@ export default function Attachment({
         </Grid>
       </Grid>
     </div>
-  )}
+  )
+}
