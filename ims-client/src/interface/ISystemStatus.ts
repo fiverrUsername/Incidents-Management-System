@@ -16,3 +16,12 @@ export interface SystemStatusCollection {
         systemData: ISystemStatus[];
     }[];
 }
+
+export interface IcolorScale{
+    
+        from:number,
+        to: number,
+        name: string,
+        color: string,
+      
+}

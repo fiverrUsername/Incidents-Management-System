@@ -1,11 +1,12 @@
 import { ApexOptions } from 'apexcharts';
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
+import { IcolorScale } from '../../interface/ISystemStatus';
 
 
 interface HeatmapCharProps{
-    data:[],
-    colors?:[]
+    data:ApexAxisChartSeries[],
+    colors?:IcolorScale[]
     date:Date[]
 }
 const HeatmapChar = () => {

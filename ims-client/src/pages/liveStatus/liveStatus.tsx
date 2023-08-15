@@ -3,6 +3,7 @@ import { SystemStatusCollection } from "../../interface/ISytemStatus";
 import { SYSTEM_STATUS_STATE_KEY } from "./modules/slice";
 import React, { useEffect, useState } from "react";
 import apiCalls from "../../service/apiCalls";
+import HeatmapChar from "../../components/heatmapChar/heatmapChar";
 
 
 const LiveStatus = () => {
@@ -11,6 +12,10 @@ const LiveStatus = () => {
     // console.log(systemsStatusCollection);
 
     const [systemsStatusCollection, setSystemsStatusCollection] = useState<SystemStatusCollection>()
+    const [systemsName, setsystemsName] = useState<string[]>()
+    // const [systemsSeries, setsystemsSeries] = useState<ApexAxisChartSeries[]>({name:'',data[]})
+    const [dateIncident,setDateIncident]=useState<Date[]>()
+     
 
     useEffect(() => {
         const fetchData = async () => {
@@ -25,9 +30,11 @@ const LiveStatus = () => {
         fetchData();
     }, []);
 
+
     return (
         <div>
             <h1>LiveStatus Page</h1>
+            <HeatmapChar></HeatmapChar>
         </div>
     );
 
