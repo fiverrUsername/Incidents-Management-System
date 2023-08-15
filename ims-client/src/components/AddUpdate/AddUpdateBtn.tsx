@@ -11,7 +11,7 @@ interface Props {
 export default function AddUpdateBtn({ incident,addNewTimelineFunction }: Props) {
     const [open, setOpen] = useState(false);
     const handleClick = () => {
-        setOpen(!open);
+        setOpen(true);
     };
     const handleClose = () => {
         setOpen(false);

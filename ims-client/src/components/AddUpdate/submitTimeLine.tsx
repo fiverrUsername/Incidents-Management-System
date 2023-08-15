@@ -27,8 +27,8 @@ export default async function submitTimeLine(props: Props) {
     status: props.data.status,
   }
   try {
-    props.addNewTimelineFunction(timeLineEvent);
-    await apiCalls.addTimelineEvent(timeLineEvent);
+   const newTimeLine= await apiCalls.addTimelineEvent(timeLineEvent);
+   props.addNewTimelineFunction(newTimeLine);
     flag = true;
   }
   catch (error) {

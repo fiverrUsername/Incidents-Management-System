@@ -6,29 +6,30 @@ import WidgetsStack from "../../components/widget/widgetsStack";
 const IncidentsPage = () => {
   const [incidents, setIncidents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [refreshCount, setRefreshCount] = useState(0);
 
   useEffect(() => {
     setIsLoading(true);
-    const FetchData = async () => {
+    const fetchData = async () => {
       const getIncidents = await apiCalls.getIncidents();
       setIncidents(getIncidents);
+      setIsLoading(false);
     };
-    FetchData();
-    setIsLoading(false)
+    fetchData(); 
+  }, [refreshCount]); // Depend on the refreshCount state
 
-  }, []);
+  const handleRefresh = () => {
+    setRefreshCount(refreshCount + 1); // מעלים את ערך הרענון כאשר רוצים לרענן
+  };
 
 
-
-  
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <div style={{marginBottom:'10px'}}>
-      <WidgetsStack />
+      <div style={{ marginBottom: '10px' }}>
+        <WidgetsStack />
       </div>
-      <div style={{ margin: '20px' ,flex: 1, overflow: 'auto'}}>
-        <IncidentTable rows={incidents} isLoading={isLoading} />
+      <div style={{ margin: '20px', flex: 1, overflow: 'auto' }}>
+        <IncidentTable rows={incidents} isLoading={isLoading} handleRefresh={handleRefresh} />
       </div>
     </div>
   );
