@@ -1,24 +1,21 @@
 import { ApexOptions } from 'apexcharts';
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { IcolorScale } from '../../interface/ISystemStatus';
+import { IcolorScale, SystemStatusCollection } from '../../interface/ISystemStatus';
 
 
 interface HeatmapCharProps{
-    data:ApexAxisChartSeries[],
+  systemsStatusCollection: SystemStatusCollection | undefined;
     colors?:IcolorScale[]
     date:Date[]
 }
-const HeatmapChar = () => {
+const HeatmapChar:React.FC<HeatmapCharProps> = ({systemsStatusCollection,colors,date} ) => {
 
   const options: ApexOptions = {
     chart: {
       width: 600,
       height: 300,
       type: 'heatmap',
-    },
-    stroke: {
-      
     },
     grid: {
       xaxis: {
@@ -45,32 +42,7 @@ const HeatmapChar = () => {
       heatmap: {
         shadeIntensity: 0.5,
         colorScale: {
-          ranges: [
-            {
-              from: 0,
-              to: 20,
-              name: 'p3',
-              color: '#7fff00',
-            },
-            {
-              from: 21,
-              to: 45,
-              name: 'p2',
-              color: '#ffc000', 
-            },
-            {
-              from: 46,
-              to: 55,
-              name: 'p1',
-              color: '#ff8000',
-            },
-            {
-              from: 56,
-              to: 100,
-              name: 'p0',
-              color: '#FF0000',
-            },
-          ],
+          ranges: colors
         },
       },
     },

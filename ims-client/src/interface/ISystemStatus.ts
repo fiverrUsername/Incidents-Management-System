@@ -17,6 +17,7 @@ export interface SystemStatusCollection {
     }[];
 }
 
+ 
 export interface IcolorScale{
     
         from:number,

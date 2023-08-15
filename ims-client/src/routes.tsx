@@ -14,7 +14,6 @@ export default function Router() {
             <Route path="/timeline/:id" Component={withId(TimeLinePage)} />
             <Route path="/" element={<Navigate to="/incident" />} />
             <Route path="*" element={<h1>404 Page not found 🤔</h1>} />
-            <Route path="/liveStatus" element={<HeatmapChar />} />
             <Route path="/liveStatusPage" element={<LiveStatus />} />
         </Routes>
   );
