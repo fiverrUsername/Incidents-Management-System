@@ -1,8 +1,8 @@
 import { Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { WithIdProps } from "../../HOC";
-import { GetIncident } from "../../components/AddUpdate/AddUpdate";
-import AddUpdateComp from "../../components/AddUpdate/AddUpdateComp";
+import { GetIncident } from "../../components/AddUpdate/UpdateIncident";
+import AddUpdateComp from "../../components/AddUpdate/AddUpdateBtn";
 import Search from "../../components/search/search";
 import DisplaySummary from "../../components/summary/displaySummary";
 import { ISummary } from "../../interface/ISummary";
@@ -12,6 +12,12 @@ import filterTimeLineBySearch from "../../service/timeLineService";
 import TimeLine from "./timeLine";
 import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
 import mockUsers from '../../mockAPI/users.json';
+//import { Dayjs } from "dayjs";
+import dayjs from 'dayjs';
+import { Priority, Status } from "../../interface/enums";
+import timeLineEvent from "./timeLineEvent/timeLineEvent";
+import AddUpdateBtn from "../../components/AddUpdate/AddUpdateBtn";
+
 
 const TimeLinePage = ({ id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<ITimeLineEvent[]>([]);
@@ -25,6 +31,7 @@ const TimeLinePage = ({ id }: WithIdProps) => {
     const fetchTimeline = async () => {
       const getTimeLineEventsById = await apiCalls.timelineEventByIncidentId(id)
       setTimelineObjects(getTimeLineEventsById);
+      // eslint-disable-next-line no-debugger
     };
     fetchTimeline();
     const fetchSummaryIncident = async () => {
@@ -37,7 +44,6 @@ const TimeLinePage = ({ id }: WithIdProps) => {
       setIncident(getIncidentById);
     };
     fetchIncident();
-
   }, [id]);
 
   const someFunction = () => {
@@ -45,9 +51,11 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   };
 
   const [myValue, setMyValue] = useState<string>("");
-  let filter: ITimeLineEvent[] = []
-  someFunction()
-
+  let filter: ITimeLineEvent[] = [];
+  someFunction();
+  const addNewTimeline = (newTimeline: ITimeLineEvent) => {
+    setTimelineObjects([...timelineObjects, newTimeline]);
+  }
   return (
     <>
       <Search onEvent={someFunction} setValue={setMyValue}></Search>
@@ -55,7 +63,7 @@ const TimeLinePage = ({ id }: WithIdProps) => {
       <StyledPaper>
         <Grid container direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="nowrap">
           <Typography variant='bold'>Consectetur massa</Typography>
-          {incident && <AddUpdateComp incident={{ ...incident }} />}
+          {incident && <AddUpdateBtn addNewTimelineFunction={addNewTimeline} incident={{ ...incident }} />}
         </Grid>
         {timelineObjects && (
           <CustomScrollbar>
