@@ -11,6 +11,7 @@ import apiCalls from "../../service/apiCalls";
 import filterTimeLineBySearch from "../../service/timeLineService";
 import TimeLine from "./timeLine";
 import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
+import mockUsers from '../../mockAPI/users.json';
 //import { Dayjs } from "dayjs";
 import dayjs from 'dayjs';
 import { Priority, Status } from "../../interface/enums";
@@ -22,10 +23,12 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<ITimeLineEvent[]>([]);
   const [summaryIncident, setSummaryIncident] = useState<ISummary>();
   const [incident, setIncident] = useState<GetIncident>();
+  //gets incident id
+  
+  const user= mockUsers.find(u=>u._id==id)
   useEffect(() => {
 
     const fetchTimeline = async () => {
-      // eslint-disable-next-line no-debugger
       const getTimeLineEventsById = await apiCalls.timelineEventByIncidentId(id)
       setTimelineObjects(getTimeLineEventsById);
       // eslint-disable-next-line no-debugger

@@ -9,5 +9,5 @@ router.get('/', incidenceController.getAllIncidents);
 router.get('/:fieldvalue/:fieldname?', incidenceController.getIncidentByField);
 router.post('/addIncident', incidenceController.addIncident);
 router.put('/updateIncident/:id', incidenceController.updateIncident);
-router.get('/summary/:id',incidenceController.getSummaryIncident);
+router.get('/result/summary/:id',incidenceController.getSummaryIncident);
 export default router;

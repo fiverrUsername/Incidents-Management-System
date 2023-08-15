@@ -1,4 +1,5 @@
 import { Priority, Status } from "../enums/enum";
+import { ITag } from "./tagInterface";
 
 export interface ITimelineEvent {
   channelId: string;
@@ -12,4 +13,5 @@ export interface ITimelineEvent {
   createdDate: Date;
   updatedDate: Date;
   status:Status;
+  tags:ITag[];
 }
