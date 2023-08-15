@@ -118,22 +118,21 @@ export default function Attachment({
     console.log(file.data)
     download(file.data, file.key)
   };
+  
   const renderImageContent = () => {
-    const arrayBufferView = new Uint8Array(file.data);
-    const blob = new Blob([arrayBufferView], { type: `image/${fileType}` });
-    const imageUrl = URL.createObjectURL(blob);
-    return <img src={imageUrl} alt="image" title={getFileName(file.key)} />
+        const imageData = URL.createObjectURL(
+          new Blob([file.data], { type: 'image/jpeg/png' }) 
+        );
+       return <img className="blob-to-image" src={"data:image/png;base64," + imageData} title={getFileName(file.key)}></img>
   };
+
   const renderFileContent = () => {
     if (!file) {
       return null;
     }
     switch (fileType) {
       case 'image':
-        return <StyledImage src={`data:image/${fileType};base64,${file.data.toString('base64')}`} alt="image" title={getFileName(file.key)} />;
-
-      // case 'image':
-      //   return renderImageContent();
+        return renderImageContent();
       case 'pdf':
         return <img src={pdf} alt="pdf" title={getFileName(file.key)} />;
       case 'txt':
