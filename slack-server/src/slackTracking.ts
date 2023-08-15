@@ -2,8 +2,7 @@ import { createEventAdapter, SlackEventAdapter } from '@slack/events-api';
 import handleMessageEvent from './actions/via-slack/createTimeline';
 import { createIncident } from './actions/via-slack/createIncident';
 
-const slackSigingSecret= process.env.SLACK_SIGING_SECRET as string;
-const slackEvents: SlackEventAdapter = createEventAdapter(slackSigingSecret);
+const slackEvents: SlackEventAdapter = createEventAdapter(process.env.SLACK_SIGING_SECRET||"This is a sentence to avoid run error");
 
 export default function events(data: any) {
   const { event } = data;

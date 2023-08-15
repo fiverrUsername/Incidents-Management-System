@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Priority, Status } from '../../../../ims-server/src/enums/enum';
+import { Priority, Status, EncidentType } from '../../../../ims-server/src/enums/enum';
 import { ITimelineEvent } from '../../../../ims-server/src/interfaces/ItimelineEvent';
 import { ActionType, ObjectType } from '../../../../ims-socket/src/interfaces';
 import { decodeMessageDate } from '../base/decode/decodeMessageDate';
@@ -8,9 +8,9 @@ import { fileResponse } from './fileResponse';
 import { sendToSocket } from '../../socket';
 import { IMS_SERVER_ROUTING } from '../../constPage';
 
-export default async function createTimeline(event: any) {
-  try {
-    const answer = await axios.get(`${IMS_SERVER_ROUTING}incident/${event.channel}/channelId`);
+export default async function handleMessageEvent(event: any) {
+  const answer = await axios.get(`${IMS_SERVER_ROUTING}incident/${event.channel}/channelId`);
+  if (answer.data) {
     const timelineEvent: ITimelineEvent = {
       channelId: event.channel,
       incidentId: answer.data.id!,
@@ -21,21 +21,9 @@ export default async function createTimeline(event: any) {
       files: event.files && (await fileResponse(event.files, answer.data.id!)) || [],
       createdDate: new Date(),
       updatedDate: decodeMessageDate(event.text) || new Date(),
-
-      status: Status.Active
-
+      status: Status.Active,
     };
     sendToSocket(timelineEvent, ObjectType.TimelineEvent, ActionType.Add);
-  }
-  catch (error: any) {
-    console.log(error)
+    console.log(timelineEvent)
   }
 }
-
-
-
-
-
-
-
-
