@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { WithIdProps } from "../../HOC";
-import { GetIncident } from "../../components/AddUpdate/UpdateIncident";
+import { receivedIncident } from "../../components/AddUpdate/UpdateIncident";
 import AddUpdateComp from "../../components/AddUpdate/AddUpdateBtn";
 import Search from "../../components/search/search";
 import DisplaySummary from "../../components/summary/displaySummary";
@@ -22,7 +22,7 @@ import AddUpdateBtn from "../../components/AddUpdate/AddUpdateBtn";
 const TimeLinePage = ({ id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<ITimeLineEvent[]>([]);
   const [summaryIncident, setSummaryIncident] = useState<ISummary>();
-  const [incident, setIncident] = useState<GetIncident>();
+  const [incident, setIncident] = useState<receivedIncident>();
   //gets incident id
   
   const user= mockUsers.find(u=>u._id==id)

@@ -1,10 +1,10 @@
 import {Button } from "@mui/material";
 import React,{ useState } from "react";
-import UpdateIncident, { GetIncident } from "./UpdateIncident";
+import UpdateIncident, { receivedIncident } from "./UpdateIncident";
 import { ITimeLineEvent } from "../../interface/timeLineInterface";
 
 interface Props {
-    incident:GetIncident;
+    incident:receivedIncident;
     addNewTimelineFunction: (newTimeline: ITimeLineEvent) => void
 }
 
