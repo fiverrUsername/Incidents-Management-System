@@ -20,7 +20,7 @@ const swaggerFile: any = (process.cwd() + "/src/Swagger.json");
 const swaggerData: any = fs.readFileSync(swaggerFile, 'utf8');
 const swaggerDocument = JSON.parse(swaggerData);
 swaggerDocument.servers[0].url = `http://localhost:${process.env.SERVER_PORT}`
-const whitelist = ['http://localhost:3000','http://localhost:4700','http://localhost:7071'];
+const whitelist = ['http://localhost:3000', 'http://localhost:4700', 'http://localhost:7071'];
 const apiKey = process.env.API_KEY;
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
@@ -36,7 +36,7 @@ const corsOptions: cors.CorsOptions = {
 
 
 connect();
- app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 // app.use(cors({
 //   origin: true, // "true" will copy the domain of the request back
 //   // to the reply. If you need more control than this
@@ -57,21 +57,12 @@ app.use('/aggregation', aggregationRouter)
 app.use('/tag', tagRouter)
 app.use('/timelineEvent', timelineEventRouter)
 app.use('/attachment', attachmentRouter)
+app.use('/livestatus', liveStatusRouter)
 
 // בדיקה אם השרת מורשה לגשת לשרת
 app.use((req: Request, res: Response, next: NextFunction) => {
   if (req.headers.authorization === `Bearer ${apiKey}`) {
-    next(); 
-  } else {
-    res.status(401).json({ error: 'Unauthorized' });
-  }
-});
-
-app.use('/livestatus',liveStatusRouter)
-// בדיקה אם השרת מורשה לגשת לשרת
-app.use((req: Request, res: Response, next: NextFunction) => {
-  if (req.headers.authorization === `Bearer ${apiKey}`) {
-    next(); 
+    next();
   } else {
     res.status(401).json({ error: 'Unauthorized' });
   }
