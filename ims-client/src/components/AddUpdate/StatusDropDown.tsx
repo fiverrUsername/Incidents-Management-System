@@ -1,6 +1,5 @@
 import * as React from 'react';
 import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Statuses } from './Status';
@@ -12,11 +11,11 @@ interface Props {
     status: Status;
     setStatus: React.Dispatch<React.SetStateAction<Status>>
 }
-export default function DropDown({ status, setStatus }: Props) {
+export default function DropDown({setStatus,status}: Props) {
     const handleChange = (event: SelectChangeEvent) => {
         setStatus(event.target.value as Status);
     };
-    const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();
+ //   const { handleSubmit, formState: { errors } } = useForm<dataFromForm>();
 
     return (
         <FormControl>

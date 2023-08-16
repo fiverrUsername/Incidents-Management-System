@@ -2,6 +2,7 @@ import {Button } from "@mui/material";
 import React,{ useState } from "react";
 import UpdateIncident, { receivedIncident } from "./UpdateIncident";
 import { ITimeLineEvent } from "../../interface/timeLineInterface";
+import { Status } from "../../interface/enums";
 
 interface Props {
     incident:receivedIncident;
@@ -18,7 +19,7 @@ export default function AddUpdateBtn({ incident,addNewTimelineFunction }: Props)
     };
     return (
         <div>
-            <Button onClick={handleClick} variant='outlined'>+ Add Update</Button>
+            {incident.status==Status.Active&&<Button onClick={handleClick} variant='outlined'>+ Add Update</Button>}
             {open && <UpdateIncident addNewTimelineFunction={addNewTimelineFunction} open={open} onClose={handleClose} incident={incident} />}
         </div>
     )

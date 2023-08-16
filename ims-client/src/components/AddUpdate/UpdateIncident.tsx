@@ -18,8 +18,6 @@ import UploadFiles from '../uploadFiles/UploadFiles';
 import submitTimeLine from './submitTimeLine';
 import StatusDropDown from './StatusDropDown';
 import { ITimeLineEvent } from '../../interface/timeLineInterface';
-import Backdrop from '@mui/material/Backdrop';
-
 
 export interface dataFromForm {
   text: string;
@@ -190,7 +188,7 @@ export default function UpdateIncident({ open, incident, onClose, addNewTimeline
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="status">Status</label>
-                <StatusDropDown status={status} setStatus={setStatus} />
+                <StatusDropDown status={status} setStatus={setStatus}/>
                 {isSubmit && !status && <span style={{ color: errorColor }}>Type is required</span>}
               </FormControl>
             </Grid>
