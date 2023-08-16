@@ -2,7 +2,7 @@ import React from 'react';
 import { ITimeLineEventprops, ITimelineEventListprops } from '../../interface/timeLineInterface';
 import userdata from '../../mockAPI/users.json';
 import { TimelineWarpper } from './timeLine.style';
-import { Priority,Status } from '../../interface/enums';
+import { Priority, Status } from '../../interface/enums';
 import TimeLineEvent from './timeLineEvent/timeLineEvent';
 import dayjs from 'dayjs';
 
@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 const TimeLine: React.FC<ITimelineEventListprops> = (props) => {
   const { timelineList } = props;
   const timeLineEvents = timelineList.sort((a, b) => {
-    const diff = dayjs(a.createdDate).diff(dayjs(b.createdDate));
+    const diff = dayjs(b.createdDate).diff(dayjs(a.createdDate));
     return diff;
   });
   const timelineObjects = timeLineEvents.map((timeLine, index) => {
@@ -25,9 +25,8 @@ const TimeLine: React.FC<ITimelineEventListprops> = (props) => {
       isTypeChanged: false,
       isPriorityChanged: false
     };
-
-    if (index < timeLineEvents.length - 1) {
-      const previousTimeline = timeLineEvents[index + 1];
+    if (index < timeLineEvents.length && index != 0) {
+      const previousTimeline = timeLineEvents[index - 1];
       if (timeLine.priority !== previousTimeline.priority) {
         updatedTimeline.isPriorityChanged = true;
         updatedTimeline.previosPriority = previousTimeline.priority;
@@ -37,7 +36,6 @@ const TimeLine: React.FC<ITimelineEventListprops> = (props) => {
         updatedTimeline.previousType = previousTimeline.type;
       }
     }
-
     return updatedTimeline;
   });
 

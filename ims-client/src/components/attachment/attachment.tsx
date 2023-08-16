@@ -139,10 +139,7 @@ export default function Attachment({
     }
     switch (fileType) {
       case 'image':
-        return <StyledImage src={`data:image/${fileType};base64,${file.data.toString('base64')}`} alt="image" title={getFileName(file.key)} />;
-
-      // case 'image':
-      //   return renderImageContent();
+        return renderImageContent();
       case 'pdf':
         return <img src={pdf} alt="pdf" title={getFileName(file.key)} />;
       case 'txt':
