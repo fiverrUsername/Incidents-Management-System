@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 const TimeLine: React.FC<ITimelineEventListprops> = (props) => {
   const { timelineList } = props;
   const timeLineEvents = timelineList.sort((a, b) => {
-    const diff = dayjs(a.createdDate).diff(dayjs(b.createdDate));
+    const diff = dayjs(b.createdDate).diff(dayjs(a.createdDate));
     return diff;
   });
   const timelineObjects = timeLineEvents.map((timeLine, index) => {
