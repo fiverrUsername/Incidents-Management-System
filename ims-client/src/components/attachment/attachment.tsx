@@ -22,7 +22,7 @@ import {
   faFileVideo,
   faFilePdf,
   faFilePowerpoint,
-  faFileMusic,
+  // faFileMusic,
   faFileCode,
   faFileExcel,
   faFileAudio,
@@ -139,21 +139,21 @@ export default function Attachment({
       case 'image':
       return <StyledImage src={downloadUrl} width={100} title="File Viewer" />
       case 'pdf':
-        return <div><FontAwesomeIcon icon={faFilePdf} title={getFileName(file)}/></div>
+        return <div><FontAwesomeIcon icon={faFilePdf} title={getFileName(file)} style={{ color: '#2F854F',marginLeft:'20px', fontSize: '200px' }}/></div>
       case 'txt':
-        return <div><FontAwesomeIcon icon={faFileAlt} title={getFileName(file)}/></div>
+        return <div><FontAwesomeIcon icon={faFileAlt} title={getFileName(file)} style={{marginBottom:'20px', marginLeft:'20px',color: '#2F854F', fontSize: '170px' }}/></div>
       case 'audio':
-        return <div><FontAwesomeIcon icon={faFileAudio} title={getFileName(file)}/></div>
+        return <div><FontAwesomeIcon icon={faFileAudio} title={getFileName(file)} style={{ color: '#2F854F', fontSize: '200px' }}/></div>
       case 'video':
-        return <div><FontAwesomeIcon icon={faFileVideo} title={getFileName(file)}/></div>
+        return <div><FontAwesomeIcon icon={faFileVideo} title={getFileName(file)} style={{ color: '#2F854F', fontSize: '200px' }}/></div>
       case 'word':
-        return <div><FontAwesomeIcon icon={faFileWord} title={getFileName(file)}/></div>
+        return <div><FontAwesomeIcon icon={faFileWord} title={getFileName(file)} style={{marginBottom:'20px', marginLeft:'20px',color: '#2F854F', fontSize: '170px' }}/></div>
       case 'powerpoint':
-        return <div><FontAwesomeIcon icon={faFilePowerpoint} title={getFileName(file)}/></div>
+        return <div><FontAwesomeIcon icon={faFilePowerpoint} title={getFileName(file)} style={{ color: '#2F854F', fontSize: '200px' }}/></div>
       case 'excel':
-        return <div><FontAwesomeIcon icon={faFileExcel} title={getFileName(file)}/></div>
+        return <div><FontAwesomeIcon icon={faFileExcel} title={getFileName(file)} style={{marginBottom:'20px', marginLeft:'20px',color: '#2F854F', fontSize: '170px' }}/></div>
       default:
-        return <div><FontAwesomeIcon icon={faFile} title={getFileName(file)}/></div>
+        return <div><FontAwesomeIcon icon={faFile} title={getFileName(file)} style={{ color: '#2F854F', fontSize: '200px' }}/></div>
     }
   };
   return (
