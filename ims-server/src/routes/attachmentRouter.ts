@@ -11,5 +11,4 @@ attachmentsRouter.post('/', upload.array('files'), attachmentsController.uploadA
 attachmentsRouter.delete('/', attachmentsController.deleteAttachmentById)
 attachmentsRouter.get('/:key', attachmentsController.getSignedUrlForKey)
 
-
 export default attachmentsRouter;
