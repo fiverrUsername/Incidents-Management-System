@@ -20,8 +20,7 @@ export default class AwsController {
 
   async getSignedUrlForKey(req: Request, res: Response): Promise<void> {
     try {
-      const key = req.query.key as string ;
-      const file = await attachmentsService.getSignedUrlForKey(key);
+      const file = await attachmentsService.getSignedUrlForKey(req.params.key);
       if (file instanceof Error) {
         res.status(status.PAGE_NOT_FOUND).json({ message: file, error: true });
       } else res.status(status.SUCCESS).json(file);
