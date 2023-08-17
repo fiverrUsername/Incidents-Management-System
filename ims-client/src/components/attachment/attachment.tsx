@@ -15,8 +15,20 @@ import { IAttachmentData } from '../../interface/timeLineInterface';
 import attachmentService from '../../service/attachmentService';
 import { SingleAttachment, StyledImage } from './attachment.style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileWord } from '@fortawesome/free-solid-svg-icons';
-
+import {
+  faFileWord,
+  faFileAlt,
+  faFileImage,
+  faFileVideo,
+  faFilePdf,
+  faFilePowerpoint,
+  faFileMusic,
+  faFileCode,
+  faFileExcel,
+  faFileAudio,
+  faFile,
+  faFileArchive,
+} from '@fortawesome/free-solid-svg-icons';
 const getFileName = (fileName: string) => {
   const parts = fileName.split('_');
   if (parts.length > 1) {
@@ -125,27 +137,23 @@ export default function Attachment({
     }
     switch (fileType) {
       case 'image':
-        // return renderImageContent();
-      // return  <a href={downloadUrl} download>
-      //   Download File
-      // </a>;
       return <StyledImage src={downloadUrl} width={100} title="File Viewer" />
       case 'pdf':
-        return <StyledImage src={pdf} alt="audio" title={getFileName(file)} />;
+        return <div><FontAwesomeIcon icon={faFilePdf} title={getFileName(file)}/></div>
       case 'txt':
-        return <StyledImage src={txt} alt="audio" title={getFileName(file)} />;
+        return <div><FontAwesomeIcon icon={faFileAlt} title={getFileName(file)}/></div>
       case 'audio':
-        return <StyledImage src={audio} alt="audio" title={getFileName(file)} />;
+        return <div><FontAwesomeIcon icon={faFileAudio} title={getFileName(file)}/></div>
       case 'video':
-        return <StyledImage src={video} alt="video" title={getFileName(file)} />;
+        return <div><FontAwesomeIcon icon={faFileVideo} title={getFileName(file)}/></div>
       case 'word':
-        return <div><FontAwesomeIcon icon={faFileWord}/></div>
+        return <div><FontAwesomeIcon icon={faFileWord} title={getFileName(file)}/></div>
       case 'powerpoint':
-        return <StyledImage src={PowerPoint} alt="powerPoint" title={getFileName(file)} />;
+        return <div><FontAwesomeIcon icon={faFilePowerpoint} title={getFileName(file)}/></div>
       case 'excel':
-        return <StyledImage src={excel} alt="excel" title={getFileName(file)} />;
+        return <div><FontAwesomeIcon icon={faFileExcel} title={getFileName(file)}/></div>
       default:
-        return <StyledImage src={logo} alt="default" title={getFileName(file)} />;
+        return <div><FontAwesomeIcon icon={faFile} title={getFileName(file)}/></div>
     }
   };
   return (
