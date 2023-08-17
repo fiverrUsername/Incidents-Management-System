@@ -14,7 +14,7 @@ const attachmentService = {
   })
   .then((response) => response.data),
 
-  getUrl:(key:string)=>axios.get(`${baseUrl}/attachment/${key}`).then(response=>response.data.url),
+  getUrl:(key:string)=>axios.get(`${baseUrl}/attachment/${key}`).then((response)=>response.data.url),
 
   deleteAttachment: (key: string) => axios.delete(`${baseUrl}/attachment`, {
     params: { key }

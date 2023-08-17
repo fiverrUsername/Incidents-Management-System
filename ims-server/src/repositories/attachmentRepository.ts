@@ -42,10 +42,11 @@ class AttachmentsRepository {
    async getSignedUrlForKey(key: String): Promise<String> {
     const params = {
       Bucket: AttachmentsRepository.getBucketName(),
-      Key: key,
+      Key: key.replace(/_/g, '/'),
       Expires: expiration,
     };
     try {
+
       const signedUrl = await s3.getSignedUrlPromise('getObject', params);
       logger.info({ source: 'SIGNED_URL_OF_FILE_SUCCESS', msg: 'GET', success: true });
       console.log(signedUrl)

@@ -93,9 +93,12 @@ export default function Attachment({
   const [downloadUrl, setDownloadUrl] = useState<any>();
 
   useEffect(() => {
+        setFileType(getFileTypeFromData(file));
+
     const fetchDownloadUrl = async () => {
       try {
-        const response = attachmentService.getUrl(file.key)
+        const response =await attachmentService.getUrl(file.key)
+        // debugger
         setDownloadUrl(response);
       } catch (error) {
         console.log(error);
@@ -105,9 +108,9 @@ export default function Attachment({
     fetchDownloadUrl();
   }, []);
 
-  if (!downloadUrl) {
-    return <div>Loading...</div>;
-  }
+  // if (!downloadUrl) {
+  //   return <div>Loading...</div>;
+  // }
   
 
 
@@ -158,12 +161,13 @@ export default function Attachment({
     if (!file) {
       return null;
     }
+    console.log("fileType",fileType);
     switch (fileType) {
       case 'image':
         // return renderImageContent();
       return  <a href={downloadUrl} download>
         Download File
-      </a>
+      </a>;
       case 'pdf':
         return <img src={pdf} alt="pdf" title={getFileName(file.key)} />;
       case 'txt':
