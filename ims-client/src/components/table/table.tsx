@@ -1,14 +1,14 @@
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { DataGrid, GridColDef, GridColumnVisibilityModel, GridOverlays, GridRowSelectionModel, GridToolbar } from "@mui/x-data-grid";
-import { useState } from "react";
+import LinearProgress from '@mui/material/LinearProgress';
+import { DataGrid, GridColDef, GridColumnVisibilityModel, GridRowSelectionModel, GridToolbar } from "@mui/x-data-grid";
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { v4 } from "uuid";
+
+import theme from "../../theme";
 import { CustomNoRowsOverlay } from "./customNoRowsOverlay";
 import { CustomFooter } from "./footer";
-import React from "react";
-import LinearProgress from '@mui/material/LinearProgress';
-import theme from "../../theme";
-
-import { useNavigate } from 'react-router-dom';
 export interface TableProps<T> {
   columns: GridColDef[];
   rows: Array<T>;
@@ -51,7 +51,7 @@ const Table = <T extends object>({ columns, rows, isLoading, visibilityModel }: 
           setColumnVisibilityModel(newModel)
         }
         onRowSelectionModelChange={handleSelectionChange}
-        getRowId={(row) => row.id}
+        getRowId={(row) => row.id ? row.id : v4()}
         disableColumnMenu
         columns={columns}
         rows={rows}
