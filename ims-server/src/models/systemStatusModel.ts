@@ -2,7 +2,6 @@ import mongoose, { Schema } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import { ISystemStatus } from "../interfaces/systemStatusInterface";
 import { Priority } from "../enums/enum";
-
 export const SystemStatusSchema = new Schema<ISystemStatus>({
     id: {
         type: String,
@@ -17,7 +16,7 @@ export const SystemStatusSchema = new Schema<ISystemStatus>({
         required: true
     },
     date: {
-        type: String,
+        type: Date,
         required: true
     },
     maxPriority: {
