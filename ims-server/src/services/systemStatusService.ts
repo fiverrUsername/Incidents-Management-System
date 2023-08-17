@@ -1,25 +1,31 @@
 import { Priority } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
-import { ISystemStatus } from "../interfaces/systemStatusInterface";
+import { ISystemStatus, SystemStatusEntry } from "../interfaces/systemStatusInterface";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import systemStatusModel from "../models/systemStatusModel";
 import systemStatusRepository from "../repositories/systemStatusRepository";
 import tagService from "./tagService";
 class SystemStatusService {
-     priorityIndexMap: Record<Priority, number> = {
+    priorityIndexMap: Record<Priority, number> = {
         [Priority.P0]: 0,
         [Priority.P1]: 1,
         [Priority.P2]: 2,
         [Priority.P3]: 3,
-      };
-    async getLiveStatus(): Promise<Array<{ [tag: string]: ISystemStatus[] }> | any> {
+    };
+
+    async getLatestLiveStatus(): Promise<SystemStatusEntry[] | any> {
         try {
             const tags = await tagService.getAllTags();
-            const systemStatuses: Array<{ [tag: string]: ISystemStatus[] }> = [];
+            let systemStatuses: SystemStatusEntry[] = [];
             for (const tag of tags) {
-                const latestStatusForTag = await systemStatusRepository.getLiveStatus(tag.name);
-                systemStatuses.push({ [tag.name]: latestStatusForTag });
+                const latestStatusForTag:ISystemStatus[] = await systemStatusRepository.getLiveStatus(tag.name);
+                if (latestStatusForTag) {
+                    systemStatuses.push({
+                        systemName: tag.name,
+                        systemData: latestStatusForTag
+                    });
+                }
             }
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,
@@ -35,6 +41,7 @@ class SystemStatusService {
             return error;
         }
     }
+
     async createOrUpdateLiveStatus(data: ISystemStatus, tag: string): Promise<void | any> {
         try {
             logger.info({
@@ -69,6 +76,7 @@ class SystemStatusService {
             return error;
         }
     }
+
     async getUpdatedMaxPriority(incidentsIds: string[][]): Promise<Priority> {
         let maxPriority = Priority.P3
         const priorityValues = Object.values(Priority) as string[];
@@ -78,6 +86,7 @@ class SystemStatusService {
         })
         return maxPriority;
     }
+
     async autoUpdateLiveStatus() {
         const yesterday = ((new Date()).getDate() - 1).toString()
         const systems: any = systemStatusRepository.getLiveStatusSystemsByDate(yesterday)//TODO -check types
@@ -87,6 +96,7 @@ class SystemStatusService {
             await systemStatusRepository.createLiveStatus(system)
         })
     }
+    
     async liveStatusByIncident(incident: IIncident): Promise<(ISystemStatus | any)[]> {
         try {
             const promises: Promise<ISystemStatus | any>[] = incident.currentTags.map(async (tag) => {

@@ -8,11 +8,19 @@ export interface ISystemStatus {
     maxPriority: Priority,
     incidentCounter: number
 }
- 
 
 export interface SystemStatusCollection {
-    systemsStatus: {
-        systemName: string;
-        systemData: ISystemStatus[];
-    }[];
+    systemsStatus: SystemStatusEntry[];
+}
+
+export interface SystemStatusEntry {
+    systemName: string;
+    systemData: ISystemStatus[];
+}
+
+export interface IcolorScale{
+    from:number,
+    to: number,
+    name: string,
+    color: string,
 }
