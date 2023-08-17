@@ -1,6 +1,6 @@
 import React from 'react';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { Priority } from '../../interface/enum-priority';
+import { Priority } from '../../interface/enums';
 
 const buttonStyles: React.CSSProperties = {
   flex: '1',

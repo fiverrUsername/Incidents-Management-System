@@ -1,7 +1,8 @@
-import { IsArray, IsISO8601, IsNotEmpty, IsString } from "class-validator";
+import { IsArray, IsISO8601, IsNotEmpty, IsString, ValidateNested } from "class-validator";
 import { constants } from "../loggers/constants";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
-import { Priority } from "../enums/enum";
+import { Priority, Status } from "../enums/enum";
+import { TagDto } from "./tagDto";
 
 export interface ITimelineEventDto {
     incidentId: string;
@@ -12,6 +13,7 @@ export interface ITimelineEventDto {
     files: string[];
     createdDate: string;
     updatedDate: string;
+    status:Status;
 }
 
 export class ITimelineEventDto {
@@ -20,11 +22,13 @@ export class ITimelineEventDto {
         this.incidentId = "";
         this.userId = "";
         this.description = "";
+        this.status=Status.Active;
         this.priority = Priority.P0;
         this.type = "";
         this.files = [];
         this.createdDate = Date.now().toString();
         this.updatedDate = Date.now().toString();
+        this.tags=[];
         Object.assign(this, init);
     }
 
@@ -46,6 +50,10 @@ export class ITimelineEventDto {
     @IsString({ message: `priority ${constants.INVALID_MESSAGE}` })
     priority: Priority;
 
+    @IsNotEmpty({ message: `status ${constants.EMPTY_OBJECT}` })
+    @IsString({ message: `status ${constants.INVALID_MESSAGE}` })
+    status: Status;
+
     @IsNotEmpty({ message: `type ${constants.EMPTY_OBJECT}` })
     @IsString({ message: `type ${constants.INVALID_MESSAGE}` })
     type: string;
@@ -61,5 +69,10 @@ export class ITimelineEventDto {
     @IsNotEmpty({ message: `updatedDate ${constants.EMPTY_OBJECT}` })
     @IsISO8601()
     updatedDate: string;
+
+    @IsNotEmpty({ message: `currentTags ${constants.EMPTY_OBJECT}` })
+    @IsArray({ message: "is not an array" })
+    @ValidateNested({ each: true })
+    tags: TagDto[];
 
 }

@@ -3,16 +3,20 @@ import { ISummary } from "../interfaces/ISummary";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import incidentRepository from "../repositories/incidentRepository";
+import SystemStatusService from './systemStatusService';
+
 
 class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {
     try {
-
       logger.info({
         sourece: constants.INCIDENT_COTROLLER,
         msg: constants.ADD_INCIDENT_SUCCESS,
         incidentId: newIncident.id
       });
+      console.log("incident::::",newIncident)
+      const live=await SystemStatusService.liveStatusByIncident(newIncident);
+      console.log("live:::",live)
       return await incidentRepository.addIncident(newIncident);
     } catch (error: any) {
       logger.error({
@@ -88,7 +92,7 @@ class IncidentService {
   async getSummaryIncident(id: string): Promise<ISummary | any> {
     try {
       let summary: ISummary | null = null;
-      const incident = await incidentRepository.getIncidentByField(id, "id");
+      const incident = await incidentRepository.getIncidentByField(id, 'id');
       if (incident) {
         summary = {
           createdBy: incident.createdBy,

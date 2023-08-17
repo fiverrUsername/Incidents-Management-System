@@ -1,6 +1,6 @@
+import { Priority } from "../enums/enum";
 import { ISystemStatus } from "../interfaces/systemStatusInterface";
 import systemStatusModel from "../models/systemStatusModel";
-import { IIncident } from "../interfaces/IncidentInterface";
 
 class SystemStatusRepository {
     async getLiveStatusSystemsByDate(_date: string): Promise<ISystemStatus[] | any> {
@@ -12,42 +12,59 @@ class SystemStatusRepository {
             return null;
         }
     }
-    
-    async createLiveStatus(data: ISystemStatus, tag: string): Promise<ISystemStatus | any> {
-        const liveStatus: ISystemStatus = {
-            id: "new uuid",
-            systemName: tag,
-            incidents: [data.id],
-            date: (new Date()).toString(),
-            maxPriority: data.maxPriority,
-        }
+
+  async getLiveStatus(tag: string): Promise<ISystemStatus[] | any> {
+    try {
+      const systemStatusList: ISystemStatus[] = await systemStatusModel
+        .find({ systemName: tag })
+        .sort({ date: -1 })
+        .limit(10);
+      console.log(systemStatusList)
+      return systemStatusList;
+    } catch (error: any) {
+      console.error(`error: ${error}`);
+      return null;
+    }
+  }
+    async getTodaysLiveStatusByTag(tag: string): Promise<ISystemStatus | null> {
         try {
-            const newLiveStatus: ISystemStatus = await systemStatusModel.create(liveStatus);
-            return newLiveStatus;
-        } catch (error: any) {
-            console.error(`error: ${error}`);
-            return error;
+            console.log("i'm in getTodaysLiveStatusByTag");
+            // Get the start and end of the current day
+            const now = new Date();
+            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+            return await systemStatusModel.findOne({
+                date: {
+                    $gte: startOfDay,
+                    $lt: endOfDay
+                },
+                systemName: tag
+            });
+        } catch (e) {
+            console.error(`error: ${e}`);
+            return null;
         }
     }
-    async updateLiveStatus(incident: IIncident, id: string): Promise<ISystemStatus | any> {
-        try {
-            const existingSystemStatus: ISystemStatus | null = await systemStatusModel.findById(id);
-            if (!existingSystemStatus) {
-                throw new Error(`ISystemStatus with ID ${id} not found.`);
-            }
-            existingSystemStatus.incidents.push(incident.id);
-            // Update the maxPriority based on the comparison with the incident's priority
-            if (incident.currentPriority > existingSystemStatus.maxPriority) {
-                existingSystemStatus.maxPriority = incident.currentPriority;
-            }
-            // Save the updated existing ISystemStatus back to the database
-            const updatedSystemStatus: ISystemStatus | null = await systemStatusModel.findByIdAndUpdate(id, existingSystemStatus);
-            return updatedSystemStatus;
-        } catch (error: any) {
-            console.error(`error: ${error}`);
-            return error;
-        }
+
+  async createLiveStatus(data: ISystemStatus): Promise<ISystemStatus | any> {
+    try {
+        const newLiveStatus: ISystemStatus = await systemStatusModel.create(data);
+        return newLiveStatus;
+    } catch (error: any) {
+        console.error(`error: ${error}`);
+        return error;
     }
+}
+
+async updateLiveStatus(data: ISystemStatus, id: string): Promise<ISystemStatus | any> {
+    try {
+        const updatedSystemStatus: ISystemStatus | null= await systemStatusModel.findOneAndUpdate({id:id},data);
+        return updatedSystemStatus;
+    } catch (error: any) {
+        console.error(`error: ${error}`);
+        return error;
+    }
+}
 }
 
 export default new SystemStatusRepository();

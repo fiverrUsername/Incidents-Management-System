@@ -4,17 +4,16 @@ import { Avatar } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
 import React from 'react';
-
 import { ITimeLineEventprops } from '../../../interface/timeLineInterface';
 import { TimelineConnectorWrapper, TimelineDotWrapper, TimelineItemWrapper } from './timeLineEvent.style';
-
+import Attachmentlist from '../../../components/attachment/attachmentList';
 
 const timeLineEvent: React.FC<ITimeLineEventprops> = (props) => {
     const { timeline, isPriorityChanged, isTypeChanged, previousType, previosPriority, name, profile } = props
     const { description, createdDate } = timeline
     const date = dayjs(createdDate).format("DD/MM/YYYY")
 
-    return <div >
+    return <div style={{display:"flex"}}>
         <TimelineItemWrapper>
             <TimelineSeparator>
                 <TimelineDotWrapper>
@@ -40,7 +39,7 @@ const timeLineEvent: React.FC<ITimeLineEventprops> = (props) => {
 
             </TimelineContent>
         </TimelineItemWrapper>
-        {/* <Attachment /> */}
+        <Attachmentlist id={timeline.id ? timeline.id : ""} />
     </div>
 }
 

@@ -36,8 +36,7 @@ class AttachmentsRepository {
   }
   async getAttachment(key: string): Promise<AttachmentData|null> {
     try {
-      const s3 = new AWS.S3();
-      const params: AWS.S3.GetObjectRequest = {
+        const params: AWS.S3.GetObjectRequest = {
         Bucket: AttachmentsRepository.getBucketName(),
         Key: key.replace(/_/g, '/')
       };
@@ -57,12 +56,16 @@ class AttachmentsRepository {
   }
   async getAllAttachmentsByTimeline(keys: string[]): Promise<(AttachmentData|null)[]|any> {
     try {
+      if(keys.length>0)
+      {
       const allResponses: (AttachmentData | null)[] = await Promise.all(keys.map(
         (key) => this.getAttachment(key)));
       logger.info({ source: constants.SHOW_SUCCESS, method: constants.METHOD.GET, err: true });
       return allResponses;
+      }
+      return null;
     } catch (error) {
-      logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, err: true });
+      logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, err: true, error:true });
       throw error;
     }
   }

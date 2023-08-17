@@ -1,15 +1,9 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import events from './services/events';
-import './services/events'
-import { addTimeLineEvent } from "./services/slack-api/wrap/sendTimeLine";
+import events from './slackTracking';
 import cors from 'cors';
-import './services/socket'
-import './services/events';
-
-
+import { WEBHOOK_EVENT_RECEIVED_SUCCESSFULLY, port } from './constPage';
 const app = express();
-const port = 4700;
 
 app.use(bodyParser.json());
 app.use(cors({
@@ -24,17 +18,13 @@ app.post('/webhook', (req: Request, res: Response) => {
     const challenge: string = data.challenge;
     res.json({ challenge });
   } else {
-    res.json({ message: 'Webhook event received successfully.' });
+    res.json({ message: WEBHOOK_EVENT_RECEIVED_SUCCESSFULLY });
   }
   events(data);
-});
-
-app.post('/', (req: Request, res: Response) => {
-  console.log(req.body);
-  addTimeLineEvent(req.body);
-  res.json({ message: 'Timeline event added successfully' });
 });
 
 app.listen(port, () => {
   console.log(`Server is on http://localhost:${port}`);
 });
+
+

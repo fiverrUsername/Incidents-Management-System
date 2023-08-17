@@ -4,7 +4,7 @@ import timelineEvent from "../models/timelineEvent";
 class TimelineEventRepository {
   async addTimelineEvent(newTimelineEvent: ITimelineEvent): Promise<void | any> {
     try {
-      const _timelineEvent=await timelineEvent.create(newTimelineEvent);      
+      const _timelineEvent = await timelineEvent.create(newTimelineEvent);
       return _timelineEvent;
     } catch (error: any) {
       console.error(`error: ${error}`);
@@ -23,28 +23,28 @@ class TimelineEventRepository {
 
   async getTimelineEventByIncidentId(id: string): Promise<ITimelineEvent[] | any> {
     try {
-      const _timelineEvent=await timelineEvent.find({ incidentId: id });
+      const _timelineEvent = await timelineEvent.find({ incidentId: id });
       return _timelineEvent;
     } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
     }
   }
-  
+
 
   async deleteTimelineEvent(id: String): Promise<ITimelineEvent | any> {
     try {
-      return await timelineEvent.findOneAndDelete({id});
+      return await timelineEvent.findOneAndDelete({ id });
     } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
     }
   }
 
-  async updateTimelineEvent(id:string,newTimelineEvent:ITimelineEvent):Promise<void|any>{
+  async updateTimelineEvent(id: string, newTimelineEvent: ITimelineEvent): Promise<void | any> {
     try {
-      return await timelineEvent.findOneAndUpdate({id},newTimelineEvent);;
-    } catch (error:any) {
+      return await timelineEvent.findOneAndUpdate({ id }, newTimelineEvent);;
+    } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
     }
@@ -52,9 +52,9 @@ class TimelineEventRepository {
 
   async getTimelineEventById(id: String): Promise<ITimelineEvent | any> {
     try {
-      const _timelineevent =await timelineEvent.findOne({id});
+      const _timelineevent = await timelineEvent.findOne({ id });
       return _timelineevent;
-    } catch (error:any) {
+    } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
     }

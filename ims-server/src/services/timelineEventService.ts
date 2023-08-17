@@ -1,3 +1,4 @@
+import { TimelineEvent } from "aws-sdk/clients/ssmincidents";
 import { ITimelineEventDto } from "../dto/timelineEventDto";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
@@ -6,6 +7,8 @@ import logger from "../loggers/log";
 import incidentRepository from "../repositories/incidentRepository";
 import timelineEventRepository from "../repositories/timelineEventRepository";
 import { validate } from "class-validator";
+import systemStatusService from "./systemStatusService";
+import incidentService from "./incidentService";
 
 class TimelineEventService {
   async getAllTimelineEvents(): Promise<ITimelineEvent[] | any> {
@@ -57,26 +60,18 @@ class TimelineEventService {
     newTimelineEvent: ITimelineEvent
   ): Promise<void | any> {
     try {
-      const incident: IIncident = await incidentRepository.getIncidentByField(
-        newTimelineEvent.incidentId!,
-        "id"
-      );
+      console.log("before newTimelineEvent",newTimelineEvent)
+      const incident: IIncident = await incidentRepository.getIncidentByField(newTimelineEvent.incidentId!, "id");
       newTimelineEvent.channelId = incident.channelId;
       const _timelineEvent = new ITimelineEventDto(newTimelineEvent);
       const validationErrors = await validate(_timelineEvent);
       if (validationErrors.length > 0) {
-        logger.error({
-          source: constants.TIMELINE_EVENT,
-          err: "Validation error",
-          validationErrors: validationErrors.map((error) => error.toString()),
-        });
+        logger.error({ source: constants.TIMELINE_EVENT, err: "Validation error", validationErrors: validationErrors.map((error) => error.toString()), });
         return new Error("Validation error");
       }
-      logger.info({
-        sourece: constants.TIMELINE_EVENT,
-        method: constants.METHOD.POST,
-        timelineEventId: newTimelineEvent.id,
-      });
+      // systemStatusService.updateLiveStatus({},"")
+      logger.info({ sourece: constants.TIMELINE_EVENT, method: constants.METHOD.POST, timelineEventId: newTimelineEvent.id });
+      console.log("after newTimelineEvent",newTimelineEvent)
       return await timelineEventRepository.addTimelineEvent(newTimelineEvent);
     } catch (error: any) {
       logger.error({
@@ -292,5 +287,19 @@ class TimelineEventService {
       );
     }
   }
+
+  async updateStatusAndPriorityOfIncidentById(timeline:ITimelineEvent):Promise<IIncident|any>{
+    try{
+      console.log("timeline",timeline)
+      const incident:IIncident=await incidentRepository.getIncidentById(timeline.incidentId);
+      incident.currentPriority=timeline.priority;
+      incident.status=timeline.status;
+      incident.currentTags=timeline.tags;
+      return await incidentService.updateIncident(incident.id!,incident);
+    }catch(err:any){      
+      return new Error(err);
+    }
+  } 
+
 }
 export default new TimelineEventService();

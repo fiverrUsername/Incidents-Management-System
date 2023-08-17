@@ -3,7 +3,7 @@ import supertest from 'supertest';
 import timelineEvent from '../models/timelineEvent';
 import timelineEventService from '../services/timelineEventService';
 import timelineEventRepository from '../repositories/timelineEventRepository';
-import { Priority } from '../enums/enum';
+import { Priority, Status } from '../enums/enum';
 import TimelineEventController from '../controllers/TimelineEventController';
 
 describe("timeline events", () => {
@@ -26,6 +26,7 @@ describe("timeline events", () => {
         describe("success", () => {
             it("should add a timeline event and return 201", async () => {
                 const newtimelineEvent = {
+                    "status":Status.Active,
                     "incidentId": "21d723cf-0ce9-4d37-9b76-e6d9873c8c57",
                     "userId": "14785",
                     "description": "description of a timeline event",
@@ -58,6 +59,7 @@ describe("timeline events", () => {
             it("should return 500 on error", async () => {
                 jest.spyOn(timelineEvent, 'create').mockRejectedValueOnce(new Error());
                 const newtimelineEvent = {
+                    "status":Status.Active,
                     "incidentId": "21d723cf-0ce9-4d37-9b76-e6d9873c8c57",
                     "userId": "14785",
                     "description": "description of a timeline event",
@@ -125,6 +127,7 @@ describe("timeline events", () => {
                 const id = "6d8815c8-989c-4ad5-8e36-587c5ff46cc6";
                 const index = "0";
                 const timelineEvent = {
+                    "status":Status.Active,
                     "_id": "6d8815c8-989c-4ad5-8e36-587c5ff46cc6",
                     "incidentId": "649cbeda942a5d4d8bcf3044",
                     "userId": "14785",

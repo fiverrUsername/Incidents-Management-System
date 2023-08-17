@@ -1,13 +1,15 @@
 import dayjs from 'dayjs';
-import { Priority } from './enum-priority';
+import { Priority ,Status } from './enums';
 import {ITag} from './ITag';
 
 export interface ITimeLineEvent  {
+  id?:string,
   incidentId: string,
   userId: string,
   channelId?:string,
   description: string,
   priority:Priority,
+  status: Status,
   type:string,
   tags:ITag[],
   files:string[],
@@ -28,4 +30,8 @@ export interface ITimeLineEventprops {
   previosPriority: string;
   name?: string;
   profile?: string;
+}
+export interface IAttachmentData{
+  key: string;
+  data: Buffer;
 }

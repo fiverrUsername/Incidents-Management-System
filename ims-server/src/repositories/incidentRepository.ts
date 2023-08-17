@@ -4,23 +4,26 @@ import { IIncident } from "../interfaces/IncidentInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import incidentModel from "../models/IncidentModel";
 import TimelineEventRepository from "../repositories/timelineEventRepository"
+import { Status } from "../enums/enum";
 
 class IncidentRepository {
   async addIncident(newIncident: IIncident): Promise<IIncident | any> {
     const timeline:ITimelineEvent={
       channelId:newIncident.channelId,
-      incidentId: newIncident.id,
+      incidentId: newIncident.id || "",
       userId: newIncident.createdBy,
       description: 'Created new Incident',
       priority: newIncident.currentPriority,
       type: newIncident.type,
       files: [],
       createdDate: new Date(),
-      updatedDate: new Date()
+      updatedDate: new Date(),
+      status:newIncident.status,
+      tags:newIncident.currentTags
     }
     try {
       const _newIncident:IIncident=await incidentModel.create(newIncident);
-      timeline.incidentId=_newIncident.id
+      timeline.incidentId=_newIncident.id || ""
       await TimelineEventRepository.addTimelineEvent(timeline)
       return  _newIncident;
     } catch (error: any) {

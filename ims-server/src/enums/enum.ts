@@ -5,7 +5,7 @@ export enum EncidentType {
 }
 
 
-export enum EncidentStatus {
+export enum Status {
     Active = "Active",
     Resolved = "Resolved",
 }

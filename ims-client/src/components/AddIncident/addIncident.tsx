@@ -3,7 +3,6 @@ import { Dialog, FormControl, Grid, Button } from "@mui/material";
 import { useForm } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
-
 import DateTimePickerValue from '../datePicker/datePicker';
 import TextFieldInput from './TextFields';
 import ToggleButtons from './PriorityButtons';
@@ -14,7 +13,9 @@ import theme from '../../theme';
 import apiCalls from '../../service/apiCalls';
 import { ITag } from '../../interface/ITag';
 import BannerNotification from "../bannerNotification/BannerNotification"
-import { Priority } from '../../interface/enum-priority';
+import { Priority } from '../../interface/enums';
+import IIncident from '../../interface/incidentInterface';
+
 export interface FormData {
   name: string;
   description: string;
@@ -85,31 +86,38 @@ export default function AddIncident({ open, onClose }: Props) {
   };
 
 
-  const validatechannelName = (value: string) => {
+  const validatechannelName = async (value: string) => {
     const minLength = 1;
     const maxLength = 80;
-    const allowedCharacters = /^[a-zA-Z0-9-_]+$/;
-
-    //TODO- GetAllChannelsNames from slack server
-    const reservedNames = ["general", "random", "all"];
-
+    const allowedCharacters = /^[a-zA-Z0-9-_]+$/;  
+  
+    let allChannelNames: string[] = [];
+  
+    try {
+      const allIncidents: IIncident[] | undefined = await apiCalls.getIncidents();
+      allChannelNames = (allIncidents || [])
+        .filter((incident: IIncident) => incident.channelName !== undefined)
+        .map((incident: IIncident) => incident.channelName as string);
+      console.log(allChannelNames);
+    } catch (error) {
+      console.error('Error fetching incidents:', error);
+    }
+  
     if (!value) {
       return "Slack Channel Name is required";
     }
-
+  
     if (value.length < minLength || value.length > maxLength) {
       return "Slack Channel Name must be between 1 and 80 characters long";
     }
-
     if (!allowedCharacters.test(value)) {
       return "Invalid characters";
     }
-
-    if (reservedNames.includes(value.toLowerCase())) {
-      return "The channel name is already exists";
+  
+    if (allChannelNames.includes(value.toLowerCase())) {
+      return "The channel name already exists";
     }
-
-
+  
     return true;
   };
 

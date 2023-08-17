@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import  {IIncident} from "../interfaces/IncidentInterface";
 import { v4 as uuidv4 } from "uuid";
-import { Priority } from "../enums/enum";
+import { Priority, Status } from "../enums/enum";
 
 export const IncidentSchema = new Schema<IIncident>({
   id: {
@@ -15,6 +15,7 @@ export const IncidentSchema = new Schema<IIncident>({
   status: {
     type: String,
     required: true,
+    enum: Object.values(Status)
   },
   description: {
     type: String,
