@@ -54,7 +54,7 @@ class TimelineEventService {
 
   async addTimelineEvent(newTimelineEvent: ITimelineEvent): Promise<void | any> {
     try {
-      console.log("before newTimelineEvent",newTimelineEvent)
+      console.log("before newTimelineEvent", newTimelineEvent)
       const incident: IIncident = await incidentRepository.getIncidentByField(newTimelineEvent.incidentId!, "id");
       newTimelineEvent.channelId = incident.channelId;
       const _timelineEvent = new ITimelineEventDto(newTimelineEvent);
@@ -63,9 +63,11 @@ class TimelineEventService {
         logger.error({ source: constants.TIMELINE_EVENT, err: "Validation error", validationErrors: validationErrors.map((error) => error.toString()), });
         return new Error("Validation error");
       }
-      // systemStatusService.updateLiveStatus({},"")
+      newTimelineEvent.tags.map((tag) => {
+        systemStatusService.updateLiveStatusByTimeLineEvent(newTimelineEvent, tag)
+      })
       logger.info({ sourece: constants.TIMELINE_EVENT, method: constants.METHOD.POST, timelineEventId: newTimelineEvent.id });
-      console.log("after newTimelineEvent",newTimelineEvent)
+      console.log("after newTimelineEvent", newTimelineEvent)
       return await timelineEventRepository.addTimelineEvent(newTimelineEvent);
     } catch (error: any) {
       logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.POST, error: true, timelineEventId: newTimelineEvent.id });
@@ -193,18 +195,18 @@ class TimelineEventService {
     }
   }
 
-  async updateStatusAndPriorityOfIncidentById(timeline:ITimelineEvent):Promise<IIncident|any>{
-    try{
-      console.log("timeline",timeline)
-      const incident:IIncident=await incidentRepository.getIncidentById(timeline.incidentId);
-      incident.currentPriority=timeline.priority;
-      incident.status=timeline.status;
-      incident.currentTags=timeline.tags;
-      return await incidentService.updateIncident(incident.id!,incident);
-    }catch(err:any){      
+  async updateStatusAndPriorityOfIncidentById(timeline: ITimelineEvent): Promise<IIncident | any> {
+    try {
+      console.log("timeline", timeline)
+      const incident: IIncident = await incidentRepository.getIncidentById(timeline.incidentId);
+      incident.currentPriority = timeline.priority;
+      incident.status = timeline.status;
+      incident.currentTags = timeline.tags;
+      return await incidentService.updateIncident(incident.id!, incident);
+    } catch (err: any) {
       return new Error(err);
     }
-  } 
+  }
 
 }
 export default new TimelineEventService();

@@ -1,6 +1,8 @@
 import { Priority } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ISystemStatus, SystemStatusEntry } from "../interfaces/systemStatusInterface";
+import { ITimelineEvent } from "../interfaces/ItimelineEvent";
+import { ITag } from "../interfaces/tagInterface";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import systemStatusModel from "../models/systemStatusModel";
@@ -76,7 +78,13 @@ class SystemStatusService {
             return error;
         }
     }
+    async updateLiveStatusByTimeLineEvent(timeLineEvent: ITimelineEvent, system: ITag): Promise<void | null> {
+        try {
 
+        } catch {
+
+        }
+    }
     async getUpdatedMaxPriority(incidentsIds: string[][]): Promise<Priority> {
         let maxPriority = Priority.P3
         const priorityValues = Object.values(Priority) as string[];
