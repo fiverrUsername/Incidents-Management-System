@@ -83,7 +83,7 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading, handle
         <ColumnHeader params={params} />
     },
     {
-      field: "channelName", headerName: "Slack Link", minWidth: 200, maxWidth: 1700, flex: 1,
+      field: "channelName", headerName: "Channel Name", minWidth: 200, maxWidth: 1700, flex: 1,
       renderHeader: (params: GridColumnHeaderParams) =>
         <ColumnHeader params={params} />
     },

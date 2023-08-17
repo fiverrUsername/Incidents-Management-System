@@ -5,7 +5,7 @@ import { Box } from "@mui/system";
 
 export const CustomScrollbar = styled.div`
   // max-height: 400px;
-  max-height:450px;
+  max-height:300px;
   overflow-y: auto;
   scrollbar-color-x:${theme.palette.info.main};
   scrollbar-width: thin;

@@ -29,6 +29,7 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
         setFilesData((prevFilesData) => {
           return [...prevFilesData, ...response];
         });
+        console.log("response",response);
       } catch (error) {
         console.error('Error Getting Data:', error);
       }

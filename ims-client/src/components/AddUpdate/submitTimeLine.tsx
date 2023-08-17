@@ -1,13 +1,11 @@
 import React from 'react'
-import IIncident from '../../interface/incidentInterface'
 import apiCalls from '../../service/apiCalls'
-import { GetIncident, form_data } from './UpdateIncident'
+import { receivedIncident, dataFromForm } from './UpdateIncident'
 import {ITimeLineEvent} from '../../interface/timeLineInterface'
 
-
 interface Props {
-  data: form_data;
-  incident: GetIncident;
+  data: dataFromForm;
+  incident: receivedIncident;
   addNewTimelineFunction: (newTimeline: ITimeLineEvent) => void
 }
 
