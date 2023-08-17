@@ -1,17 +1,17 @@
 import { GridColDef, GridColumnHeaderParams, GridColumnVisibilityModel } from "@mui/x-data-grid";
 import React, { useState } from "react";
-import Search from "../search/search";
+import { Box, Typography } from "@mui/material";
+
+import IIncident from "../../interface/incidentInterface";
 import {
   filterRowsBySearch,
   filterRowsByStatus,
 } from "../../service/incidentTableService";
+import theme from "../../theme";
+import AddIncidentComp from "../AddIncident/addIncidentComp";
+import Search from "../search/search";
 import Table from "../table/table";
 import UpTabs from "../tabs/Tabs";
-import IIncident from "../../interface/incidentInterface";
-import AddIncidentComp from "../AddIncident/addIncidentComp";
-import { Box, Typography } from "@mui/material";
-import theme from "../../theme";
-
 
 export type EventProps = {
   onEvent: (functionName: string) => void;
@@ -21,7 +21,8 @@ export type EventProps = {
 export interface IInceidentTableProps {
   rows: IIncident[];
   isLoading: boolean;
-  handleRefresh: () => void;
+  incident: IIncident[];
+  setIncident: any;
 }
 export interface ICollumnHeader {
   params: GridColumnHeaderParams
@@ -32,7 +33,7 @@ const ColumnHeader: React.FC<ICollumnHeader> = ({ params }) => {
       {params.colDef.headerName}
     </Typography>)
 }
-const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading, handleRefresh}) => {
+const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading, incident, setIncident }) => {
 
   const visibilityModel: GridColumnVisibilityModel =
   {
@@ -83,7 +84,7 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading, handle
         <ColumnHeader params={params} />
     },
     {
-      field: "channelName", headerName: "Slack Link", minWidth: 200, maxWidth: 1700, flex: 1,
+      field: "channelName", headerName: "Channel Name", minWidth: 200, maxWidth: 1700, flex: 1,
       renderHeader: (params: GridColumnHeaderParams) =>
         <ColumnHeader params={params} />
     },
@@ -124,6 +125,7 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading, handle
   let filteredRows: IIncident[] = [];
 
   someFunction();
+  console.log('filteredRows', filteredRows);
 
   return (
     <Box border={`1px solid ${theme.palette.grey[300]}`} borderRadius={10} bgcolor={theme.palette.primary.contrastText}>
@@ -135,7 +137,7 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading, handle
           <Box style={{ marginRight: '8px' }}>
             <Search onEvent={someFunction} setValue={setSearchValue} />
           </Box>
-          <AddIncidentComp handleRefresh={handleRefresh}  />
+          <AddIncidentComp incidents={incident} setIncident={setIncident} />
         </Box>
       </Box>
       <Table columns={columns} rows={filteredRows} isLoading={isLoading} visibilityModel={visibilityModel} />
