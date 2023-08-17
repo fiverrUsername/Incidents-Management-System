@@ -15,18 +15,6 @@ import { IAttachmentData } from '../../interface/timeLineInterface';
 import attachmentService from '../../service/attachmentService';
 import { SingleAttachment, StyledImage } from './attachment.style';
 
-type SupportedFileTypes =
-  | 'image'
-  | 'pdf'
-  | 'audio'
-  | 'video'
-  | 'word'
-  | 'powerpoint'
-  | 'excel'
-  | 'txt'
-  | 'default';
-
-
 const getFileName = (fileName: string) => {
   const parts = fileName.split('_');
   if (parts.length > 1) {
@@ -37,60 +25,18 @@ const getFileName = (fileName: string) => {
   return '';
 };
 
-const getFileTypeFromData = (file: string) => {
-  try {
-    const extension = getFileName(file).split('.').pop()?.toLowerCase();
-    switch (extension) {
-      case 'jpg':
-      case 'jpeg':
-      case 'png':
-      case 'gif':
-        return 'image';
-      case 'pdf':
-        return 'pdf';
-      case 'txt':
-        return 'txt';
-      case 'mp3':
-      case 'wav':
-      case 'ogg':
-      case 'mpeg':
-        return 'audio';
-      case 'mp4':
-      case 'mov':
-      case 'wmv':
-      case 'avi':
-      case 'webm':
-        return 'video';
-      case 'doc':
-      case 'docx':
-      case 'odt':
-        return 'word';
-      case 'ppt':
-      case 'pptx':
-        return 'powerpoint';
-      case 'xls':
-      case 'xlsx':
-      case 'csv':
-        return 'excel';
-      default:
-        return 'default';
-    }
-  } catch (error) {
-    console.error('Error detecting file type:', error);
-    return 'default';
-  }
-};
 export default function Attachment({
+  fileType,
   file,
   onDelete,
   style,
 }: {
+  fileType:string
   file: string;
   onDelete: (fileId: string) => void;
   style?: React.CSSProperties;
 }) {
-  let fileType:string;
-  // const [fileType, setFileType] = useState<SupportedFileTypes>('default');
+
   const [downloadUrl, setDownloadUrl] = useState<any>(null);
 
 
@@ -108,9 +54,9 @@ export default function Attachment({
       renderFileContent()
   }, [downloadUrl]);
 
-  useEffect(() => {
-    fileType=getFileTypeFromData(file);
-  }, []);
+  // useEffect(() => {
+  //   fileType=getFileTypeFromData(file);
+  // }, []);
 
   // if (!downloadUrl) {
   //   return <div>Loading...</div>;
@@ -127,7 +73,6 @@ export default function Attachment({
   };
 
   const handleDownload = async () => {
-    debugger
     // const fileBlob = new Blob([file.data], { type: fileType });    
     // const fileURL = URL.createObjectURL(fileBlob);
     // // Create a download link
@@ -165,7 +110,7 @@ export default function Attachment({
 
 
   const renderFileContent = () => {
-    debugger
+    
     if(!downloadUrl)
       return null;
     if (!file) {
