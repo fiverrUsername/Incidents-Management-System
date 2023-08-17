@@ -25,8 +25,8 @@ export default async function handleMessageEvent(event: any) {
       priority: decodeMessagePriority(event.text) || Priority.P0,
       type:EncidentType.Securing,
       files: event.files && (await fileResponse(event.files, answer.data.id!)) || [],
-      createdDate: date,
-      updatedDate: decodeMessageDate(event.text) || date,
+      createdDate:new Date(),
+      updatedDate: decodeMessageDate(event.text) || new Date(),
       status: Status.Active,
       tags: []
     };
