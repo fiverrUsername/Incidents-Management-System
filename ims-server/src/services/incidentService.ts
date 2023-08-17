@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ISummary } from "../interfaces/ISummary";
 import { constants } from "../loggers/constants";
@@ -14,9 +16,7 @@ class IncidentService {
         msg: constants.ADD_INCIDENT_SUCCESS,
         incidentId: newIncident.id
       });
-      console.log("incident::::",newIncident)
       const live=await SystemStatusService.liveStatusByIncident(newIncident);
-      console.log("live:::",live)
       return await incidentRepository.addIncident(newIncident);
     } catch (error: any) {
       logger.error({
@@ -56,7 +56,11 @@ class IncidentService {
         msg: constants.GET_ALL_INCIDENTS_SUCCESS,
       });
       const incidents = await incidentRepository.getAllIncidents();
-      return incidents;
+      const orderedIncidents = incidents.sort((a: IIncident, b: IIncident) => {
+        const diff = dayjs(b.date).diff(dayjs(a.date));
+        return diff;
+      });
+      return orderedIncidents;
     } catch (error: any) {
       logger.error({
         source: constants.INCIDENT_COTROLLER,
