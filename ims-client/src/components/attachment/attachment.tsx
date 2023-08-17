@@ -3,17 +3,22 @@ import DownloadIcon from '@mui/icons-material/Download';
 import { Grid, IconButton } from '@mui/material';
 import download from 'downloadjs';
 import React, { useEffect, useState } from 'react';
-import audio from '../../images/audio.png';
-import excel from '../../images/excel.png';
-import logo from '../../images/logo.png';
-import pdf from '../../images/pdf.png';
-import PowerPoint from '../../images/powerPoint.png';
-import txt from '../../images/txt.png';
-import video from '../../images/video.png';
-import word from '../../images/word.jpg';
 import { IAttachmentData } from '../../interface/timeLineInterface';
 import attachmentService from '../../service/attachmentService';
 import { SingleAttachment, StyledImage } from './attachment.style';
+
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import TextFieldsIcon from '@material-ui/icons/TextFields';
+import AudiotrackIcon from '@material-ui/icons/Audiotrack';
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import DescriptionIcon from '@material-ui/icons/Description';
+import SlideshowIcon from '@material-ui/icons/Slideshow';
+import InsertChartIcon from '@material-ui/icons/InsertChart';
+import ImageIcon from '@material-ui/icons/Image';
+import SubjectIcon from '@material-ui/icons/Subject';
+
+
 
 type SupportedFileTypes =
   | 'image'
@@ -133,31 +138,39 @@ export default function Attachment({
   };
 
 
-  const renderFileContent = () => {
-    if (!file) {
-      return null;
-    }
-    switch (fileType) {
-      case 'image':
-        return renderImageContent();
-      case 'pdf':
-        return <img src={pdf} alt="pdf" title={getFileName(file.key)} />;
-      case 'txt':
-        return <StyledImage src={txt} alt="txt" title={getFileName(file.key)} />;
-      case 'audio':
-        return <StyledImage src={audio} alt="audio" title={getFileName(file.key)} />;
-      case 'video':
-        return <StyledImage src={video} alt="video" title={getFileName(file.key)} />;
-      case 'word':
-        return <StyledImage src={word} alt="word" title={getFileName(file.key)} />;
-      case 'powerpoint':
-        return <StyledImage src={PowerPoint} alt="powerPoint" title={getFileName(file.key)} />;
-      case 'excel':
-        return <StyledImage src={excel} alt="excel" title={getFileName(file.key)} />;
-      default:
-        return <StyledImage src={logo} alt="default" title={getFileName(file.key)} />;
-    }
-  };
+
+    const renderFileContent = () => {
+      if (!file) {
+        return null;
+      }
+      const iconStyle = {
+        fontSize: '200px',  
+        color: 'green',   
+      };
+      switch (fileType) {
+        case 'image':
+           
+          renderImageContent();
+          return <ImageIcon titleAccess={getFileName(file.key)}style={iconStyle} />;
+        case 'pdf':
+          return <PictureAsPdfIcon titleAccess={getFileName(file.key)}style={iconStyle} />;
+        case 'txt':
+          return <SubjectIcon titleAccess={getFileName(file.key)} style={iconStyle}/>;
+        case 'audio':
+          return <AudiotrackIcon titleAccess={getFileName(file.key)} style={iconStyle}/>;
+        case 'video':
+          return <VideoLibraryIcon titleAccess={getFileName(file.key)} style={iconStyle}/>;
+        case 'word':
+          return <DescriptionIcon titleAccess={getFileName(file.key)} style={iconStyle}/>;
+        case 'powerpoint':
+          return <SlideshowIcon titleAccess={getFileName(file.key)} style={iconStyle}/>;
+        case 'excel':
+          return <InsertChartIcon titleAccess={getFileName(file.key)} style={iconStyle}/>;
+        default:
+          return <InsertDriveFileIcon titleAccess={getFileName(file.key)} style={iconStyle}/>;
+      }
+    };
+    
   return (
     <SingleAttachment>
       {renderFileContent()}

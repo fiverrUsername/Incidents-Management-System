@@ -9,5 +9,7 @@ const attachmentsController = new AwsController()
 attachmentsRouter.post('/allAttachments', attachmentsController.getAllAttachmentByTimeline)
 attachmentsRouter.post('/', upload.array('files'), attachmentsController.uploadAttachment)
 attachmentsRouter.delete('/', attachmentsController.deleteAttachmentById)
+attachmentsRouter.get('/:key', attachmentsController.getSignedUrlForKey)
+
 
 export default attachmentsRouter;
