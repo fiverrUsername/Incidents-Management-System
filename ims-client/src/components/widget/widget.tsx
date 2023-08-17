@@ -42,7 +42,7 @@ export default function Widget({ title, aggregation, icon }: WidgetProps) {
           <StyledButtonBase sx={{ marginRight: 2 }}>
             <StyledIcon>
               {React.cloneElement(icon, {
-                sx: { fontSize: '80px' }, // Adjust the icon size as needed
+                sx: { fontSize: '100px' }, // Adjust the icon size as needed
               })}
             </StyledIcon>
           </StyledButtonBase>
