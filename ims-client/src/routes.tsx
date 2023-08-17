@@ -19,3 +19,5 @@ export default function Router() {
         </Routes>
   );
 }
+
+//פיצר מתקשם בריאקט שמאפשר שימוש בקומפוננטות רגילות
