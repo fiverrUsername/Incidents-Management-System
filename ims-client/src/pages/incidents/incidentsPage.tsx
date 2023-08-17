@@ -19,9 +19,8 @@ const IncidentsPage = () => {
   }, [refreshCount]); // Depend on the refreshCount state
 
   const handleRefresh = () => {
-    setRefreshCount(refreshCount + 1); // מעלים את ערך הרענון כאשר רוצים לרענן
+    setRefreshCount(refreshCount + 1);
   };
-
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>

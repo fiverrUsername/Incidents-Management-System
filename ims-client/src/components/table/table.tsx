@@ -1,6 +1,6 @@
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { DataGrid, GridColDef, GridColumnVisibilityModel, GridOverlays, GridRowSelectionModel, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridColumnVisibilityModel, GridRowSelectionModel, GridToolbar } from "@mui/x-data-grid";
 import { useState } from "react";
 import { CustomNoRowsOverlay } from "./customNoRowsOverlay";
 import { CustomFooter } from "./footer";
@@ -71,7 +71,7 @@ const Table = <T extends object>({ columns, rows, isLoading, visibilityModel }: 
           marginLeft: 2,
           marginRight: 2,
           '& .MuiDataGrid-toolbarContainer': {
-            marginBottom: '10px', // Add margin to the toolbar container
+            marginBottom: '10px',
           },
         }}
       />
