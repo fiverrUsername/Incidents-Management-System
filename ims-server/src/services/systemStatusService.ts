@@ -14,7 +14,7 @@ class SystemStatusService {
         [Priority.P3]: 3,
     };
 
-    async getLatestLiveStatus(): Promise<SystemStatusEntry[] | any> {
+    async getLiveStatus(): Promise<SystemStatusEntry[] | any> {
         try {
             const tags = await tagService.getAllTags();
             let systemStatuses: SystemStatusEntry[] = [];
