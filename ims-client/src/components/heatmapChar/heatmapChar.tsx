@@ -1,14 +1,23 @@
 import { ApexOptions } from 'apexcharts';
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
+import { IcolorScale, SystemStatusEntry } from '../../interface/ISystemStatus';
+import { number } from 'prop-types';
 
+const colorScaleDefault: IcolorScale[] = [
+  { from: 0, to: 20, name: 'p3', color: '#7FFF00' },   //grean
+  { from: 21, to: 45, name: 'p2', color: '#FFC000' },  //light orange
+  { from: 46, to: 55, name: 'p1', color: '#FF8000' },  //orange
+  { from: 56, to: 100, name: 'p0', color: '#FF0000' }, //red
+]
 
-interface HeatmapCharProps{
-    data:[],
-    colors?:[]
-    date:Date[]
+interface HeatmapCharProps {
+  systemsStatusCollection: SystemStatusEntry[];
+  colors?: IcolorScale[]
 }
-const HeatmapChar = () => {
+
+//{ systemsStatusCollection, colors = colorScaleDefault }
+const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
 
   const options: ApexOptions = {
     chart: {
@@ -17,7 +26,6 @@ const HeatmapChar = () => {
       type: 'heatmap',
     },
     stroke: {
-      
     },
     grid: {
       xaxis: {
@@ -38,38 +46,12 @@ const HeatmapChar = () => {
       column: {
         opacity: 12
       },
-
     },
     plotOptions: {
       heatmap: {
         shadeIntensity: 0.5,
         colorScale: {
-          ranges: [
-            {
-              from: 0,
-              to: 20,
-              name: 'p3',
-              color: '#7fff00',
-            },
-            {
-              from: 21,
-              to: 45,
-              name: 'p2',
-              color: '#ffc000', 
-            },
-            {
-              from: 46,
-              to: 55,
-              name: 'p1',
-              color: '#ff8000',
-            },
-            {
-              from: 56,
-              to: 100,
-              name: 'p0',
-              color: '#FF0000',
-            },
-          ],
+          ranges: colorScaleDefault
         },
       },
     },
@@ -77,15 +59,22 @@ const HeatmapChar = () => {
       enabled: false,
     },
     xaxis: {
-      categories: ['03/08/2023', '04/08/2023', '05/08/2023', '06/08/2023'],
+      // categories: ['03/08/2023', '04/08/2023', '05/08/2023', '06/08/2023'],
       labels: {
         show: false,
+      },
+      tooltip: {
+        enabled: false,
       }
     },
     yaxis: {
       labels: {
         show: true,
       },
+      tooltip: {
+        enabled: false,
+        offsetX: 0,
+      }
     },
     tooltip: {
       x: {
@@ -101,31 +90,37 @@ const HeatmapChar = () => {
       },
       z: {
         formatter: undefined,
-        title: 'Size: '
+        title: 'Incidents: '
       },
     }
   }
 
-  const series: ApexAxisChartSeries = [
-    {
-      name: 'Inbox',
-      data: [
-        { x: 'W1', y: 17 },
-        { x: 'W2', y: 100 },
-        { x: 'W3', y: 48 },
-        { x: 'W4', y: 32 },
-      ],
-    },
-    {
-      name: 'checkout',
-      data: [
-        { x: 'W1', y: 47 },
-        { x: 'W2', y: 29 },
-        { x: 'W3', y: 13 },
-        { x: 'W4', y: 100 },
-      ],
-    },
-  ]
+  const series: ApexAxisChartSeries = props.systemsStatusCollection.map(systemStatus => {
+    return {
+      name: systemStatus.systemName,
+      data: systemStatus.systemData.map(systemData => {
+        const priorityInfo: IcolorScale | undefined = colorScaleDefault.find(scale => scale.name === systemData.maxPriority);
+        const from: number | undefined = priorityInfo?.from;
+        const to: number | undefined = priorityInfo?.to;
+        const formattedDate: string = new Date(systemData.date).toISOString().split('T')[0];
+        if (from !== undefined && to !== undefined) {
+          const priorityValue: number = from + (to - from) / 2;
+          return {
+            x: formattedDate,
+            y: priorityValue,
+            z: systemData.incidentCounter,
+          };
+        }
+        else {
+          return {
+            x: formattedDate,
+            y: 0,
+            z: systemData.incidentCounter,
+          };
+        }
+      })
+    };
+  });
 
   return (
     <div id="chart">
@@ -133,7 +128,7 @@ const HeatmapChar = () => {
         width={options.chart?.width} />
     </div>
   );
-  
+
 };
 
 export default HeatmapChar;

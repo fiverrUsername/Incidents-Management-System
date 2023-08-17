@@ -1,6 +1,6 @@
 import { Priority } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
-import { ISystemStatus } from "../interfaces/systemStatusInterface";
+import { ISystemStatus, SystemStatusEntry } from "../interfaces/systemStatusInterface";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import systemStatusModel from "../models/systemStatusModel";
@@ -9,14 +9,16 @@ import incidentService from "./incidentService";
 import tagService from "./tagService";
 
 class SystemStatusService {
-    async getLatestLiveStatus(): Promise<Array<{ [tag: string]: ISystemStatus[] }> | any> {
+    async getLatestLiveStatus(): Promise<SystemStatusEntry[] | any> {
         try {
             const tags = await tagService.getAllTags();
-            const systemStatuses: Array<{ [tag: string]: ISystemStatus[] }> = [];
+            let systemStatuses: SystemStatusEntry[]=[];
             for (const tag of tags) {
-                console.log("Processing tag:", tag);
                 const latestStatusForTag = await this.getLatestLiveStatusByTag(tag.name);
-                systemStatuses.push({ [tag.name]: latestStatusForTag });
+                systemStatuses.push({
+                    systemName: tag.name,
+                    systemData: latestStatusForTag
+                });
             }
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,

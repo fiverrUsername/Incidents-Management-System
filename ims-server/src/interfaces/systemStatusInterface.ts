@@ -9,3 +9,8 @@ export interface ISystemStatus {
     maxPriority: Priority;
     incidentCounter: number;
 }
+
+export interface SystemStatusEntry {
+    systemName: string;
+    systemData: ISystemStatus[];
+}
