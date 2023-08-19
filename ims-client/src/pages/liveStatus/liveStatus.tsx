@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import apiCalls from "../../service/apiCalls";
-import { liveStatusCollection, liveStatusEntry } from "../../interface/IliveStatus";
+import { liveStatusCollection, liveStatusEntry } from "../../interface/ILiveStatus";
 import HeatmapChar from "../../components/heatmapChar/heatmapChar";
 
 const LiveStatus = () => {
@@ -10,7 +10,7 @@ const LiveStatus = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const _systemsStatusCollection: liveStatusEntry[] = await apiCalls.getSystemsStatus();
+                const _systemsStatusCollection: liveStatusEntry[] = await apiCalls.getLiveStatus();
                 setSystemsStatusCollection(_systemsStatusCollection);
             } catch (error) {
                 console.error(error);

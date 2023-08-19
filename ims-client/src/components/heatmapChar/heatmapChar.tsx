@@ -1,7 +1,7 @@
 import { ApexOptions } from 'apexcharts';
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { IcolorScale, liveStatusEntry } from '../../interface/IliveStatus';
+import { IcolorScale, liveStatusEntry ,IliveStatus} from '../../interface/ILiveStatus';
 import { number } from 'prop-types';
 
 const colorScaleDefault: IcolorScale[] = [

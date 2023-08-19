@@ -1,18 +1,18 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 import apiCalls from '../../../service/apiCalls'
 import { actions } from './slice'
-import { liveStatusCollection } from '../../../interface/IliveStatus'
+import { liveStatusCollection } from '../../../interface/ILiveStatus'
 
 
-function* onGetSystemsStatus() {
+function* onGetLiveStatus() {
     try {
-        const data: liveStatusCollection = yield call(apiCalls.getSystemsStatus)
-        yield put(actions.onGetSystemsStatusSuccess(data))
+        const data: liveStatusCollection = yield call(apiCalls.getLiveStatus)
+        yield put(actions.onGetLiveStatusSuccess(data))
     } catch (error:any) {
         console.error(error)
     }
 }
 
 export default function* watchSystemsStatus() {
-    yield takeEvery(actions.onGetSystemsStatusRequest, onGetSystemsStatus)
+    yield takeEvery(actions.onGetLiveStatusRequest, onGetLiveStatus)
 }

@@ -17,7 +17,7 @@ const apiCalls = {
   deleteFileInTimeLine: (id: string, key: string) => axios.delete(`${baseUrl}/timelineEvent/${id}/files`, {
     params: { key }
   }).then(response => response.data),
-  getSystemsStatus: () => axios.get(`${baseUrl}/livestatus/`).then(response => response.data),
+  getLiveStatus: () => axios.get(`${baseUrl}/livestatus/`).then(response => response.data),
 
 }
 

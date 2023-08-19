@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit"
-import { liveStatusCollection } from "../../../interface/ISystemStatus"
+import { liveStatusCollection } from "../../../interface/ILiveStatus"
 
 export const SYSTEM_STATUS_STATE_KEY = 'SYSTEM_STATUS'
 
@@ -10,10 +10,10 @@ const slice = createSlice({
     name: SYSTEM_STATUS_STATE_KEY,
     initialState,
     reducers: {
-        onGetSystemsStatusRequest: (state, action) => {
+        onGetLiveStatusRequest: (state, action) => {
             console.log('onGetSystemsStatusRequest')
         },
-        onGetSystemsStatusSuccess: (state, action) => {
+        onGetLiveStatusSuccess: (state, action) => {
             state.systemsStatus = action.payload
         },
     }
