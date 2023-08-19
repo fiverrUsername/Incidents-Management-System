@@ -9,6 +9,7 @@ import timelineEventRepository from "../repositories/timelineEventRepository";
 import { validate } from "class-validator";
 import liveStatusService from "./liveStatusService";
 import incidentService from "./incidentService";
+import { Priority } from "../enums/enum";
 
 class TimelineEventService {
   async getAllTimelineEvents(): Promise<ITimelineEvent[] | any> {
@@ -54,8 +55,8 @@ class TimelineEventService {
 
   async addTimelineEvent(newTimelineEvent: ITimelineEvent): Promise<void | any> {
     try {
-      console.log("before newTimelineEvent", newTimelineEvent)
       const incident: IIncident = await incidentRepository.getIncidentByField(newTimelineEvent.incidentId!, "id");
+      const priority: Priority = incident.currentPriority
       newTimelineEvent.channelId = incident.channelId;
       const _timelineEvent = new ITimelineEventDto(newTimelineEvent);
       const validationErrors = await validate(_timelineEvent);
@@ -64,7 +65,7 @@ class TimelineEventService {
         return new Error("Validation error");
       }
       newTimelineEvent.tags.map((tag) => {
-        liveStatusService.updateLiveStatusByTimeLineEvent(newTimelineEvent, tag)
+        liveStatusService.updateLiveStatusByTimeLineEvent(newTimelineEvent, String(tag), priority)
       })
       logger.info({ sourece: constants.TIMELINE_EVENT, method: constants.METHOD.POST, timelineEventId: newTimelineEvent.id });
       console.log("after newTimelineEvent", newTimelineEvent)

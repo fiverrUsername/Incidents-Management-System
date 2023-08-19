@@ -1,4 +1,4 @@
-import { Priority } from "../enums/enum";
+import { Priority, Status } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { IliveStatus, liveStatusEntry } from "../interfaces/liveStatusInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
@@ -58,6 +58,8 @@ class liveStatusService {
                 data.incidentCounter = existingLiveStatus.incidentCounter + 1;
                 const updatedIncidents = [...existingLiveStatus.incidents];
                 const incidentIndex = this.priorityIndexMap[data.maxPriority];
+                console.log('data.id', data.id);
+
                 updatedIncidents[incidentIndex].push(data.id);
                 data.incidents = updatedIncidents;
                 return await liveStatusRepository.updateLiveStatus(data, existingLiveStatus.id);
@@ -78,9 +80,24 @@ class liveStatusService {
             return error;
         }
     }
-    async updateLiveStatusByTimeLineEvent(timeLineEvent: ITimelineEvent, system: ITag): Promise<void | null> {
+    async updateLiveStatusByTimeLineEvent(timeLineEvent: ITimelineEvent, system: string, previousPriority: Priority): Promise<void | null> {
         try {
-
+            if (previousPriority == timeLineEvent.priority && timeLineEvent.status == Status.Active)
+                return
+            const liveStatus = await liveStatusRepository.getTodaysLiveStatusByTag(system);
+            if (!liveStatus)
+                return
+            const updatedIncidents = [...liveStatus.incidents];
+            const incidentIndex = this.priorityIndexMap[previousPriority];
+            updatedIncidents[incidentIndex] = [...updatedIncidents[incidentIndex], timeLineEvent.incidentId]
+            if (previousPriority !== timeLineEvent.priority) {
+                updatedIncidents[incidentIndex].push(timeLineEvent.incidentId)
+                if (timeLineEvent.priority > liveStatus.maxPriority) {
+                    liveStatus.maxPriority = timeLineEvent.priority;
+                }
+            }
+            liveStatus.incidents = updatedIncidents
+            return await liveStatusRepository.updateLiveStatus(liveStatus, liveStatus.id);
         } catch {
 
         }
