@@ -1,10 +1,10 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit"
-import { SystemStatusCollection } from "../../../interface/ISystemStatus"
+import { liveStatusCollection } from "../../../interface/ISystemStatus"
 
 export const SYSTEM_STATUS_STATE_KEY = 'SYSTEM_STATUS'
 
 
-const initialState: SystemStatusCollection = { systemsStatus: [] }
+const initialState: liveStatusCollection = { systemsStatus: [] }
 
 const slice = createSlice({
     name: SYSTEM_STATUS_STATE_KEY,
@@ -24,7 +24,7 @@ const getState = (state: any) => {
 }
 
 export const selectors = {
-    selectSystemsStatus: createSelector(getState, (state: SystemStatusCollection) => state.systemsStatus)
+    selectSystemsStatus: createSelector(getState, (state: liveStatusCollection) => state.systemsStatus)
 }
 
 export const actions = { ...slice.actions }

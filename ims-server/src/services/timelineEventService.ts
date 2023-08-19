@@ -7,7 +7,7 @@ import logger from "../loggers/log";
 import incidentRepository from "../repositories/incidentRepository";
 import timelineEventRepository from "../repositories/timelineEventRepository";
 import { validate } from "class-validator";
-import systemStatusService from "./systemStatusService";
+import liveStatusService from "./liveStatusService";
 import incidentService from "./incidentService";
 
 class TimelineEventService {
@@ -64,7 +64,7 @@ class TimelineEventService {
         return new Error("Validation error");
       }
       newTimelineEvent.tags.map((tag) => {
-        systemStatusService.updateLiveStatusByTimeLineEvent(newTimelineEvent, tag)
+        liveStatusService.updateLiveStatusByTimeLineEvent(newTimelineEvent, tag)
       })
       logger.info({ sourece: constants.TIMELINE_EVENT, method: constants.METHOD.POST, timelineEventId: newTimelineEvent.id });
       console.log("after newTimelineEvent", newTimelineEvent)

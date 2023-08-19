@@ -366,7 +366,7 @@
         "/livestatus/": {
             "get": {
                 "tags": [
-                    "systemStatus"
+                    "liveStatus"
                 ],
                 "description": "",
                 "responses": {

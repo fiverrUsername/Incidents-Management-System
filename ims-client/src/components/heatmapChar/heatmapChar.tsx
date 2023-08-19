@@ -1,7 +1,7 @@
 import { ApexOptions } from 'apexcharts';
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { IcolorScale, SystemStatusEntry } from '../../interface/ISystemStatus';
+import { IcolorScale, liveStatusEntry } from '../../interface/IliveStatus';
 import { number } from 'prop-types';
 
 const colorScaleDefault: IcolorScale[] = [
@@ -12,7 +12,7 @@ const colorScaleDefault: IcolorScale[] = [
 ]
 
 interface HeatmapCharProps {
-  systemsStatusCollection: SystemStatusEntry[];
+  systemsStatusCollection: liveStatusEntry[];
   colors?: IcolorScale[]
 }
 
@@ -95,10 +95,10 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
     }
   }
 
-  const series: ApexAxisChartSeries = props.systemsStatusCollection.map(systemStatus => {
+  const series: ApexAxisChartSeries = props.systemsStatusCollection.map(liveStatus => {
     return {
-      name: systemStatus.systemName,
-      data: systemStatus.systemData.map(systemData => {
+      name: liveStatus.systemName,
+      data: liveStatus.systemData.map(systemData => {
         const priorityInfo: IcolorScale | undefined = colorScaleDefault.find(scale => scale.name === systemData.maxPriority);
         const from: number | undefined = priorityInfo?.from;
         const to: number | undefined = priorityInfo?.to;
