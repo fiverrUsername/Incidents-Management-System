@@ -15,6 +15,7 @@ import { IAttachmentData } from '../../interface/timeLineInterface';
 import attachmentService from '../../service/attachmentService';
 import { SingleAttachment, StyledImage } from './attachment.style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Dialog, DialogContent } from '@mui/material';
 import {
   faFileWord,
   faFileAlt,
@@ -29,6 +30,8 @@ import {
   faFile,
   faFileArchive,
 } from '@fortawesome/free-solid-svg-icons';
+import Loading from '../loading/loading';
+import theme from '../../theme';
 const getFileName = (fileName: string) => {
   const parts = fileName.split('_');
   if (parts.length > 1) {
@@ -64,6 +67,7 @@ export default function Attachment({
     };
 
     useEffect(() => {
+      renderFileContent()
       fetchDownloadUrl()
      }, []);
 
@@ -127,17 +131,36 @@ export default function Attachment({
   //     </div>
   //   );
   // };
-
+  const [openDialog, setOpenDialog] = useState(false);
+  const backdropStyles: React.CSSProperties = {
+    background: 'rgba(0, 48, 18, 0.84)',
+  };
+  const openImageDialog = () => {
+    setOpenDialog(true);
+  };
+  const closeImageDialog = () => {
+    setOpenDialog(false);
+  };
 
   const renderFileContent = () => {
-    if(fileType=='image'&&!downloadUrl)
-      return null;
-    if (!file) {
-      return null;
-    }
+    if(fileType=='image'&&downloadUrl===null)
+      return <div><Loading></Loading></div>;
+    // if (!file) {
+    //   return null;
+    // }
+    else
     switch (fileType) {
       case 'image':
-      return <StyledImage src={downloadUrl} width={100} title="File Viewer" />
+        return (
+          <>
+            <StyledImage src={downloadUrl} title="File Viewer" onClick={openImageDialog} />
+            <Dialog open={openDialog} onClose={closeImageDialog} BackdropProps={{style: backdropStyles}}>
+              <DialogContent>
+                <img src={downloadUrl} alt={getFileName(file)} style={{ width: '100%' }} />
+              </DialogContent>
+            </Dialog>
+          </>
+        );
       case 'pdf':
         return <div><FontAwesomeIcon icon={faFilePdf} title={getFileName(file)} style={{ color: '#2F854F',marginLeft:'20px', fontSize: '200px' }}/></div>
       case 'txt':
