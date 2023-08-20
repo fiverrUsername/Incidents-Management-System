@@ -9,17 +9,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import {
   faFileWord,
-  faFileAlt,
-  faFileImage,
-  faFileVideo,
-  faFilePdf,
-  faFilePowerpoint,
-  // faFileMusic,
-  faFileCode,
-  faFileExcel,
-  faFileAudio,
-  faFile,
-  faFileArchive,
+
 } from '@fortawesome/free-solid-svg-icons';
 import { Document, Page } from 'react-pdf';
 import Loading from '../loading/loading';
