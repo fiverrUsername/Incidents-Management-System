@@ -7,38 +7,80 @@ import Attachment from './attachment';
 interface AttachmentlistProps {
   id: string;
 }
+type SupportedFileTypes =
+  | 'image'
+  | 'pdf'
+  | 'audio'
+  | 'video'
+  | 'word'
+  | 'powerpoint'
+  | 'excel'
+  | 'txt'
+  | 'default';
 const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [filesData, setFilesData] = useState<(IAttachmentData)[]>([]);
-  const [originalFilesData, setOriginalFilesData] = useState<(IAttachmentData)[]>([]);
+  const [filesData, setFilesData] = useState<(string)[]>([]);
+  const [originalFilesData, setOriginalFilesData] = useState<(string)[]>([]);
   const nextImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % filesData.length);
+  };
+  const getFileType = (file: string) => {
+    try {
+      const parts = file.split('_');
+      const remainingString = parts[parts.length - 1];
+      const extension = remainingString.split('.').pop()?.toLowerCase();
+      switch (extension) {
+        case 'jpg':
+        case 'jpeg':
+        case 'png':
+        case 'gif':
+          return 'image';
+        case 'pdf':
+          return 'pdf';
+        case 'txt':
+          return 'txt';
+        case 'mp3':
+        case 'wav':
+        case 'ogg':
+        case 'mpeg':
+          return 'audio';
+        case 'mp4':
+        case 'mov':
+        case 'wmv':
+        case 'avi':
+        case 'webm':
+          return 'video';
+        case 'doc':
+        case 'docx':
+        case 'odt':
+          return 'word';
+        case 'ppt':
+        case 'pptx':
+          return 'powerpoint';
+        case 'xls':
+        case 'xlsx':
+        case 'csv':
+          return 'excel';
+        default:
+          return 'default';
+      }
+    } catch (error) {
+      console.error('Error detecting file type:', error);
+      return 'default';
+    }
   };
   const fetchTimelineData = async (id: string) => {
     try {
       const timelineData: ITimeLineEvent = await apiCalls.getTimeLineEventsById(id)
-      getFilesdata(timelineData);
+      setFilesData(timelineData.files)
     } catch (error) {
       console.error('Error Fetching Timeline Data:', error);
     }
   };
-  const getFilesdata = async (timeline: ITimeLineEvent) => {
-    if (timeline.files.length > 0) {
-      try {
-        const response = await attachmentService.showAttachment(timeline.files)
-        setFilesData((prevFilesData) => {
-          return [...prevFilesData, ...response];
-        });
-        console.log("response",response);
-      } catch (error) {
-        console.error('Error Getting Data:', error);
-      }
-    }
-  };
-
+  
   const handleDeleteFile = async (fileKey: string) => {
-    setOriginalFilesData((prevFiles) => prevFiles.filter((file) => file.key !== fileKey));
-    setFilesData((prevFiles) => prevFiles.filter((file) => file.key !== fileKey));
+    setOriginalFilesData((prevFiles) => prevFiles.filter((file) => file!== fileKey));
+    setFilesData((prevFiles) => prevFiles.filter((file) => file!== fileKey));
     await apiCalls.deleteFileInTimeLine(id, fileKey);
   };
 
@@ -51,6 +93,7 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
       {filesData &&
         filesData.slice(currentIndex, currentIndex + 3).map((file,index) => (
           <Attachment
+            fileType={getFileType(file)}
             key={index}
             file={file}
             onDelete={handleDeleteFile}

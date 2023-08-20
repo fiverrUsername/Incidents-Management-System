@@ -101,7 +101,6 @@ export default function AddIncident({ open, onClose, incidents, setIncidents }: 
       allChannelNames = (allIncidents || [])
         .filter((incident: IIncident) => incident.channelName !== undefined)
         .map((incident: IIncident) => incident.channelName as string);
-      console.log(allChannelNames);
     } catch (error) {
       console.error('Error fetching incidents:', error);
     }

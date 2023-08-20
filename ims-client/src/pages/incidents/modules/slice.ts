@@ -13,7 +13,7 @@ const slice = createSlice({
     initialState,
     reducers: {
         onGetIncidentsRequest: (state, action) => {
-            console.log('onGetIncidentsRequest')
+            console.log('')
         },
         onGetIncidentsSuccess: (state, action) => {
             state.incidents = action.payload
