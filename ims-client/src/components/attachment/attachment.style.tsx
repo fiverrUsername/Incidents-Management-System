@@ -9,12 +9,11 @@ export const SingleAttachment = styled.div`
 export const StyledImage = styled.img`
   flex:1;
   width:100%;
-  max-height:180px;
   height: 180px; 
-  max-width: 100%; 
-  max-height: 100%; 
-  max-height: 228px;
-  border-radius: 20px;
+
+  border-radius: 10px;
+  padding: 10px;
+
   object-fit: contain;
 `;
 export const StyledLink = styled.a`
@@ -32,9 +31,9 @@ export const StyledFilePreview = styled.div`
   height: 180px; 
   max-width: 100%; 
   max-height: 100%; 
-  max-height: 228px;
-  border-radius: 20px;
   object-fit: contain;
+  border-radius: 20px;
+
   /* Add any additional styling here */
   padding: 10px;
 `;
