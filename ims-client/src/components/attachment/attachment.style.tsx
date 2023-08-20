@@ -1,6 +1,13 @@
 import { styled } from "styled-components";
 
 export const SingleAttachment = styled.div`
+align-items: center;
+justify-content: center;
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+
+
   flex:1;
   display:flex;
   flex-direction: column;
@@ -12,7 +19,7 @@ export const StyledImage = styled.img`
   height: 180px; 
 
   border-radius: 10px;
-  padding: 10px;
+  // padding: 10px;
 
   object-fit: contain;
 `;
