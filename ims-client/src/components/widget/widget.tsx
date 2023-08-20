@@ -28,7 +28,7 @@ const NewGrid = styled(Grid)(({ theme }) => ({
   width: '437px',
   height: '147px',
   borderRadius: '20px',
-  paddingLeft: '40px',
+  paddingLeft: '15px',
   backgroundColor: theme.palette.primary.contrastText,
   boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.1)',
   border: '1px solid rgba(0, 0, 0, 0.1)'
