@@ -22,7 +22,6 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
   const [filesData, setFilesData] = useState<(string)[]>([]);
   const [filesDataUrl, setFilesDataUrl] = useState<(string)[]>([]);
 
-  const [originalFilesData, setOriginalFilesData] = useState<(string)[]>([]);
   const nextImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % filesData.length);
   };
@@ -83,9 +82,10 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
   };
   
   const handleDeleteFile = async (fileKey: string) => {
-    setOriginalFilesData((prevFiles) => prevFiles.filter((file) => file!== fileKey));
-    setFilesData((prevFiles) => prevFiles.filter((file) => file!== fileKey));
-    await apiCalls.deleteFileInTimeLine(id, fileKey);
+    const key:string=fileKey.split('?')[0].substring(36,fileKey.length).replace(/\//g, "_");
+    setFilesData((prevFiles) => prevFiles.filter((file) => file!== key));
+    setFilesDataUrl((prevFiles) => prevFiles.filter((file) => file!== fileKey))
+    await apiCalls.deleteFileInTimeLine(id, key);
   };
 
   useEffect(() => {
@@ -103,7 +103,7 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
             onDelete={handleDeleteFile}
           />
         ))}
-      {filesData && filesData.length > 3 && (
+      {filesDataUrl && filesDataUrl.length > 3 && (
         <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
           <ArrowForwardIosIcon onClick={nextImage} />
         </div>
