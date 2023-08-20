@@ -22,7 +22,7 @@ export default class liveStatusController {
         try {
             const tag: string = "inbox"
             const data:IliveStatus=req.body
-            const systems = await liveStatusService.createOrUpdateLiveStatus(data,tag);
+            const systems = await liveStatusService.createOrUpdateLiveStatus(data,'',tag);
             if (systems instanceof Error) {
                 res.status(status.SERVER_ERROR).json({ message: systems, error: true });
             } else res.status(status.SUCCESS).json(systems);

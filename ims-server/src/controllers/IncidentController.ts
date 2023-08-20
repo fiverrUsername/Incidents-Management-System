@@ -66,7 +66,6 @@ export default class IncidentController {
   async getSummaryIncident(req: Request, res: Response): Promise<Response> {
     try {
       const summary: ISummary | null = await incidentService.getSummaryIncident(req.params.id);
-      console.log(req.params.id)
       if (summary instanceof Error || summary === null) {
         return res.status(status.PAGE_NOT_FOUND).json({ message: summary, error: true });
       }

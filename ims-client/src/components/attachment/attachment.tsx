@@ -107,12 +107,10 @@ export default function Attachment({
     // const fileBlob = new Blob([file.data], { type: fileType });    
     // const fileURL = URL.createObjectURL(fileBlob);
     // // Create a download link
-    // console.log(fileURL)
     // const downloadLink = document.createElement("a");
     // downloadLink.href = fileURL;
     // downloadLink.download = file.key;
     // downloadLink.click();
-    // console.log(file.data)
     download(file.data, getFileName(file.key))
   };
 

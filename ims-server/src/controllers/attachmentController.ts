@@ -19,7 +19,6 @@ export default class AwsController {
   }
   async getAllAttachmentByTimeline(req: Request, res: Response): Promise<void> {
     try {
-      console.log(req.body)
       const files = req.body as string [];
       const filesKey = await attachmentsService.getAllAttachmentByTimeline(files);
       if (filesKey instanceof Error) {
