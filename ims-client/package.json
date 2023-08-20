@@ -54,7 +54,7 @@
   "scripts": {
     "start": "npm run build && react-scripts start",
     "build": "react-scripts build",
-    "homepage": "https://fiverrUsername.github.io/Incidents-Management-System",
+    "homepage": "https://fiverrusername.github.io/Incidents-Management-System",
     "deploy": "gh-pages -d build",
     "test": "cross-env NODE_ENV=test react-scripts test",
     "storybook": "storybook dev -p 6006",
