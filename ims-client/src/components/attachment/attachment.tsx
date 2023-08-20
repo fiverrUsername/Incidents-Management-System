@@ -13,8 +13,11 @@ import video from '../../images/video.png';
 import word from '../../images/word.jpg';
 import { IAttachmentData } from '../../interface/timeLineInterface';
 import attachmentService from '../../service/attachmentService';
-import { SingleAttachment, StyledImage } from './attachment.style';
+import { SingleAttachment, StyledFilePreview, StyledImage } from './attachment.style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+
 import {
   faFileWord,
   faFileAlt,
@@ -29,6 +32,7 @@ import {
   faFile,
   faFileArchive,
 } from '@fortawesome/free-solid-svg-icons';
+import { Document, Page } from 'react-pdf';
 const getFileName = (fileName: string) => {
   const parts = fileName.split('_');
   if (parts.length > 1) {
@@ -45,7 +49,7 @@ export default function Attachment({
   onDelete,
   style,
 }: {
-  fileType:string
+  fileType: string
   file: string;
   onDelete: (fileId: string) => void;
   style?: React.CSSProperties;
@@ -54,21 +58,21 @@ export default function Attachment({
   const [downloadUrl, setDownloadUrl] = useState<any>(null);
 
 
-    const fetchDownloadUrl = async () => {
-      try {
-        const response = await attachmentService.getUrl(file);
-        setDownloadUrl(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    useEffect(() => {
-      fetchDownloadUrl()
-     }, []);
+  const fetchDownloadUrl = async () => {
+    try {
+      const response = await attachmentService.getUrl(file);
+      setDownloadUrl(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-   if(downloadUrl!=null)
+    fetchDownloadUrl()
+  }, []);
+
+  useEffect(() => {
+    if (downloadUrl != null)
       renderFileContent()
   }, [downloadUrl]);
 
@@ -79,7 +83,7 @@ export default function Attachment({
   // if (!downloadUrl) {
   //   return <div>Loading...</div>;
   // }
-  
+
 
   const handleDelete = async () => {
     try {
@@ -95,19 +99,19 @@ export default function Attachment({
     // const fileURL = URL.createObjectURL(fileBlob);
     // // Create a download link
     // console.log(fileURL)
-    let url:string;
+    let url: string;
     try {
-    const response = await attachmentService.getUrl(file);
-    setDownloadUrl(response);
-    url=response;
-    const downloadLink = document.createElement("a");
-    downloadLink.href = url;
-    downloadLink.download = file;
-    downloadLink.click();
+      const response = await attachmentService.getUrl(file);
+      setDownloadUrl(response);
+      url = response;
+      const downloadLink = document.createElement("a");
+      downloadLink.href = url;
+      downloadLink.download = file;
+      downloadLink.click();
     } catch (error) {
       console.log(error);
     }
-    
+
     // console.log(file.data)
     // download(file.data, getFileName(file.key))
   };
@@ -129,33 +133,78 @@ export default function Attachment({
   // };
 
 
-  const renderFileContent = () => {
-    if(fileType=='image'&&!downloadUrl)
-      return null;
-    if (!file) {
-      return null;
-    }
-    switch (fileType) {
-      case 'image':
-      return <StyledImage src={downloadUrl} width={100} title="File Viewer" />
-      case 'pdf':
-        return <div><FontAwesomeIcon icon={faFilePdf} title={getFileName(file)} style={{ color: '#2F854F',marginLeft:'20px', fontSize: '200px' }}/></div>
-      case 'txt':
-        return <div><FontAwesomeIcon icon={faFileAlt} title={getFileName(file)} style={{marginBottom:'20px', marginLeft:'20px',color: '#2F854F', fontSize: '170px' }}/></div>
-      case 'audio':
-        return <div><FontAwesomeIcon icon={faFileAudio} title={getFileName(file)} style={{ color: '#2F854F', fontSize: '200px' }}/></div>
-      case 'video':
-        return <div><FontAwesomeIcon icon={faFileVideo} title={getFileName(file)} style={{ color: '#2F854F', fontSize: '200px' }}/></div>
-      case 'word':
-        return <div><FontAwesomeIcon icon={faFileWord} title={getFileName(file)} style={{marginBottom:'20px', marginLeft:'20px',color: '#2F854F', fontSize: '170px' }}/></div>
-      case 'powerpoint':
-        return <div><FontAwesomeIcon icon={faFilePowerpoint} title={getFileName(file)} style={{ color: '#2F854F', fontSize: '200px' }}/></div>
-      case 'excel':
-        return <div><FontAwesomeIcon icon={faFileExcel} title={getFileName(file)} style={{marginBottom:'20px', marginLeft:'20px',color: '#2F854F', fontSize: '170px' }}/></div>
-      default:
-        return <div><FontAwesomeIcon icon={faFile} title={getFileName(file)} style={{ color: '#2F854F', fontSize: '200px' }}/></div>
-    }
+  type FileTypeStyle = {
+    icon: IconDefinition;
+    fontSize: string;
+    marginBottom: string;
+    marginLeft: string;
   };
+  
+  const fileTypeStyles: Record<string, FileTypeStyle> = {
+    txt: { icon: faFileAlt, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
+    word: { icon: faFileWord, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
+    excel: { icon: faFileExcel, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
+  };
+  
+  
+  
+  const fileTypeMappings = {
+    image: () => <StyledImage src={downloadUrl} width={100} title="File Viewer" />,
+    pdf: () => (
+      <div>
+        <Document file={downloadUrl}>
+          <Page pageNumber={1} />
+        </Document>
+      </div>
+    ),
+    audio: () => (
+      <div className="audio-player">
+        <audio controls>
+          <source src={downloadUrl} type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    ),
+    video: () => (
+      <StyledFilePreview>
+        <video controls>
+          <source src={downloadUrl} type="video/mp4" />
+        </video>
+      </StyledFilePreview>
+    ),
+    default: () => (
+      <div>
+        <FontAwesomeIcon icon={faFile} title={getFileName(file)} style={{ color: '#2F854F', fontSize: '200px' }} />
+      </div>
+    ),
+  } as Record<string, () => JSX.Element>; // Add this type assertion
+  
+  const renderFileContent = () => {
+    if (fileType === 'image' && !downloadUrl) return null;
+    if (!file) return null;
+  
+    if (fileTypeStyles[fileType]) {
+      const { icon, fontSize, marginBottom, marginLeft } = fileTypeStyles[fileType];
+      return (
+        <div>
+          <FontAwesomeIcon icon={icon} title={getFileName(file)} style={{ color: '#2F854F', fontSize, marginBottom, marginLeft }} />
+        </div>
+      );
+    }
+  
+    if (['image', 'pdf', 'video'].includes(fileType)) {
+      return (
+        <StyledFilePreview>
+          {fileTypeMappings[fileType]()}
+        </StyledFilePreview>
+      );
+    }
+    return (fileTypeMappings[fileType] || fileTypeMappings.default)();
+  };
+  
+  
+  
+  
   return (
     <SingleAttachment>
       {renderFileContent()}
