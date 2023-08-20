@@ -5,7 +5,7 @@ import { IMessage, ActionType, ObjectType } from '../../../ims-socket/src/interf
 import incidentRepository from '../repositories/incidentRepository';
 import timelineEventRepository from '../repositories/timelineEventRepository';
 
-const ws = new WebSocket('ws://localhost:7072');
+const ws = new WebSocket('ws://localhost:7071');
 
 const messageQueue: any[] = []; // Replace 'any' with the type of messages you are sending
 

@@ -172,7 +172,7 @@ export default class TimelineEventController {
           }
         let answer:compare = { description:["", "", req.body.description] ,files:[]};
         const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventByIncidentId(req.body.incidentId);
-        const attachment=attachmentService.getAllAttachmentByTimeline(req.body.files)
+        const attachment=attachmentService.getSignedUrlForKeys(req.body.files)
         await attachment.then(function(result:any) {
             answer.files=result
          }) 
