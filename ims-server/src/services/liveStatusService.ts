@@ -21,7 +21,7 @@ class liveStatusService {
             const tags = await tagService.getAllTags();
             let liveStatuses: liveStatusEntry[] = [];
             for (const tag of tags) {
-                const latestStatusForTag:IliveStatus[] = await liveStatusRepository.getLiveStatus(tag.name);
+                const latestStatusForTag:IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name);
                 if (latestStatusForTag) {
                     liveStatuses.push({
                         systemName: tag.name,
@@ -50,6 +50,7 @@ class liveStatusService {
                 source: constants.SYSTEM_STATUS_SERVICE,
                 msg: constants.UPDATE_SYSTEMS_SUCCESS,
             });
+            //here i need the index
             const existingLiveStatus = await liveStatusRepository.getTodaysLiveStatusByTag(tag);
             if (existingLiveStatus) {
                 if (data.maxPriority > existingLiveStatus.maxPriority) {
@@ -62,9 +63,11 @@ class liveStatusService {
                 data.incidents = updatedIncidents;
                 return await liveStatusRepository.updateLiveStatus(data, existingLiveStatus.id);
             } else {
+                //what is with the data.id=uuid
                 data.incidentCounter = 1;
                 const incidentIndex = this.priorityIndexMap[data.maxPriority];
                 const updatedIncidents = [...data.incidents];
+                //push incident id
                 updatedIncidents[incidentIndex].push(data.id);
                 data.incidents = updatedIncidents;
                 return await liveStatusRepository.createLiveStatus(data);
@@ -109,8 +112,7 @@ class liveStatusService {
         try {
             const promises: Promise<IliveStatus | any>[] = incident.currentTags.map(async (tag) => {
                 const liveStatusData: IliveStatus = {
-                    //something is funny with the id is it from incident or from the object
-                    id: incident.id ? incident.id : '',//TODO
+                    id: '',
                     systemName: tag.name,
                     incidents: [[], [], [], []],
                     date: new Date,

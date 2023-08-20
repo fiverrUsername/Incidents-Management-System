@@ -10,19 +10,20 @@ class liveStatusRepository {
             return null;
         }
     }
-  async getLiveStatus(tag: string): Promise<IliveStatus[] | any> {
+  async getLiveStatusByTag(tag: string,date?:Date): Promise<IliveStatus[] | any> {
     try {
       const liveStatusList: IliveStatus[] = await liveStatusModel
         .find({ systemName: tag })
         .sort({ date: -1 })
         .limit(10);
-      console.log(liveStatusList)
       return liveStatusList;
     } catch (error: any) {
       console.error(`error: ${error}`);
       return null;
     }
   }
+
+  //waitng for indexes...
     async getTodaysLiveStatusByTag(tag: string): Promise<IliveStatus | null> {
         try {
             console.log("i'm in getTodaysLiveStatusByTag");
