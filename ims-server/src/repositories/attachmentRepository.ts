@@ -56,6 +56,20 @@ class AttachmentsRepository {
     }
   }
 
+  async getSignedUrlForKeys(keys: String[]): Promise<String[]> {
+    try {
+      {
+      const allResponses: String[] = await Promise.all(keys.map(
+        (key) => this.getSignedUrlForKey(key)));
+      logger.info({ source: constants.SHOW_SUCCESS, method: constants.METHOD.GET, err: true });
+        return allResponses;
+      }
+    } catch (error) {
+      logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, err: true, error:true });
+      throw error;
+    }
+  }
+
 
 
   async getAttachment(key: string): Promise<AttachmentData|null> {

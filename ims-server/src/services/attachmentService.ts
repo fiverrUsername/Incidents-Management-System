@@ -23,7 +23,16 @@ class AttachmentsService {
       return error;
     }
   }
-  
+  async getSignedUrlForKeys(keys:String[]): Promise<String[]> {
+    try {
+     // logger.info({ source: constants.GET_SIGNED_URL_OF_FILE, msg: constants.METHOD.GET, success: true });
+      const signedUrl = await attachmentsRepository.getSignedUrlForKeys(keys);
+      return signedUrl;
+    } catch (error: any) {
+      logger.error({ source: constants.UPLOAD_FILES, method: constants.METHOD.GET, err: true });
+      return error;
+    }
+  }
   async getAllAttachmentByTimeline(filesKey:string[]): Promise<void | any> {
     try {
       logger.info({ source: constants.SHOW_FILES, msg: constants.METHOD.GET, success: true });
