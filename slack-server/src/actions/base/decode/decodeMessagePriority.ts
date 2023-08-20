@@ -6,13 +6,13 @@ export function decodeMessagePriority(message: string): Priority | null {
     if (match && match.length > 0) {
       const matchedValue = match[0].toUpperCase();
       switch (matchedValue) {
-        case "P0" || "p0":
+        case "P0":
           return Priority.P0;
-        case "P1" || "p1":
+        case "P1":
           return Priority.P1;
-        case "P2" || "p2":
+        case "P2":
           return Priority.P2;
-        case "P3" || "p3":
+        case "P3":
           return Priority.P3;
         default:
           return null;

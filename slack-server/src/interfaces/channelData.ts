@@ -1,4 +1,6 @@
-import { Priority } from "./priority";
+
+
+import { Priority } from "../../../ims-server/src/enums/enum";
 
 export interface IChannelData {
     name: string,
