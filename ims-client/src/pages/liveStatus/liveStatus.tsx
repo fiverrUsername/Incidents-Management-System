@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { IcolorScale, SystemStatusCollection } from "../../interface/ISystemStatus";
+import { IcolorScale, liveStatusCollection, liveStatusEntry } from "../../interface/ILiveStatus";
 import { SYSTEM_STATUS_STATE_KEY } from "./modules/slice";
 import React, { useEffect, useState,   } from "react";
 import apiCalls from "../../service/apiCalls";
@@ -12,7 +12,7 @@ const LiveStatus = () => {
     // const systemsStatusCollection: SystemStatusCollection = useSelector((state: any) => state[SYSTEM_STATUS_STATE_KEY]);
     // console.log(systemsStatusCollection);
 
-    const [systemsStatusCollection, setSystemsStatusCollection] = useState<SystemStatusCollection>()
+    const [systemsStatusCollection, setSystemsStatusCollection] = useState<liveStatusEntry[]>()
     const [systemsName, setsystemsName] = useState<string[]>()
     const [systemsSeries, setsystemsSeries] = useState<ApexAxisChartSeries[]>()
     const [dateIncident, setDateIncident] = useState<Date[]>()
@@ -21,10 +21,9 @@ const LiveStatus = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const _systemsStatusCollection: SystemStatusCollection = await apiCalls.getSystemsStatus();
+                const _systemsStatusCollection: liveStatusEntry[] = await apiCalls.getSystemsStatus();
                 console.log(_systemsStatusCollection);
                 setSystemsStatusCollection(_systemsStatusCollection);
-                console.log(systemsStatusCollection)
             } catch (error) {
                 console.error(error);
             }
@@ -42,12 +41,15 @@ const LiveStatus = () => {
     ]
 
 
-return (
-    <div>
-        <h1>LiveStatus Page</h1>
-        <HeatmapChar colors={colorScale} systemsStatusCollection={systemsStatusCollection} date={[]}></HeatmapChar>
-    </div>
-);
+    return (
+        <div>
+            <h1>Live Status Page</h1>
+            {
+                systemsStatusCollection &&
+                <HeatmapChar systemsStatusCollection={systemsStatusCollection} dates={[]} />
+            }
+        </div>
+    );
 
 }
 

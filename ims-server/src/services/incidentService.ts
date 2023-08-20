@@ -3,9 +3,8 @@ import { ISummary } from "../interfaces/ISummary";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import incidentRepository from "../repositories/incidentRepository";
+import { Priority } from "../enums/enum";
 import SystemStatusService from './systemStatusService';
-
-
 class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {
     try {
@@ -15,7 +14,7 @@ class IncidentService {
         incidentId: newIncident.id
       });
       console.log("incident::::",newIncident)
-      const live=await SystemStatusService.liveStatusByIncident(newIncident);
+      const live=await SystemStatusService.logic(newIncident);
       console.log("live:::",live)
       return await incidentRepository.addIncident(newIncident);
     } catch (error: any) {
@@ -27,7 +26,6 @@ class IncidentService {
       return error;
     }
   }
-
   async updateIncident(id: string, data: any): Promise<IIncident | any> {
     try {
       const isValidId: IIncident | any = await incidentRepository.getIncidentById(id);
@@ -48,7 +46,6 @@ class IncidentService {
       return error;
     }
   }
-
   async getAllIncidents(): Promise<IIncident[] | any> {
     try {
       logger.info({
@@ -66,7 +63,6 @@ class IncidentService {
       return error;
     }
   }
-
   async getIncidentByField(fieldValue: string, fieldName: string): Promise<IIncident | any> {
     try {
       const incident = await incidentRepository.getIncidentByField(fieldValue, fieldName);
@@ -88,7 +84,6 @@ class IncidentService {
       return error;
     }
   }
-
   async getSummaryIncident(id: string): Promise<ISummary | any> {
     try {
       let summary: ISummary | null = null;
@@ -110,6 +105,5 @@ class IncidentService {
       return error;
     }
   }
-
 }
 export default new IncidentService();

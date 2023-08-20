@@ -1,15 +1,13 @@
 import { Request, Response } from "express";
-
 import { status } from "../loggers/constants";
 import systemStatusService from "../services/systemStatusService";
+import { IIncident } from "../interfaces/IncidentInterface";
 import { ISystemStatus } from "../interfaces/systemStatusInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
-
 export default class systemStatusController {
-  
-   async getLiveStatus(req: Request, res: Response): Promise<void> {
+   async getLatestLiveStatus(req: Request, res: Response): Promise<void> {
         try {
-            const systems = await systemStatusService.getLiveStatus();
+            const systems = await systemStatusService.getLatestLiveStatus();
             if (systems instanceof Error) {
                 res.status(status.SERVER_ERROR).json({ message: systems, error: true });
             } else res.status(status.SUCCESS).json(systems);
@@ -20,9 +18,9 @@ export default class systemStatusController {
     //after test remove this
     async createLiveStatus(req: Request, res: Response): Promise<void> {
         try {
-            const tag: string = "inbox"
+            const tag: string = req.body.systemName
             const data:ISystemStatus=req.body
-            const systems = await systemStatusService.createOrUpdateLiveStatus(data,tag);
+            const systems = await systemStatusService.createLiveStatus(data,tag);
             if (systems instanceof Error) {
                 res.status(status.SERVER_ERROR).json({ message: systems, error: true });
             } else res.status(status.SUCCESS).json(systems);

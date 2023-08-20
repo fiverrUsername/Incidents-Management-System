@@ -1,12 +1,12 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 import apiCalls from '../../../service/apiCalls'
 import { actions } from './slice'
-import { SystemStatusCollection } from '../../../interface/ISystemStatus'
+import { liveStatusCollection } from '../../../interface/ILiveStatus'
 
 
 function* onGetSystemsStatus() {
     try {
-        const data: SystemStatusCollection = yield call(apiCalls.getSystemsStatus)
+        const data: liveStatusCollection = yield call(apiCalls.getSystemsStatus)
         yield put(actions.onGetSystemsStatusSuccess(data))
     } catch (error:any) {
         console.error(error)
