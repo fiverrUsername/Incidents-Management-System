@@ -40,10 +40,8 @@ export const StyledFilePreview = styled.div`
   max-height: 100%; 
   object-fit: contain;
   border-radius: 20px;
-
   /* Add any additional styling here */
   padding: 10px;
 `;
-
 
 

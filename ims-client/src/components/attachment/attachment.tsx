@@ -57,7 +57,8 @@ export default function Attachment({
   };
 
   useEffect(() => {
-    fetchDownloadUrl()
+    // if(['image', 'pdf', 'video'].includes(fileType))
+        fetchDownloadUrl()
   }, []);
 
   // useEffect(() => {
@@ -75,18 +76,13 @@ export default function Attachment({
   };
 
   const handleDownload = async () => {
-    let url: string;
-    try {
-      const response = await attachmentService.getUrl(file);
-      setDownloadUrl(response);
-      url = response;
+
+      // await fetchDownloadUrl()
       const downloadLink = document.createElement("a");
-      downloadLink.href = url;
+      downloadLink.href = downloadUrl;
       downloadLink.download = file;
       downloadLink.click();
-    } catch (error) {
-      console.log(error);
-    }
+
   };
   const [openDialog, setOpenDialog] = useState(false);
   const backdropStyles: React.CSSProperties = {
@@ -150,7 +146,10 @@ export default function Attachment({
   } as Record<string, () => JSX.Element>; // Add this type assertion
   
   const renderFileContent = () => {
-    if (fileType == 'image' && !downloadUrl) return <Loading/>;
+    console.log("fileType",fileType)
+    console.log("url",downloadUrl)
+    if (fileType == 'image' && downloadUrl==null)
+         return <div><Loading/></div>;
     // if (!file) return null;
   
     if (fileTypeStyles[fileType]) {
@@ -162,7 +161,7 @@ export default function Attachment({
       );
     }
   
-    if (['image', 'pdf', 'video'].includes(fileType)) {
+    if (['image', 'pdf', 'video','audio'].includes(fileType)) {
       return (
         <StyledFilePreview>
           {fileTypeMappings[fileType]()}
@@ -187,6 +186,7 @@ export default function Attachment({
           </IconButton>
         </Grid>
       </Grid>
+
     </SingleAttachment>
   )
 }

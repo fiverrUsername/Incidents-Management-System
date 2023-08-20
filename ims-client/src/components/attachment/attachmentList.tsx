@@ -73,25 +73,11 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
     try {
       const timelineData: ITimeLineEvent = await apiCalls.getTimeLineEventsById(id)
       setFilesData(timelineData.files)
-      // getFilesdata(timelineData);
     } catch (error) {
       console.error('Error Fetching Timeline Data:', error);
     }
   };
-  // const getFilesdata = async (timeline: ITimeLineEvent) => {
-  //   if (timeline.files.length > 0) {
-  //     try {
-  //       const response = await attachmentService.showAttachment(timeline.files)
-  //       setFilesData((prevFilesData) => {
-  //         return [...prevFilesData, ...response];
-  //       });
-  //       console.log("response",response);
-  //     } catch (error) {
-  //       console.error('Error Getting Data:', error);
-  //     }
-  //   }
-  // };
-
+  
   const handleDeleteFile = async (fileKey: string) => {
     setOriginalFilesData((prevFiles) => prevFiles.filter((file) => file!== fileKey));
     setFilesData((prevFiles) => prevFiles.filter((file) => file!== fileKey));
