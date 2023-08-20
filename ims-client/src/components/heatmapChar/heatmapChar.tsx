@@ -4,16 +4,12 @@ import ReactApexChart from 'react-apexcharts';
 import { IcolorScale, liveStatusEntry ,IliveStatus} from '../../interface/ILiveStatus';
 import { number } from 'prop-types';
 
-const colorScaleDefault: IcolorScale[] = [
-  { from: 0, to: 20, name: 'p3', color: '#7FFF00' },   //grean
-  { from: 21, to: 45, name: 'p2', color: '#FFC000' },  //light orange
-  { from: 46, to: 55, name: 'p1', color: '#FF8000' },  //orange
-  { from: 56, to: 100, name: 'p0', color: '#FF0000' }, //red
-]
+
 
 interface HeatmapCharProps {
   systemsStatusCollection: liveStatusEntry[];
   colors?: IcolorScale[]
+  
 }
 
 //{ systemsStatusCollection, colors = colorScaleDefault }
@@ -51,7 +47,7 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
       heatmap: {
         shadeIntensity: 0.5,
         colorScale: {
-          ranges: colorScaleDefault
+          ranges: props.colors
         },
       },
     },
@@ -99,7 +95,7 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
     return {
       name: liveStatus.systemName,
       data: liveStatus.systemData.map(systemData => {
-        const priorityInfo: IcolorScale | undefined = colorScaleDefault.find(scale => scale.name === systemData.maxPriority);
+        const priorityInfo: IcolorScale | undefined = props.colors?.find(scale => scale.name === systemData.maxPriority);
         const from: number | undefined = priorityInfo?.from;
         const to: number | undefined = priorityInfo?.to;
         const formattedDate: string = new Date(systemData.date).toISOString().split('T')[0];
