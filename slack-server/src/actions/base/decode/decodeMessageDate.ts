@@ -1,12 +1,19 @@
-import moment from "moment";
+
+import { parse, addDays } from 'date-fns';
 
 export function decodeMessageDate(message: string): Date | null {
-    const regex = /\b\d{1,2}\/\d{1,2}\/\d{4}\b/;
-    const matches = message.match(regex);
-    if (matches && matches.length > 0) {
-        const dateString = matches[0];
-        const formattedDate = moment(dateString, 'DD/MM/YYYY').toDate();
-        return formattedDate;
-    }
+  const regex = /\d{4}-\d{2}-\d{2}/;
+  const match = message.match(regex);
+
+  if (match) {
+    const dateString = match[0];
+    const parsedDate = parse(dateString, 'yyyy-MM-dd', new Date());
+    
+    // Adding one day to the parsed date
+    const newDate = addDays(parsedDate, 1);
+
+    return newDate;
+  } else {
     return null;
+  }
 }

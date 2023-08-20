@@ -8,15 +8,16 @@ import { fileResponse } from './fileResponse';
 import { sendToSocket } from '../../socket';
 import { IMS_SERVER_ROUTING } from '../../constPage';
 import dotenv from 'dotenv';
+import { decodeMessageStatus } from '../base/decode/decodeMessageStatus';
 
 // Load environment variables from .env file
 dotenv.config();
 export default async function handleMessageEvent(event: any) {
-  const headers = {
+ const headers = {
     Authorization: `Bearer ${process.env.API_KEY}`
   };
   const answer = await axios.get(`${IMS_SERVER_ROUTING}incident/${event.channel}/channelId`, { headers });
-  if (answer.data) {
+   if (answer.data) {
     const timelineEvent: ITimelineEvent = {
       channelId: event.channel,
       incidentId: answer.data.id!,
@@ -27,7 +28,7 @@ export default async function handleMessageEvent(event: any) {
       files: event.files && (await fileResponse(event.files, answer.data.id!)) || [],
       createdDate:new Date(),
       updatedDate: decodeMessageDate(event.text) || new Date(),
-      status: Status.Active,
+      status: decodeMessageStatus(event.text) || Status.Active,
       tags: []
     };
     sendToSocket(timelineEvent, ObjectType.TimelineEvent, ActionType.Add);
