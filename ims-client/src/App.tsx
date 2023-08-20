@@ -1,14 +1,12 @@
 import React from "react";
 import { ThemeProvider } from "@emotion/react";
 import { Box, CssBaseline } from "@mui/material";
-import { AiOutlineSetting } from "react-icons/ai";
+import { AiOutlineAreaChart, AiOutlineSetting } from "react-icons/ai";
 import { BiHome, BiHomeHeart, BiMessageAdd } from "react-icons/bi";
 import "./App.css";
 import LeftDrawer, { IIcon } from "./components/drawer/Drawer";
 import theme from "./theme";
 import Router from "./routes";
-import Table from "./components/table/table";
-import HeatmapChar from "./components/heatmapChar/heatmapChar";
 import { Provider } from "react-redux";
 import ConfigureStoreFunction from "./redux/configureStore";
 
@@ -21,7 +19,9 @@ function App() {
     { icon: BiHome, text: "dashboard", navigation: "./dashboard" },
     { icon: AiOutlineSetting, text: "settings", navigation: "./settings" },
     { icon: BiMessageAdd, text: "Send message", navigation: "./message" },
+    { icon: AiOutlineAreaChart, text: "live status", navigation: "./liveStatus" },
   ];
+
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>

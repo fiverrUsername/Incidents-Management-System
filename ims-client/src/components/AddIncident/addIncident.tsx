@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Dialog, FormControl, Grid, Button } from "@mui/material";
-import { useForm } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
+import { Button, Dialog, FormControl, Grid } from "@mui/material";
 import dayjs from 'dayjs';
-import DateTimePickerValue from '../datePicker/datePicker';
-import TextFieldInput from './TextFields';
-import ToggleButtons from './PriorityButtons';
-import DropDown from './DropDown';
-import CustomAutocomplete from '../autoCompleteTag/autoComplete';
-import submitIncident from '../submitIncident/submitIncident';
-import theme from '../../theme';
-import apiCalls from '../../service/apiCalls';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
 import { ITag } from '../../interface/ITag';
-import BannerNotification from "../bannerNotification/BannerNotification"
 import { Priority } from '../../interface/enums';
 import IIncident from '../../interface/incidentInterface';
+import apiCalls from '../../service/apiCalls';
+import theme from '../../theme';
+import CustomAutocomplete from '../autoCompleteTag/autoComplete';
+import BannerNotification from "../bannerNotification/BannerNotification";
+import DateTimePickerValue from '../datePicker/datePicker';
+import submitIncident from '../submitIncident/submitIncident';
+import DropDown from './DropDown';
+import ToggleButtons from './PriorityButtons';
+import TextFieldInput from './TextFields';
 
 export interface FormData {
   name: string;
@@ -29,9 +30,11 @@ export interface FormData {
 interface Props {
   open: boolean;
   onClose: () => void;
+  incidents: IIncident[];
+  setIncidents: any;
 }
 
-export default function AddIncident({ open, onClose }: Props) {
+export default function AddIncident({ open, onClose, incidents, setIncidents }: Props) {
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>();
   const [priority, setPriority] = React.useState<Priority>(Priority.P0);
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
@@ -56,7 +59,7 @@ export default function AddIncident({ open, onClose }: Props) {
     data.type = type
     data.tags = selectedTags
     if (type && tags) {
-      const isSuccess = await submitIncident(data);
+      const isSuccess = await submitIncident(data, incidents, setIncidents);
       setIsSuccess(isSuccess);
       setShowBanner(true);
     }
@@ -89,10 +92,10 @@ export default function AddIncident({ open, onClose }: Props) {
   const validatechannelName = async (value: string) => {
     const minLength = 1;
     const maxLength = 80;
-    const allowedCharacters = /^[a-zA-Z0-9-_]+$/;  
-  
+    const allowedCharacters = /^[a-zA-Z0-9-_]+$/;
+
     let allChannelNames: string[] = [];
-  
+
     try {
       const allIncidents: IIncident[] | undefined = await apiCalls.getIncidents();
       allChannelNames = (allIncidents || [])
@@ -102,22 +105,22 @@ export default function AddIncident({ open, onClose }: Props) {
     } catch (error) {
       console.error('Error fetching incidents:', error);
     }
-  
+
     if (!value) {
       return "Slack Channel Name is required";
     }
-  
+
     if (value.length < minLength || value.length > maxLength) {
       return "Slack Channel Name must be between 1 and 80 characters long";
     }
     if (!allowedCharacters.test(value)) {
       return "Invalid characters";
     }
-  
+
     if (allChannelNames.includes(value.toLowerCase())) {
       return "The channel name already exists";
     }
-  
+
     return true;
   };
 

@@ -1,9 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
-import { ISystemStatus } from "../interfaces/systemStatusInterface";
+import { IliveStatus } from "../interfaces/liveStatusInterface";
 import { Priority } from "../enums/enum";
 
-export const SystemStatusSchema = new Schema<ISystemStatus>({
+export const liveStatusSchema = new Schema<IliveStatus>({
     id: {
         type: String,
         default: uuidv4,
@@ -30,4 +30,4 @@ export const SystemStatusSchema = new Schema<ISystemStatus>({
         required: true,
     }
 });
-export default mongoose.model<ISystemStatus>("systemStatus", SystemStatusSchema);
+export default mongoose.model<IliveStatus>("liveStatus", liveStatusSchema);

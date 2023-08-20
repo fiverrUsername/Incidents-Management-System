@@ -1,27 +1,27 @@
 import { GridColDef, GridColumnHeaderParams, GridColumnVisibilityModel } from "@mui/x-data-grid";
 import React, { useState } from "react";
-import Search from "../search/search";
+import { Box, Typography } from "@mui/material";
+
+import IIncident from "../../interface/incidentInterface";
 import {
   filterRowsBySearch,
   filterRowsByStatus,
 } from "../../service/incidentTableService";
+import theme from "../../theme";
+import AddIncidentComp from "../AddIncident/addIncidentComp";
+import Search from "../search/search";
 import Table from "../table/table";
 import UpTabs from "../tabs/Tabs";
-import IIncident from "../../interface/incidentInterface";
-import AddIncidentComp from "../AddIncident/addIncidentComp";
-import { Box, Typography } from "@mui/material";
-import theme from "../../theme";
-
 
 export type EventProps = {
-  onEvent: (functionName: string) => void;
   setValue: (value: string) => void;
 };
 
 export interface IInceidentTableProps {
   rows: IIncident[];
   isLoading: boolean;
-  handleRefresh: () => void;
+  incident: IIncident[];
+  setIncident: any;
 }
 export interface ICollumnHeader {
   params: GridColumnHeaderParams
@@ -32,7 +32,7 @@ const ColumnHeader: React.FC<ICollumnHeader> = ({ params }) => {
       {params.colDef.headerName}
     </Typography>)
 }
-const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading, handleRefresh}) => {
+const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading, incident, setIncident }) => {
 
   const visibilityModel: GridColumnVisibilityModel =
   {
@@ -83,7 +83,7 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading, handle
         <ColumnHeader params={params} />
     },
     {
-      field: "channelName", headerName: "Slack Link", minWidth: 200, maxWidth: 1700, flex: 1,
+      field: "channelName", headerName: "Channel Name", minWidth: 200, maxWidth: 1700, flex: 1,
       renderHeader: (params: GridColumnHeaderParams) =>
         <ColumnHeader params={params} />
     },
@@ -114,28 +114,25 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading, handle
     },
   ];
 
-  const someFunction = () => {
-    filteredRows = filterRowsBySearch(rows, searchValue);
-    filteredRows = filterRowsByStatus(filteredRows, statusValue);
-  };
+  let filteredRows: IIncident[] = [];
 
   const [searchValue, setSearchValue] = useState<string>("");
   const [statusValue, setStatusValue] = useState<string>("Active");
-  let filteredRows: IIncident[] = [];
 
-  someFunction();
+  filteredRows = filterRowsBySearch(rows, searchValue);
+  filteredRows = filterRowsByStatus(filteredRows, statusValue);
 
   return (
     <Box border={`1px solid ${theme.palette.grey[300]}`} borderRadius={10} bgcolor={theme.palette.primary.contrastText}>
       <Box display="grid" gridTemplateColumns="1fr auto" margin='32px 32px 10px 16px' >
         <Box >
-          <UpTabs onEvent={someFunction} setValue={setStatusValue} />
+          <UpTabs setValue={setStatusValue} />
         </Box>
         <Box display="flex" alignItems="center" justifyContent="flex-end">
           <Box style={{ marginRight: '8px' }}>
-            <Search onEvent={someFunction} setValue={setSearchValue} />
+            <Search  setValue={setSearchValue} />
           </Box>
-          <AddIncidentComp handleRefresh={handleRefresh}  />
+          <AddIncidentComp incidents={incident} setIncident={setIncident} />
         </Box>
       </Box>
       <Table columns={columns} rows={filteredRows} isLoading={isLoading} visibilityModel={visibilityModel} />

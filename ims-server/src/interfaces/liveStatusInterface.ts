@@ -1,6 +1,6 @@
 import { Priority } from "../enums/enum";
 
-export interface ISystemStatus {
+export interface IliveStatus {
     id:string,
     systemName: string;
     //incidents: [[string[], string[], string[], string[]]]
@@ -8,4 +8,9 @@ export interface ISystemStatus {
     date: Date;
     maxPriority: Priority;
     incidentCounter: number;
+}
+
+export interface liveStatusEntry {
+    systemName: string;
+    systemData: IliveStatus[];
 }
