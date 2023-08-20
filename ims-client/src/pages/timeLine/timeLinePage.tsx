@@ -18,7 +18,7 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   const [summaryIncident, setSummaryIncident] = useState<ISummary>();
   const [incident, setIncident] = useState<receivedIncident>();
   //gets incident id
-    useEffect(() => {
+  useEffect(() => {
 
     const fetchTimeline = async () => {
       const getTimeLineEventsById = await apiCalls.timelineEventByIncidentId(id)
@@ -37,13 +37,11 @@ const TimeLinePage = ({ id }: WithIdProps) => {
     fetchIncident();
   }, [id]);
 
-  const someFunction = () => {
-    filter = filterTimeLineBySearch(timelineObjects, myValue);
-  };
-
-  const [myValue, setMyValue] = useState<string>("");
   let filter: ITimeLineEvent[] = [];
-  someFunction();
+  const [myValue, setMyValue] = useState<string>("");
+
+  filter = filterTimeLineBySearch(timelineObjects, myValue);
+
   const addNewTimeline = (newTimeline: ITimeLineEvent) => {
     setTimelineObjects([...timelineObjects, newTimeline]);
     //The summary should be updated
@@ -51,7 +49,7 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   }
   return (
     <>
-      <Search onEvent={someFunction} setValue={setMyValue}></Search>
+      <Search setValue={setMyValue}></Search>
       {summaryIncident && <DisplaySummary summaryIncident={{ ...summaryIncident }} ></DisplaySummary>}
       <StyledPaper>
         <Grid container direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="nowrap">

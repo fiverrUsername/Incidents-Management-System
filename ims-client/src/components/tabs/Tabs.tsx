@@ -6,7 +6,7 @@ import theme from "../../theme";
 import { EventProps } from "../incidentTable/incidentTable";
 import { TabStyles } from "./Tabs.style";
 
-const UpTabs: React.FC<EventProps> = ({ onEvent, setValue }) => {
+const UpTabs: React.FC<EventProps> = ({ setValue }) => {
   const [status, setStatus] = useState<number>(0);
 
   function a11yProps(index: number) {
@@ -19,11 +19,9 @@ const UpTabs: React.FC<EventProps> = ({ onEvent, setValue }) => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     if (newValue == 0) {
       setValue("Active");
-      onEvent("someFunction");
     }
     if (newValue == 1) {
       setValue("Resolved");
-      onEvent("someFunction");
     }
     setStatus(newValue);
   };
@@ -32,7 +30,6 @@ const UpTabs: React.FC<EventProps> = ({ onEvent, setValue }) => {
     <Box sx={{ width: "100%" }}>
       <Box >
         <Tabs
-        
           value={status}
           onChange={handleChange}
           aria-label="basic tabs example"
@@ -42,14 +39,14 @@ const UpTabs: React.FC<EventProps> = ({ onEvent, setValue }) => {
             label="Active Incidents"
             {...a11yProps(0)}
             sx={{
-             
+
               backgroundColor:
                 status === 0
                   ? theme.palette.secondary.main
                   : theme.palette.secondary.contrastText,
               borderRadius: "5px",
               border: `1px solid ${theme.palette.secondary.main}`,
-              textTransform:'capitalize',
+              textTransform: 'capitalize',
             }}
           />
           <Tab
@@ -62,7 +59,7 @@ const UpTabs: React.FC<EventProps> = ({ onEvent, setValue }) => {
                   : theme.palette.secondary.contrastText,
               borderRadius: "5px",
               border: `1px solid ${theme.palette.secondary.main}`,
-              textTransform:'capitalize',
+              textTransform: 'capitalize',
             }}
           />
         </Tabs>
