@@ -1,28 +1,20 @@
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import {
+  faFile,
+  faFileAlt,
+  faFileExcel,
+  faFileWord
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
 import { Dialog, DialogContent, Grid, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import attachmentService from '../../service/attachmentService';
-import { SingleAttachment, StyledFilePreview, StyledImage } from './attachment.style';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import {
-  faFileWord,
-  faFileAlt,
-  faFileImage,
-  faFileVideo,
-  faFilePdf,
-  faFilePowerpoint,
-  // faFileMusic,
-  faFileCode,
-  faFileExcel,
-  faFileAudio,
-  faFile,
-  faFileArchive,
-} from '@fortawesome/free-solid-svg-icons';
 import { Document, Page } from 'react-pdf';
+
+import attachmentService from '../../service/attachmentService';
 import Loading from '../loading/loading';
+import { SingleAttachment, StyledFilePreview, StyledImage } from './attachment.style';
 const getFileName = (fileName: string) => {
   const parts = fileName.split('_');
   if (parts.length > 1) {
