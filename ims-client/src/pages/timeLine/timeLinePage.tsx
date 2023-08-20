@@ -54,7 +54,7 @@ const TimeLinePage = ({ id }: WithIdProps) => {
       <StyledPaper>
         <Grid container direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="nowrap">
           <Typography variant='bold'>Consectetur massa</Typography>
-          {incident && <AddUpdateBtn addNewTimelineFunction={addNewTimeline} incident={{ ...incident }} />}
+          {incident && <AddUpdateBtn addNewTimelineFunction={addNewTimeline} incident={incident} />}
         </Grid>
         {timelineObjects && (
           <CustomScrollbar>

@@ -56,6 +56,17 @@ export default function UpdateIncident({ open, incident, onClose, addNewTimeline
 
   const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();
 
+  const [formObject, setFormObject] = React.useState<dataFromForm>({
+    text: "",
+    priority: incident.currentPriority,
+    date: null,
+    type: incident.type,
+    status: incident.status,
+    tags: [],
+    filesString: [],
+  });
+
+
   const [priority, setPriority] = React.useState<Priority>(incident.currentPriority);
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [showBanner, setShowBanner] = useState(false);
