@@ -53,7 +53,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "NODE_ENV=production react-scripts build",
+    "build": "react-scripts build",
     "test": "cross-env NODE_ENV=test react-scripts test",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
