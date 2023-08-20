@@ -52,8 +52,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run build && react-scripts start",
     "build": "react-scripts build",
+    "homepage": "https://fiverrUsername.github.io/Incidents-Management-System",
+    "deploy": "gh-pages -d build",
     "test": "cross-env NODE_ENV=test react-scripts test",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
@@ -105,6 +107,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-storybook": "^0.6.12",
     "esm": "^3.2.25",
+    "gh-pages": "^6.0.0",
     "prop-types": "^15.8.1",
     "react-refresh": "^0.14.0",
     "storybook": "^7.0.26",
