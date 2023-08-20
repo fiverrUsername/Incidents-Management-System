@@ -3,6 +3,10 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 import logger from "../loggers/log";
 import { constants } from '../loggers/constants';
+const expiration = 3600; // URL expires in 1 hour
+
+
+
 
 interface AttachmentData {
   key: string;
@@ -26,7 +30,7 @@ class AttachmentsRepository {
         }
       });
       try {
-        const uploadResults = await Promise.all(uploadPromises);
+        const uploadResults = await Promise.allSettled(uploadPromises);
         uploadResults.forEach((result) => {
           logger.info({ source: constants.UPLOAD_SUCCESS, msg: constants.METHOD.GET, success: true });
         });
@@ -34,6 +38,26 @@ class AttachmentsRepository {
         logger.info({ source: constants.UPLOAD_FAILED, msg: constants.METHOD.GET, error: true });
       }
   }
+
+   async getSignedUrlForKey(key: String): Promise<String> {
+    const params = {
+      Bucket: AttachmentsRepository.getBucketName(),
+      Key: key.replace(/_/g, '/'),
+      Expires: expiration,
+    };
+    try {
+      const signedUrl = await s3.getSignedUrlPromise('getObject', params);
+      logger.info({ source: 'SIGNED_URL_OF_FILE_SUCCESS', msg: 'GET', success: true });
+      console.log(signedUrl)
+      return signedUrl;
+    } catch (error) {
+      logger.error({ source: 'SIGNED_URL_OF_FILE_ERROR', msg: 'GET', error: error });
+      throw error;
+    }
+  }
+
+
+
   async getAttachment(key: string): Promise<AttachmentData|null> {
     try {
         const params: AWS.S3.GetObjectRequest = {

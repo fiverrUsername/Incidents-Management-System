@@ -16,8 +16,10 @@ class IncidentService {
         msg: constants.ADD_INCIDENT_SUCCESS,
         incidentId: newIncident.id
       });
-      const live=await liveStatusService.liveStatusByIncident(newIncident);
-      return await incidentRepository.addIncident(newIncident);
+      // const live = await liveStatusService.liveStatusByIncident(newIncident);
+      const incident = await incidentRepository.addIncident(newIncident);
+      await liveStatusService.liveStatusByIncident(incident)
+      return incident
     } catch (error: any) {
       logger.error({
         source: constants.INCIDENT_COTROLLER,

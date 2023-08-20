@@ -9,6 +9,7 @@ import timelineEventRepository from "../repositories/timelineEventRepository";
 import { validate } from "class-validator";
 import liveStatusService from "./liveStatusService";
 import incidentService from "./incidentService";
+import { Priority } from "../enums/enum";
 
 class TimelineEventService {
   async getAllTimelineEvents(): Promise<ITimelineEvent[] | any> {
@@ -39,7 +40,6 @@ class TimelineEventService {
         success: true
       });
       const timelineEvent = await timelineEventRepository.getTimelineEventByIncidentId(id);
-
       return timelineEvent;
     } catch (error: any) {
       logger.error({
@@ -54,8 +54,8 @@ class TimelineEventService {
 
   async addTimelineEvent(newTimelineEvent: ITimelineEvent): Promise<void | any> {
     try {
-      console.log("before newTimelineEvent", newTimelineEvent)
       const incident: IIncident = await incidentRepository.getIncidentByField(newTimelineEvent.incidentId!, "id");
+      const priority: Priority = incident.currentPriority
       newTimelineEvent.channelId = incident.channelId;
       const _timelineEvent = new ITimelineEventDto(newTimelineEvent);
       const validationErrors = await validate(_timelineEvent);
@@ -64,10 +64,10 @@ class TimelineEventService {
         return new Error("Validation error");
       }
       newTimelineEvent.tags.map((tag) => {
-        liveStatusService.updateLiveStatusByTimeLineEvent(newTimelineEvent, tag)
+        debugger
+        liveStatusService.updateLiveStatusByTimeLineEvent(newTimelineEvent,String(tag.name), priority)
       })
       logger.info({ sourece: constants.TIMELINE_EVENT, method: constants.METHOD.POST, timelineEventId: newTimelineEvent.id });
-      console.log("after newTimelineEvent", newTimelineEvent)
       return await timelineEventRepository.addTimelineEvent(newTimelineEvent);
     } catch (error: any) {
       logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.POST, error: true, timelineEventId: newTimelineEvent.id });
@@ -197,7 +197,6 @@ class TimelineEventService {
 
   async updateStatusAndPriorityOfIncidentById(timeline: ITimelineEvent): Promise<IIncident | any> {
     try {
-      console.log("timeline", timeline)
       const incident: IIncident = await incidentRepository.getIncidentById(timeline.incidentId);
       incident.currentPriority = timeline.priority;
       incident.status = timeline.status;
