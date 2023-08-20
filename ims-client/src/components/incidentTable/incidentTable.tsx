@@ -14,7 +14,6 @@ import Table from "../table/table";
 import UpTabs from "../tabs/Tabs";
 
 export type EventProps = {
-  onEvent: (functionName: string) => void;
   setValue: (value: string) => void;
 };
 
@@ -115,27 +114,23 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading, incide
     },
   ];
 
-  const someFunction = () => {
-    filteredRows = filterRowsBySearch(rows, searchValue);
-    filteredRows = filterRowsByStatus(filteredRows, statusValue);
-  };
+  let filteredRows: IIncident[] = [];
 
   const [searchValue, setSearchValue] = useState<string>("");
   const [statusValue, setStatusValue] = useState<string>("Active");
-  let filteredRows: IIncident[] = [];
 
-  someFunction();
-  console.log('filteredRows', filteredRows);
+  filteredRows = filterRowsBySearch(rows, searchValue);
+  filteredRows = filterRowsByStatus(filteredRows, statusValue);
 
   return (
     <Box border={`1px solid ${theme.palette.grey[300]}`} borderRadius={10} bgcolor={theme.palette.primary.contrastText}>
       <Box display="grid" gridTemplateColumns="1fr auto" margin='32px 32px 10px 16px' >
         <Box >
-          <UpTabs onEvent={someFunction} setValue={setStatusValue} />
+          <UpTabs setValue={setStatusValue} />
         </Box>
         <Box display="flex" alignItems="center" justifyContent="flex-end">
           <Box style={{ marginRight: '8px' }}>
-            <Search onEvent={someFunction} setValue={setSearchValue} />
+            <Search  setValue={setSearchValue} />
           </Box>
           <AddIncidentComp incidents={incident} setIncident={setIncident} />
         </Box>
