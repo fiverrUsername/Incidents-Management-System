@@ -5,7 +5,7 @@ import { ISummary } from "../interfaces/ISummary";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import incidentRepository from "../repositories/incidentRepository";
-import SystemStatusService from './systemStatusService';
+import liveStatusService from './liveStatusService';
 
 
 class IncidentService {
@@ -16,7 +16,7 @@ class IncidentService {
         msg: constants.ADD_INCIDENT_SUCCESS,
         incidentId: newIncident.id
       });
-      const live=await SystemStatusService.liveStatusByIncident(newIncident);
+      const live=await liveStatusService.liveStatusByIncident(newIncident);
       return await incidentRepository.addIncident(newIncident);
     } catch (error: any) {
       logger.error({

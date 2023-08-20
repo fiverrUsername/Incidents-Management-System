@@ -6,17 +6,11 @@ import Paper from '@mui/material/Paper';
 import * as React from 'react';
 import { EventProps } from '../incidentTable/incidentTable';
 
-
-
-const Search: React.FC<EventProps> = ({ onEvent, setValue }) => {
-    const handleClick = () => {
-        onEvent('someFunction');
-    };
+const Search: React.FC<EventProps> = ({ setValue }) => {
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            handleClick();
         }
     };
 
@@ -29,8 +23,8 @@ const Search: React.FC<EventProps> = ({ onEvent, setValue }) => {
             component="form"
             sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
         >
-            <IconButton type="button" sx={{ p: '10px', color:"#7F8085"}} aria-label="search" onClick={handleClick}>
-            <SearchIcon />
+            <IconButton type="button" sx={{ p: '10px', color: "#7F8085" }} aria-label="search" >
+                <SearchIcon />
             </IconButton>
             <InputBase
                 sx={{ ml: 1, flex: 1 }}
@@ -39,7 +33,7 @@ const Search: React.FC<EventProps> = ({ onEvent, setValue }) => {
                 onKeyDown={handleKeyDown}
                 onChange={handleChange}
             />
-          <FilterListIcon sx={{ color:"rgba(127, 128, 133, 0.15)" }}></FilterListIcon>
+            <FilterListIcon sx={{ color: "rgba(127, 128, 133, 0.15)" }}></FilterListIcon>
         </Paper>
     );
 };

@@ -1,39 +1,36 @@
-import { Priority } from "../enums/enum";
-import { ISystemStatus } from "../interfaces/systemStatusInterface";
-import systemStatusModel from "../models/systemStatusModel";
-
-class SystemStatusRepository {
-    async getLiveStatusSystemsByDate(_date: string): Promise<ISystemStatus[] | any> {
+import { IliveStatus } from "../interfaces/liveStatusInterface";
+import liveStatusModel from "../models/liveStatusModel";
+class liveStatusRepository {
+    async getLiveStatusSystemsByDate(_date: string): Promise<IliveStatus[] | any> {
         try {
-            return await systemStatusModel.find({ date: _date })
+            return await liveStatusModel.find({ date: _date })
         }
         catch (e) {
             console.error(`error: ${e}`);
             return null;
         }
     }
-
-  async getLiveStatus(tag: string): Promise<ISystemStatus[] | any> {
+  async getLiveStatus(tag: string): Promise<IliveStatus[] | any> {
     try {
-      const systemStatusList: ISystemStatus[] = await systemStatusModel
+      const liveStatusList: IliveStatus[] = await liveStatusModel
         .find({ systemName: tag })
         .sort({ date: -1 })
         .limit(10);
-      console.log(systemStatusList)
-      return systemStatusList;
+      console.log(liveStatusList)
+      return liveStatusList;
     } catch (error: any) {
       console.error(`error: ${error}`);
       return null;
     }
   }
-    async getTodaysLiveStatusByTag(tag: string): Promise<ISystemStatus | null> {
+    async getTodaysLiveStatusByTag(tag: string): Promise<IliveStatus | null> {
         try {
             console.log("i'm in getTodaysLiveStatusByTag");
             // Get the start and end of the current day
             const now = new Date();
             const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
             const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-            return await systemStatusModel.findOne({
+            return await liveStatusModel.findOne({
                 date: {
                     $gte: startOfDay,
                     $lt: endOfDay
@@ -45,26 +42,23 @@ class SystemStatusRepository {
             return null;
         }
     }
-
-  async createLiveStatus(data: ISystemStatus): Promise<ISystemStatus | any> {
+  async createLiveStatus(data: IliveStatus): Promise<IliveStatus | any> {
     try {
-        const newLiveStatus: ISystemStatus = await systemStatusModel.create(data);
+        const newLiveStatus: IliveStatus = await liveStatusModel.create(data);
         return newLiveStatus;
     } catch (error: any) {
         console.error(`error: ${error}`);
         return error;
     }
 }
-
-async updateLiveStatus(data: ISystemStatus, id: string): Promise<ISystemStatus | any> {
+async updateLiveStatus(data: IliveStatus, id: string): Promise<IliveStatus | any> {
     try {
-        const updatedSystemStatus: ISystemStatus | null= await systemStatusModel.findOneAndUpdate({id:id},data);
-        return updatedSystemStatus;
+        const updatedliveStatus: IliveStatus | null= await liveStatusModel.findOneAndUpdate({id:id},data);
+        return updatedliveStatus;
     } catch (error: any) {
         console.error(`error: ${error}`);
         return error;
     }
 }
 }
-
-export default new SystemStatusRepository();
+export default new liveStatusRepository();
