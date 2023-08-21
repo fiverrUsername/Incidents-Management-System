@@ -82,7 +82,7 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
   };
   
   const handleDeleteFile = async (fileKey: string) => {
-    const key:string=fileKey.split('?')[0].substring(36,fileKey.length).replace(/\//g, "_");
+    const key:string=fileKey.split('?')[0].substring(36,fileKey.length).replace(/\?/g, "|");
     setFilesData((prevFiles) => prevFiles.filter((file) => file!== key));
     setFilesDataUrl((prevFiles) => prevFiles.filter((file) => file!== fileKey))
     await apiCalls.deleteFileInTimeLine(id, key);

@@ -14,7 +14,7 @@ export async function fileResponse(files: any[], incidentId: string): Promise<st
           },
           responseType: 'blob',
         });
-        const newName = `incidence_${incidentId}_${Date.now()}${file.name}`;
+        const newName = `incidence?${incidentId}?${Date.now()}${file.name}`;
         filesKeys.push(newName);
         formData.append('files', response.data, { filename: newName });
       }));
