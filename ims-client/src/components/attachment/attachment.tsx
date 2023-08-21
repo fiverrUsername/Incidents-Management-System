@@ -1,20 +1,21 @@
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import {
   faFile,
   faFileAlt,
   faFileExcel,
-  faFileWord
+  faFileWord,
+  faFilePowerpoint,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
 import { Dialog, DialogContent, Grid, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Document, Page } from 'react-pdf';
-
 import attachmentService from '../../service/attachmentService';
-import Loading from '../loading/loading';
 import { SingleAttachment, StyledFilePreview, StyledImage } from './attachment.style';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { Document, Page } from 'react-pdf';
+import Loading from '../loading/loading';
 const getFileName = (fileName: string) => {
   const parts = fileName.split('_');
   if (parts.length > 1) {
@@ -37,20 +38,20 @@ export default function Attachment({
   style?: React.CSSProperties;
 }) {
 
-  const [downloadUrl, setDownloadUrl] = useState<any>(null);
+  // const [downloadUrl, setDownloadUrl] = useState<any>(null);
 
-  const fetchDownloadUrl = async () => {
-    try {
-      const response = await attachmentService.getUrl(file);
-      setDownloadUrl(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const fetchDownloadUrl = async () => {
+  //   try {
+  //     const response = await attachmentService.getUrl(file);
+  //     setDownloadUrl(response);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     // if(['image', 'pdf', 'video'].includes(fileType))
-        fetchDownloadUrl()
+        // fetchDownloadUrl()
   }, []);
 
   // useEffect(() => {
@@ -71,7 +72,7 @@ export default function Attachment({
 
       // await fetchDownloadUrl()
       const downloadLink = document.createElement("a");
-      downloadLink.href = downloadUrl;
+      downloadLink.href = file;
       downloadLink.download = file;
       downloadLink.click();
 
@@ -97,20 +98,22 @@ export default function Attachment({
     txt: { icon: faFileAlt, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
     word: { icon: faFileWord, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
     excel: { icon: faFileExcel, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
+    powerpoint: { icon: faFilePowerpoint, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
+
   };
 
   const fileTypeMappings = {
     image: () =>  <>
-    <StyledImage src={downloadUrl} onClick={openImageDialog} />
+    <StyledImage src={file} onClick={openImageDialog} />
     <Dialog open={openDialog} onClose={closeImageDialog} BackdropProps={{style: backdropStyles}}>
       <DialogContent>
-        <img src={downloadUrl} alt={getFileName(file)} style={{ width: '100%' }} />
+        <img src={file} alt={getFileName(file)} style={{ width: '100%' }} />
       </DialogContent>
     </Dialog>
     </>,
     pdf: () => (
       <div>
-        <Document file={downloadUrl}>
+        <Document file={file}>
           <Page pageNumber={1} onClick={handleDownload}/>
         </Document>
       </div>
@@ -118,7 +121,7 @@ export default function Attachment({
     audio: () => (
       <div className="audio-player">
         <audio controls>
-          <source src={downloadUrl} type="audio/mpeg" onClick={handleDownload}/>
+          <source src={file} type="audio/mpeg" onClick={handleDownload}/>
           Your browser does not support the audio element.
         </audio>
       </div>
@@ -126,7 +129,7 @@ export default function Attachment({
     video: () => (
       <StyledFilePreview>
         <video controls>
-          <source src={downloadUrl} type="video/mp4"onClick={handleDownload} />
+          <source src={file} type="video/mp4"onClick={handleDownload} />
         </video>
       </StyledFilePreview>
     ),
@@ -139,8 +142,8 @@ export default function Attachment({
   
   const renderFileContent = () => {
     console.log("fileType",fileType)
-    console.log("url",downloadUrl)
-    if (fileType == 'image' && downloadUrl==null)
+    console.log("url",file)
+    if (fileType == 'image' && file==null)
          return <div><Loading/></div>;
     // if (!file) return null;
   

@@ -4,6 +4,7 @@ import events from './slackTracking';
 import cors from 'cors';
 import { WEBHOOK_EVENT_RECEIVED_SUCCESSFULLY, port } from './constPage';
 const app = express();
+require('dotenv').config()
 
 app.use(bodyParser.json());
 app.use(cors({
@@ -22,7 +23,7 @@ app.post('/webhook', (req: Request, res: Response) => {
   }
   events(data);
 });
-
+console.log(process.env.P1+"fdd")
 app.listen(port, () => {
   console.log(`Server is on http://localhost:${port}`);
 });

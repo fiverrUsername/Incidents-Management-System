@@ -20,14 +20,15 @@ type SupportedFileTypes =
 const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [filesData, setFilesData] = useState<(string)[]>([]);
-  const [originalFilesData, setOriginalFilesData] = useState<(string)[]>([]);
+  const [filesDataUrl, setFilesDataUrl] = useState<(string)[]>([]);
+
   const nextImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % filesData.length);
   };
   const getFileType = (file: string) => {
     try {
-      const parts = file.split('_');
-      const remainingString = parts[parts.length - 1];
+      const parts = file.split('?');
+      const remainingString = parts[0];
       const extension = remainingString.split('.').pop()?.toLowerCase();
       switch (extension) {
         case 'jpg':
@@ -73,15 +74,18 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
     try {
       const timelineData: ITimeLineEvent = await apiCalls.getTimeLineEventsById(id)
       setFilesData(timelineData.files)
+      const signUrl:string[]= await attachmentService.getUrls(timelineData.files);
+      setFilesDataUrl(signUrl)
     } catch (error) {
       console.error('Error Fetching Timeline Data:', error);
     }
   };
   
   const handleDeleteFile = async (fileKey: string) => {
-    setOriginalFilesData((prevFiles) => prevFiles.filter((file) => file!== fileKey));
-    setFilesData((prevFiles) => prevFiles.filter((file) => file!== fileKey));
-    await apiCalls.deleteFileInTimeLine(id, fileKey);
+    const key:string=fileKey.split('?')[0].substring(36,fileKey.length).replace(/\//g, "_");
+    setFilesData((prevFiles) => prevFiles.filter((file) => file!== key));
+    setFilesDataUrl((prevFiles) => prevFiles.filter((file) => file!== fileKey))
+    await apiCalls.deleteFileInTimeLine(id, key);
   };
 
   useEffect(() => {
@@ -90,8 +94,8 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', flex: 3 }}>
-      {filesData &&
-        filesData.slice(currentIndex, currentIndex + 3).map((file,index) => (
+      {filesDataUrl &&
+        filesDataUrl.slice(currentIndex, currentIndex + 3).map((file,index) => (
           <Attachment
             fileType={getFileType(file)}
             key={index}
@@ -99,7 +103,7 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
             onDelete={handleDeleteFile}
           />
         ))}
-      {filesData && filesData.length > 3 && (
+      {filesDataUrl && filesDataUrl.length > 3 && (
         <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
           <ArrowForwardIosIcon onClick={nextImage} />
         </div>

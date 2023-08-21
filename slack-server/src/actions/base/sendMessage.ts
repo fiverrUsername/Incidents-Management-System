@@ -13,13 +13,13 @@ export async function sendMessage(messageData: IMessageData) {
       as_user: true,
       username: messageData.userName,
     });
-    if (messageData.filesUrl !== null) {
-      const fileUploads = messageData.filesUrl?.map(async (fileUrl: IAttachmentData) => {
+    if (messageData.files !== null) {
+      const fileUploads = messageData.files?.map(async (file: string) => {
         try {
           const formData = new FormData();
           formData.append('channels', messageData.channelId);
-          formData.append('file', Buffer.from(fileUrl.data), {
-            filename: fileUrl.key
+          formData.append('file', Buffer.from(file), {
+            filename: "test"
           });
           await axios.post(SLACK_UPLOAD_FILES, formData, {
             headers: {
