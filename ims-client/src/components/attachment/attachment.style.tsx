@@ -15,13 +15,9 @@ background-repeat: no-repeat;
 `;
 export const StyledImage = styled.img`
   flex:1;
-  width:100%;
-  height: 180px; 
-
   border-radius: 10px;
-  // padding: 10px;
-
-  object-fit: contain;
+  object-fit: cover;
+  width:100%;
 `;
 export const StyledLink = styled.a`
   text-decoration: none;
