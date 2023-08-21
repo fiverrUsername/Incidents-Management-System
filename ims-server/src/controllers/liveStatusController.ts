@@ -9,12 +9,11 @@ export default class liveStatusController {
   
    async getLiveStatus(req: Request, res: Response): Promise<void> {
         try {
-            console.log("i'm hereeeeeeee")
             let systems: IliveStatus[] | any;
-            if(req.params.date){
-                const filterDate: Date = new Date(req.params.date);
-                console.log("filterDate",filterDate)
-                 systems = await liveStatusService.getLiveStatus(filterDate);
+            if (req.params.date) {
+                const filterDate = new Date(req.params.date);
+                filterDate.setHours(0, 0, 0, 0);
+                systems = await liveStatusService.getLiveStatus(filterDate);
             }
             else{
                 systems = await liveStatusService.getLiveStatus();
