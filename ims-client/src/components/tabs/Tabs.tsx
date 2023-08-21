@@ -3,10 +3,10 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import React, { useState } from "react";
 import theme from "../../theme";
-import { EventProps } from "../incidentTable/incidentTable";
 import { TabStyles } from "./Tabs.style";
+import { IEventFilterProps } from "../../interface/IEventFilterProps";
 
-const UpTabs: React.FC<EventProps> = ({ setValue }) => {
+const UpTabs: React.FC<IEventFilterProps> = ({ setValue }) => {
   const [status, setStatus] = useState<number>(0);
 
   function a11yProps(index: number) {
