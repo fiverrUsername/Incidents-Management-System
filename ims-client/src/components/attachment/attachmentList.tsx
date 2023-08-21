@@ -1,6 +1,8 @@
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import React, { useEffect, useState } from 'react';
-import { IAttachmentData, ITimeLineEvent } from '../../interface/timeLineInterface';
+
+import { ITimeLineEvent } from '../../interface/timeLineInterface';
 import apiCalls from '../../service/apiCalls';
 import attachmentService from '../../service/attachmentService';
 import Attachment from './attachment';
@@ -21,9 +23,12 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [filesData, setFilesData] = useState<(string)[]>([]);
   const [filesDataUrl, setFilesDataUrl] = useState<(string)[]>([]);
-
+  const filesToDisplay = 3
   const nextImage = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % filesData.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1));
+  };
+  const previousImage = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1));
   };
 
 const getFileType = (file: string): SupportedFileTypes => {
@@ -73,7 +78,7 @@ const getFileType = (file: string): SupportedFileTypes => {
     try {
       const timelineData: ITimeLineEvent = await apiCalls.getTimeLineEventsById(id)
       setFilesData(timelineData.files)
-      const signUrl: string[] = await attachmentService.getUrls(timelineData.files);
+      const signUrl:string[]= await attachmentService.getUrls(timelineData.files);
       setFilesDataUrl(signUrl)
     } catch (error) {
       console.error('Error Fetching Timeline Data:', error);
@@ -92,9 +97,14 @@ const getFileType = (file: string): SupportedFileTypes => {
   }, []);
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', flex: 3 }}>
+    <div style={{ display: 'flex', justifyContent: 'center', flex: 2, flexWrap: 'nowrap' }}>
+      {filesDataUrl && filesDataUrl.length > filesToDisplay && currentIndex > 0 && (
+        <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+          <ArrowBackIosIcon onClick={previousImage} />
+        </div>
+      )}
       {filesDataUrl &&
-        filesDataUrl.slice(currentIndex, currentIndex + 3).map((file, index) => (
+        filesDataUrl.slice(currentIndex, currentIndex + filesToDisplay).map((file, index) => (
           <Attachment
             fileType={getFileType(file)}
             key={index}
@@ -102,7 +112,7 @@ const getFileType = (file: string): SupportedFileTypes => {
             onDelete={handleDeleteFile}
           />
         ))}
-      {filesDataUrl && filesDataUrl.length > 3 && (
+      {filesDataUrl && filesDataUrl.length > filesToDisplay && currentIndex < (filesDataUrl.length - filesToDisplay) && (
         <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
           <ArrowForwardIosIcon onClick={nextImage} />
         </div>
