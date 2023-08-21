@@ -1,10 +1,11 @@
+import dayjs from 'dayjs';
 import React from 'react';
+
+import { Priority } from '../../interface/enums';
 import { ITimeLineEventprops, ITimelineEventListprops } from '../../interface/timeLineInterface';
 import userdata from '../../mockAPI/users.json';
 import { TimelineWarpper } from './timeLine.style';
-import { Priority, Status } from '../../interface/enums';
 import TimeLineEvent from './timeLineEvent/timeLineEvent';
-import dayjs from 'dayjs';
 
 //צריך לטפל בדף הזה בסטטוס שנוסף
 
