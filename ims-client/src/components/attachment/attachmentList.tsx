@@ -25,66 +25,65 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
   const nextImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % filesData.length);
   };
-  const getFileType = (file: string) => {
-    try {
-      const parts = file.split('?');
-      const remainingString = parts[0];
-      const extension = remainingString.split('.').pop()?.toLowerCase();
-      switch (extension) {
-        case 'jpg':
-        case 'jpeg':
-        case 'png':
-        case 'gif':
-          return 'image';
-        case 'pdf':
-          return 'pdf';
-        case 'txt':
-          return 'txt';
-        case 'mp3':
-        case 'wav':
-        case 'ogg':
-        case 'mpeg':
-          return 'audio';
-        case 'mp4':
-        case 'mov':
-        case 'wmv':
-        case 'avi':
-        case 'webm':
-          return 'video';
-        case 'doc':
-        case 'docx':
-        case 'odt':
-          return 'word';
-        case 'ppt':
-        case 'pptx':
-          return 'powerpoint';
-        case 'xls':
-        case 'xlsx':
-        case 'csv':
-          return 'excel';
-        default:
-          return 'default';
-      }
-    } catch (error) {
-      console.error('Error detecting file type:', error);
+
+const getFileType = (file: string): SupportedFileTypes => {
+  const extensionMap: Record<string, SupportedFileTypes> = {
+    jpg: 'image',
+    jpeg: 'image',
+    png: 'image',
+    gif: 'image',
+    pdf: 'pdf',
+    txt: 'txt',
+    mp3: 'audio',
+    wav: 'audio',
+    ogg: 'audio',
+    mpeg: 'audio',
+    mp4: 'video',
+    mov: 'video',
+    wmv: 'video',
+    avi: 'video',
+    webm: 'video',
+    doc: 'word',
+    docx: 'word',
+    odt: 'word',
+    ppt: 'powerpoint',
+    pptx: 'powerpoint',
+    xls: 'excel',
+    xlsx: 'excel',
+    csv: 'excel',
+  };
+
+  try {
+    const parts = file.split('?');
+    const remainingString = parts[0];
+    const extension = remainingString.split('.').pop()?.toLowerCase();
+    if (extension) {
+      return extensionMap[extension] || 'default';
+    } else {
+      //A case where the key does not exist
       return 'default';
     }
-  };
+  } catch (error) {
+    console.error('Error detecting file type:', error);
+    return 'default';
+  }
+};
+
   const fetchTimelineData = async (id: string) => {
     try {
       const timelineData: ITimeLineEvent = await apiCalls.getTimeLineEventsById(id)
       setFilesData(timelineData.files)
-      const signUrl:string[]= await attachmentService.getUrls(timelineData.files);
+      const signUrl: string[] = await attachmentService.getUrls(timelineData.files);
       setFilesDataUrl(signUrl)
     } catch (error) {
       console.error('Error Fetching Timeline Data:', error);
     }
   };
-  
+
   const handleDeleteFile = async (fileKey: string) => {
-    const key:string=fileKey.split('?')[0].substring(36,fileKey.length).replace(/\//g, "_");
-    setFilesData((prevFiles) => prevFiles.filter((file) => file!== key));
-    setFilesDataUrl((prevFiles) => prevFiles.filter((file) => file!== fileKey))
+    const key: string = fileKey.split('?')[0].substring(36, fileKey.length).replace(/\//g, "_");
+    setFilesData((prevFiles) => prevFiles.filter((file) => file !== key));
+    setFilesDataUrl((prevFiles) => prevFiles.filter((file) => file !== fileKey))
     await apiCalls.deleteFileInTimeLine(id, key);
   };
 
@@ -95,7 +94,7 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', flex: 3 }}>
       {filesDataUrl &&
-        filesDataUrl.slice(currentIndex, currentIndex + 3).map((file,index) => (
+        filesDataUrl.slice(currentIndex, currentIndex + 3).map((file, index) => (
           <Attachment
             fileType={getFileType(file)}
             key={index}
