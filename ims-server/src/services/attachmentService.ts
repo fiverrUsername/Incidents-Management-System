@@ -1,3 +1,4 @@
+import { KeyUrlPair } from "../interfaces/IAttachment";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import attachmentsRepository from "../repositories/attachmentRepository";
@@ -15,7 +16,7 @@ class AttachmentsService {
     }
   }
 
-  async getSignedUrlForKeys(keys:String[]): Promise<String[]> {
+  async getSignedUrlForKeys(keys:String[]): Promise<KeyUrlPair[]> {
     try {
      logger.info({ source: constants.GET_FILE_KEY_SUCCESS, msg: constants.METHOD.GET, success: true });
       const signedUrl = await attachmentsRepository.getSignedUrlForKeys(keys);

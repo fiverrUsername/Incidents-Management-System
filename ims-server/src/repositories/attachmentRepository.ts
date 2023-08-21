@@ -3,9 +3,11 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 import logger from "../loggers/log";
 import { constants } from '../loggers/constants';
+import { KeyUrlPair } from '../interfaces/IAttachment';
 const expiration = 3600;
 dotenv.config()
 const s3 = new AWS.S3();
+
 
 class AttachmentsRepository {
 
@@ -48,14 +50,17 @@ class AttachmentsRepository {
     }
   }
 
-  async getSignedUrlForKeys(keys: String[]): Promise<String[]> {
+  async getSignedUrlForKeys(keys: String[]): Promise<KeyUrlPair[]> {
     try {
-      {
-        const allResponses: String[] = await Promise.all(keys.map(
-          (key) => this.getSignedUrlForKey(key)));
-        logger.info({ source: constants.GET_FILE_KEY_FAILED, method: constants.METHOD.GET, err: true });
-        return allResponses;
-      }
+      const allResponses: KeyUrlPair[] = await Promise.all(
+        keys.map(async (key) => {
+          const url = await this.getSignedUrlForKey(key);
+          return { key, url };
+        })
+      );
+  
+      logger.info({ source: constants.GET_FILE_KEY_FAILED, method: constants.METHOD.GET, err: true });
+      return allResponses;
     } catch (error) {
       logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, err: true, error: true });
       throw error;

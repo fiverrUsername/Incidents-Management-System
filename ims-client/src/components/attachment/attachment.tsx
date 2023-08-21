@@ -1,21 +1,25 @@
-import {faFile,faFileAlt,faFileExcel,faFileWord,faFilePowerpoint,} from '@fortawesome/free-solid-svg-icons';
+import { faFile, faFileAlt, faFileExcel, faFileWord, faFilePowerpoint, } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
 import { Dialog, DialogContent, Grid, IconButton } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import attachmentService from '../../service/attachmentService';
 import { SingleAttachment, StyledFilePreview, StyledImage } from './attachment.style';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { Document, Page } from 'react-pdf';
 import Loading from '../loading/loading';
+interface KeyUrlPair {
+  key: string;
+  url: string;
+}
 
 const getFileName = (fileName: string) => {
   const parts = fileName.split('_');
   if (parts.length > 1) {
     const remainingString = parts[parts.length - 1];
     const trimmedString = remainingString.substring(13);
-    console.log(trimmedString+"trimmedString")
+    console.log(trimmedString + "trimmedString")
     return trimmedString;
   }
   return '';
@@ -27,26 +31,24 @@ export default function Attachment({
   onDelete,
 }: {
   fileType: string
-  file: string;
+  file: KeyUrlPair;
   onDelete: (fileId: string) => void;
 }) {
 
   const handleDelete = async () => {
     try {
-      await attachmentService.deleteAttachment(file);
-      onDelete(file);
+      await attachmentService.deleteAttachment(file.key);
+      onDelete(file.key);
     } catch (error) {
       console.error('Error deleting attachment:', error);
     }
   };
 
   const handleDownload = async () => {
-
-      // await fetchDownloadUrl()
-      const downloadLink = document.createElement("a");
-      downloadLink.href = file;
-      downloadLink.download = file;
-      downloadLink.click();
+    const downloadLink = document.createElement("a");
+    downloadLink.href = file.url;
+    downloadLink.download = getFileName(file.key);
+    downloadLink.click();
   };
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -65,7 +67,7 @@ export default function Attachment({
     marginBottom: string;
     marginLeft: string;
   };
-  
+
   const fileTypeStyles: Record<string, FileTypeStyle> = {
     txt: { icon: faFileAlt, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
     word: { icon: faFileWord, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
@@ -77,33 +79,33 @@ export default function Attachment({
   const fileTypeMappings = {
     image: () => (
       <>
-        <StyledImage src={file} onClick={openImageDialog} title={"getFileName(file)"} />
+        <StyledImage src={file.url} onClick={openImageDialog} title={getFileName(file.key)} />
         <Dialog open={openDialog} onClose={closeImageDialog} BackdropProps={{ style: backdropStyles }}>
           <DialogContent>
-            <img src={file} alt={getFileName(file)} style={{ width: '100%' }} />
+            <img src={file.key} alt={getFileName(file.key)} style={{ width: '100%' }} />
           </DialogContent>
         </Dialog>
-
       </>
     ),
     pdf: () => (
-      <div title={"getFileName(file)"}>
-        <Document file={file}  >
+      <StyledFilePreview >     
+        <Document file={file.url} >
           <Page pageNumber={1} onClick={handleDownload} />
         </Document>
-      </div>
+        </StyledFilePreview>
+
     ),
     audio: () => (
-      <div className="audio-player">
+      <StyledFilePreview >     
         <audio controls>
-          <source src={file} type="audio/mpeg" onClick={handleDownload} title={getFileName(file)} />
+          <source src={file.url} type="audio/mpeg" onClick={handleDownload} title={getFileName(file.key)} />
         </audio>
-      </div>
+      </StyledFilePreview>
     ),
     video: () => (
-      <StyledFilePreview title={"getFileName(file)"} >
+      <StyledFilePreview >
         <video controls>
-          <source src={file} type="video/mp4" onClick={handleDownload} title={getFileName(file)} />
+          <source src={file.url} type="video/mp4" onClick={handleDownload} title={getFileName(file.key)} />
         </video>
       </StyledFilePreview>
     ),
@@ -111,40 +113,40 @@ export default function Attachment({
       <div>
         <FontAwesomeIcon
           icon={faFile}
-          title={getFileName(file)}
+          title={getFileName(file.key)}
           style={{ color: '#2F854F', fontSize: '200px' }}
           onClick={handleDownload}
         />
       </div>
     ),
   } as Record<string, () => JSX.Element>;
-  
+
   const renderFileContent = () => {
-    console.log("fileType",fileType)
-    console.log("url",file)
-    if (fileType == 'image' && file==null)
-         return <div><Loading/></div>;
-    
-  
+    console.log("fileType", fileType)
+    console.log("url", file.url)
+    if (fileType == 'image' && file == null)
+      return <div><Loading /></div>;
+
+
     if (fileTypeStyles[fileType]) {
       const { icon, fontSize, marginBottom, marginLeft } = fileTypeStyles[fileType];
       return (
-        <div title={getFileName(file)}>
-          <FontAwesomeIcon icon={icon}  style={{ color: '#2F854F', fontSize, marginBottom, marginLeft }} onClick={handleDownload}/>
+        <div title={getFileName(file.key)}>
+          <FontAwesomeIcon icon={icon} style={{ color: '#2F854F', fontSize, marginBottom, marginLeft }} onClick={handleDownload} />
         </div>
       );
     }
-  
-    if (['image', 'pdf', 'video','audio'].includes(fileType)) {
+
+    if (['image', 'pdf', 'video', 'audio'].includes(fileType)) {
       return (
-        <StyledFilePreview title={getFileName(file)}>
+        <StyledFilePreview title={getFileName(file.key)}>
           {fileTypeMappings[fileType]()}
         </StyledFilePreview>
       );
     }
     return (fileTypeMappings[fileType] || fileTypeMappings.default)();
   };
-  
+
   return (
     <SingleAttachment>
       {renderFileContent()}
