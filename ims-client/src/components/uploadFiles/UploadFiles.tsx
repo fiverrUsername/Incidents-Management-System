@@ -10,16 +10,32 @@ interface UploadFilesProps {
 }
 export default function UploadFiles({ files, setFiles }: UploadFilesProps) {
   const [showNotification, setShowNotification] = useState(false);
+  const [message,setMessege]=useState("");
+
    const maxMB = 2 * 1024 * 1024;
    const newFiles: File[] = [];
    
    function addToFiles(files:File[]){
+
+    const containsHebrewLetters = (str:string) => {
+      const regex = /[\u0590-\u05FF]/; // Range of Hebrew Unicode characters
+      return regex.test(str);
+    };
+
     for (let i = 0; i <  files.length; i++) {
       const file = files[i];
-      if (file && file.size <= maxMB) {
-        newFiles.push(file);
-      } else {
+      if(containsHebrewLetters(file.name)){
+        setMessege("Uploading files is not supported with a file name in Hebrew.")
         setShowNotification(true);
+      }
+      else{
+        if (file && file.size <= maxMB) {
+          newFiles.push(file);
+        } 
+        else {
+          setMessege("The file you want to upload is too large.")
+          setShowNotification(true);
+        }
       }
     }
   }
@@ -46,7 +62,7 @@ export default function UploadFiles({ files, setFiles }: UploadFilesProps) {
     <Box className="upload-container" sx={UploadStyles}>
       {showNotification && (
         <BannerNotification
-          message='The file you want to upload is too large.'
+          message={message}
           severity="error"
           onClose={() => setShowNotification(false)}
         />
