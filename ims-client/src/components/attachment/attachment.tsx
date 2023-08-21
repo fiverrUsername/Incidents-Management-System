@@ -2,7 +2,7 @@ import { faFile, faFileAlt, faFileExcel, faFileWord, faFilePowerpoint, } from '@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
-import { Dialog, DialogContent, Grid, IconButton } from '@mui/material';
+import { Dialog, DialogContent, Grid, IconButton, Tooltip } from '@mui/material';
 import React, {useState } from 'react';
 import attachmentService from '../../service/attachmentService';
 import { SingleAttachment, StyledFilePreview, StyledImage } from './attachment.style';
@@ -34,6 +34,8 @@ export default function Attachment({
   file: KeyUrlPair;
   onDelete: (fileId: string) => void;
 }) {
+
+  
 
   const handleDelete = async () => {
     try {
@@ -148,9 +150,8 @@ export default function Attachment({
   };
 
   return (
-    <SingleAttachment>
-      {renderFileContent()}
-      <Grid container spacing={2} alignItems="center">
+    <Tooltip title={
+    <Grid container spacing={2} alignItems="center">
         <Grid item>
           <IconButton onClick={handleDelete}>
             <DeleteIcon />
@@ -162,7 +163,10 @@ export default function Attachment({
           </IconButton>
         </Grid>
       </Grid>
-
+    }>
+    <SingleAttachment>
+      {renderFileContent()}
     </SingleAttachment>
+    </Tooltip>
   )
 }
