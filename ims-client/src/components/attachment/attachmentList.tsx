@@ -98,7 +98,7 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
   }, []);
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', flex: 3 }}>
+    <div style={{ display: 'flex', justifyContent: 'center', flex: 2, flexWrap: 'nowrap' }}>
       {filesDataUrl && filesDataUrl.length > filesToDisplay && currentIndex > 0 && (
         <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
           <ArrowBackIosIcon onClick={previousImage} />
