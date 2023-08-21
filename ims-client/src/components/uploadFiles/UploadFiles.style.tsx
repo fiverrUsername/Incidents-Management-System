@@ -40,6 +40,7 @@ export const UploadStyles = {
     alignItems: 'center',
     padding: '5px',
     width: '90%',
+    margin: 'auto'
   },
   '.file-info': {
     display: 'flex',
