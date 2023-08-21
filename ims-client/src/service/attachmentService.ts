@@ -7,7 +7,7 @@ const attachmentService = {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
-  }).then((response) => response.data),
+  }).then((response) => response.data()).then(),
 
   showAttachment: (files: string[]) => axios.post(`${baseUrl}/attachment/allAttachments`, files, {
     // responseType:'blob'

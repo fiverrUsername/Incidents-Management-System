@@ -30,7 +30,7 @@ class AttachmentsRepository {
         }
       });
       try {
-        const uploadResults = await Promise.allSettled(uploadPromises);
+        const uploadResults = await Promise.all(uploadPromises);
         uploadResults.forEach((result) => {
           logger.info({ source: constants.UPLOAD_SUCCESS, msg: constants.METHOD.GET, success: true });
         });
@@ -48,7 +48,6 @@ class AttachmentsRepository {
     try {
       const signedUrl = await s3.getSignedUrlPromise('getObject', params);
       logger.info({ source: 'SIGNED_URL_OF_FILE_SUCCESS', msg: 'GET', success: true });
-      console.log(signedUrl)
       return signedUrl;
     } catch (error) {
       logger.error({ source: 'SIGNED_URL_OF_FILE_ERROR', msg: 'GET', error: error });
