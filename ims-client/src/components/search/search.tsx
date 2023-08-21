@@ -4,9 +4,9 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import InputBase from '@mui/material/InputBase';
 import Paper from '@mui/material/Paper';
 import * as React from 'react';
-import { EventProps } from '../incidentTable/incidentTable';
+import { IEventFilterProps } from '../../interface/IEventFilterProps';
 
-const Search: React.FC<EventProps> = ({ setValue }) => {
+const Search: React.FC<IEventFilterProps> = ({ setValue }) => {
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
