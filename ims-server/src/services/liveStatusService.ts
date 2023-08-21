@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from 'uuid'
-
 import { Priority, Status } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
@@ -16,12 +15,12 @@ class liveStatusService {
         [Priority.P3]: 3,
     };
 
-    async getLiveStatus(): Promise<liveStatusEntry[] | any> {
+    async getLiveStatus(date?:Date): Promise<liveStatusEntry[] | any> {
         try {
             const tags = await tagService.getAllTags();
             let liveStatuses: liveStatusEntry[] = [];
             for (const tag of tags) {
-                const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatus(tag.name);
+                const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name,date);
                 if (latestStatusForTag) {
                     liveStatuses.push({
                         systemName: tag.name,
@@ -50,6 +49,7 @@ class liveStatusService {
                 source: constants.SYSTEM_STATUS_SERVICE,
                 msg: constants.UPDATE_SYSTEMS_SUCCESS,
             });
+            //here i need the index
             const existingLiveStatus = await liveStatusRepository.getTodaysLiveStatusByTag(tag);
             if (existingLiveStatus) {
                 if (data.maxPriority > existingLiveStatus.maxPriority) {
@@ -62,6 +62,7 @@ class liveStatusService {
                 data.incidents = updatedIncidents;
                 return await liveStatusRepository.updateLiveStatus(data, existingLiveStatus.id);
             } else {
+                data.id=uuidv4()
                 data.incidentCounter = 1;
                 const incidentIndex = this.priorityIndexMap[data.maxPriority];
                 const updatedIncidents = [...data.incidents];
@@ -85,12 +86,12 @@ class liveStatusService {
             const liveStatus = await liveStatusRepository.getTodaysLiveStatusByTag(system);
             if (!liveStatus)
                 return
-            const updatedIncidents = [...liveStatus.incidents];
-            const incidentIndex = this.priorityIndexMap[previousPriority];
-            updatedIncidents[incidentIndex] = updatedIncidents[incidentIndex].filter(
-                (incidentId) => incidentId !== timeLineEvent.incidentId
-            );
+                const updatedIncidents = [...liveStatus.incidents];
+                const incidentIndex = this.priorityIndexMap[previousPriority];
             if (previousPriority != timeLineEvent.priority) {
+                updatedIncidents[incidentIndex] = updatedIncidents[incidentIndex].filter(
+                    (incidentId) => incidentId !== timeLineEvent.incidentId
+                );
                 updatedIncidents[this.priorityIndexMap[timeLineEvent.priority]].push(timeLineEvent.incidentId)
                 if (this.priorityIndexMap[liveStatus.maxPriority] > this.priorityIndexMap[timeLineEvent.priority]) {
                     liveStatus.maxPriority = timeLineEvent.priority;
@@ -126,13 +127,15 @@ class liveStatusService {
         try {
             const promises: Promise<IliveStatus | any>[] = incident.currentTags.map(async (tag) => {
                 const liveStatusData: IliveStatus = {
-                    id: uuidv4(),
+                    id: '',
+                    // id: uuidv4(),
                     systemName: tag.name,
                     incidents: [[], [], [], []],
                     date: new Date,
                     maxPriority: incident.currentPriority,
                     incidentCounter: 0
                 };
+                console.log("iiiiiiiiii",incident.id)
                 return await this.createOrUpdateLiveStatus(liveStatusData, incident.id ? incident.id : '', tag.name);
             });
             return Promise.all(promises);
