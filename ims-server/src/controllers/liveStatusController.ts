@@ -9,7 +9,17 @@ export default class liveStatusController {
   
    async getLiveStatus(req: Request, res: Response): Promise<void> {
         try {
-            const systems = await liveStatusService.getLiveStatus();
+            console.log("i'm hereeeeeeee")
+            let systems: IliveStatus[] | any;
+            if(req.params.date){
+                const filterDate: Date = new Date(req.params.date);
+                console.log("filterDate",filterDate)
+                 systems = await liveStatusService.getLiveStatus(filterDate);
+            }
+            else{
+                systems = await liveStatusService.getLiveStatus();
+            }
+            
             if (systems instanceof Error) {
                 res.status(status.SERVER_ERROR).json({ message: systems, error: true });
             } else res.status(status.SUCCESS).json(systems);
