@@ -14,7 +14,7 @@ class liveStatusRepository {
     try {
       const liveStatusList: IliveStatus[] = await liveStatusModel
         .find({ systemName: tag })
-        .sort({ date: -1 })
+        .sort({ date: 1 })
         .limit(10);
       console.log(liveStatusList)
       return liveStatusList;

@@ -1,14 +1,20 @@
 import { ApexOptions } from 'apexcharts';
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { IcolorScale, liveStatusEntry ,IliveStatus} from '../../interface/ILiveStatus';
-import { number } from 'prop-types';
+import { IcolorScale, liveStatusEntry } from '../../interface/ILiveStatus';
+import dayjs from 'dayjs';
 
-
+interface DataPoint {
+  x: string; // Assuming this is a string
+  y: number; // Assuming this is a number
+  z: string; // Assuming this is a string (formattedDate)
+  incident: number; // Assuming this is a number (systemData.incidentCounter)
+}
 
 interface HeatmapCharProps {
   systemsStatusCollection: liveStatusEntry[];
   colors?: IcolorScale[]
+  dates:string[] | undefined
   
 }
 
@@ -55,7 +61,7 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
       enabled: false,
     },
     xaxis: {
-      // categories: ['03/08/2023', '04/08/2023', '05/08/2023', '06/08/2023'],
+      //categories:props.dates  ,
       labels: {
         show: false,
       },
@@ -79,44 +85,70 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         formatter: undefined,
       },
       y: {
-        formatter: undefined,
+        formatter: () => '', // Set the formatter to an empty function to hide the y value
         title: {
-          formatter: (seriesName) => seriesName,
+          formatter: () => '',
         },
       },
       z: {
         formatter: undefined,
-        title: 'Incidents: '
+        title: 'date: ',
       },
+      custom: function({seriesIndex, dataPointIndex }: {
+        series: Array<{ data: Array<DataPoint> }>,
+        seriesIndex: number,
+        dataPointIndex: number
+      }) {
+        const dataPoint = props.systemsStatusCollection[seriesIndex].systemData[dataPointIndex];
+        if (dataPoint.date !== undefined) {
+          return (
+            '<div class="arrow_box">' +
+            '<span>'+  + '</span>' +
+            '<br />' +
+            '<span>Date: ' + dataPoint.date + '</span>' +
+            '<br />' +
+            '<span>Incident: ' + dataPoint.incidentCounter + '</span>' +
+            '</div>'
+          );
+        }
+        return '';
+      }
     }
   }
 
   const series: ApexAxisChartSeries = props.systemsStatusCollection.map(liveStatus => {
-    return {
+   return {
       name: liveStatus.systemName,
       data: liveStatus.systemData.map(systemData => {
         const priorityInfo: IcolorScale | undefined = props.colors?.find(scale => scale.name === systemData.maxPriority);
         const from: number | undefined = priorityInfo?.from;
         const to: number | undefined = priorityInfo?.to;
-        const formattedDate: string = new Date(systemData.date).toISOString().split('T')[0];
-        if (from !== undefined && to !== undefined) {
+        const formattedDate: string = dayjs(systemData.date).format("DD/MM/YYYY")
+        //const isExist:boolean|undefined = props.dates?.includes(formattedDate);
+    //  if (isExist)
+     if (from !== undefined && to !== undefined) {
           const priorityValue: number = from + (to - from) / 2;
           return {
             x: formattedDate,
             y: priorityValue,
-            z: systemData.incidentCounter,
+            z: formattedDate,
+         
           };
         }
         else {
           return {
-            x: formattedDate,
+            x: '',
             y: 0,
-            z: systemData.incidentCounter,
+            z: 0,
           };
         }
       })
     };
-  });
+
+   
+ 
+});
+ console.log("series",series)
 
   return (
     <div id="chart">

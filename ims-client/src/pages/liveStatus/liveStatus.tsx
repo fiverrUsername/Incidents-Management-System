@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import apiCalls from "../../service/apiCalls";
 import { IcolorScale, liveStatusCollection, liveStatusEntry } from "../../interface/ILiveStatus";
 import HeatmapChar from "../../components/heatmapChar/heatmapChar";
+import dayjs from "dayjs";
 
 const LiveStatus = () => {
     const colorScaleDefault: IcolorScale[] = [
@@ -11,27 +12,46 @@ const LiveStatus = () => {
         { from: 75, to: 100, name: 'p0', color: '#FF0000' }, //red
       ]
 
-    const [systemsStatusCollection, setSystemsStatusCollection] = useState<liveStatusEntry[]>()
+     
 
+
+  
+    const [systemsStatusCollection, setSystemsStatusCollection] = useState<liveStatusEntry[]>()
+    const [datesOfIncident,setDatesOfIncident]=useState<string[]>()
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const _systemsStatusCollection: liveStatusEntry[] = await apiCalls.getLiveStatus();
                 setSystemsStatusCollection(_systemsStatusCollection);
+                console.log("_systemsStatusCollection",_systemsStatusCollection)
             } catch (error) {
                 console.error(error);
             }
         };
         fetchData();
-    }, []);
 
+        const today = new Date();
+        const startDay = dayjs(today);
+        
+        const  _datesOfIncident:string[]=[]
+        _datesOfIncident.push(startDay.format("DD/MM/YYYY"));
+        
+        for (let index = 9; index <=1; index=index-1) {
+          const nextDate = startDay.add(index, 'day');
+          const formattedDate = nextDate.format('DD/MM/YYYY');
+          _datesOfIncident.push(formattedDate);
+        }
+        setDatesOfIncident( _datesOfIncident)
+        console.log( _datesOfIncident)
+    }, []);
+     
 
     return (
         <div>
             <h1>Live Status Page</h1>
             {
                 systemsStatusCollection &&
-                <HeatmapChar systemsStatusCollection={systemsStatusCollection} colors={colorScaleDefault} />
+                <HeatmapChar systemsStatusCollection={systemsStatusCollection} colors={colorScaleDefault} dates={datesOfIncident} />
             }
         </div>
     );
