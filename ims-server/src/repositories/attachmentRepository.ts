@@ -68,8 +68,6 @@ class AttachmentsRepository {
   }
 
   async deleteAttachmentById(key: string): Promise<void | any> {
-    const parsedUrl = new URL(key);
-    const keyy = parsedUrl.pathname.substring(1); // Remove the leading slash "/"
     const params: AWS.S3.DeleteObjectRequest = {
       Bucket: AttachmentsRepository.getBucketName(),
       Key: key.replace(/\?/g, '/')
