@@ -9,6 +9,11 @@ import Attachment from './attachment';
 interface AttachmentlistProps {
   id: string;
 }
+interface KeyUrlPair  {
+  key: string;
+  url: string;
+}
+
 type SupportedFileTypes =
   | 'image'
   | 'pdf'
@@ -21,8 +26,7 @@ type SupportedFileTypes =
   | 'default';
 const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [filesData, setFilesData] = useState<(string)[]>([]);
-  const [filesDataUrl, setFilesDataUrl] = useState<(string)[]>([]);
+  const [filesData, setFilesData] = useState<KeyUrlPair[]>([]);
   const filesToDisplay = 3
   const nextImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1));
@@ -30,66 +34,61 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
   const previousImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1));
   };
-  const getFileType = (file: string) => {
-    try {
-      const parts = file.split('?');
-      const remainingString = parts[0];
-      const extension = remainingString.split('.').pop()?.toLowerCase();
-      switch (extension) {
-        case 'jpg':
-        case 'jpeg':
-        case 'png':
-        case 'gif':
-          return 'image';
-        case 'pdf':
-          return 'pdf';
-        case 'txt':
-          return 'txt';
-        case 'mp3':
-        case 'wav':
-        case 'ogg':
-        case 'mpeg':
-          return 'audio';
-        case 'mp4':
-        case 'mov':
-        case 'wmv':
-        case 'avi':
-        case 'webm':
-          return 'video';
-        case 'doc':
-        case 'docx':
-        case 'odt':
-          return 'word';
-        case 'ppt':
-        case 'pptx':
-          return 'powerpoint';
-        case 'xls':
-        case 'xlsx':
-        case 'csv':
-          return 'excel';
-        default:
-          return 'default';
-      }
-    } catch (error) {
-      console.error('Error detecting file type:', error);
+
+const getFileType = (key: string): SupportedFileTypes => {
+  const extensionMap: Record<string, SupportedFileTypes> = {
+    jpg: 'image',
+    jpeg: 'image',
+    png: 'image',
+    gif: 'image',
+    pdf: 'pdf',
+    txt: 'txt',
+    mp3: 'audio',
+    wav: 'audio',
+    ogg: 'audio',
+    mpeg: 'audio',
+    mp4: 'video',
+    mov: 'video',
+    wmv: 'video',
+    avi: 'video',
+    webm: 'video',
+    doc: 'word',
+    docx: 'word',
+    odt: 'word',
+    ppt: 'powerpoint',
+    pptx: 'powerpoint',
+    xls: 'excel',
+    xlsx: 'excel',
+    csv: 'excel',
+  };
+
+  try {
+    const parts = key.split('?');
+    const extension =parts[parts.length - 1].split('.').pop()?.toLowerCase();
+    if (extension) {
+      return extensionMap[extension] || 'default';
+    } else {
+      //A case where the key does not exist
       return 'default';
     }
-  };
+  } catch (error) {
+    console.error('Error detecting file type:', error);
+    return 'default';
+  }
+};
+
   const fetchTimelineData = async (id: string) => {
     try {
       const timelineData: ITimeLineEvent = await apiCalls.getTimeLineEventsById(id)
-      setFilesData(timelineData.files)
-      const signUrl: string[] = await attachmentService.getUrls(timelineData.files);
-      setFilesDataUrl(signUrl)
+      const signUrl:KeyUrlPair[]= await attachmentService.getUrls(timelineData.files);
+      setFilesData(signUrl)
     } catch (error) {
       console.error('Error Fetching Timeline Data:', error);
     }
   };
 
-  const handleDeleteFile = async (fileKey: string) => {
-    const key: string = fileKey.split('?')[0].substring(36, fileKey.length).replace(/\//g, "_");
-    setFilesData((prevFiles) => prevFiles.filter((file) => file !== key));
-    setFilesDataUrl((prevFiles) => prevFiles.filter((file) => file !== fileKey))
+  const handleDeleteFile = async (key: string) => {
+    setFilesData((prevFiles) => prevFiles.filter((file) => file.key !==key))
     await apiCalls.deleteFileInTimeLine(id, key);
   };
 
@@ -98,22 +97,22 @@ const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
   }, []);
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', flex: 3 }}>
-      {filesDataUrl && filesDataUrl.length > filesToDisplay && currentIndex > 0 && (
+    <div style={{ display: 'flex', justifyContent: 'center', flex: 2, flexWrap: 'nowrap' }}>
+      {filesData && filesData.length > filesToDisplay && currentIndex > 0 && (
         <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
           <ArrowBackIosIcon onClick={previousImage} />
         </div>
       )}
-      {filesDataUrl &&
-        filesDataUrl.slice(currentIndex, currentIndex + filesToDisplay).map((file, index) => (
+      {filesData &&
+        filesData.slice(currentIndex, currentIndex + filesToDisplay).map((file, index) => (
           <Attachment
-            fileType={getFileType(file)}
+            fileType={getFileType(file.key)}
             key={index}
             file={file}
             onDelete={handleDeleteFile}
           />
         ))}
-      {filesDataUrl && filesDataUrl.length > filesToDisplay && currentIndex < (filesDataUrl.length - filesToDisplay) && (
+      {filesData && filesData.length > filesToDisplay && currentIndex < (filesData.length - filesToDisplay) && (
         <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
           <ArrowForwardIosIcon onClick={nextImage} />
         </div>

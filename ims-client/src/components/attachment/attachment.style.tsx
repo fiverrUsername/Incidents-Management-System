@@ -1,13 +1,11 @@
 import { styled } from "styled-components";
 
 export const SingleAttachment = styled.div`
-align-items: center;
-justify-content: center;
-background-size: cover;
-background-position: center;
-background-repeat: no-repeat;
-
-
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   flex:1;
   display:flex;
   flex-direction: column;
@@ -15,13 +13,11 @@ background-repeat: no-repeat;
 `;
 export const StyledImage = styled.img`
   flex:1;
-  width:100%;
-  height: 180px; 
-
   border-radius: 10px;
-  // padding: 10px;
-
-  object-fit: contain;
+  object-fit: cover;
+  object-position:bottom;
+  height:inherit;
+  width:100%;
 `;
 export const StyledLink = styled.a`
   text-decoration: none;
@@ -36,7 +32,7 @@ export const StyledLink = styled.a`
 export const StyledFilePreview = styled.div`
   flex: 1;
   height: 180px; 
-  max-width: 100%; 
+  width: 100%; 
   max-height: 100%; 
   object-fit: contain;
   border-radius: 20px;
