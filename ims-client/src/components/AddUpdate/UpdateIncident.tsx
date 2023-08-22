@@ -84,7 +84,7 @@ export default function UpdateIncident({ open, incident, onClose, addNewTimeline
     data.tags = selectedTags;
     const formData = new FormData();
     files.map((file) => {
-      const newName = `incidence_${incident.id}_${Date.now()}${file.name}`
+      const newName = `incidence?${incident.id}?${Date.now()}${file.name}`
       filesString.push(newName)
       formData.append('files', file, newName);
     })

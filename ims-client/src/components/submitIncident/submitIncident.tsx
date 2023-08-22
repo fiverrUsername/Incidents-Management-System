@@ -26,8 +26,8 @@ export default async function submitIncident(data: FormData, incident: IIncident
         createdBy: "?",
         cost: 0,
     }
-    const updatedIncidents = [...incident, incidentcR]
-    setIncident(updatedIncidents)
+    const updatedIncidents = [incidentcR, ...incident];
+    setIncident(updatedIncidents);
     try {
         await apiCalls.createIncident(incidentcR);
         return true;

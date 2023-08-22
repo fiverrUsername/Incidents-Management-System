@@ -168,13 +168,11 @@ export default class TimelineEventController {
             description: string[];
             files: any;
           }
+        let answer:compare = { description:["", "", req.body.description] ,files:[]};
         const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventByIncidentId(req.body.incidentId);
-        const a=attachmentService.getAllAttachmentByTimeline(req.body.files)
-        let file:any
-        let answer:compare = { description:["", "", req.body.description] ,files:file};
-        await a.then(function(result:any) {
-            file=result
-            answer.files=file
+        const attachment=attachmentService.getSignedUrlForKeys(req.body.files)
+        await attachment.then(function(result:any) {
+            answer.files=result
          }) 
         if (allTimelineEvents != null) {
             let sortedDatesDescending: ITimelineEvent[] = allTimelineEvents.slice().sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());

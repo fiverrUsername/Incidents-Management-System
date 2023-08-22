@@ -5,6 +5,10 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fortawesome/fontawesome-free-solid": "^5.0.13",
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
     "@material-ui/styles": "^4.11.5",
@@ -37,6 +41,8 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.1",
     "react-icons": "^4.10.1",
+    "react-infinite-scroller": "^1.2.6",
+    "react-pdf": "^7.3.3",
     "react-redux": "^8.1.1",
     "react-router-dom": "^6.14.1",
     "react-scripts": "5.0.1",
@@ -48,7 +54,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "NODE_ENV=production react-scripts build",
+    "build": "react-scripts build",
+    "homepage": "https://fiverrUsername.github.io/Incidents-Management-System",
+    "deploy": "gh-pages -d build",
     "test": "cross-env NODE_ENV=test react-scripts test",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
@@ -72,6 +80,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.5",
     "@babel/preset-typescript": "^7.22.5",
     "@storybook/addon-essentials": "^7.0.26",
     "@storybook/addon-interactions": "^7.0.26",
@@ -87,6 +96,7 @@
     "@types/downloadjs": "^1.4.3",
     "@types/react": "^18.2.14",
     "@types/react-datepicker": "^4.11.2",
+    "@types/react-infinite-scroller": "^1.2.3",
     "@types/testing-library__jest-dom": "^5.14.7",
     "@types/testing-library__react": "^10.2.0",
     "@types/uuid": "^9.0.2",
@@ -99,12 +109,11 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-storybook": "^0.6.12",
     "esm": "^3.2.25",
+    "gh-pages": "^6.0.0",
     "prop-types": "^15.8.1",
     "react-refresh": "^0.14.0",
     "storybook": "^7.0.26",
     "ts-jest": "^29.1.1",
-    "webpack": "^5.88.1",
-    "@babel/plugin-proposal-private-property-in-object": "^7.16.5"
-
+    "webpack": "^5.88.1"
   }
 }

@@ -1,10 +1,11 @@
+import dayjs from 'dayjs';
 import React from 'react';
+
+import { Priority } from '../../interface/enums';
 import { ITimeLineEventprops, ITimelineEventListprops } from '../../interface/timeLineInterface';
 import userdata from '../../mockAPI/users.json';
 import { TimelineWarpper } from './timeLine.style';
-import { Priority, Status } from '../../interface/enums';
 import TimeLineEvent from './timeLineEvent/timeLineEvent';
-import dayjs from 'dayjs';
 
 //צריך לטפל בדף הזה בסטטוס שנוסף
 
@@ -25,8 +26,8 @@ const TimeLine: React.FC<ITimelineEventListprops> = (props) => {
       isTypeChanged: false,
       isPriorityChanged: false
     };
-    if (index < timeLineEvents.length && index != 0) {
-      const previousTimeline = timeLineEvents[index - 1];
+    if (index < timeLineEvents.length - 1) {
+      const previousTimeline = timeLineEvents[index + 1];
       if (timeLine.priority !== previousTimeline.priority) {
         updatedTimeline.isPriorityChanged = true;
         updatedTimeline.previosPriority = previousTimeline.priority;

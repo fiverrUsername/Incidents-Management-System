@@ -1,19 +1,19 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit"
-import { ISystemStatus, SystemStatusCollection } from "../../../interface/ISytemStatus"
+import { liveStatusCollection } from "../../../interface/ILiveStatus"
 
 export const SYSTEM_STATUS_STATE_KEY = 'SYSTEM_STATUS'
 
 
-const initialState: SystemStatusCollection = { systemsStatus: [] }
+const initialState: liveStatusCollection = { systemsStatus: [] }
 
 const slice = createSlice({
     name: SYSTEM_STATUS_STATE_KEY,
     initialState,
     reducers: {
-        onGetSystemsStatusRequest: (state, action) => {
-            console.log('onGetSystemsStatusRequest')
+        onGetLiveStatusRequest: (state, action) => {
+            console.log('')
         },
-        onGetSystemsStatusSuccess: (state, action) => {
+        onGetLiveStatusSuccess: (state, action) => {
             state.systemsStatus = action.payload
         },
     }
@@ -24,7 +24,7 @@ const getState = (state: any) => {
 }
 
 export const selectors = {
-    selectSystemsStatus: createSelector(getState, (state: SystemStatusCollection) => state.systemsStatus)
+    selectSystemsStatus: createSelector(getState, (state: liveStatusCollection) => state.systemsStatus)
 }
 
 export const actions = { ...slice.actions }

@@ -11,7 +11,7 @@ import incidentRoute from './routes/IncidentRout';
 import aggregationRouter from './routes/aggrigationRouter';
 import tagRouter from './routes/tagRouter';
 import timelineEventRouter from './routes/timelineEventRouter';
-import liveStatusRouter from "./routes/systemStatusRouter";
+import liveStatusRouter from "./routes/liveStatusRouter";
 import attachmentRouter from './routes/attachmentRouter';
 
 const port = config.server.port
@@ -20,7 +20,7 @@ const swaggerFile: any = (process.cwd() + "/src/Swagger.json");
 const swaggerData: any = fs.readFileSync(swaggerFile, 'utf8');
 const swaggerDocument = JSON.parse(swaggerData);
 swaggerDocument.servers[0].url = `http://localhost:${process.env.SERVER_PORT}`
-const whitelist = ['http://localhost:3000', 'http://localhost:4700', 'http://localhost:7071'];
+const whitelist = ['http://localhost:3000', 'http://localhost:4700', 'http://localhost:7071','http://localhost:7000'];
 const apiKey = process.env.API_KEY;
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {

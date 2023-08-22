@@ -5,11 +5,11 @@ import { DataGrid, GridColDef, GridColumnVisibilityModel, GridRowSelectionModel,
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { v4 } from "uuid";
-
 import theme from "../../theme";
 import { CustomNoRowsOverlay } from "./customNoRowsOverlay";
 import { CustomFooter } from "./footer";
-export interface TableProps<T> {
+
+interface TableProps<T> {
   columns: GridColDef[];
   rows: Array<T>;
   isLoading: boolean;
