@@ -6,7 +6,7 @@ const attachmentService = {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
-  }).then((response) => response.data),
+  }).then((response) => response.data()),
 
  getUrls:(keys:string[])=>axios.post(`${baseUrl}/attachment/allSingUrl`,keys).then((response)=>
  response.data

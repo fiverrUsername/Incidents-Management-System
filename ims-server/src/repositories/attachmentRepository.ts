@@ -18,7 +18,7 @@ class AttachmentsRepository {
       if (fileName && fileBuffer) {
         const params: AWS.S3.PutObjectRequest = {
           Bucket: AttachmentsRepository.getBucketName(),
-          Key: fileName.toString().replace(/_/g, '/'),
+          Key: fileName.toString().replace(/\?/g, '/'),
           Body: fileBuffer,
         };
         return s3.upload(params).promise();
