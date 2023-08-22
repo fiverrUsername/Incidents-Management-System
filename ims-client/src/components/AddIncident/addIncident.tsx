@@ -16,6 +16,7 @@ import submitIncident from '../submitIncident/submitIncident';
 import DropDown from './DropDown';
 import ToggleButtons from './PriorityButtons';
 import TextFieldInput from './TextFields';
+import { constants } from '../../Consts/constants';
 
 export interface FormData {
   name: string;
@@ -106,18 +107,18 @@ export default function AddIncident({ open, onClose, incidents, setIncidents }: 
     }
 
     if (!value) {
-      return "Slack Channel Name is required";
+      return constants.MessagesValidatechannelName.NAME_IS_REQUIRED;
     }
 
     if (value.length < minLength || value.length > maxLength) {
-      return "Slack Channel Name must be between 1 and 80 characters long";
+      return constants.MessagesValidatechannelName.MUST_BE_BETWEEN_1_AND_80_CHARACTERS_LONG;
     }
     if (!allowedCharacters.test(value)) {
-      return "Invalid characters";
+      return constants.MessagesValidatechannelName.INVALID_CHARACTERS;
     }
 
     if (allChannelNames.includes(value.toLowerCase())) {
-      return "The channel name already exists";
+      return constants.MessagesValidatechannelName.ALREADY_EXISTS;
     }
 
     return true;
