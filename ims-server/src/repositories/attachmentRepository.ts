@@ -3,6 +3,12 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 import logger from "../loggers/log";
 import { constants } from '../loggers/constants';
+import {URL} from 'url'
+
+const expiration = 3600; // URL expires in 1 hour
+
+
+
 
 interface AttachmentData {
   key: string;
@@ -19,14 +25,14 @@ class AttachmentsRepository {
         if (fileName && fileBuffer) {
           const params: AWS.S3.PutObjectRequest = {
             Bucket: AttachmentsRepository.getBucketName(),
-            Key: fileName.toString().replace(/_/g, '/'),
+            Key: fileName.toString().replace(/\?/g, '/'),
             Body: fileBuffer,
           };
           return s3.upload(params).promise();
         }
       });
       try {
-        const uploadResults = await Promise.all(uploadPromises);
+        const uploadResults = await Promise.allSettled(uploadPromises);
         uploadResults.forEach((result) => {
           logger.info({ source: constants.UPLOAD_SUCCESS, msg: constants.METHOD.GET, success: true });
         });
@@ -34,11 +40,43 @@ class AttachmentsRepository {
         logger.info({ source: constants.UPLOAD_FAILED, msg: constants.METHOD.GET, error: true });
       }
   }
+   async getSignedUrlForKey(key: String): Promise<String> {
+    const params = {
+      Bucket: AttachmentsRepository.getBucketName(),
+      Key: key.replace(/\?/g, '/'),
+      Expires: expiration,
+    };
+    try {
+      const signedUrl = await s3.getSignedUrlPromise('getObject', params);
+      logger.info({ source: 'SIGNED_URL_OF_FILE_SUCCESS', msg: 'GET', success: true });
+      return signedUrl;
+    } catch (error) {
+      logger.error({ source: 'SIGNED_URL_OF_FILE_ERROR', msg: 'GET', error: error });
+      throw error;
+    }
+  }
+
+  async getSignedUrlForKeys(keys: String[]): Promise<String[]> {
+    try {
+      {
+      const allResponses: String[] = await Promise.all(keys.map(
+        (key) => this.getSignedUrlForKey(key)));
+      logger.info({ source: constants.SHOW_SUCCESS, method: constants.METHOD.GET, err: true });
+        return allResponses;
+      }
+    } catch (error) {
+      logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, err: true, error:true });
+      throw error;
+    }
+  }
+
+
+
   async getAttachment(key: string): Promise<AttachmentData|null> {
     try {
         const params: AWS.S3.GetObjectRequest = {
         Bucket: AttachmentsRepository.getBucketName(),
-        Key: key.replace(/_/g, '/')
+        Key: key.replace(/\?/g, '/')
       };
       const result = await s3.getObject(params).promise();
       const data: Buffer = result.Body as Buffer;
@@ -70,9 +108,11 @@ class AttachmentsRepository {
     }
   }
   async deleteAttachmentById(key: string): Promise<void | any> {
+    const parsedUrl = new URL(key);
+    const keyy = parsedUrl.pathname.substring(1); // Remove the leading slash "/"
     const params: AWS.S3.DeleteObjectRequest = {
       Bucket: AttachmentsRepository.getBucketName(),
-      Key: key.replace(/_/g, '/')
+      Key: key.replace(/\?/g, '/')
     };
     try {
       await s3.deleteObject(params).promise();

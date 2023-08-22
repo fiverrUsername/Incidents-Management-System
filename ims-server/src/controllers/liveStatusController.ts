@@ -9,7 +9,16 @@ export default class liveStatusController {
   
    async getLiveStatus(req: Request, res: Response): Promise<void> {
         try {
-            const systems = await liveStatusService.getLiveStatus();
+            let systems: IliveStatus[] | any;
+            if (req.params.date) {
+                const filterDate = new Date(req.params.date);
+                filterDate.setHours(0, 0, 0, 0);
+                systems = await liveStatusService.getLiveStatus(filterDate);
+            }
+            else{
+                systems = await liveStatusService.getLiveStatus();
+            }
+            
             if (systems instanceof Error) {
                 res.status(status.SERVER_ERROR).json({ message: systems, error: true });
             } else res.status(status.SUCCESS).json(systems);
@@ -22,7 +31,7 @@ export default class liveStatusController {
         try {
             const tag: string = "inbox"
             const data:IliveStatus=req.body
-            const systems = await liveStatusService.createOrUpdateLiveStatus(data,tag);
+            const systems = await liveStatusService.createOrUpdateLiveStatus(data,'',tag);
             if (systems instanceof Error) {
                 res.status(status.SERVER_ERROR).json({ message: systems, error: true });
             } else res.status(status.SUCCESS).json(systems);

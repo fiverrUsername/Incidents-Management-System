@@ -170,13 +170,11 @@ export default class TimelineEventController {
             description: string[];
             files: any;
           }
+        let answer:compare = { description:["", "", req.body.description] ,files:[]};
         const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventByIncidentId(req.body.incidentId);
-        const a=attachmentService.getAllAttachmentByTimeline(req.body.files)
-        let file:any
-        let answer:compare = { description:["", "", req.body.description] ,files:file};
-        await a.then(function(result:any) {
-            file=result
-            answer.files=file
+        const attachment=attachmentService.getSignedUrlForKeys(req.body.files)
+        await attachment.then(function(result:any) {
+            answer.files=result
          }) 
         if (allTimelineEvents != null) {
             let sortedDatesDescending: ITimelineEvent[] = allTimelineEvents.slice().sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
@@ -185,12 +183,6 @@ export default class TimelineEventController {
                 answer.description[0] = "priority changed: " + previousTimeLineEvent.priority + " => " + req.body.priority + '\n'
                 sendToSocket(req.body as ITimelineEvent, ObjectType.TimelineEvent, ActionType.ChangePriority);
             }
-            //הוספנו שדה סטטוס לטיימליין אוונט ולכן נצטרך להוסיך כאן פונקציה בערך כזאת-
-            // if (previousTimeLineEvent?.status != req.body.status) {
-            //     answer.description[3] = "status changed: " + previousTimeLineEvent.status + " => " + req.body.status + '\n'
-            //     sendToSocket(req.body as ITimelineEvent, ObjectType.TimelineEvent, ActionType.ChangeStatus);
-            // }
-
             if (previousTimeLineEvent?.type != req.body.type)
                 answer.description[1] = "type changed: " + previousTimeLineEvent.type + " => " + req.body.type + '\n'
         }
