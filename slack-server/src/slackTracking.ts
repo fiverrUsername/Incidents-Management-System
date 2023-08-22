@@ -11,12 +11,14 @@ export default function events(data: any) {
   console.log("event", event);
   switch (event.type) {
     case 'message':
-      handleMessageEvent(event);
+      if(!event.bot_profile)
+        handleMessageEvent(event);
       break;
     case 'app_mention':
       break;
     case 'channel_created':
-      createIncident(event.channel.id);
+      if(event.channel.creator!=='U05HSM3PJHL')
+        createIncident(event.channel.id);
       break;
       // Add more cases for other event types you want to handle
     default:
@@ -24,6 +26,7 @@ export default function events(data: any) {
       console.log(`Unhandled event type: ${event.type}`);
   }
 }
+
 
 const port = 4701;
 slackEvents.start(port).then(() => {

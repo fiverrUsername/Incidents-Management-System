@@ -1,98 +1,41 @@
+import { faFile, faFileAlt, faFileExcel, faFileWord, faFilePowerpoint, } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
-import { Grid, IconButton } from '@mui/material';
-import download from 'downloadjs';
-import React, { useEffect, useState } from 'react';
-import audio from '../../images/audio.png';
-import excel from '../../images/excel.png';
-import logo from '../../images/logo.png';
-import pdf from '../../images/pdf.png';
-import PowerPoint from '../../images/powerPoint.png';
-import txt from '../../images/txt.png';
-import video from '../../images/video.png';
-import word from '../../images/word.jpg';
-import { IAttachmentData } from '../../interface/timeLineInterface';
+import { Dialog, DialogContent, Grid, IconButton, Tooltip } from '@mui/material';
+import React, {useState } from 'react';
 import attachmentService from '../../service/attachmentService';
-import { SingleAttachment, StyledImage } from './attachment.style';
-
-type SupportedFileTypes =
-  | 'image'
-  | 'pdf'
-  | 'audio'
-  | 'video'
-  | 'word'
-  | 'powerpoint'
-  | 'excel'
-  | 'txt'
-  | 'default';
-
+import { SingleAttachment, StyledFilePreview, StyledImage } from './attachment.style';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { Document, Page } from 'react-pdf';
+import Loading from '../loading/loading';
+interface KeyUrlPair {
+  key: string;
+  url: string;
+}
 
 const getFileName = (fileName: string) => {
   const parts = fileName.split('_');
   if (parts.length > 1) {
     const remainingString = parts[parts.length - 1];
     const trimmedString = remainingString.substring(13);
+    console.log(trimmedString + "trimmedString")
     return trimmedString;
   }
   return '';
 };
 
-const getFileTypeFromData = (file: IAttachmentData) => {
-  try {
-    const extension = getFileName(file.key).split('.').pop()?.toLowerCase();
-    switch (extension) {
-      case 'jpg':
-      case 'jpeg':
-      case 'png':
-      case 'gif':
-        return 'image';
-      case 'pdf':
-        return 'pdf';
-      case 'txt':
-        return 'txt';
-      case 'mp3':
-      case 'wav':
-      case 'ogg':
-      case 'mpeg':
-        return 'audio';
-      case 'mp4':
-      case 'mov':
-      case 'wmv':
-      case 'avi':
-      case 'webm':
-        return 'video';
-      case 'doc':
-      case 'docx':
-      case 'odt':
-        return 'word';
-      case 'ppt':
-      case 'pptx':
-        return 'powerpoint';
-      case 'xls':
-      case 'xlsx':
-      case 'csv':
-        return 'excel';
-      default:
-        return 'default';
-    }
-  } catch (error) {
-    console.error('Error detecting file type:', error);
-    return 'default';
-  }
-};
 export default function Attachment({
+  fileType,
   file,
   onDelete,
-  style,
 }: {
-  file: IAttachmentData;
+  fileType: string
+  file: KeyUrlPair;
   onDelete: (fileId: string) => void;
-  style?: React.CSSProperties;
 }) {
-  const [fileType, setFileType] = useState<SupportedFileTypes>('default');
-  useEffect(() => {
-    setFileType(getFileTypeFromData(file));
-  }, [file]);
+
+  
 
   const handleDelete = async () => {
     try {
@@ -103,65 +46,110 @@ export default function Attachment({
     }
   };
 
-  const handleDownload = () => {
-    // const fileBlob = new Blob([file.data], { type: fileType });    
-    // const fileURL = URL.createObjectURL(fileBlob);
-    // // Create a download link
-    // console.log(fileURL)
-    // const downloadLink = document.createElement("a");
-    // downloadLink.href = fileURL;
-    // downloadLink.download = file.key;
-    // downloadLink.click();
-    // console.log(file.data)
-    download(file.data, getFileName(file.key))
+  const handleDownload = async () => {
+    const downloadLink = document.createElement("a");
+    downloadLink.href = file.url;
+    downloadLink.download = getFileName(file.key);
+    downloadLink.click();
   };
 
-  const renderImageContent = () => {
-    const imageData = URL.createObjectURL(
-      new Blob([file.data], { type: 'image/jpeg/png' })
-    );
-    return (
+  const [openDialog, setOpenDialog] = useState(false);
+  const backdropStyles: React.CSSProperties = {
+    background: 'rgba(0, 48, 18, 0.84)',
+  };
+  const openImageDialog = () => {
+    setOpenDialog(true);
+  };
+  const closeImageDialog = () => {
+    setOpenDialog(false);
+  };
+  type FileTypeStyle = {
+    icon: IconDefinition;
+    fontSize: string;
+    marginBottom: string;
+    marginLeft: string;
+  };
+
+  const fileTypeStyles: Record<string, FileTypeStyle> = {
+    txt: { icon: faFileAlt, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
+    word: { icon: faFileWord, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
+    excel: { icon: faFileExcel, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
+    powerpoint: { icon: faFilePowerpoint, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
+
+  };
+
+  const fileTypeMappings = {
+    image: () => (
+      <>
+        <StyledImage src={file.url} onClick={openImageDialog} title={getFileName(file.key)} />
+        <Dialog open={openDialog} onClose={closeImageDialog} BackdropProps={{ style: backdropStyles }}>
+          <DialogContent>
+            <img src={file.url} alt={getFileName(file.key)} style={{ width: '100%' }} />
+          </DialogContent>
+        </Dialog>
+      </>
+    ),
+    pdf: () => (
+      <StyledFilePreview >     
+        <Document file={file.url} >
+          <Page pageNumber={1} onClick={handleDownload} />
+        </Document>
+        </StyledFilePreview>
+
+    ),
+    audio: () => (
+      <StyledFilePreview >     
+        <audio controls>
+          <source src={file.url} type="audio/mpeg" onClick={handleDownload} title={getFileName(file.key)} />
+        </audio>
+      </StyledFilePreview>
+    ),
+    video: () => (
+      <StyledFilePreview >
+        <video controls>
+          <source src={file.url} type="video/mp4" onClick={handleDownload} title={getFileName(file.key)} />
+        </video>
+      </StyledFilePreview>
+    ),
+    default: () => (
       <div>
-        <img
-          className="blob-to-image"
-          src={imageData}
+        <FontAwesomeIcon
+          icon={faFile}
           title={getFileName(file.key)}
+          style={{ color: '#2F854F', fontSize: '200px' }}
+          onClick={handleDownload}
         />
-        <p>{getFileName(file.key)}</p>
       </div>
-    );
-  };
-
+    ),
+  } as Record<string, () => JSX.Element>;
 
   const renderFileContent = () => {
-    if (!file) {
-      return null;
+    if (fileType == 'image' && file == null)
+      return <div><Loading /></div>;
+
+
+    if (fileTypeStyles[fileType]) {
+      const { icon, fontSize, marginBottom, marginLeft } = fileTypeStyles[fileType];
+      return (
+        <div title={getFileName(file.key)}>
+          <FontAwesomeIcon icon={icon} style={{ color: '#2F854F', fontSize, marginBottom, marginLeft }} onClick={handleDownload} />
+        </div>
+      );
     }
-    switch (fileType) {
-      case 'image':
-        return renderImageContent();
-      case 'pdf':
-        return <img src={pdf} alt="pdf" title={getFileName(file.key)} />;
-      case 'txt':
-        return <StyledImage src={txt} alt="txt" title={getFileName(file.key)} />;
-      case 'audio':
-        return <StyledImage src={audio} alt="audio" title={getFileName(file.key)} />;
-      case 'video':
-        return <StyledImage src={video} alt="video" title={getFileName(file.key)} />;
-      case 'word':
-        return <StyledImage src={word} alt="word" title={getFileName(file.key)} />;
-      case 'powerpoint':
-        return <StyledImage src={PowerPoint} alt="powerPoint" title={getFileName(file.key)} />;
-      case 'excel':
-        return <StyledImage src={excel} alt="excel" title={getFileName(file.key)} />;
-      default:
-        return <StyledImage src={logo} alt="default" title={getFileName(file.key)} />;
+
+    if (['image', 'pdf', 'video', 'audio'].includes(fileType)) {
+      return (
+        <StyledFilePreview title={getFileName(file.key)}>
+          {fileTypeMappings[fileType]()}
+        </StyledFilePreview>
+      );
     }
+    return (fileTypeMappings[fileType] || fileTypeMappings.default)();
   };
+
   return (
-    <SingleAttachment>
-      {renderFileContent()}
-      <Grid container spacing={2} alignItems="center">
+    <Tooltip title={
+    <Grid container spacing={2} alignItems="center">
         <Grid item>
           <IconButton onClick={handleDelete}>
             <DeleteIcon />
@@ -173,6 +161,10 @@ export default function Attachment({
           </IconButton>
         </Grid>
       </Grid>
+    }>
+    <SingleAttachment>
+      {renderFileContent()}
     </SingleAttachment>
+    </Tooltip>
   )
 }

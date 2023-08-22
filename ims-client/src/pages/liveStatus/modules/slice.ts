@@ -11,7 +11,7 @@ const slice = createSlice({
     initialState,
     reducers: {
         onGetLiveStatusRequest: (state, action) => {
-            console.log('onGetSystemsStatusRequest')
+            console.log('')
         },
         onGetLiveStatusSuccess: (state, action) => {
             state.systemsStatus = action.payload

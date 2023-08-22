@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+
 import { IncidentDto } from "../dto/incidentDto";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
