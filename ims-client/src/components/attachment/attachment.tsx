@@ -124,8 +124,6 @@ export default function Attachment({
   } as Record<string, () => JSX.Element>;
 
   const renderFileContent = () => {
-    console.log("fileType", fileType)
-    console.log("url", file.url)
     if (fileType == 'image' && file == null)
       return <div><Loading /></div>;
 
