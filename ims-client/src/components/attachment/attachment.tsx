@@ -84,7 +84,7 @@ export default function Attachment({
         <StyledImage src={file.url} onClick={openImageDialog} title={getFileName(file.key)} />
         <Dialog open={openDialog} onClose={closeImageDialog} BackdropProps={{ style: backdropStyles }}>
           <DialogContent>
-            <img src={file.key} alt={getFileName(file.key)} style={{ width: '100%' }} />
+            <img src={file.url} alt={getFileName(file.key)} style={{ width: '100%' }} />
           </DialogContent>
         </Dialog>
       </>
