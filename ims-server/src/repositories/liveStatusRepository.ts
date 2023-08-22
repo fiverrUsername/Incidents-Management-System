@@ -11,10 +11,10 @@ class liveStatusRepository {
         }
     }
 
-    async getLiveStatusByTag(tag: string, date?: Date): Promise<IliveStatus[] | any> {
+    async getLiveStatusByTag(tag: string, date: Date): Promise<IliveStatus[] | any> {
         try {
           let query: Record<string, any> = { systemName: tag }; 
-          if (date) {
+          //if (date) {
             // Calculate the start date (10 days ago from the specified date)
             const startDate = new Date(date);
             startDate.setDate(startDate.getDate() - 9); 
@@ -24,7 +24,7 @@ class liveStatusRepository {
               $gte: startDate, 
               $lte: endDate,  
             };
-          }
+          //}
           const liveStatusList: IliveStatus[] = await liveStatusModel
             .find(query)
             .sort({ date: 1 })
