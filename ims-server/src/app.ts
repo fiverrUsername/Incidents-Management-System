@@ -13,6 +13,10 @@ import tagRouter from './routes/tagRouter';
 import timelineEventRouter from './routes/timelineEventRouter';
 import liveStatusRouter from "./routes/liveStatusRouter";
 import attachmentRouter from './routes/attachmentRouter';
+import clientLogRouter from'./routes/clientLogRouter';
+// import logRouter from './routes/logRouter';
+import axios from 'axios';
+
 
 const port = config.server.port
 const app = express()
@@ -46,6 +50,7 @@ app.use('/tag', tagRouter)
 app.use('/timelineEvent', timelineEventRouter)
 app.use('/attachment', attachmentRouter)
 app.use('/livestatus', liveStatusRouter)
+app.use('/log',clientLogRouter);
 
 // בדיקה אם השרת מורשה לגשת לשרת
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -56,7 +61,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-
 app.get('/', (req: Request, res: Response): void => {
   res.redirect('/swagger')
 });
@@ -64,6 +68,5 @@ app.get('/', (req: Request, res: Response): void => {
 app.listen(port, () => {
   logger.info(`Server is listening on http://localhost:${port}`)
 });
-
 
 export default app;

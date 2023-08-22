@@ -11,7 +11,7 @@ import filterTimeLineBySearch from "../../service/timeLineService";
 import TimeLine from "./timeLine";
 import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
 import AddUpdateBtn from "../../components/AddUpdate/AddUpdateBtn";
-
+import log from '../../logger';
 
 const TimeLinePage = ({ id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<ITimeLineEvent[]>([]);
@@ -19,7 +19,7 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   const [incident, setIncident] = useState<receivedIncident>();
   //gets incident id
   useEffect(() => {
-
+    log.info("6")
     const fetchTimeline = async () => {
       const getTimeLineEventsById = await apiCalls.timelineEventByIncidentId(id)
       setTimelineObjects(getTimeLineEventsById);
