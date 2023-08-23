@@ -150,23 +150,20 @@ export default function Attachment({
   };
 
   return (
-    <Tooltip title={
-      <Grid container spacing={2} alignItems="center">
-        <Grid item>
-          <IconButton onClick={handleDelete}>
-            <DeleteIcon />
-          </IconButton>
+    <SingleAttachment title={getFileName(file.key)}>
+      {renderFileContent()}
+        <Grid container spacing={2} alignItems="center">
+          <Grid item>
+            <IconButton onClick={handleDelete}>
+              <DeleteIcon />
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <IconButton onClick={handleDownload}>
+              <DownloadIcon />
+            </IconButton>
+          </Grid>
         </Grid>
-        <Grid item>
-          <IconButton onClick={handleDownload}>
-            <DownloadIcon />
-          </IconButton>
-        </Grid>
-      </Grid>
-    }>
-      <SingleAttachment>
-        {renderFileContent()}
-      </SingleAttachment>
-    </Tooltip>
+    </SingleAttachment>
   )
 }
