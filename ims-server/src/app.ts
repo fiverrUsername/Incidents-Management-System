@@ -1,18 +1,4 @@
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import express, { NextFunction, Request, Response } from 'express';
-import fs from 'fs';
-import swaggerUI from 'swagger-ui-express';
-import '../src/services/socket';
-import config from './config/config';
-import logger from './loggers/log';
-import { connect } from './models/db';
-import incidentRoute from './routes/IncidentRout';
-import aggregationRouter from './routes/aggrigationRouter';
-import tagRouter from './routes/tagRouter';
-import timelineEventRouter from './routes/timelineEventRouter';
-import liveStatusRouter from "./routes/liveStatusRouter";
-import attachmentRouter from './routes/attachmentRouter';
+
 
 const port = config.server.port
 const app = express()
