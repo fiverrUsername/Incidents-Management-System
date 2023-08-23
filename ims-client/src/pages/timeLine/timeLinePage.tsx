@@ -19,7 +19,7 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   const [incident, setIncident] = useState<receivedIncident>();
   //gets incident id
   useEffect(() => {
-    log.info("6")
+    log.info("7")
     const fetchTimeline = async () => {
       const getTimeLineEventsById = await apiCalls.timelineEventByIncidentId(id)
       setTimelineObjects(getTimeLineEventsById);
