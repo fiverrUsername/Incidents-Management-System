@@ -13,10 +13,12 @@ import { option } from './Types';
 
 interface DropDownProps {
   Types:option[];
+  defaultValue?:string;
   onChangeType: (event: SelectChangeEvent) => void;
 }
 export default function DropDown(props:DropDownProps) {
-  const [type, setType] = React.useState('');
+    console.log(props.defaultValue);
+  const [type, setType] = React.useState(props.defaultValue);
   const handleChange = (event: SelectChangeEvent) => {
         setType(event.target.value);
         props.onChangeType(event)
