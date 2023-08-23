@@ -6,7 +6,7 @@ import { constants } from '../loggers/constants';
 import { KeyUrlPair } from '../interfaces/IAttachment';
 dotenv.config()
 const s3 = new AWS.S3();
-const expiration = process.env.TIME_EXPIRATION
+const expiration = 3600;
 
 
 class AttachmentsRepository {

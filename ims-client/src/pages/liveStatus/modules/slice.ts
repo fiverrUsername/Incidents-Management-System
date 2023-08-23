@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit"
-import { liveStatusCollection } from "../../../interface/ILiveStatus"
+import { liveStatusCollection } from "../../../interfaces/ILiveStatus"
 
 export const SYSTEM_STATUS_STATE_KEY = 'SYSTEM_STATUS'
 
