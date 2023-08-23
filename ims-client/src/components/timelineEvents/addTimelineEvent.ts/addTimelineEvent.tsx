@@ -9,7 +9,7 @@ interface Props {
     addNewTimelineFunction: (newTimeline: ITimeLineEvent) => void
 }
 
-export default function AddTimeline({ incident,addNewTimelineFunction }: Props) {
+export default function AddTimelineEvent({ incident,addNewTimelineFunction }: Props) {
     const [open, setOpen] = useState(false);
     const handleClick = () => {
         setOpen(true);
