@@ -1,1 +1,2 @@
-import './src/socket';
+// import './src/socket';
+require('./src/socket');
