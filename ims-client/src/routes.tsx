@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { withId } from './HOC';
 import IncidentsPage from './pages/incidents/incidentsPage';
-import LiveStatus from './pages/liveStatus/liveStatus';
+import LiveStatus from './pages/liveStatus/liveStatusPage';
 import TimeLinePage from './pages/timeLine/timeLinePage';
 
 

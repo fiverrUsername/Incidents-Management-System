@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import apiCalls from "../../service/apiCalls";
-import IncidentTable from "../../components/incidentTable/incidentTable";
-import WidgetsStack from "../../components/widget/widgetsStack";
-import IIncident from "../../interface/incidentInterface";
+import IncidentTable from "../../components/incidents/incidentTable/incidentTable";
+import IIncident from "../../interfaces/IIncident";
+import WidgetsStack from "../../components/incidents/widget/widgetsStack";
+import backendServices from "../../services/backendServices/backendServices";
 
 const IncidentsPage = () => {
   const [incidents, setIncidents] = useState<Array<IIncident>>([]);
@@ -11,7 +11,7 @@ const IncidentsPage = () => {
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
-      const getIncidents = await apiCalls.getIncidents();
+      const getIncidents = await backendServices.getIncidents();
       setIncidents(getIncidents);
       setIsLoading(false);
     };
