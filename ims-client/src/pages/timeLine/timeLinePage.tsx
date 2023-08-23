@@ -5,7 +5,7 @@ import DisplaySummary from "../../components/timelineEvents/summary/displaySumma
 import { ISummary } from "../../interfaces/ISummary";
 import { ITimeLineEvent } from "../../interfaces/ITimeLineEvent";
 import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
-import AddTimeline from "../../components/timelineEvents/addTimelineEvent.ts/addTimelineEventForm";
+import AddTimeline from "../../components/timelineEvents/addTimelineEvent.ts/addTimelineEvent";
 import Search from "../../components/base/search/search";
 import { receivedIncident } from "../../components/timelineEvents/addTimelineEvent.ts/addTimelineEventForm/addTimelineEventForm";
 import TimeLine from "../../components/timelineEvents/timeline/timeLine";
