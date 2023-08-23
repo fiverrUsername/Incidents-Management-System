@@ -5,12 +5,12 @@ import DisplaySummary from "../../components/timelineEvents/summary/displaySumma
 import { ISummary } from "../../interfaces/ISummary";
 import { ITimeLineEvent } from "../../interfaces/ITimeLineEvent";
 import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
-import AddTimeline from "../../components/timelineEvents/addTimelineEvent.ts/addTimelineEventForm";
 import Search from "../../components/base/search/search";
 import { receivedIncident } from "../../components/timelineEvents/addTimelineEvent.ts/addTimelineEventForm/addTimelineEventForm";
 import TimeLine from "../../components/timelineEvents/timeline/timeLine";
 import { filterTimeLineBySearch } from "../../services/functions/timeline/filterTimeLineBySearch";
 import backendServices from "../../services/backendServices/backendServices";
+import AddTimelineEvent from "../../components/timelineEvents/addTimelineEvent.ts/addTimelineEvent";
 
 
 const TimeLinePage = ({ id }: WithIdProps) => {
@@ -54,7 +54,7 @@ const TimeLinePage = ({ id }: WithIdProps) => {
       <StyledPaper>
         <Grid container direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="nowrap">
           <Typography variant='bold'>Consectetur massa</Typography>
-          {incident && <AddTimeline addNewTimelineFunction={addNewTimeline} incident={{ ...incident }} />}
+          {incident && <AddTimelineEvent addNewTimelineFunction={addNewTimeline} incident={{ ...incident }} />}
         </Grid>
         {timelineObjects && (
           <CustomScrollbar>
