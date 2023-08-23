@@ -7,6 +7,7 @@ import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import liveStatusRepository from "../repositories/liveStatusRepository";
 import tagService from "./tagService";
+import dayjs from 'dayjs';
 class liveStatusService {
     priorityIndexMap: Record<Priority, number> = {
         [Priority.P0]: 0,
@@ -45,6 +46,8 @@ class liveStatusService {
 
     async createOrUpdateLiveStatus(data: IliveStatus, incidentId: string, tag: string): Promise<void | any> {
         try {
+            console.log('createOrUpdateLiveStatus');
+
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,
                 msg: constants.UPDATE_SYSTEMS_SUCCESS,
@@ -88,9 +91,9 @@ class liveStatusService {
                 return
             const updatedIncidents = [...liveStatus.incidents];
             const incidentIndex = this.priorityIndexMap[previousPriority];
-             updatedIncidents[incidentIndex] = updatedIncidents[incidentIndex].filter(
-                    (incidentId) => incidentId !== timeLineEvent.incidentId
-                );
+            updatedIncidents[incidentIndex] = updatedIncidents[incidentIndex].filter(
+                (incidentId) => incidentId !== timeLineEvent.incidentId
+            );
             if (previousPriority != timeLineEvent.priority) {
                 updatedIncidents[this.priorityIndexMap[timeLineEvent.priority]].push(timeLineEvent.incidentId)
                 if (this.priorityIndexMap[liveStatus.maxPriority] > this.priorityIndexMap[timeLineEvent.priority]) {
@@ -103,7 +106,7 @@ class liveStatusService {
             console.log(e);
         }
     }
-    async getUpdatedMaxPriority(incidentsIds: string[][]): Promise<Priority> {
+    getUpdatedMaxPriority(incidentsIds: string[][]){
         let maxPriority = Priority.P3
         const priorityValues = Object.values(Priority) as string[];
         incidentsIds.map((incidentsId, index: number) => {
@@ -114,11 +117,19 @@ class liveStatusService {
     }
 
     async autoUpdateLiveStatus() {
-        const yesterday = ((new Date()).getDate() - 1).toString()
-        const systems: IliveStatus[] = await liveStatusRepository.getLiveStatusSystemsByDate(yesterday)
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        // const yesterday = ((new Date()).getDate() - 1).toString()
+        console.log('yesterday:', yesterday);
+
+        const systems: IliveStatus[] = await liveStatusRepository.getLiveStatusSystemsByDate(yesterday.toISOString())
+        console.log('systems:', systems);
+
         systems.map(async (system: IliveStatus) => {
+            console.log('system:', system);
+
             system.date = new Date(yesterday)
-            system.maxPriority = await this.getUpdatedMaxPriority(system.incidents)
+            system.maxPriority = this.getUpdatedMaxPriority(system.incidents)
             await liveStatusRepository.createLiveStatus(system)
         })
     }

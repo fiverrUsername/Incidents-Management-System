@@ -71,7 +71,9 @@ class TimelineEventService {
         });
 
         newTags.forEach(tag => {
+          console.log('tag:',tag);
           newIncident.currentTags = [tag]
+          console.log('new:',newIncident);
           liveStatusService.liveStatusByIncident(newIncident)
         })
       }
