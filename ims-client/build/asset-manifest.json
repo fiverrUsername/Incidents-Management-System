@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/Incidents-Management-System/static/css/main.55a15603.css",
+    "main.js": "/Incidents-Management-System/static/js/main.cd900b10.js",
+    "static/js/651.e000bc17.chunk.js": "/Incidents-Management-System/static/js/651.e000bc17.chunk.js",
+    "static/media/Poppins-Medium.woff": "/Incidents-Management-System/static/media/Poppins-Medium.c91495afd0e2f292c3c4.woff",
+    "index.html": "/Incidents-Management-System/index.html",
+    "main.55a15603.css.map": "/Incidents-Management-System/static/css/main.55a15603.css.map",
+    "main.cd900b10.js.map": "/Incidents-Management-System/static/js/main.cd900b10.js.map",
+    "651.e000bc17.chunk.js.map": "/Incidents-Management-System/static/js/651.e000bc17.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.55a15603.css",
+    "static/js/main.cd900b10.js"
+  ]
+}
