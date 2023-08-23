@@ -1,14 +1,14 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 
-import apiCalls from '../../../service/apiCalls'
 import { actions } from './slice'
-import IIncident from '../../../interface/incidentInterface'
+import IIncident from '../../../interfaces/IIncident'
+import backendServices from '../../../services/backendServices/backendServices'
 
 
 
 function* onGetIncidents() {
     try {
-        const data:IIncident[] = yield call(apiCalls.getIncidents)
+        const data:IIncident[] = yield call(backendServices.getIncidents)
         yield put(actions.onGetIncidentsSuccess(data))
     } catch (error) {
         console.log(error)
