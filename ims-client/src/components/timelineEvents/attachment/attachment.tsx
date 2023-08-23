@@ -1,43 +1,29 @@
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import React, { useState } from 'react';
 import { faFile, faFileAlt, faFileExcel, faFilePowerpoint, faFileWord, } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
-import { Dialog, DialogContent, Grid, IconButton, Tooltip } from '@mui/material';
+import { Dialog, DialogContent, Grid, IconButton} from '@mui/material';
 import { Document, Page } from 'react-pdf';
 import { SingleAttachment, StyledFilePreview, StyledImage } from './attachment.style';
-interface KeyUrlPair {
-  key: string;
-  url: string;
-}
-import React, { useEffect, useState } from 'react';
-import { library } from '@fortawesome/fontawesome-svg-core';
+import {KeyUrlPair,FileTypeStyle} from '../../../interfaces/IAttachment';
 import Loading from '../../base/loading/loading';
 import attachmentServices from '../../../services/backendServices/attachmentServices';
 
 
-const getFileName = (fileName: string) => {
-  const parts = fileName.split('_');
-  if (parts.length > 1) {
-    const remainingString = parts[parts.length - 1];
-    const trimmedString = remainingString.substring(13);
-    console.log(trimmedString + "trimmedString")
-    return trimmedString;
-  }
-  return '';
-};
-
-export default function Attachment({
-  fileType,
-  file,
-  onDelete,
-}: {
-  fileType: string
-  file: KeyUrlPair;
-  onDelete: (fileId: string) => void;
-}) {
 
 
+export default function Attachment({fileType,file,onDelete,}: {  fileType: string;  file: KeyUrlPair;  onDelete: (fileId: string) => void;}) {
+  
+  const getFileName = (fileName: string) => {
+    const parts = fileName.split('?');
+    if (parts.length > 1) {
+      const remainingString = parts[parts.length - 1];
+      const trimmedString = remainingString.substring(13);
+      return trimmedString;
+    }
+    return '';
+  };
 
   const handleDelete = async () => {
     try {
@@ -51,7 +37,7 @@ export default function Attachment({
   const handleDownload = async () => {
     const downloadLink = document.createElement("a");
     downloadLink.href = file.url;
-    downloadLink.download = getFileName(file.key);
+    downloadLink.download = getFileName(file.key)
     downloadLink.click();
   };
 
@@ -65,12 +51,7 @@ export default function Attachment({
   const closeImageDialog = () => {
     setOpenDialog(false);
   };
-  type FileTypeStyle = {
-    icon: IconDefinition;
-    fontSize: string;
-    marginBottom: string;
-    marginLeft: string;
-  };
+
 
   const fileTypeStyles: Record<string, FileTypeStyle> = {
     txt: { icon: faFileAlt, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
@@ -150,7 +131,7 @@ export default function Attachment({
   };
 
   return (
-    <SingleAttachment title={getFileName(file.key)}>
+    <SingleAttachment >
       {renderFileContent()}
         <Grid container spacing={2} alignItems="center">
           <Grid item>
