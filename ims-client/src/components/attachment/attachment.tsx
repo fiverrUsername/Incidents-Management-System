@@ -1,14 +1,14 @@
-import { faFile, faFileAlt, faFileExcel, faFileWord, faFilePowerpoint, } from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faFile, faFileAlt, faFileExcel, faFilePowerpoint, faFileWord, } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
 import { Dialog, DialogContent, Grid, IconButton, Tooltip } from '@mui/material';
 import React, { useState } from 'react';
-import attachmentService from '../../service/attachmentService';
-import { SingleAttachment, StyledFilePreview, StyledImage } from './attachment.style';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { Document, Page } from 'react-pdf';
+import attachmentService from '../../service/attachmentService';
 import Loading from '../loading/loading';
+import { SingleAttachment, StyledFilePreview, StyledImage } from './attachment.style';
 interface KeyUrlPair {
   key: string;
   url: string;
