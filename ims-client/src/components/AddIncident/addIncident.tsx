@@ -195,7 +195,7 @@ export default function AddIncident({ open, onClose, incidents, setIncidents }: 
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
-                    <DateTimePickerValue date={date} setDate={setDate} />
+                    {/* <DateTimePickerValue date={date} setDate={setDate} /> */}
                   </FormControl>
                 </Grid>
                 <Grid item xs={6}>

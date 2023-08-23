@@ -10,7 +10,7 @@
         { value: 'technical', label: 'b' },
         { value: 'comment', label: 'c' },
     ];
-    render(<DropDown arroption={Types1} />);
+   // render(<DropDown arroption={Types1} />);
     
     });});
 

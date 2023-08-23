@@ -18,6 +18,7 @@ import UploadFiles from '../uploadFiles/UploadFiles';
 import submitTimeLine from './submitTimeLine';
 import StatusDropDown from './StatusDropDown';
 import { ITimeLineEvent } from '../../interface/timeLineInterface';
+import DateTimePickerdate from '../datePicker/datePicker';
 
 export interface dataFromForm {
   text: string;
@@ -135,6 +136,11 @@ export default function UpdateIncident({ open, incident, onClose, addNewTimeline
     }
     getTags();
   }, []);
+
+  const handleDateChange = (newDate: any) => {
+    setDate(newDate);
+    console.log('New Date:', newDate);
+  };
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addUpdate" style={popupStyles}>
@@ -171,7 +177,8 @@ export default function UpdateIncident({ open, incident, onClose, addNewTimeline
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
-                    <DateTimePickerValue date={date} setDate={setDate} />
+                    {/* <DateTimePickerValue date={date} setDate={setDate} /> */}
+                    <DateTimePickerdate date={date} onDateChange={handleDateChange} />
                   </FormControl>
                 </Grid>
               </Grid>
