@@ -1,14 +1,14 @@
-import { faFile, faFileAlt, faFileExcel, faFileWord, faFilePowerpoint, } from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faFile, faFileAlt, faFileExcel, faFilePowerpoint, faFileWord, } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
 import { Dialog, DialogContent, Grid, IconButton, Tooltip } from '@mui/material';
-import React, {useState } from 'react';
-import attachmentService from '../../service/attachmentService';
-import { SingleAttachment, StyledFilePreview, StyledImage } from './attachment.style';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import React, { useState } from 'react';
 import { Document, Page } from 'react-pdf';
+import attachmentService from '../../service/attachmentService';
 import Loading from '../loading/loading';
+import { SingleAttachment, StyledFilePreview, StyledImage } from './attachment.style';
 interface KeyUrlPair {
   key: string;
   url: string;
@@ -35,7 +35,7 @@ export default function Attachment({
   onDelete: (fileId: string) => void;
 }) {
 
-  
+
 
   const handleDelete = async () => {
     try {
@@ -90,15 +90,15 @@ export default function Attachment({
       </>
     ),
     pdf: () => (
-      <StyledFilePreview >     
+      <StyledFilePreview >
         <Document file={file.url} >
           <Page pageNumber={1} onClick={handleDownload} />
         </Document>
-        </StyledFilePreview>
+      </StyledFilePreview>
 
     ),
     audio: () => (
-      <StyledFilePreview >     
+      <StyledFilePreview >
         <audio controls>
           <source src={file.url} type="audio/mpeg" onClick={handleDownload} title={getFileName(file.key)} />
         </audio>
@@ -149,7 +149,7 @@ export default function Attachment({
 
   return (
     <Tooltip title={
-    <Grid container spacing={2} alignItems="center">
+      <Grid container spacing={2} alignItems="center">
         <Grid item>
           <IconButton onClick={handleDelete}>
             <DeleteIcon />
@@ -162,9 +162,9 @@ export default function Attachment({
         </Grid>
       </Grid>
     }>
-    <SingleAttachment>
-      {renderFileContent()}
-    </SingleAttachment>
+      <SingleAttachment>
+        {renderFileContent()}
+      </SingleAttachment>
     </Tooltip>
   )
 }
