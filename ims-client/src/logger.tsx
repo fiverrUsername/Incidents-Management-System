@@ -30,7 +30,7 @@ export default class Logger {
 }
 
 // פונקציה לשליחת הלוג לשרת
-// function sendLogToServer(level: Level, message: string) {
+ function sendLogToServer(level: Level, message: string) {
 //   // const logData = {
 //   //   level,
 //   //   message,
@@ -55,14 +55,13 @@ export default class Logger {
 //   };  
 //   remote.apply(log, defaults )
 // }
-const defaults = {
+const defaults:any = {
   url: `${baseUrl}/log`,
   method: 'POST',
-  timeout: 0,
-  interval: 1000,
-  level: 'debug', // כאן ניתן לקבוע את הרמת הלוג המועדפת לשליחה
+  level, // כאן ניתן לקבוע את הרמת הלוג המועדפת לשליחה
   timestamp: () => new Date().toISOString(),
-  format: remote.plain,
+  message,
 };
 
 remote.apply(log, defaults);
+}
