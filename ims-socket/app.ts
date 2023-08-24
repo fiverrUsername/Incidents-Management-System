@@ -1,2 +1,1 @@
-require('./src/socket.ts');
-
+import './src/socket';
