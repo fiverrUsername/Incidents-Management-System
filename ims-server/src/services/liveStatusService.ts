@@ -1,4 +1,5 @@
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid';
+
 import { Priority, Status } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
@@ -7,8 +8,10 @@ import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import liveStatusRepository from "../repositories/liveStatusRepository";
 import tagService from "./tagService";
-import dayjs from 'dayjs';
 class liveStatusService {
+    constructor() {
+        this.autoUpdateLiveStatus = this.autoUpdateLiveStatus.bind(this);
+    }
     priorityIndexMap: Record<Priority, number> = {
         [Priority.P0]: 0,
         [Priority.P1]: 1,
@@ -46,8 +49,6 @@ class liveStatusService {
 
     async createOrUpdateLiveStatus(data: IliveStatus, incidentId: string, tag: string): Promise<void | any> {
         try {
-            console.log('createOrUpdateLiveStatus');
-
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,
                 msg: constants.UPDATE_SYSTEMS_SUCCESS,
@@ -106,7 +107,8 @@ class liveStatusService {
             console.log(e);
         }
     }
-    getUpdatedMaxPriority(incidentsIds: string[][]){
+
+    getUpdatedMaxPriority(incidentsIds: string[][]) {
         let maxPriority = Priority.P3
         const priorityValues = Object.values(Priority) as string[];
         incidentsIds.map((incidentsId, index: number) => {
@@ -119,19 +121,18 @@ class liveStatusService {
     async autoUpdateLiveStatus() {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
-        // const yesterday = ((new Date()).getDate() - 1).toString()
-        console.log('yesterday:', yesterday);
-
-        const systems: IliveStatus[] = await liveStatusRepository.getLiveStatusSystemsByDate(yesterday.toISOString())
-        console.log('systems:', systems);
-
-        systems.map(async (system: IliveStatus) => {
-            console.log('system:', system);
-
-            system.date = new Date(yesterday)
-            system.maxPriority = this.getUpdatedMaxPriority(system.incidents)
-            await liveStatusRepository.createLiveStatus(system)
-        })
+        const systems: IliveStatus[] = await liveStatusRepository.getLiveStatusSystemsByDate(yesterday.toISOString());
+        systems.forEach(async system => {
+            await liveStatusRepository.createLiveStatus(
+                {
+                    id: uuidv4(),
+                    systemName: system.systemName,
+                    incidents: system.incidents,
+                    date: new Date,
+                    maxPriority: this.getUpdatedMaxPriority(system.incidents),
+                    incidentCounter: system.incidentCounter,
+                });
+        });
     }
 
     async liveStatusByIncident(incident: IIncident): Promise<(IliveStatus | any)[]> {

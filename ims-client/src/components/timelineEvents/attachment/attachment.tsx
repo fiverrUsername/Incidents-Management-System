@@ -4,16 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
 import { Dialog, DialogContent, Grid, IconButton, Tooltip } from '@mui/material';
+import React, { useState } from 'react';
 import { Document, Page } from 'react-pdf';
+
+import attachmentServices from '../../../services/backendServices/attachmentServices';
+import Loading from '../../base/loading/loading';
 import { SingleAttachment, StyledFilePreview, StyledImage } from './attachment.style';
 interface KeyUrlPair {
   key: string;
   url: string;
 }
-import React, { useEffect, useState } from 'react';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import Loading from '../../base/loading/loading';
-import attachmentServices from '../../../services/backendServices/attachmentServices';
 
 
 const getFileName = (fileName: string) => {
@@ -149,6 +149,7 @@ export default function Attachment({
     return (fileTypeMappings[fileType] || fileTypeMappings.default)();
   };
 
+  
   return (
     <Tooltip title={
       <Grid container spacing={2} alignItems="center">

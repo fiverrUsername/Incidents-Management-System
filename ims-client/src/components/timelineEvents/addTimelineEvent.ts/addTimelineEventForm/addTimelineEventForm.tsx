@@ -3,19 +3,20 @@ import { AlertColor, Button, Dialog, FormControl, Grid } from "@mui/material";
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Priority, Status } from '../../../../interfaces/enums';
+
 import { ITag } from '../../../../interfaces/ITag';
 import { ITimeLineEvent } from '../../../../interfaces/ITimeLineEvent';
-import TextFieldInput from '../../../../trash/TextFields';
-import UploadFiles from '../../../base/uploadFiles/UploadFiles';
-import ToggleButtons from '../../../base/priorityButtons/priorityButtons';
-import DatePicker from '../../../base/datePicker/datePicker';
-import theme from '../../../../theme';
-import CustomAutocomplete from '../../../base/autoCompleteTag/autoComplete';
-import BannerNotification from '../../../base/bannerNotification/BannerNotification';
-import submitTimeLine from '../../../../services/functions/timeline/submitTimeLine';
+import { Priority, Status } from '../../../../interfaces/enums';
 import attachmentServices from '../../../../services/backendServices/attachmentServices';
 import backendServices from '../../../../services/backendServices/backendServices';
+import submitTimeLine from '../../../../services/functions/timeline/submitTimeLine';
+import theme from '../../../../theme';
+import TextFieldInput from '../../../../trash/TextFields';
+import CustomAutocomplete from '../../../base/autoCompleteTag/autoComplete';
+import BannerNotification from '../../../base/bannerNotification/BannerNotification';
+import DatePicker from '../../../base/datePicker/datePicker';
+import ToggleButtons from '../../../base/priorityButtons/priorityButtons';
+import UploadFiles from '../../../base/uploadFiles/UploadFiles';
 
 
 // import DropDown from '../base/dropDown/DropDown';
