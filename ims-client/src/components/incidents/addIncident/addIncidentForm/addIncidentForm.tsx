@@ -1,5 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Button, Dialog, FormControl, Grid } from "@mui/material";
+import { Button, Dialog, FormControl, Grid, SelectChangeEvent } from "@mui/material";
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -14,6 +14,8 @@ import ToggleButtons from '../../../base/priorityButtons/priorityButtons';
 import TextFieldInput from '../../../../trash/TextFields';
 import submitIncident from '../../../../services/functions/incident/submitIncident';
 import backendServices from '../../../../services/backendServices/backendServices';
+import DropDown from '../../../base/dropDown/DropDown';
+import {TypesIncident} from '../../../base/dropDown/Types';
 
 export interface FormData {
   name: string;
@@ -42,6 +44,8 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
+
+
 
   const getOptionLabel = (option: ITag) => option.name;
 
@@ -149,6 +153,15 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
     FetchData();
   }, []);
 
+
+  const handleDateChange = (Event: any) => {
+    setDate(Event);
+   console.log('New Date:', Event);
+   };
+   const handleTypeChange = (Event: SelectChangeEvent) => {
+   setType(Event.target.value);
+     console.log('New T:', Event);
+      };
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addIncident" style={popupStyles}>
@@ -192,7 +205,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
-                    <DateTimePickerValue date={date} setDate={setDate} />
+                    <DateTimePickerValue date={date} onDateChange={handleDateChange} /> 
                   </FormControl>
                 </Grid>
                 <Grid item xs={6}>
@@ -215,7 +228,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="type">Type</label>
-                {/* <DropDown type={type} setType={setType} /> */}
+                <DropDown Types={TypesIncident} onChangeType={handleTypeChange} />
                 {isSubmit && !type && <span style={{ color: errorColor }}>Type is required</span>}
               </FormControl>
             </Grid>

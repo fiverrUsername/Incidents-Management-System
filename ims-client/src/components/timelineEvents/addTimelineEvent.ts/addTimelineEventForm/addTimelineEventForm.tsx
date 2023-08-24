@@ -1,5 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { AlertColor, Button, Dialog, FormControl, Grid } from "@mui/material";
+import { AlertColor, Button, Dialog, FormControl, Grid, SelectChangeEvent } from "@mui/material";
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -16,6 +16,10 @@ import BannerNotification from '../../../base/bannerNotification/BannerNotificat
 import submitTimeLine from '../../../../services/functions/timeline/submitTimeLine';
 import attachmentServices from '../../../../services/backendServices/attachmentServices';
 import backendServices from '../../../../services/backendServices/backendServices';
+import DateTimePickerValue from '../../../base/datePicker/datePicker';
+
+import DropDown from '../../../base/dropDown/DropDown';
+import { TypesIncident,StatusIncident } from '../../../base/dropDown/Types';
 
 
 // import DropDown from '../base/dropDown/DropDown';
@@ -137,6 +141,15 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
     }
     getTags();
   }, []);
+  const handleDateChange = (Event: any) => {
+    setDate(Event);
+   console.log('New Date:', Event);
+   };
+   const handleTypeChange = (Event: SelectChangeEvent) => {
+    setType(Event.target.value);
+      console.log('New T:', Event);
+       };
+
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addUpdate" style={popupStyles}>
@@ -173,7 +186,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
-                    <DatePicker date={date} setDate={setDate} />
+                    <DateTimePickerValue date={date} onDateChange={handleDateChange} /> 
                   </FormControl>
                 </Grid>
               </Grid>
@@ -182,7 +195,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="type">Type</label>
-                {/* <DropDown type={type} setType={setType} /> */}
+                <DropDown Types={TypesIncident} onChangeType={handleTypeChange} />
                 {isSubmit && !type && <span style={{ color: errorColor }}>Type is required</span>}
               </FormControl>
             </Grid>
@@ -190,6 +203,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="status">Status</label>
+                <DropDown Types={StatusIncident} onChangeType={handleTypeChange} />
                 {/* <StatusDropDown status={status} setStatus={setStatus}/> */}
                 {isSubmit && !status && <span style={{ color: errorColor }}>Type is required</span>}
               </FormControl>
