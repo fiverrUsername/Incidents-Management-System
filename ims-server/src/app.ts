@@ -1,5 +1,5 @@
-import bodyParser from 'body-parser';
 import cors from 'cors';
+import bodyParser from 'body-parser';
 import express, { NextFunction, Request, Response } from 'express';
 import fs from 'fs';
 import swaggerUI from 'swagger-ui-express';
