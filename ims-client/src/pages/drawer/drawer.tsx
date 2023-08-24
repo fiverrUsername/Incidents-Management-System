@@ -115,7 +115,8 @@ export default function LeftDrawer({ icons }: Props) {
         <Divider />
         <List>
           {icons.map((icon, index) => (
-            <ListItem onClick={() => handleClick(icon.navigation)} key={icon.text} disablePadding sx={{ display: 'block' }}>
+            <ListItem onClick={() => {handleClick(icon.navigation)
+            if(open) setOpen(false)}} key={icon.text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
