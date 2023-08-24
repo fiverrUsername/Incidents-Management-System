@@ -1,4 +1,5 @@
 import { validate } from "class-validator";
+
 import { ITimelineEventDto } from "../dto/timelineEventDto";
 import { Priority } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
@@ -69,7 +70,6 @@ class TimelineEventService {
         const newTags = newTimelineEvent.tags.filter(tag => {
           return !tags.some(existingTag => existingTag.name === tag.name);
         });
-
         newTags.forEach(tag => {
           newIncident.currentTags = [tag]
           liveStatusService.liveStatusByIncident(newIncident)
