@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { IcolorScale, liveStatusEntry } from '../../../interfaces/ILiveStatus';
+import "./heatmapChar.css";
 
 interface DataPoint {
   x: string; // Assuming this is a string
@@ -20,10 +21,10 @@ interface HeatmapCharProps {
 
 //{ systemsStatusCollection, colors = colorScaleDefault }
 const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
-
+  
   const options: ApexOptions = {
     chart: {
-      width: 600,
+      width: 1000,
       height: 300,
       type: 'heatmap',
     },
@@ -100,14 +101,14 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         dataPointIndex: number
       }) {
         const dataPoint = props.systemsStatusCollection[seriesIndex].systemData[dataPointIndex];
+        const date = dayjs(dataPoint.date).format("DD/MM/YYYY")
         if (dataPoint.date !== undefined) {
           return (
             '<div class="arrow_box">' +
-            '<span>' + + '</span>' +
+            '<div class="title_tooltip"  >Date:'+ date  + '</div>' +
+            '<span> ' + dataPoint.systemName + '</span>' +
             '<br />' +
-            '<span>Date: ' + dataPoint.date + '</span>' +
-            '<br />' +
-            '<span>Incident: ' + dataPoint.incidentCounter + '</span>' +
+            '<span>Incidents: ' + dataPoint.incidentCounter + '</span>' +
             '</div>'
           );
         }
