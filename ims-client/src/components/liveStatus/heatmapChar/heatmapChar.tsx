@@ -1,8 +1,8 @@
 import { ApexOptions } from 'apexcharts';
+import dayjs from 'dayjs';
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { IcolorScale, liveStatusEntry } from '../../../interfaces/ILiveStatus';
-import dayjs from 'dayjs';
 import "./heatmapChar.css";
 
 interface DataPoint {
@@ -15,8 +15,8 @@ interface DataPoint {
 interface HeatmapCharProps {
   systemsStatusCollection: liveStatusEntry[];
   colors?: IcolorScale[]
-  dates:string[] | undefined
-  
+  dates: string[] | undefined
+
 }
 
 //{ systemsStatusCollection, colors = colorScaleDefault }
@@ -80,22 +80,22 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
       }
     },
     tooltip: {
-      // x: {
-      //   show: true,
-      //   format: 'dd MMM',
-      //   formatter: undefined,
-      // },
-      // y: {
-      //   formatter: () => '', // Set the formatter to an empty function to hide the y value
-      //   title: {
-      //     formatter: () => '',
-      //   },
-      // },
-      // z: {
-      //   formatter: undefined,
-      //   title: 'date: ',
-      // },
-      custom: function({seriesIndex, dataPointIndex }: {
+      x: {
+        show: true,
+        format: 'dd MMM',
+        formatter: undefined,
+      },
+      y: {
+        formatter: () => '', // Set the formatter to an empty function to hide the y value
+        title: {
+          formatter: () => '',
+        },
+      },
+      z: {
+        formatter: undefined,
+        title: 'date: ',
+      },
+      custom: function ({ seriesIndex, dataPointIndex }: {
         series: Array<{ data: Array<DataPoint> }>,
         seriesIndex: number,
         dataPointIndex: number
@@ -118,7 +118,7 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
   }
 
   const series: ApexAxisChartSeries = props.systemsStatusCollection.map(liveStatus => {
-   return {
+    return {
       name: liveStatus.systemName,
       data: liveStatus.systemData.map(systemData => {
         const priorityInfo: IcolorScale | undefined = props.colors?.find(scale => scale.name === systemData.maxPriority);
@@ -126,14 +126,14 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         const to: number | undefined = priorityInfo?.to;
         const formattedDate: string = dayjs(systemData.date).format("DD/MM/YYYY")
         //const isExist:boolean|undefined = props.dates?.includes(formattedDate);
-    //  if (isExist)
-     if (from !== undefined && to !== undefined) {
+        //  if (isExist)
+        if (from !== undefined && to !== undefined) {
           const priorityValue: number = from + (to - from) / 2;
           return {
             x: formattedDate,
             y: priorityValue,
             z: formattedDate,
-         
+
           };
         }
         else {
@@ -146,10 +146,10 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
       })
     };
 
-   
- 
-});
- console.log("series",series)
+
+
+  });
+  console.log("series", series)
 
   return (
     <div id="chart">

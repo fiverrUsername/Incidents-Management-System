@@ -1,9 +1,8 @@
 import { Priority } from "../enums/enum";
 
 export interface IliveStatus {
-    id:string,
+    id: string,
     systemName: string;
-    //incidents: [[string[], string[], string[], string[]]]
     incidents: string[][];
     date: Date;
     maxPriority: Priority;

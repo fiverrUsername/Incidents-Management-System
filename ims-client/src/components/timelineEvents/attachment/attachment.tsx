@@ -3,12 +3,13 @@ import { faFile, faFileAlt, faFileExcel, faFilePowerpoint, faFileWord, } from '@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
-import { Dialog, DialogContent, Grid, IconButton} from '@mui/material';
+import { Dialog, DialogContent, Grid, IconButton, Tooltip } from '@mui/material';
 import { Document, Page } from 'react-pdf';
+
+import attachmentServices from '../../../services/backendServices/attachmentServices';
+import Loading from '../../base/loading/loading';
 import { SingleAttachment, StyledFilePreview, StyledImage } from './attachment.style';
 import {KeyUrlPair,FileTypeStyle} from '../../../interfaces/IAttachment';
-import Loading from '../../base/loading/loading';
-import attachmentServices from '../../../services/backendServices/attachmentServices';
 
 
 
@@ -130,6 +131,7 @@ export default function Attachment({fileType,file,onDelete,}: {  fileType: strin
     return (fileTypeMappings[fileType] || fileTypeMappings.default)();
   };
 
+  
   return (
     <SingleAttachment >
       {renderFileContent()}

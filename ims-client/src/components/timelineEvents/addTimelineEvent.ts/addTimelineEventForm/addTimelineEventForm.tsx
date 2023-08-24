@@ -3,23 +3,22 @@ import { AlertColor, Button, Dialog, FormControl, Grid, SelectChangeEvent } from
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Priority, Status } from '../../../../interfaces/enums';
+
 import { ITag } from '../../../../interfaces/ITag';
 import { ITimeLineEvent } from '../../../../interfaces/ITimeLineEvent';
-import TextFieldInput from '../../../../trash/TextFields';
-import UploadFiles from '../../../base/uploadFiles/UploadFiles';
-import ToggleButtons from '../../../base/priorityButtons/priorityButtons';
-import DatePicker from '../../../base/datePicker/datePicker';
-import theme from '../../../../theme';
-import CustomAutocomplete from '../../../base/autoCompleteTag/autoComplete';
-import BannerNotification from '../../../base/bannerNotification/BannerNotification';
-import submitTimeLine from '../../../../services/functions/timeline/submitTimeLine';
+import { Priority, Status } from '../../../../interfaces/enums';
 import attachmentServices from '../../../../services/backendServices/attachmentServices';
 import backendServices from '../../../../services/backendServices/backendServices';
 import DateTimePickerValue from '../../../base/datePicker/datePicker';
-
+import submitTimeLine from '../../../../services/functions/timeline/submitTimeLine';
+import theme from '../../../../theme';
+import TextFieldInput from '../../../../trash/TextFields';
+import CustomAutocomplete from '../../../base/autoCompleteTag/autoComplete';
+import BannerNotification from '../../../base/bannerNotification/BannerNotification';
 import DropDown from '../../../base/dropDown/DropDown';
-import { TypesIncident,StatusIncident } from '../../../base/dropDown/Types';
+import { StatusIncident, TypesIncident } from '../../../base/dropDown/Types';
+import ToggleButtons from '../../../base/priorityButtons/priorityButtons';
+import UploadFiles from '../../../base/uploadFiles/UploadFiles';
 
 
 // import DropDown from '../base/dropDown/DropDown';
@@ -143,12 +142,12 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
   }, []);
   const handleDateChange = (Event: any) => {
     setDate(Event);
-   console.log('New Date:', Event);
-   };
-   const handleTypeChange = (Event: SelectChangeEvent) => {
+    console.log('New Date:', Event);
+  };
+  const handleTypeChange = (Event: SelectChangeEvent) => {
     setType(Event.target.value);
-      console.log('New T:', Event);
-       };
+    console.log('New T:', Event);
+  };
 
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
@@ -186,7 +185,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
-                    <DateTimePickerValue date={date} onDateChange={handleDateChange} /> 
+                    <DateTimePickerValue date={date} onDateChange={handleDateChange} />
                   </FormControl>
                 </Grid>
               </Grid>
