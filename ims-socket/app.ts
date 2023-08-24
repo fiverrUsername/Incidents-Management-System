@@ -1,2 +1,2 @@
-require('./src/socket.js');
+require('./src/socket.ts');
 
