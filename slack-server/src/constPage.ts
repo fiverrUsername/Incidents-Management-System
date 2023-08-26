@@ -16,7 +16,7 @@ export const IMS_SERVER_ROUTING = "http://localhost:7000/";
 export const CHANNEL_REDIRECT = "https://slack.com/app_redirect?channel="
 export const ERROR_EXTRACTING_FILES = 'Error extracting files:';
 export const SLACK_API_TOKEN =
-  "xoxb-5609511342163-5604717800598-1rc0ww0zd7si38bQ8Sodmwdd";
+  "xoxb-5609511342163-5604717800598-2TLS2x1GBMDbEvZvH9NTjPbE";
 export const SLACK_TOKEN =
   "xoxe-1-My0xLTU2MDk1MTEzNDIxNjMtNTU5NTYwNzQ4MjAwNy01NjY5OTk2MzAwNjMwLWFmZTkwMTc2NzBkM2Q2ZmQ2MjdhOGNiNDMwMmIwMzQxMzU3OTA5MjIzYzgxMmRjZmQ4ZWVmZTJlYmI3YWM3YWI"
 export const client = new WebClient(SLACK_API_TOKEN, {
