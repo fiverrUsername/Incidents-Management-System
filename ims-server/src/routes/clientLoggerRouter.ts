@@ -11,7 +11,7 @@ router.post("/",  async (req, res) => {
         await fs.promises.appendFile('ClientLogs.log', logEntry);
         res.status(200).send("Log entry added successfully");
       } catch (error) {
-        logger.error(`Error appending log entry: ${error}`);
+        // logger.error(`Error appending log entry: ${error}`);
         res.status(500).send("Failed to append log entry");
       }
   });
