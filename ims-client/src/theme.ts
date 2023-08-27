@@ -234,7 +234,7 @@ const theme = createTheme({
         },
       ],
     }
-  }
+  },
 })
 <<<<<<< HEAD
 

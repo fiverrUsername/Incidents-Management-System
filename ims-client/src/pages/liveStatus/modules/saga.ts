@@ -1,12 +1,12 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import apiCalls from '../../../service/apiCalls'
 import { actions } from './slice'
-import { liveStatusCollection } from '../../../interface/ILiveStatus'
+import { liveStatusCollection } from '../../../interfaces/ILiveStatus'
+import backendServices from '../../../services/backendServices/backendServices'
 
 
 function* onGetLiveStatus() {
     try {
-        const data: liveStatusCollection = yield call(apiCalls.getLiveStatus)
+        const data: liveStatusCollection = yield call(backendServices.getLiveStatus)
         yield put(actions.onGetLiveStatusSuccess(data))
     } catch (error:any) {
         console.error(error)

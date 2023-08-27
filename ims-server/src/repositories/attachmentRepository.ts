@@ -4,9 +4,9 @@ import dotenv from 'dotenv';
 import logger from "../loggers/log";
 import { constants } from '../loggers/constants';
 import { KeyUrlPair } from '../interfaces/IAttachment';
-const expiration = 3600;
 dotenv.config()
 const s3 = new AWS.S3();
+const expiration = 3600;
 
 
 class AttachmentsRepository {
@@ -68,8 +68,6 @@ class AttachmentsRepository {
   }
 
   async deleteAttachmentById(key: string): Promise<void | any> {
-    const parsedUrl = new URL(key);
-    const keyy = parsedUrl.pathname.substring(1); // Remove the leading slash "/"
     const params: AWS.S3.DeleteObjectRequest = {
       Bucket: AttachmentsRepository.getBucketName(),
       Key: key.replace(/\?/g, '/')

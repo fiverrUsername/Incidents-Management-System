@@ -1,7 +1,7 @@
 {
   "name": "ims-client",
   "version": "0.1.0",
-  "private": true,
+  "homepage": "https://fiverrUsername.github.io/Incidents-Management-System",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -27,7 +27,6 @@
     "react-pdf": "^7.3.3",
     "react-redux": "^8.1.1",
     "react-router-dom": "^6.14.1",
-    "react-scripts": "5.0.1",
     "redux-saga": "^1.2.3",
     "redux-tooltip": "^0.7.3",
     "styled-components": "^6.0.3",
@@ -37,7 +36,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "homepage": "https://fiverrUsername.github.io/Incidents-Management-System",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "test": "cross-env NODE_ENV=test react-scripts test",
     "storybook": "storybook dev -p 6006",
@@ -86,6 +85,7 @@
     "gh-pages": "^6.0.0",
     "prop-types": "^15.8.1",
     "react-refresh": "^0.14.0",
+    "react-scripts": "^5.0.1",
     "storybook": "^7.0.26",
     "ts-jest": "^29.1.1",
     "webpack": "^5.88.1"

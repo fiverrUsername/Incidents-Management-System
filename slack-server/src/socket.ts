@@ -9,14 +9,14 @@ import { sendMassageOnSpecificPriorityChannel } from './actions/via-ims/sendMass
 import { wsPort } from './constPage';
 
 const ws = new WebSocket(wsPort);
-const messageQueue: any[] = []; // Replace 'any' with the type of messages you are sending
+const messageQueue: IMessage[] = []; 
 
 ws.on('open', () => {
   console.log('WebSocket connection is open in ims-slack.');
   // Process the message queue
   while (messageQueue.length > 0) {
     const message = messageQueue.shift();
-    send(message);
+    send(message!);
   }
 });
 

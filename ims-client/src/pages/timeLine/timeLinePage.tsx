@@ -1,16 +1,16 @@
 import { Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { WithIdProps } from "../../HOC";
-import { receivedIncident } from "../../components/AddUpdate/UpdateIncident";
-import Search from "../../components/search/search";
-import DisplaySummary from "../../components/summary/displaySummary";
-import { ISummary } from "../../interface/ISummary";
-import { ITimeLineEvent } from "../../interface/timeLineInterface";
-import apiCalls from "../../service/apiCalls";
-import filterTimeLineBySearch from "../../service/timeLineService";
-import TimeLine from "./timeLine";
+import DisplaySummary from "../../components/timelineEvents/summary/displaySummary";
+import { ISummary } from "../../interfaces/ISummary";
+import { ITimeLineEvent } from "../../interfaces/ITimeLineEvent";
 import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
-import AddUpdateBtn from "../../components/AddUpdate/AddUpdateBtn";
+import Search from "../../components/base/search/search";
+import { receivedIncident } from "../../components/timelineEvents/addTimelineEvent.ts/addTimelineEventForm/addTimelineEventForm";
+import TimeLine from "../../components/timelineEvents/timeline/timeLine";
+import { filterTimeLineBySearch } from "../../services/functions/timeline/filterTimeLineBySearch";
+import backendServices from "../../services/backendServices/backendServices";
+import AddTimelineEvent from "../../components/timelineEvents/addTimelineEvent.ts/addTimelineEvent";
 
 
 const TimeLinePage = ({ id }: WithIdProps) => {
@@ -21,17 +21,17 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   useEffect(() => {
 
     const fetchTimeline = async () => {
-      const getTimeLineEventsById = await apiCalls.timelineEventByIncidentId(id)
+      const getTimeLineEventsById = await backendServices.timelineEventByIncidentId(id)
       setTimelineObjects(getTimeLineEventsById);
     };
     fetchTimeline();
     const fetchSummaryIncident = async () => {
-      const summary = await apiCalls.getSummaryIncident(id);
+      const summary = await backendServices.getSummaryIncident(id);
       setSummaryIncident(summary)
     }
     fetchSummaryIncident();
     const fetchIncident = async () => {
-      const getIncidentById = await apiCalls.getIncidentById(id);
+      const getIncidentById = await backendServices.getIncidentById(id);
       setIncident(getIncidentById);
     };
     fetchIncident();
@@ -54,7 +54,7 @@ const TimeLinePage = ({ id }: WithIdProps) => {
       <StyledPaper>
         <Grid container direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="nowrap">
           <Typography variant='bold'>Consectetur massa</Typography>
-          {incident && <AddUpdateBtn addNewTimelineFunction={addNewTimeline} incident={{ ...incident }} />}
+          {incident && <AddTimelineEvent addNewTimelineFunction={addNewTimeline} incident={{ ...incident }} />}
         </Grid>
         {timelineObjects && (
           <CustomScrollbar>
