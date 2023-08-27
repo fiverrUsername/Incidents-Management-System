@@ -10,7 +10,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useForm } from 'react-hook-form';
 import { option } from './Types';
 
-
+console.log("1");
 interface DropDownProps {
   defaultValue?:string;
   Types:option[];
@@ -24,11 +24,13 @@ export default function DropDown(props:DropDownProps) {
       };
     return (
         <FormControl>
+            {props.defaultValue}
             <Select
                 placeholder="Select"
                 labelId="demo-simple-select-placeholder-label"
                 id="demo-simple-select-placeholder"
                 value={type}
+                defaultValue={props.defaultValue}
                 onChange={handleChange}
                 displayEmpty
             >

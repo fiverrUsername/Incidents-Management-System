@@ -18,6 +18,8 @@ import BannerNotification from '../../../base/bannerNotification/BannerNotificat
 import DropDown from '../../../base/dropDown/DropDown';
 import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
 import UploadFiles from '../../../base/uploadFiles/UploadFiles';
+import log from '../../../../loggers/logger'
+import { async } from 'q';
 
 
 // import DropDown from '../base/dropDown/DropDown';
@@ -132,7 +134,22 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
   const backdropStyles: React.CSSProperties = {
     background: 'rgba(0, 48, 18, 0.84)',
   };
+
+  const handleDateChange = (Event: any) => {
+    setFormObject({ ...formObject, date: Event });
+    console.log('New Date:', Event);
+  };
+  const handleTypeChange = (Event: SelectChangeEvent) => {
+   setFormObject({ ...formObject ,type:Event.target.value});
+   console.log('New T:', Event,formObject);
+  };
+  const handleStatusChange = (Event: SelectChangeEvent) => {
+     setFormObject({ ...formObject, status: Event.target.value as Status});
+     console.log('New T:', Event, formObject);
+   };
+
   useEffect(() => {
+    log.info("kkk");
     const getTags = async () => {
       const getAllTags = await backendServices.getTags();
       setSelectedTags(getAllTags);
@@ -140,18 +157,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
     getTags();
     console.log(incident);
   }, []);
-  const handleDateChange = (Event: any) => {
-    setFormObject({ ...formObject, date: Event });
-    console.log('New Date:', Event);
-  };
-  const handleTypeChange = (Event: SelectChangeEvent) => {
-   setFormObject({ ...formObject,  type: Event.target.value});
-    console.log('New T:', Event);
-  };
-  const handleStatusChange = (Event: SelectChangeEvent) => {
-    setFormObject({ ...formObject, status: Event.target.value as Status});
-     console.log('New T:', Event);
-   };
+  
  
  
   return (
@@ -199,7 +205,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="type">Type</label>
-                <DropDown defaultValue={formObject.type} Types={TypesIncident} onChangeType={handleTypeChange} />
+                <DropDown defaultValue={incident.type} Types={TypesIncident} onChangeType={handleTypeChange} />
                 {isSubmit && !formObject.type && <span style={{ color: errorColor }}>Type is required</span>}
               </FormControl>
             </Grid>
@@ -207,7 +213,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="status">Status</label>
-                <DropDown defaultValue={formObject.status} Types={StatusIncident} onChangeType={handleStatusChange} />
+                <DropDown defaultValue={incident.status} Types={StatusIncident} onChangeType={handleStatusChange} />
                 {isSubmit && !formObject.status && <span style={{ color: errorColor }}>Status is required</span>}
               </FormControl>
             </Grid>
