@@ -1,6 +1,8 @@
 import WebSocket from 'ws';
 
-const ws = new WebSocket.Server({ perMessageDeflate: false  });
+const protocol = window.location.protocol.includes('https') ? 'wss': 'ws'
+const ws = new WebSocket(`${protocol}://${location.host}`);
+//const ws = new WebSocket.Server({ perMessageDeflate: false  });
 const clients = new Map<string, WebSocket>();
 
 function uuidv4(): string {
