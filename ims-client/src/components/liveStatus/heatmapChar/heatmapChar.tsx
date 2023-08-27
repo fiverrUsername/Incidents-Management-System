@@ -15,7 +15,7 @@ interface DataPoint {
 interface HeatmapCharProps {
   systemsStatusCollection: liveStatusEntry[];
   colors?: IcolorScale[]
-  dates: string[] | undefined
+  dates?: string[] | undefined
 
 }
 
