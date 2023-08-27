@@ -147,10 +147,15 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
     console.log('New Date:', Event);
   };
   const handleTypeChange = (Event: SelectChangeEvent) => {
-    setFormObject({ ...formObject, type: Event.target.value });
+   setFormObject({ ...formObject,  type: Event.target.value});
     console.log('New T:', Event);
   };
-
+  const handleStatusChange = (Event: SelectChangeEvent) => {
+    setFormObject({ ...formObject, status: Event.target.value as Status});
+     console.log('New T:', Event);
+   };
+ 
+ 
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addUpdate" style={popupStyles}>
@@ -204,7 +209,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="status">Status</label>
-                <DropDown defaultValue={formObject.status} Types={StatusIncident} onChangeType={handleTypeChange} />
+                <DropDown defaultValue={formObject.status} Types={StatusIncident} onChangeType={handleStatusChange} />
                 {/* <StatusDropDown status={status} setStatus={setStatus}/> */}
                 {isSubmit && !formObject.status && <span style={{ color: errorColor }}>Status is required</span>}
               </FormControl>

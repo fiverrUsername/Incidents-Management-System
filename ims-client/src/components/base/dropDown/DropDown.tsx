@@ -30,6 +30,7 @@ export default function DropDown(props:DropDownProps) {
                 labelId="demo-simple-select-placeholder-label"
                 id="demo-simple-select-placeholder"
                 value={type}
+                //defaultValue={props.defaultValue}
                 onChange={handleChange}
                 displayEmpty
             >
