@@ -17,6 +17,7 @@ import CustomAutocomplete from '../../../base/autoCompleteTag/autoComplete';
 import BannerNotification from '../../../base/bannerNotification/BannerNotification';
 import DropDown from '../../../base/dropDown/DropDown';
 import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
+import UploadFiles from '../../../base/uploadFiles/UploadFiles';
 
 
 // import DropDown from '../base/dropDown/DropDown';
