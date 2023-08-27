@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import { LogLevel, WebClient } from "@slack/web-api";
 export const port = 4700;
-export const wsPort = 'ws://localhost:7071';
+export const wsPort = 'wss://ims-socket.onrender.com:7071';
 export const WEBHOOK_EVENT_RECEIVED_SUCCESSFULLY = 'Webhook event received successfully.'
 export const TIMELINE_EVENT_ADDED_SUCCESSFULLY = 'Timeline event added successfully';
 export const ERROR_CREATING_CHANNEL = 'Error creating channel:';
