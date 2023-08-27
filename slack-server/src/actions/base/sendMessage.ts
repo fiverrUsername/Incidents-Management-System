@@ -8,7 +8,7 @@ import fs from 'fs';
 export async function sendMessage(messageData: IMessageData) {
   try {
     const message = (messageData.userName ? `name: <@${messageData.userName}>\n` : '') + (messageData.text ? messageData.text : '');
-    const postMessageResponse = await client.chat.postMessage({
+    await client.chat.postMessage({
       channel: messageData.channelId,
       text: message,
       as_user: true,
