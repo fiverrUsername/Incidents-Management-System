@@ -12,5 +12,5 @@ export async function sendMessageOnAddTimelineEvent(timeline: ITimelineEvent) {
     };
     const answer = await axios.post(`${IMS_SERVER_ROUTING}timelineEvent/compareIncidentChanges`, timeline, { headers });
     console.log(answer.data.files)
-    sendMessage({ channelId: timeline.channelId, userName: "U05HQUCJMUN>", files: answer.data.files, text: answer.data.description.join('') })
+    sendMessage({ channelId: timeline.channelId, userName: "U05HQUCJMUN", files: answer.data.files, text: answer.data.description.join('') })
 }
