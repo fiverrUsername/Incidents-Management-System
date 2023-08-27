@@ -9,6 +9,7 @@ import theme from "./theme";
 import Router from "./routes";
 import { Provider } from "react-redux";
 import ConfigureStoreFunction from "./redux/configureStore";
+import { HashRouter } from "react-router-dom";
 
 function App() {
 
@@ -25,12 +26,11 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-      
         <CssBaseline>
           <Box sx={{ display: "flex" }}>
             <LeftDrawer icons={drawerIcons} />
             <Box component="main" sx={{ flexGrow: 1, p: 3, height: 'calc(100vh)', overflow: 'auto' }}>
-              <Router />
+               <Router />
             </Box>
           </Box>
         </CssBaseline>
