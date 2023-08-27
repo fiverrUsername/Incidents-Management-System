@@ -1,15 +1,8 @@
 import WebSocket from 'ws';
-import https from 'https'
-// const https = require('https');
-import fs from 'fs';
-// const fs = require('fs');
-const serverOptions = {
-  key: fs.readFileSync('path/to/your/private/key.pem'),
-  cert: fs.readFileSync('path/to/your/certificate.pem')
-};
-const ws = new WebSocket.Server({ server: https.createServer(serverOptions), port: 7071 });
+import http from 'http';
+const server = http.createServer();
+const wss = new WebSocket.Server({ server });
 const clients = new Map<string, WebSocket>();
-
 function uuidv4(): string {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = Math.random() * 16 | 0;
@@ -17,8 +10,7 @@ function uuidv4(): string {
     return v.toString(16);
   });
 }
-
-ws.on('connection', (ws: WebSocket) => {
+wss.on('connection', (ws: WebSocket) => {
   const id = uuidv4();
   clients.set(id, ws);
   ws.on('message', (messageAsString: string) => {
@@ -31,5 +23,9 @@ ws.on('connection', (ws: WebSocket) => {
     clients.delete(id);
   });
 });
+const PORT = 7071;
+server.listen(PORT, () => {
+  console.log(`WebSocket server is up on port ${PORT}`);
+});
 
-console.log('WebSocket server is up.');
+
