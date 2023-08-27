@@ -17,39 +17,36 @@ const selectedButtonStyles: React.CSSProperties = {
   background: 'rgba(47, 133, 79, 0.10)',
 };
 
-interface Props {
+interface ToggleButtonProps{
   priority: Priority;
-  setPriority: React.Dispatch<React.SetStateAction<Priority>>;
+  onChangePriority: (event:any) => void;
 }
 
-export default function ToggleButtons({ priority, setPriority }: Props) {
-  const handlePriority = (
-    event: React.MouseEvent<HTMLElement>,
-    newPriority: Priority | null,
-  ) => {
-    if (newPriority !== null) {
-      setPriority(newPriority);
+export default function ToggleButtons(props:ToggleButtonProps) {
+  const handlePriority = (event:any) => {
+      props.onChangePriority(event)
+   
     }
-  };
+
 
   return (
     <ToggleButtonGroup
-      value={priority}
+      value={props.priority}
       exclusive
       onChange={handlePriority}
       aria-label="text priority"
       style={{ display: 'flex', gap: '10px' }}
     >
-      <ToggleButton value={Priority.P0} style={priority === Priority.P0 ? selectedButtonStyles : buttonStyles}>
+      <ToggleButton value={Priority.P0} style={props.priority === Priority.P0 ? selectedButtonStyles : buttonStyles}>
         p0
       </ToggleButton>
-      <ToggleButton value={Priority.P1} style={priority === Priority.P1 ? selectedButtonStyles : buttonStyles}>
+      <ToggleButton value={Priority.P1} style={props.priority === Priority.P1 ? selectedButtonStyles : buttonStyles}>
         p1
       </ToggleButton>
-      <ToggleButton value={Priority.P2} style={priority === Priority.P2 ? selectedButtonStyles : buttonStyles}>
+      <ToggleButton value={Priority.P2} style={props.priority === Priority.P2 ? selectedButtonStyles : buttonStyles}>
         p2
       </ToggleButton>
-      <ToggleButton value={Priority.P3} style={priority === Priority.P3 ? selectedButtonStyles : buttonStyles}>
+      <ToggleButton value={Priority.P3} style={props.priority === Priority.P3 ? selectedButtonStyles : buttonStyles}>
         p3
       </ToggleButton>
     </ToggleButtonGroup>

@@ -149,7 +149,14 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
     setType(Event.target.value);
       console.log('New T:', Event);
        };
-
+       const handlePriorityChange=(Event:SelectChangeEvent)=>{
+        if (Event.target.value!== null) 
+        setPriority(Event.target.value as Priority)
+    }
+    const handleStatusChange = (Event: SelectChangeEvent) => {
+      setStatus(Event.target.value as Status);
+       
+         };
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addUpdate" style={popupStyles}>
@@ -177,7 +184,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
-                  <ToggleButtons setPriority={setPriority} priority={priority} />
+                  <ToggleButtons onChangePriority={handlePriorityChange} priority={priority} />
                 </div>
               </FormControl>
             </Grid>
@@ -203,8 +210,8 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="status">Status</label>
-                <DropDown Types={StatusIncident} onChangeType={handleTypeChange} />
-                {/* <StatusDropDown status={status} setStatus={setStatus}/> */}
+                <DropDown   Types={StatusIncident} onChangeType={handleStatusChange}   />
+
                 {isSubmit && !status && <span style={{ color: errorColor }}>Type is required</span>}
               </FormControl>
             </Grid>
