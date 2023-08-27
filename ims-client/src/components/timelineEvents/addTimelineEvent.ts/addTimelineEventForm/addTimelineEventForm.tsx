@@ -18,6 +18,7 @@ import BannerNotification from '../../../base/bannerNotification/BannerNotificat
 import DropDown from '../../../base/dropDown/DropDown';
 import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
 import UploadFiles from '../../../base/uploadFiles/UploadFiles';
+import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 
 
 // import DropDown from '../base/dropDown/DropDown';
@@ -152,7 +153,10 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
     setFormObject({ ...formObject, status: Event.target.value as Status});
      console.log('New T:', Event);
    };
- 
+   const handlePriorityChange = (Event: SelectChangeEvent) => {
+    setFormObject({ ...formObject, priority: Event.target.value as Priority});
+     console.log('New T:', Event);
+   };
  
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
@@ -182,6 +186,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
                   {/* <priorityButtons setPriority={setPriority} priority={priority} /> */}
+                  <PriorityButtons onChangePriority={handlePriorityChange} priority={formObject.priority} />
                 </div>
               </FormControl>
             </Grid>
