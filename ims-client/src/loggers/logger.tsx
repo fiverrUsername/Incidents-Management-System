@@ -1,7 +1,6 @@
 import log from 'loglevel';
 import axios from 'axios';
-import { Level } from './interface/enums';
-import { any } from 'prop-types';
+import { Level } from '../interfaces/enums';
 
 const baseUrl = process.env.REACT_APP_API_KEY
 
