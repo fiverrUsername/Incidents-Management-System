@@ -16,6 +16,8 @@ import submitIncident from '../../../../services/functions/incident/submitIncide
 import backendServices from '../../../../services/backendServices/backendServices';
 import DropDown from '../../../base/dropDown/DropDown';
 import {TypesIncident} from '../../../base/dropDown/Types';
+import PriorityButton from '../../../base/priorityButtons/priorityButtons';
+import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 
 export interface FormData {
   name: string;
@@ -162,6 +164,12 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
    setType(Event.target.value);
      console.log('New T:', Event);
       };
+      
+      const handlePriorityChange = (Event: SelectChangeEvent) => {
+        setPriority(Event.target.value as Priority);
+          console.log('New T:', Event);
+           };
+           
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addIncident" style={popupStyles}>
@@ -196,7 +204,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
-                  <ToggleButtons setPriority={setPriority} priority={priority} />
+                <PriorityButtons onChangePriority={handlePriorityChange} priority={priority} />
                 </div>
               </FormControl>
             </Grid>
