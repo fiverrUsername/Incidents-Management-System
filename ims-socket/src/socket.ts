@@ -1,8 +1,13 @@
 import WebSocket from 'ws';
-
-const protocol = window.location.protocol.includes('https') ? 'wss': 'ws'
-const ws = new WebSocket(`${protocol}://${location.host}`);
-//const ws = new WebSocket.Server({ perMessageDeflate: false  });
+import https from 'https'
+// const https = require('https');
+import fs from 'fs';
+// const fs = require('fs');
+const serverOptions = {
+  key: fs.readFileSync('path/to/your/private/key.pem'),
+  cert: fs.readFileSync('path/to/your/certificate.pem')
+};
+const ws = new WebSocket.Server({ server: https.createServer(serverOptions), port: 7071 });
 const clients = new Map<string, WebSocket>();
 
 function uuidv4(): string {
