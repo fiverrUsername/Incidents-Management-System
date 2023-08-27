@@ -25,6 +25,7 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
+      
         <CssBaseline>
           <Box sx={{ display: "flex" }}>
             <LeftDrawer icons={drawerIcons} />

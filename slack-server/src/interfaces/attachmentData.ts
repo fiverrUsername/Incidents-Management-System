@@ -1,4 +1,4 @@
 export interface IAttachmentData {
-    key: string;
-    data: Buffer;
+    key: String;
+    url: String;
 }

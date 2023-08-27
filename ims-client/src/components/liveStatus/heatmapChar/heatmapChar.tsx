@@ -1,9 +1,9 @@
 import { ApexOptions } from 'apexcharts';
+import dayjs from 'dayjs';
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { IcolorScale, liveStatusEntry ,IliveStatus} from '../../../interfaces/ILiveStatus';
-import { number } from 'prop-types';
-import dayjs from 'dayjs';
+import { IcolorScale, liveStatusEntry } from '../../../interfaces/ILiveStatus';
+import "./heatmapChar.css";
 
 interface DataPoint {
   x: string; // Assuming this is a string
@@ -15,16 +15,16 @@ interface DataPoint {
 interface HeatmapCharProps {
   systemsStatusCollection: liveStatusEntry[];
   colors?: IcolorScale[]
-  dates:string[] | undefined
-  
+  dates: string[] | undefined
+
 }
 
 //{ systemsStatusCollection, colors = colorScaleDefault }
 const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
-
+  
   const options: ApexOptions = {
     chart: {
-      width: 600,
+      width: 1000,
       height: 300,
       type: 'heatmap',
     },
@@ -95,20 +95,20 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         formatter: undefined,
         title: 'date: ',
       },
-      custom: function({seriesIndex, dataPointIndex }: {
+      custom: function ({ seriesIndex, dataPointIndex }: {
         series: Array<{ data: Array<DataPoint> }>,
         seriesIndex: number,
         dataPointIndex: number
       }) {
         const dataPoint = props.systemsStatusCollection[seriesIndex].systemData[dataPointIndex];
+        const date = dayjs(dataPoint.date).format("DD/MM/YYYY")
         if (dataPoint.date !== undefined) {
           return (
             '<div class="arrow_box">' +
-            '<span>'+  + '</span>' +
+            '<div class="title_tooltip"  >Date:'+ date  + '</div>' +
+            '<span> ' + dataPoint.systemName + '</span>' +
             '<br />' +
-            '<span>Date: ' + dataPoint.date + '</span>' +
-            '<br />' +
-            '<span>Incident: ' + dataPoint.incidentCounter + '</span>' +
+            '<span>Incidents: ' + dataPoint.incidentCounter + '</span>' +
             '</div>'
           );
         }
@@ -118,7 +118,7 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
   }
 
   const series: ApexAxisChartSeries = props.systemsStatusCollection.map(liveStatus => {
-   return {
+    return {
       name: liveStatus.systemName,
       data: liveStatus.systemData.map(systemData => {
         const priorityInfo: IcolorScale | undefined = props.colors?.find(scale => scale.name === systemData.maxPriority);
@@ -126,14 +126,14 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         const to: number | undefined = priorityInfo?.to;
         const formattedDate: string = dayjs(systemData.date).format("DD/MM/YYYY")
         //const isExist:boolean|undefined = props.dates?.includes(formattedDate);
-    //  if (isExist)
-     if (from !== undefined && to !== undefined) {
+        //  if (isExist)
+        if (from !== undefined && to !== undefined) {
           const priorityValue: number = from + (to - from) / 2;
           return {
             x: formattedDate,
             y: priorityValue,
             z: formattedDate,
-         
+
           };
         }
         else {
@@ -146,10 +146,10 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
       })
     };
 
-   
- 
-});
- console.log("series",series)
+
+
+  });
+  console.log("series", series)
 
   return (
     <div id="chart">
