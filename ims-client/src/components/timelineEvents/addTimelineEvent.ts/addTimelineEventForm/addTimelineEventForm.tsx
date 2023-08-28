@@ -12,7 +12,7 @@ import backendServices from '../../../../services/backendServices/backendService
 import submitTimeLine from '../../../../services/functions/timeline/submitTimeLine';
 import theme from '../../../../theme';
 import TextFieldInput from '../../../../trash/TextFields';
-import CustomAutocomplete from '../../../base/autoCompleteTag/autoComplete';
+import CustomAutocomplete, { CustomSyntheticEvent } from '../../../base/autoCompleteTag/autoComplete';
 import BannerNotification from '../../../base/bannerNotification/BannerNotification';
 import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import DropDown from '../../../base/dropDown/DropDown';
@@ -60,14 +60,14 @@ interface Props {
 export default function addTimelineForm({ open, incident, onClose, addNewTimelineFunction }: Props) {
 
   const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();
-
+  console.log("incident.currentTags",incident.currentTags)
   const [formObject, setFormObject] = React.useState<dataFromForm>({
     text: "",
     priority: incident.currentPriority,
     date: dayjs(),
     type: incident.type,
     status: incident.status,
-    tags: [],
+    tags: incident.currentTags,
     filesString: [],
   });
 
@@ -76,8 +76,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
   const [files, setFiles] = useState<File[]>([]);
   const [severityValue, setSeverityValue] = useState<AlertColor>('error');
   const [messageValue, setMessageValue] = useState<string>("");
-  const [selectedTags, setSelectedTags] = useState<ITag[]>(incident.currentTags);
-
+  const [tags, setTags] = useState<ITag[]>([]);
   const getOptionLabel = (option: ITag) => option.name;
 
   async function onSubmit(data: dataFromForm) {
@@ -86,7 +85,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
     data.priority = formObject.priority;
     data.type = formObject.type;
     data.status = formObject.status;
-    data.tags = selectedTags;
+    data.tags = formObject.tags;
     const formData = new FormData();
     files.map((file) => {
       const newName = `incidence?${incident.id}?${Date.now()}${file.name}`
@@ -136,7 +135,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
   useEffect(() => {
     const getTags = async () => {
       const getAllTags = await backendServices.getTags();
-      setSelectedTags(getAllTags);
+      setTags(getAllTags);
     }
     getTags();
   }, []);
@@ -152,7 +151,9 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
   const handlePriorityChange = (Event: SelectChangeEvent) => {
     setFormObject({ ...formObject, priority: Event.target.value as Priority });
   };
-
+  const handleTagChange = (Event: CustomSyntheticEvent) => {
+    setFormObject({ ...formObject, tags: Event.selectedTags });
+  };
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addUpdate" style={popupStyles}>
@@ -215,7 +216,8 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Tags</label>
                 <div id="tags">
-                  <CustomAutocomplete options={formObject.tags} selectedOptions={selectedTags} setSelectedOptions={setSelectedTags} getOptionLabel={getOptionLabel} placehOlderText={"Write to add"} />
+                  <CustomAutocomplete options={tags} selectedOptions={formObject.tags} getOptionLabel={getOptionLabel} placeholderText={"Write to add"} onChangeOptions={handleTagChange } />
+                  {/* {isSubmit && formObject.tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>} */}
                 </div>
               </FormControl>
             </Grid>
