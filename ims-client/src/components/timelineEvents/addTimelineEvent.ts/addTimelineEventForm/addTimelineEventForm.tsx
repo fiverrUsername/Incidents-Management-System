@@ -1,4 +1,4 @@
- import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close';
 import { AlertColor, Button, Dialog, FormControl, Grid, SelectChangeEvent } from "@mui/material";
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
@@ -9,16 +9,16 @@ import { ITimeLineEvent } from '../../../../interfaces/ITimeLineEvent';
 import { Priority, Status, Types } from '../../../../interfaces/enums';
 import attachmentServices from '../../../../services/backendServices/attachmentServices';
 import backendServices from '../../../../services/backendServices/backendServices';
-import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import submitTimeLine from '../../../../services/functions/timeline/submitTimeLine';
 import theme from '../../../../theme';
 import TextFieldInput from '../../../../trash/TextFields';
 import CustomAutocomplete from '../../../base/autoCompleteTag/autoComplete';
 import BannerNotification from '../../../base/bannerNotification/BannerNotification';
+import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import DropDown from '../../../base/dropDown/DropDown';
-import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
-import UploadFiles from '../../../base/uploadFiles/UploadFiles';
+import { StatusIncident, TypesIncident } from '../../../base/dropDown/Types';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
+import UploadFiles from '../../../base/uploadFiles/UploadFiles';
 
 
 // import DropDown from '../base/dropDown/DropDown';
@@ -139,7 +139,6 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
       setSelectedTags(getAllTags);
     }
     getTags();
-    console.log(incident);
   }, []);
 
 
