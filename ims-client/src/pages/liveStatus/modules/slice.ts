@@ -1,16 +1,16 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit"
-import { liveStatusCollection } from "../../../interface/ILiveStatus"
+import { liveStatusCollection } from "../../../interfaces/ILiveStatus"
 
-export const SYSTEM_STATUS_STATE_KEY = 'SYSTEM_STATUS'
+export const LIVE_STATUS_STATE_KEY = 'LIVE_STATUS'
 
 
 const initialState: liveStatusCollection = { systemsStatus: [] }
 
 const slice = createSlice({
-    name: SYSTEM_STATUS_STATE_KEY,
+    name: LIVE_STATUS_STATE_KEY,
     initialState,
     reducers: {
-        onGetLiveStatusRequest: (state, action) => {
+        onGetLiveStatusRequest: () => {
             console.log('')
         },
         onGetLiveStatusSuccess: (state, action) => {
@@ -20,7 +20,7 @@ const slice = createSlice({
 })
 
 const getState = (state: any) => {
-    return state[SYSTEM_STATUS_STATE_KEY] || initialState
+    return state[LIVE_STATUS_STATE_KEY] || initialState
 }
 
 export const selectors = {

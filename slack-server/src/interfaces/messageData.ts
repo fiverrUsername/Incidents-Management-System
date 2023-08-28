@@ -3,6 +3,6 @@ import { IAttachmentData } from "./attachmentData";
 export interface IMessageData {
     channelId: string;
     userName?: string;
-    files?: string[];
+    files?: IAttachmentData[];
     text?: string;
   }

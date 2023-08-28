@@ -4,11 +4,12 @@ import { Box, CssBaseline } from "@mui/material";
 import { AiOutlineAreaChart, AiOutlineSetting } from "react-icons/ai";
 import { BiHome, BiHomeHeart, BiMessageAdd } from "react-icons/bi";
 import "./App.css";
-import LeftDrawer, { IIcon } from "./components/drawer/Drawer";
+import LeftDrawer, { IIcon } from "./pages/drawer/drawer";
 import theme from "./theme";
 import Router from "./routes";
 import { Provider } from "react-redux";
 import ConfigureStoreFunction from "./redux/configureStore";
+import { HashRouter } from "react-router-dom";
 
 function App() {
 
@@ -29,8 +30,7 @@ function App() {
           <Box sx={{ display: "flex" }}>
             <LeftDrawer icons={drawerIcons} />
             <Box component="main" sx={{ flexGrow: 1, p: 3, height: 'calc(100vh)', overflow: 'auto' }}>
-              {/* <Here put all the components /> */}
-              <Router />
+               <Router />
             </Box>
           </Box>
         </CssBaseline>

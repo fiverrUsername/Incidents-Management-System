@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid';
 import { Priority, Status } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
@@ -8,6 +8,9 @@ import logger from "../loggers/log";
 import liveStatusRepository from "../repositories/liveStatusRepository";
 import tagService from "./tagService";
 class liveStatusService {
+    constructor() {
+        this.autoUpdateLiveStatus = this.autoUpdateLiveStatus.bind(this);
+    }
     priorityIndexMap: Record<Priority, number> = {
         [Priority.P0]: 0,
         [Priority.P1]: 1,
@@ -15,7 +18,7 @@ class liveStatusService {
         [Priority.P3]: 3,
     };
 
-    async getLiveStatus(date?:Date): Promise<liveStatusEntry[] | any> {
+    async getLiveStatus(date?: Date): Promise<liveStatusEntry[] | any> {
         try {
             //date not correct/not found
             //systemData is empty
@@ -73,7 +76,7 @@ class liveStatusService {
                 data.incidents = updatedIncidents;
                 return await liveStatusRepository.updateLiveStatus(data, existingLiveStatus.id);
             } else {
-                data.id=uuidv4()
+                data.id = uuidv4()
                 data.incidentCounter = 1;
                 const incidentIndex = this.priorityIndexMap[data.maxPriority];
                 const updatedIncidents = [...data.incidents];
@@ -97,56 +100,66 @@ class liveStatusService {
             const liveStatus = await liveStatusRepository.getTodaysLiveStatusByTag(system);
             if (!liveStatus)
                 return
-                const updatedIncidents = [...liveStatus.incidents];
-                const incidentIndex = this.priorityIndexMap[previousPriority];
+            const updatedIncidents = [...liveStatus.incidents];
+            const incidentIndex = this.priorityIndexMap[previousPriority];
+            updatedIncidents[incidentIndex] = updatedIncidents[incidentIndex].filter(
+                (incidentId) => incidentId !== timeLineEvent.incidentId
+            );
             if (previousPriority != timeLineEvent.priority) {
-                updatedIncidents[incidentIndex] = updatedIncidents[incidentIndex].filter(
-                    (incidentId) => incidentId !== timeLineEvent.incidentId
-                );
                 updatedIncidents[this.priorityIndexMap[timeLineEvent.priority]].push(timeLineEvent.incidentId)
                 if (this.priorityIndexMap[liveStatus.maxPriority] > this.priorityIndexMap[timeLineEvent.priority]) {
                     liveStatus.maxPriority = timeLineEvent.priority;
                 }
             }
+            liveStatus.resolvedIncidents++
             liveStatus.incidents = updatedIncidents
             return await liveStatusRepository.updateLiveStatus(liveStatus, liveStatus.id);
         } catch (e) {
             console.log(e);
         }
     }
-    async getUpdatedMaxPriority(incidentsIds: string[][]): Promise<Priority> {
-        let maxPriority = Priority.P3
+
+    getUpdatedMaxPriority(incidentsIds: string[][]) {
         const priorityValues = Object.values(Priority) as string[];
-        incidentsIds.map((incidentsId, index: number) => {
+        for (const [index, incidentsId] of incidentsIds.entries()) {
             if (incidentsId.length > 0)
-                maxPriority = priorityValues[index] as Priority;
-        })
-        return maxPriority;
+                return priorityValues[priorityValues.length - index - 1] as Priority;
+        }
+        return Priority.P3;
     }
 
     async autoUpdateLiveStatus() {
-        const yesterday = ((new Date()).getDate() - 1).toString()
-        const systems: any = liveStatusRepository.getLiveStatusSystemsByDate(yesterday)//TODO -check types
-        systems.map(async (system: IliveStatus) => {
-            system.date = new Date(yesterday)
-            system.maxPriority = await this.getUpdatedMaxPriority(system.incidents)
-            await liveStatusRepository.createLiveStatus(system)
-        })
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const systems: IliveStatus[] = await liveStatusRepository.getLiveStatusSystemsByDate(yesterday.toISOString());
+        systems.forEach(async system => {
+            if (!(system.incidentCounter > system.resolvedIncidents))
+                return
+            await liveStatusRepository.createLiveStatus(
+                {
+                    id: uuidv4(),
+                    systemName: system.systemName,
+                    incidents: system.incidents,
+                    date: new Date,
+                    maxPriority: this.getUpdatedMaxPriority(system.incidents),
+                    incidentCounter: system.incidentCounter - system.resolvedIncidents,
+                    resolvedIncidents: 0
+                });
+        });
     }
 
     async liveStatusByIncident(incident: IIncident): Promise<(IliveStatus | any)[]> {
         try {
             const promises: Promise<IliveStatus | any>[] = incident.currentTags.map(async (tag) => {
                 const liveStatusData: IliveStatus = {
-                    id: '',
-                    // id: uuidv4(),
+                    id: uuidv4(),
                     systemName: tag.name,
                     incidents: [[], [], [], []],
                     date: new Date,
                     maxPriority: incident.currentPriority,
-                    incidentCounter: 0
+                    incidentCounter: 0,
+                    resolvedIncidents: 0,
                 };
-                console.log("iiiiiiiiii",incident.id)
                 return await this.createOrUpdateLiveStatus(liveStatusData, incident.id ? incident.id : '', tag.name);
             });
             return Promise.all(promises);

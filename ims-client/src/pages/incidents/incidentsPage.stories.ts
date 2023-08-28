@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { within, userEvent } from '@storybook/testing-library';
-import UpTabs from '../../components/tabs/Tabs';
 import incidentsPage from './incidentsPage';
 
 const meta = {
