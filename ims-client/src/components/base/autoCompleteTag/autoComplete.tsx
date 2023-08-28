@@ -32,11 +32,10 @@ const CustomAutocomplete = (props: AutocompleteProps) => {
         setFilteredOptions(newFilteredOptions);
       }
     }
+    else{
+      setFilteredOptions(props.options);
+    }
   }, [props.selectedOptions, props.options]);
-
-  useEffect(() => {
-    setFilteredOptions(props.options);
-  }, []);
 
   const handleChange = (event: SyntheticEvent, newValue: any[]) => {
     const newFilteredOptions = filteredOptions.filter(
@@ -67,7 +66,6 @@ const CustomAutocomplete = (props: AutocompleteProps) => {
           lineHeight: theme.typography.bold.lineHeight,
         },
       }}
-      //filterSelectedOptions
       multiple
       options={filteredOptions}
       value={value}
