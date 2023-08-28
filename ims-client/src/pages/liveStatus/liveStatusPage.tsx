@@ -15,7 +15,6 @@ const LiveStatus = () => {
     ]
 
     const [systemsStatusCollection, setSystemsStatusCollection] = useState<liveStatusEntry[]>()
-    const [datesOfIncident, setDatesOfIncident] = useState<string[]>()
     const [date, setDate] = useState<Dayjs>(dayjs())
 
     useEffect(() => {
