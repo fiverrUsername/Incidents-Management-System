@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "@types/aws-sdk": "^2.7.0",
+    "@types/moment-timezone": "^0.5.30",
     "aws-sdk": "^2.1420.0",
     "axios": "^1.4.0",
     "class-transformer": "^0.5.1",
@@ -47,6 +48,7 @@
     "cors": "^2.8.5",
     "dayjs": "^1.11.9",
     "dotenv": "^16.3.1",
+    "moment": "^2.29.4",
     "mongoose": "^7.3.2",
     "node-schedule": "^2.1.1",
     "pino": "^8.14.1",

@@ -42,7 +42,7 @@ export class ITimelineEventDto {
     // @IsExistingUserId({message: `userId must be valid existing user Id`})
     userId: string;
 
-    @IsNotEmpty({ message: `description ${constants.EMPTY_OBJECT}` })
+    // @IsNotEmpty({ message: `description ${constants.EMPTY_OBJECT}` })
     @IsString({ message: `description ${constants.INVALID_MESSAGE}` })
     description: string;
 

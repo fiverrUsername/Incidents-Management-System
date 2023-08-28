@@ -13,7 +13,7 @@ const LiveStatus = () => {
         { from: 25, to: 49, name: 'p2', color: '#f4e247' },  //light orange
         { from: 50, to: 74, name: 'p1', color: '#FF8000' },  //orange
         { from: 75, to: 100, name: 'p0', color: '#FF0000' }, //red
-      ]
+    ]
 
     const [systemsStatusCollection, setSystemsStatusCollection] = useState<liveStatusEntry[]>()
     const [date, setDate] = useState<Dayjs>(dayjs())
