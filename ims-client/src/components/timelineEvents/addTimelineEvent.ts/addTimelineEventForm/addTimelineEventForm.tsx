@@ -18,12 +18,7 @@ import DropDown from '../../../base/dropDown/DropDown';
 import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
 import UploadFiles from '../../../base/uploadFiles/UploadFiles';
 import log from '../../../../loggers/logger'
-import { async } from 'q';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
-
-
-// import DropDown from '../base/dropDown/DropDown';
-// import DropDown from './StatusDropDown';
 
 export interface dataFromForm {
   text: string;
@@ -53,12 +48,14 @@ export interface receivedIncident {
   createdBy: string;
 }
 interface Props {
-  open: boolean;
+  isOpen: boolean;
   incident: receivedIncident;
   onClose: () => void;
   addNewTimelineFunction: (newTimeline: ITimeLineEvent) => void;
 }
-export default function addTimelineForm({ open, incident, onClose, addNewTimelineFunction }: Props) {
+
+
+export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimelineFunction }: Props) {
 
   const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();
 
@@ -72,8 +69,8 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
     filesString: [],
   });
 
-  const [showBanner, setShowBanner] = useState(false);
-  const [isSubmit, setIsSubmit] = useState(false);
+  const [showBanner, setShowBanner] = useState<boolean>(false);
+  const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [files, setFiles] = useState<File[]>([]);
   const [severityValue, setSeverityValue] = useState<AlertColor>('error');
   const [messageValue, setMessageValue] = useState<string>("");
@@ -96,18 +93,16 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
     })
     data.filesString = formObject.filesString;
     await attachmentServices.uploadAttachment(formData);
-    if (formObject.type && formObject.tags && formObject.status) {
-      const flag = await submitTimeLine({ data, incident, addNewTimelineFunction });
-      if (flag) {
-        setSeverityValue('success');
-        setMessageValue('new update Added Successfully');
-      }
-      else {
-        setSeverityValue('error');
-        setMessageValue('failed to add update');
-      }
-      setShowBanner(true);
+    const isSuccess = await submitTimeLine({ data, incident, addNewTimelineFunction });
+    if (isSuccess) {
+      setSeverityValue('success');
+      setMessageValue('new update Added Successfully');
     }
+    else {
+      setSeverityValue('error');
+      setMessageValue('failed to add update');
+    }
+    setShowBanner(true);
   }
 
   const closeIconStyles: React.CSSProperties = {
@@ -135,7 +130,6 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
     background: 'rgba(0, 48, 18, 0.84)',
   };
   useEffect(() => {
-    log.info("kkk");
     const getTags = async () => {
       const getAllTags = await backendServices.getTags();
       setSelectedTags(getAllTags);
@@ -156,7 +150,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
   };
 
   return (
-    <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
+    <Dialog open={isOpen} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addUpdate" style={popupStyles}>
         <CloseIcon style={closeIconStyles} onClick={onClose} />
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
@@ -214,7 +208,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
             </Grid>
             <Grid item xs={12}>
               <FormControl style={{ width: '100%' }}>
-                <label htmlFor="tags">Tags</label>
+                <label htmlFor="tags">Affected services</label>
                 <div id="tags">
                   <CustomAutocomplete options={formObject.tags} selectedOptions={selectedTags} setSelectedOptions={setSelectedTags} getOptionLabel={getOptionLabel} placehOlderText={"Write to add"} />
                 </div>

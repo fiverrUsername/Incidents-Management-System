@@ -5,12 +5,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-
-
 import { useForm } from 'react-hook-form';
 import { option } from './Types';
 
-console.log("1");
 interface DropDownProps {
   defaultValue?:string;
   Types:option[];
@@ -24,7 +21,6 @@ export default function DropDown(props:DropDownProps) {
       };
     return (
         <FormControl>
-            {props.defaultValue}
             <Select
                 placeholder="Select"
                 labelId="demo-simple-select-placeholder-label"
@@ -35,7 +31,6 @@ export default function DropDown(props:DropDownProps) {
                 displayEmpty
             >
                 <MenuItem disabled value="">
-                    {/* <div>Select </div> */}
                 </MenuItem>
                 {props.Types.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
@@ -45,7 +40,6 @@ export default function DropDown(props:DropDownProps) {
             </Select>
 
             <FormHelperText></FormHelperText>
-            {/* {errors.type && <span>{errors.type.message}</span>} */}
         </FormControl>
     );
 }
