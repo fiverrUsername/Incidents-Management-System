@@ -14,8 +14,6 @@ export default function events(data: any) {
       if(!event.bot_profile)
         handleMessageEvent(event);
       break;
-    case 'app_mention':
-      break;
     case 'channel_created':
       if(event.channel.creator!=='U05HSM3PJHL')
         createIncident(event.channel.id);
