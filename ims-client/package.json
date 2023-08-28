@@ -110,6 +110,7 @@
     "eslint-plugin-storybook": "^0.6.12",
     "esm": "^3.2.25",
     "gh-pages": "^6.0.0",
+    "loglevel-plugin-remote": "^0.6.8",
     "prop-types": "^15.8.1",
     "react-refresh": "^0.14.0",
     "react-scripts": "^5.0.1",

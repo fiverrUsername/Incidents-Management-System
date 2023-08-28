@@ -3,7 +3,6 @@ import { AlertColor, Button, Dialog, FormControl, Grid, SelectChangeEvent } from
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-
 import { ITag } from '../../../../interfaces/ITag';
 import { ITimeLineEvent } from '../../../../interfaces/ITimeLineEvent';
 import { Priority, Status } from '../../../../interfaces/enums';
@@ -135,20 +134,6 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
   const backdropStyles: React.CSSProperties = {
     background: 'rgba(0, 48, 18, 0.84)',
   };
-
-  const handleDateChange = (Event: any) => {
-    setFormObject({ ...formObject, date: Event });
-    console.log('New Date:', Event);
-  };
-  const handleTypeChange = (Event: SelectChangeEvent) => {
-   setFormObject({ ...formObject ,type:Event.target.value});
-   console.log('New T:', Event,formObject);
-  };
-  const handleStatusChange = (Event: SelectChangeEvent) => {
-     setFormObject({ ...formObject, status: Event.target.value as Status});
-     console.log('New T:', Event, formObject);
-   };
-
   useEffect(() => {
     log.info("kkk");
     const getTags = async () => {
@@ -202,7 +187,6 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
-                  {/* <priorityButtons setPriority={setPriority} priority={priority} /> */}
                   <PriorityButtons onChangePriority={handlePriorityChange} priority={formObject.priority} />
                 </div>
               </FormControl>
