@@ -1,6 +1,7 @@
 import log from 'loglevel';
 import axios from 'axios';
 import { Level } from '../interfaces/enums';
+// import remote from 'loglevel-plugin-remote'; 
 
 const baseUrl = process.env.REACT_APP_API_KEY
 
@@ -34,6 +35,7 @@ export default class Logger {
     message,
     timestamp: new Date().toISOString(),
   };
+  // remote.apply(`${baseUrl}/log`, logData)
   axios.post(`${baseUrl}/log`, logData)
     .then(response => { 
       console.log(response.data);

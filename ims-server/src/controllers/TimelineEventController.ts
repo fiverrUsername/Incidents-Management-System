@@ -177,8 +177,8 @@ export default class TimelineEventController {
             answer.files = result
         })
         if (allTimelineEvents != null) {
-            let sortedDatesDescending: ITimelineEvent[] = allTimelineEvents.slice().sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
-            const previousTimeLineEvent: ITimelineEvent = sortedDatesDescending[1]
+
+            const previousTimeLineEvent: ITimelineEvent = allTimelineEvents[1]
             if (previousTimeLineEvent?.priority != req.body.priority) {
                 answer.description[0] = "priority changed: " + previousTimeLineEvent.priority + " => " + req.body.priority + '\n'
                 sendToSocket(req.body as ITimelineEvent, ObjectType.TimelineEvent, ActionType.ChangePriority);

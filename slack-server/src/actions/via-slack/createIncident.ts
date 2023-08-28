@@ -6,9 +6,11 @@ import { ActionType, ObjectType } from "../../../../ims-socket/src/interfaces";
 import { CHANNEL_REDIRECT, ERROR_CREATING_INCIDENT, NO_INCIDENT_NAME } from '../../constPage';
 import { sendToSocket } from "../../socket";
 import { getSlackDataByChannelId } from '../base/getSlackDataByChannelId';
+import {JoinBotToChannels} from '../base/joinBotToChannels'
 
 export async function createIncident(channelId: string) {
   try {
+    await JoinBotToChannels(channelId);
     const slackData: ConversationsInfoResponse | null = await getSlackDataByChannelId(channelId);
     if (!slackData) {
       throw new Error('Channel not found in Slack');
