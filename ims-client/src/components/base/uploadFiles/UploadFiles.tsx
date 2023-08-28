@@ -6,25 +6,27 @@ import Box from '@mui/material/Box';
 import BackupIcon from '@mui/icons-material/Backup';
 interface UploadFilesProps {
   files: File[];
-  setFiles: Dispatch<SetStateAction<File[]>>;
+   onChangeFiles: (event:File[]) => void;
 }
-export default function UploadFiles({ files, setFiles }: UploadFilesProps) {
+export default function UploadFiles(props: UploadFilesProps) {
+
   const [showNotification, setShowNotification] = useState(false);
-  const [message,setMessege]=useState("");
-   const maxMB = 2 * 1024 * 1024;
-   const newFiles: File[] = [];
-   function addToFiles(files:File[]){
-    const containsHebrewLetters = (str:string) => {
-      const regex = /[\u0590-\u05FF]/; 
+  const [message, setMessege] = useState("");
+  const maxMB = 2 * 1024 * 1024;
+  const newFiles: File[] = [];
+
+  function addToFiles(files: File[]) {
+    const containsHebrewLetters = (str: string) => {
+      const regex = /[\u0590-\u05FF]/;
       return regex.test(str);
     };
-    for (let i = 0; i <  files.length; i++) {
+    for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      if(containsHebrewLetters(file.name)){
+      if (containsHebrewLetters(file.name)) {
         setMessege("Uploading files is not supported with a file name in Hebrew.")
         setShowNotification(true);
       }
-      else{
+      else {
         if (file && file.size <= maxMB) {
           newFiles.push(file);
         }
@@ -47,12 +49,12 @@ export default function UploadFiles({ files, setFiles }: UploadFilesProps) {
         addToFiles(filesArrayConverted);
       }
     }
-    setFiles([...files, ...newFiles]);
-  };
+    props.onChangeFiles([...props.files, ...newFiles])
+   };
   const handleFileDelete = (index: number) => {
-    const updatedFiles = [...files];
+    const updatedFiles = [...props.files];
     updatedFiles.splice(index, 1);
-    setFiles(updatedFiles);
+    props.onChangeFiles(updatedFiles);
   };
   return (
     <Box className="upload-container" sx={UploadStyles}>
@@ -77,9 +79,9 @@ export default function UploadFiles({ files, setFiles }: UploadFilesProps) {
           hidden
           onChange={handleFileDrop}
         />
-        {files.length > 0 ? (
+        {props.files.length > 0 ? (
           <div className="files-list">
-            {files.map((file, index) => (
+            {props.files.map((file, index) => (
               <div key={index} className="file-item">
                 <div className="file-info">
                   <span>{file.name}</span>

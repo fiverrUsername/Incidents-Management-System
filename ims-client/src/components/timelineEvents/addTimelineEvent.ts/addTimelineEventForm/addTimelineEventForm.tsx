@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import { ITag } from '../../../../interfaces/ITag';
 import { ITimeLineEvent } from '../../../../interfaces/ITimeLineEvent';
-import { Priority, Status } from '../../../../interfaces/enums';
+import { Priority, Status, Types } from '../../../../interfaces/enums';
 import attachmentServices from '../../../../services/backendServices/attachmentServices';
 import backendServices from '../../../../services/backendServices/backendServices';
 import DateTimePickerValue from '../../../base/datePicker/datePicker';
@@ -141,23 +141,49 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
     getTags();
     console.log(incident);
   }, []);
+
+
+  const updateFormObject = async (fieldName: string, value:any) => {
+    await setFormObject((prevFormObject) => ({
+      ...prevFormObject,
+      [fieldName]: value
+    }));
+    console.log(`New ${fieldName}:`, value);
+  };
+  
+
+  // להחזיר ארוע
   const handleDateChange = (Event: any) => {
-    setFormObject({ ...formObject, date: Event });
+    setFormObject({ ...formObject, date: Event});
     console.log('New Date:', Event);
   };
+
   const handleTypeChange = (Event: SelectChangeEvent) => {
-   setFormObject({ ...formObject,  type: Event.target.value});
-    console.log('New T:', Event);
+    updateFormObject( 'type',Event.target.value);
+  //  await setFormObject({ ...formObject,  type: Event.target.value as Types});
+    // console.log('New T:', Event);
   };
+
   const handleStatusChange = (Event: SelectChangeEvent) => {
-    setFormObject({ ...formObject, status: Event.target.value as Status});
+    updateFormObject( 'status',Event.target.value);
+    // setFormObject({ ...formObject, status: Event.target.value as Status});
+    //  console.log('New T:', Event);
+   };
+
+
+//  const handlePriorityChange = handleFieldChange('priority');
+  //  const handlePriorityChange = (Event: SelectChangeEvent) => {
+  //   setFormObject({ ...formObject, priority: Event.target.value as Priority});
+  //    console.log('New T:', Event);
+  //  };
+   const handleFilesChange = (Event: File[]) => {
+    setFiles(Event);
      console.log('New T:', Event);
    };
-   const handlePriorityChange = (Event: SelectChangeEvent) => {
-    setFormObject({ ...formObject, priority: Event.target.value as Priority});
-     console.log('New T:', Event);
+
+  const handlePriorityChange = (Event: SelectChangeEvent) => {
+    updateFormObject( 'priority',Event.target.value);
    };
- 
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addUpdate" style={popupStyles}>
@@ -179,7 +205,8 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
             </Grid>
             <Grid item xs={12}>
               <label htmlFor="files">Files</label>
-              <UploadFiles files={files} setFiles={setFiles} />
+              {/* <UploadFiles files={files} setFiles={setFiles} /> */}
+              <UploadFiles files={files} onChangeFiles={handleFilesChange} />
             </Grid>
             <Grid item xs={12}>
               <FormControl fullWidth >
