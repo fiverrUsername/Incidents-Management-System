@@ -20,7 +20,6 @@ import UploadFiles from '../../../base/uploadFiles/UploadFiles';
 import log from '../../../../loggers/logger'
 import { async } from 'q';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
-import UploadFiles from '../../../base/uploadFiles/UploadFiles';
 
 
 // import DropDown from '../base/dropDown/DropDown';
