@@ -1,10 +1,11 @@
-import { Status, EncidentType, Priority } from '../../../../ims-server/src/enums/enum';
-import { IIncident } from "../../../../ims-server/src/interfaces/IncidentInterface";
-import { sendToSocket } from "../../socket";
-import { ActionType, ObjectType } from "../../../../ims-socket/src/interfaces";
 import { ConversationsInfoResponse } from '@slack/web-api';
-import { getSlackDataByChannelId } from '../base/getSlackDataByChannelId';
+
+import { EncidentType, Priority, Status } from '../../../../ims-server/src/enums/enum';
+import { IIncident } from "../../../../ims-server/src/interfaces/IncidentInterface";
+import { ActionType, ObjectType } from "../../../../ims-socket/src/interfaces";
 import { CHANNEL_REDIRECT, ERROR_CREATING_INCIDENT, NO_INCIDENT_NAME } from '../../constPage';
+import { sendToSocket } from "../../socket";
+import { getSlackDataByChannelId } from '../base/getSlackDataByChannelId';
 
 export async function createIncident(channelId: string) {
   try {
@@ -31,7 +32,6 @@ export async function createIncident(channelId: string) {
       createdBy: '',
     };
     sendToSocket(newIncident, ObjectType.Incident, ActionType.Add);
-    console.log('Incident created successfully');
   } catch (error) {
     console.error(ERROR_CREATING_INCIDENT, error);
   }

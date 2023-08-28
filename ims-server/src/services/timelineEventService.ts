@@ -206,12 +206,13 @@ class TimelineEventService {
     }
   }
 
-  async updateStatusAndPriorityOfIncidentById(timeline: ITimelineEvent): Promise<IIncident | any> {
+  async updateFieldsOfIncidentById(timeline: ITimelineEvent): Promise<IIncident | any> {
     try {
       const incident: IIncident = await incidentRepository.getIncidentById(timeline.incidentId);
       incident.currentPriority = timeline.priority;
       incident.status = timeline.status;
       incident.currentTags = timeline.tags;
+      incident.type=timeline.type;
       return await incidentService.updateIncident(incident.id!, incident);
     } catch (err: any) {
       return new Error(err);

@@ -7,6 +7,7 @@ export interface IliveStatus {
     date: Date;
     maxPriority: Priority;
     incidentCounter: number;
+    resolvedIncidents:number;
 }
 
 export interface liveStatusEntry {

@@ -12,7 +12,7 @@ const slice = createSlice({
     name: INCIDENT_STATE_KEY,
     initialState,
     reducers: {
-        onGetIncidentsRequest: (state, action) => {
+        onGetIncidentsRequest: () => {
             console.log('')
         },
         onGetIncidentsSuccess: (state, action) => {

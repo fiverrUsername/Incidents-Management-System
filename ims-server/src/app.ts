@@ -3,7 +3,7 @@ import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import fs from 'fs';
 import swaggerUI from 'swagger-ui-express';
-
+import clientLogRouter from './routes/clientLoggerRouter'
 import '../src/services/socket';
 import config from './config/config';
 import logger from './loggers/log';
@@ -48,6 +48,8 @@ app.use('/tag', tagRouter)
 app.use('/timelineEvent', timelineEventRouter)
 app.use('/attachment', attachmentRouter)
 app.use('/livestatus', liveStatusRouter)
+app.use('/log',clientLogRouter);
+
 
 // בדיקה אם השרת מורשה לגשת לשרת
 app.use((req: Request, res: Response, next: NextFunction) => {
