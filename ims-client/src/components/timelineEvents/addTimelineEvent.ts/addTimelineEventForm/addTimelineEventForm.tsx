@@ -3,7 +3,6 @@ import { AlertColor, Button, Dialog, FormControl, Grid, SelectChangeEvent } from
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-
 import { ITag } from '../../../../interfaces/ITag';
 import { ITimeLineEvent } from '../../../../interfaces/ITimeLineEvent';
 import { Priority, Status, Types } from '../../../../interfaces/enums';
@@ -16,13 +15,10 @@ import CustomAutocomplete from '../../../base/autoCompleteTag/autoComplete';
 import BannerNotification from '../../../base/bannerNotification/BannerNotification';
 import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import DropDown from '../../../base/dropDown/DropDown';
-import { StatusIncident, TypesIncident } from '../../../base/dropDown/Types';
-import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
+import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
 import UploadFiles from '../../../base/uploadFiles/UploadFiles';
-
-
-// import DropDown from '../base/dropDown/DropDown';
-// import DropDown from './StatusDropDown';
+import log from '../../../../loggers/logger'
+import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 
 export interface dataFromForm {
   text: string;
@@ -52,12 +48,14 @@ export interface receivedIncident {
   createdBy: string;
 }
 interface Props {
-  open: boolean;
+  isOpen: boolean;
   incident: receivedIncident;
   onClose: () => void;
   addNewTimelineFunction: (newTimeline: ITimeLineEvent) => void;
 }
-export default function addTimelineForm({ open, incident, onClose, addNewTimelineFunction }: Props) {
+
+
+export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimelineFunction }: Props) {
 
   const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();
 
@@ -71,8 +69,8 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
     filesString: [],
   });
 
-  const [showBanner, setShowBanner] = useState(false);
-  const [isSubmit, setIsSubmit] = useState(false);
+  const [showBanner, setShowBanner] = useState<boolean>(false);
+  const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [files, setFiles] = useState<File[]>([]);
   const [severityValue, setSeverityValue] = useState<AlertColor>('error');
   const [messageValue, setMessageValue] = useState<string>("");
@@ -95,18 +93,16 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
     })
     data.filesString = formObject.filesString;
     await attachmentServices.uploadAttachment(formData);
-    if (formObject.type && formObject.tags && formObject.status) {
-      const flag = await submitTimeLine({ data, incident, addNewTimelineFunction });
-      if (flag) {
-        setSeverityValue('success');
-        setMessageValue('new update Added Successfully');
-      }
-      else {
-        setSeverityValue('error');
-        setMessageValue('failed to add update');
-      }
-      setShowBanner(true);
+    const isSuccess = await submitTimeLine({ data, incident, addNewTimelineFunction });
+    if (isSuccess) {
+      setSeverityValue('success');
+      setMessageValue('new update Added Successfully');
     }
+    else {
+      setSeverityValue('error');
+      setMessageValue('failed to add update');
+    }
+    setShowBanner(true);
   }
 
   const closeIconStyles: React.CSSProperties = {
@@ -184,7 +180,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
     updateFormObject( 'priority',Event.target.value);
    };
   return (
-    <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
+    <Dialog open={isOpen} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addUpdate" style={popupStyles}>
         <CloseIcon style={closeIconStyles} onClick={onClose} />
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
@@ -211,7 +207,6 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
-                  {/* <priorityButtons setPriority={setPriority} priority={priority} /> */}
                   <PriorityButtons onChangePriority={handlePriorityChange} priority={formObject.priority} />
                 </div>
               </FormControl>
@@ -230,7 +225,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="type">Type</label>
-                <DropDown defaultValue={formObject.type} Types={TypesIncident} onChangeType={handleTypeChange} />
+                <DropDown defaultValue={incident.type} Types={TypesIncident} onChangeType={handleTypeChange} />
                 {isSubmit && !formObject.type && <span style={{ color: errorColor }}>Type is required</span>}
               </FormControl>
             </Grid>
@@ -238,13 +233,13 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="status">Status</label>
-                <DropDown defaultValue={formObject.status} Types={StatusIncident} onChangeType={handleStatusChange} />
+                <DropDown defaultValue={incident.status} Types={StatusIncident} onChangeType={handleStatusChange} />
                 {isSubmit && !formObject.status && <span style={{ color: errorColor }}>Status is required</span>}
               </FormControl>
             </Grid>
             <Grid item xs={12}>
               <FormControl style={{ width: '100%' }}>
-                <label htmlFor="tags">Tags</label>
+                <label htmlFor="tags">Affected services</label>
                 <div id="tags">
                   <CustomAutocomplete options={formObject.tags} selectedOptions={selectedTags} setSelectedOptions={setSelectedTags} getOptionLabel={getOptionLabel} placehOlderText={"Write to add"} />
                 </div>
