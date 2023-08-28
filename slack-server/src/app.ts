@@ -13,6 +13,10 @@ app.use(cors({
   methods: 'POST,GET,PUT,OPTIONS,DELETE'
 }));
 
+app.get('/test', (req: Request, res: Response) => {
+  res.status(200).send('OK');
+});
+
 app.post('/webhook', (req: Request, res: Response) => {
   const data: any = req.body;
   if (data.challenge) {
