@@ -3,20 +3,19 @@ import { Button, Dialog, FormControl, Grid, SelectChangeEvent } from "@mui/mater
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+
+import IIncident from '../../../../interfaces/IIncident';
 import { ITag } from '../../../../interfaces/ITag';
 import { Priority } from '../../../../interfaces/enums';
-import IIncident from '../../../../interfaces/IIncident';
+import backendServices from '../../../../services/backendServices/backendServices';
+import submitIncident from '../../../../services/functions/incident/submitIncident';
 import theme from '../../../../theme';
+import TextFieldInput from '../../../../trash/TextFields';
 import CustomAutocomplete from '../../../base/autoCompleteTag/autoComplete';
 import BannerNotification from "../../../base/bannerNotification/BannerNotification";
 import DateTimePickerValue from '../../../base/datePicker/datePicker';
-import ToggleButtons from '../../../base/priorityButtons/priorityButtons';
-import TextFieldInput from '../../../../trash/TextFields';
-import submitIncident from '../../../../services/functions/incident/submitIncident';
-import backendServices from '../../../../services/backendServices/backendServices';
 import DropDown from '../../../base/dropDown/DropDown';
-import {TypesIncident} from '../../../base/dropDown/Types';
-import PriorityButton from '../../../base/priorityButtons/priorityButtons';
+import { TypesIncident } from '../../../base/dropDown/Types';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 
 export interface FormData {
@@ -158,18 +157,15 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
 
   const handleDateChange = (Event: any) => {
     setDate(Event);
-   console.log('New Date:', Event);
-   };
-   const handleTypeChange = (Event: SelectChangeEvent) => {
-   setType(Event.target.value);
-     console.log('New T:', Event);
-      };
-      
-      const handlePriorityChange = (Event: SelectChangeEvent) => {
-        setPriority(Event.target.value as Priority);
-          console.log('New T:', Event);
-           };
-           
+  };
+  const handleTypeChange = (Event: SelectChangeEvent) => {
+    setType(Event.target.value);
+  };
+
+  const handlePriorityChange = (Event: SelectChangeEvent) => {
+    setPriority(Event.target.value as Priority);
+  };
+
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addIncident" style={popupStyles}>
@@ -204,7 +200,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
-                <PriorityButtons onChangePriority={handlePriorityChange} priority={priority} />
+                  <PriorityButtons onChangePriority={handlePriorityChange} priority={priority} />
                 </div>
               </FormControl>
             </Grid>
@@ -213,7 +209,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
-                    <DateTimePickerValue date={date} onDateChange={handleDateChange} /> 
+                    <DateTimePickerValue date={date} onDateChange={handleDateChange} />
                   </FormControl>
                 </Grid>
                 <Grid item xs={6}>

@@ -1,4 +1,4 @@
- import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close';
 import { AlertColor, Button, Dialog, FormControl, Grid, SelectChangeEvent } from "@mui/material";
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
@@ -9,16 +9,16 @@ import { ITimeLineEvent } from '../../../../interfaces/ITimeLineEvent';
 import { Priority, Status } from '../../../../interfaces/enums';
 import attachmentServices from '../../../../services/backendServices/attachmentServices';
 import backendServices from '../../../../services/backendServices/backendServices';
-import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import submitTimeLine from '../../../../services/functions/timeline/submitTimeLine';
 import theme from '../../../../theme';
 import TextFieldInput from '../../../../trash/TextFields';
 import CustomAutocomplete from '../../../base/autoCompleteTag/autoComplete';
 import BannerNotification from '../../../base/bannerNotification/BannerNotification';
+import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import DropDown from '../../../base/dropDown/DropDown';
-import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
-import UploadFiles from '../../../base/uploadFiles/UploadFiles';
+import { StatusIncident, TypesIncident } from '../../../base/dropDown/Types';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
+import UploadFiles from '../../../base/uploadFiles/UploadFiles';
 
 
 // import DropDown from '../base/dropDown/DropDown';
@@ -139,25 +139,20 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
       setSelectedTags(getAllTags);
     }
     getTags();
-    console.log(incident);
   }, []);
   const handleDateChange = (Event: any) => {
     setFormObject({ ...formObject, date: Event });
-    console.log('New Date:', Event);
   };
   const handleTypeChange = (Event: SelectChangeEvent) => {
-   setFormObject({ ...formObject,  type: Event.target.value});
-    console.log('New T:', Event);
+    setFormObject({ ...formObject, type: Event.target.value });
   };
   const handleStatusChange = (Event: SelectChangeEvent) => {
-    setFormObject({ ...formObject, status: Event.target.value as Status});
-     console.log('New T:', Event);
-   };
-   const handlePriorityChange = (Event: SelectChangeEvent) => {
-    setFormObject({ ...formObject, priority: Event.target.value as Priority});
-     console.log('New T:', Event);
-   };
- 
+    setFormObject({ ...formObject, status: Event.target.value as Status });
+  };
+  const handlePriorityChange = (Event: SelectChangeEvent) => {
+    setFormObject({ ...formObject, priority: Event.target.value as Priority });
+  };
+
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addUpdate" style={popupStyles}>

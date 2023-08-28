@@ -28,6 +28,10 @@ export const liveStatusSchema = new Schema<IliveStatus>({
     incidentCounter: {
         type: Number,
         required: true,
+    },
+    resolvedIncidents: {
+        type: Number,
+        required: true,
     }
 });
 export default mongoose.model<IliveStatus>("liveStatus", liveStatusSchema);
