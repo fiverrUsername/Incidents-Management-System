@@ -4,7 +4,7 @@ dotenv.config();
 import { LogLevel, WebClient } from "@slack/web-api";
 export const port = 4700;
 // export const wsPort = 'ws://127.0.0.1:8080';
-export const wsPort = 'ws://ims-socket.onrender.com';
+export const wsPort = 'wss://ims-socket.onrender.com';
 
 
 export const WEBHOOK_EVENT_RECEIVED_SUCCESSFULLY = 'Webhook event received successfully.'
