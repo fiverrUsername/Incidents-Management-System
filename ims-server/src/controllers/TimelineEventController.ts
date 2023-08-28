@@ -48,7 +48,7 @@ export default class TimelineEventController {
                 return res.status(status.SERVER_ERROR).json({ message: constants.SERVER_ERROR });
             }
             sendToSocket(req.body as ITimelineEvent, ObjectType.TimelineEvent, ActionType.Add);
-            await timelineEventService.updateStatusAndPriorityOfIncidentById(_timelineEvent);
+            await timelineEventService.updateFieldsOfIncidentById(_timelineEvent);
             return res.status(status.CREATED_SUCCESS).json(_timelineEvent);
         }
         catch (error: any) {
@@ -153,8 +153,8 @@ export default class TimelineEventController {
             const file: string | any = req.query.key;
             const updatedTimelineEvent = await timelineEventService.deleteFileInTimelineEventByValue(timelineEventId, file);
             if (updatedTimelineEvent instanceof Error) {
-                if (updatedTimelineEvent.message == 'Timeline event not found' || updatedTimelineEvent.message==='string file not exist') {
-                    return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id,stringFile:req.query.fileString });
+                if (updatedTimelineEvent.message == 'Timeline event not found' || updatedTimelineEvent.message === 'string file not exist') {
+                    return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id, stringFile: req.query.fileString });
                 }
                 return res.status(status.SERVER_ERROR).json({ message: constants.SERVER_ERROR });
             }
@@ -169,13 +169,13 @@ export default class TimelineEventController {
         interface compare {
             description: string[];
             files: any;
-          }
-        let answer:compare = { description:["", "", req.body.description] ,files:[]};
+        }
+        let answer: compare = { description: ["", "", req.body.description], files: [] };
         const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventByIncidentId(req.body.incidentId);
-        const attachment=attachmentService.getSignedUrlForKeys(req.body.files)
-        await attachment.then(function(result:any) {
-            answer.files=result
-         }) 
+        const attachment = attachmentService.getSignedUrlForKeys(req.body.files)
+        await attachment.then(function (result: any) {
+            answer.files = result
+        })
         if (allTimelineEvents != null) {
             let sortedDatesDescending: ITimelineEvent[] = allTimelineEvents.slice().sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
             const previousTimeLineEvent: ITimelineEvent = sortedDatesDescending[1]
