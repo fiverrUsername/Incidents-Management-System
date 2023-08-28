@@ -20,6 +20,7 @@ import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
 import UploadFiles from '../../../base/uploadFiles/UploadFiles';
 import log from '../../../../loggers/logger'
 import { async } from 'q';
+import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 
 
 // import DropDown from '../base/dropDown/DropDown';
@@ -157,8 +158,22 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
     getTags();
     console.log(incident);
   }, []);
-  
- 
+  const handleDateChange = (Event: any) => {
+    setFormObject({ ...formObject, date: Event });
+    console.log('New Date:', Event);
+  };
+  const handleTypeChange = (Event: SelectChangeEvent) => {
+   setFormObject({ ...formObject,  type: Event.target.value});
+    console.log('New T:', Event);
+  };
+  const handleStatusChange = (Event: SelectChangeEvent) => {
+    setFormObject({ ...formObject, status: Event.target.value as Status});
+     console.log('New T:', Event);
+   };
+   const handlePriorityChange = (Event: SelectChangeEvent) => {
+    setFormObject({ ...formObject, priority: Event.target.value as Priority});
+     console.log('New T:', Event);
+   };
  
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
@@ -188,6 +203,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
                   {/* <priorityButtons setPriority={setPriority} priority={priority} /> */}
+                  <PriorityButtons onChangePriority={handlePriorityChange} priority={formObject.priority} />
                 </div>
               </FormControl>
             </Grid>

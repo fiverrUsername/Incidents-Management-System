@@ -6,49 +6,50 @@ import { IcolorScale, liveStatusEntry } from '../../../interfaces/ILiveStatus';
 import "./heatmapChar.css";
 
 interface DataPoint {
-  x: string; // Assuming this is a string
-  y: number; // Assuming this is a number
-  z: string; // Assuming this is a string (formattedDate)
-  incident: number; // Assuming this is a number (systemData.incidentCounter)
+  x: string;
+  y: number;
+  z: string;
+  incident: number;
 }
 
 interface HeatmapCharProps {
   systemsStatusCollection: liveStatusEntry[];
-  colors?: IcolorScale[]
-  dates: string[] | undefined
-
+  colors: IcolorScale[]
 }
 
-//{ systemsStatusCollection, colors = colorScaleDefault }
 const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
-  
+
   const options: ApexOptions = {
     chart: {
       width: 1000,
       height: 300,
       type: 'heatmap',
+      toolbar: {
+        show: true,
+        offsetX: 0,
+        offsetY: 0,
+        tools: {
+          download: false, // Disable the download button
+          selection: false, // Disable the selection tool
+          zoom: false, // Disable zooming tool
+          zoomin: false,
+          zoomout: false,
+          pan: false,
+        },
+      },
     },
+    responsive: [
+      {
+        breakpoint: 767,
+        options: {
+          chart: {
+            width: '100%', // Adjust width for mobile
+            height: 300,
+          },
+        },
+      },
+    ],
     stroke: {
-    },
-    grid: {
-      xaxis: {
-        lines: {
-          offsetX: 12,
-          offsetY: 12
-        }
-      },
-      yaxis: {
-        lines: {
-          offsetX: 12,
-          offsetY: 12
-        }
-      },
-      row: {
-        opacity: 12
-      },
-      column: {
-        opacity: 12
-      },
     },
     plotOptions: {
       heatmap: {
@@ -62,7 +63,6 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
       enabled: false,
     },
     xaxis: {
-      //categories:props.dates  ,
       labels: {
         show: false,
       },
@@ -105,7 +105,7 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         if (dataPoint.date !== undefined) {
           return (
             '<div class="arrow_box">' +
-            '<div class="title_tooltip"  >Date:'+ date  + '</div>' +
+            '<div class="title_tooltip"  >Date:' + date + '</div>' +
             '<span> ' + dataPoint.systemName + '</span>' +
             '<br />' +
             '<span>Incidents: ' + dataPoint.incidentCounter + '</span>' +
@@ -149,7 +149,6 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
 
 
   });
-  console.log("series", series)
 
   return (
     <div id="chart">
