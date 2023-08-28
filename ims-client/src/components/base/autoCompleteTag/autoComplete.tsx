@@ -22,7 +22,6 @@ const CustomAutocomplete = (props: AutocompleteProps) => {
   
   useEffect(() => {
     if(props.disable){setReadOnly(true)}
-    setFilteredOptions(props.options);
     if (props.selectedOptions) {
       const selectedValues = props.selectedOptions.map((selected) => props.getOptionLabel(selected));
       const newFilteredOptions = props.options.filter(
@@ -68,6 +67,7 @@ const CustomAutocomplete = (props: AutocompleteProps) => {
           lineHeight: theme.typography.bold.lineHeight,
         },
       }}
+      //filterSelectedOptions
       multiple
       options={filteredOptions}
       value={value}
