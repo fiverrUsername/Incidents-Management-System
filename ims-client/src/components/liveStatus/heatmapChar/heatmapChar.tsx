@@ -97,10 +97,10 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         if (dataPoint.date !== undefined) {
           return (
             '<div class="arrow_box">' +
-            '<div class="title_tooltip"  >Date:' + date + '</div>' +
-            '<span> ' + dataPoint.systemName + '</span>' +
+            '<div class="title_tooltip"  >&nbsp;Date:' + date + '&nbsp;</div>' +
+            '<span>&nbsp; ' + dataPoint.systemName + '&nbsp;</span>' +
             '<br />' +
-            '<span>Incidents: ' + dataPoint.incidentCounter + '</span>' +
+            '<span>&nbsp;Incidents: ' + dataPoint.incidentCounter + '&nbsp;</span>' +
             '</div>'
           );
         }
