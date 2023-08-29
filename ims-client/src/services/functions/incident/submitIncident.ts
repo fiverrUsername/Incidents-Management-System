@@ -1,4 +1,3 @@
-import React from 'react'
 import IIncident from '../../../interfaces/IIncident'
 import { FormData } from '../../../components/incidents/addIncident/addIncidentForm/addIncidentForm'
 import { Status } from '../../../interfaces/enums'
@@ -30,7 +29,7 @@ export default async function submitIncident(data: FormData, incident: IIncident
     setIncident(updatedIncidents);
     try {
         const newIncident = await backendServices.createIncident(incidentcR);
-        incidentcR.id=newIncident.id
+        incidentcR.id = newIncident.id
         const updatedIncidents = [incidentcR, ...incident];
         setIncident(updatedIncidents);
         return true;

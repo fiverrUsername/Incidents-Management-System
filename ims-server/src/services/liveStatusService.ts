@@ -27,10 +27,8 @@ class liveStatusService {
             //check if date is defined..???
             console.log(date)
             const tags = await tagService.getAllTags();
-            //let liveStatuses: liveStatusEntry[] = [];
             let liveStatuses: Array<liveStatusEntry | null> = [];
             const systemDate = date || new Date();
-            // console.log(systemDate)
             if (tags) {
                 for (const tag of tags) {
                     const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name, systemDate);
@@ -66,7 +64,6 @@ class liveStatusService {
                 source: constants.SYSTEM_STATUS_SERVICE,
                 msg: constants.UPDATE_SYSTEMS_SUCCESS,
             });
-            //here i need the index
             const existingLiveStatus = await liveStatusRepository.getTodaysLiveStatusByTag(tag);
             if (existingLiveStatus) {
                 if (data.maxPriority > existingLiveStatus.maxPriority) {
@@ -132,23 +129,32 @@ class liveStatusService {
         return Priority.P3;
     }
     async autoUpdateLiveStatus() {
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        const systems: IliveStatus[] = await liveStatusRepository.getLiveStatusSystemsByDate(yesterday.toISOString());
-        systems.forEach(async system => {
-            if (!(system.incidentCounter > system.resolvedIncidents))
-                return
-            await liveStatusRepository.createLiveStatus(
-                {
-                    id: uuidv4(),
-                    systemName: system.systemName,
-                    incidents: system.incidents,
-                    date: new Date,
-                    maxPriority: this.getUpdatedMaxPriority(system.incidents),
-                    incidentCounter: system.incidentCounter - system.resolvedIncidents,
-                    resolvedIncidents: 0
-                });
-        });
+        try {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const systems: IliveStatus[] = await liveStatusRepository.getLiveStatusSystemsByDate(yesterday.toISOString());
+            systems.forEach(async system => {
+                if (!(system.incidentCounter > system.resolvedIncidents))
+                    return
+                await liveStatusRepository.createLiveStatus(
+                    {
+                        id: uuidv4(),
+                        systemName: system.systemName,
+                        incidents: system.incidents,
+                        date: new Date,
+                        maxPriority: this.getUpdatedMaxPriority(system.incidents),
+                        incidentCounter: system.incidentCounter - system.resolvedIncidents,
+                        resolvedIncidents: 0
+                    });
+            });
+        } catch (error) {
+            logger.error({
+                source: constants.SYSTEM_STATUS_SERVICE,
+                err: constants.AUTO_UPDATE_LIVE_STATUS,
+            });
+            console.error(`error: ${error}`);
+            return [error];
+        }
     }
 
     async liveStatusByIncident(incident: IIncident): Promise<(IliveStatus[] | any)> {
