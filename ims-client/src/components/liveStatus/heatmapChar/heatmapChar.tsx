@@ -7,7 +7,7 @@ import "./heatmapChar.css";
 import { left } from '@popperjs/core';
 import theme from '../../../theme';
 
- 
+
 
 interface HeatmapCharProps {
   systemsStatusCollection: liveStatusEntry[];
@@ -47,7 +47,7 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
     },
     responsive: [
       {
-        breakpoint: 787,
+        breakpoint: 5000,
         options: {
           chart: {
             width: '100%', 
@@ -56,10 +56,8 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         },
       },
     ],
-    stroke: {
-       
-      width: 3,
-      
+    stroke: {   
+      width: 3, 
     },
     plotOptions: {
       heatmap: {
@@ -102,10 +100,10 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         if (dataPoint.date !== undefined) {
           return (
             '<div class="arrow_box">' +
-            '<div class="title_tooltip"  >&nbsp;Date:' + date + '&nbsp;</div>' +
+            '<div class="title_tooltip"  >&nbsp;&nbsp;Date:' + date + '&nbsp;</div>' +
             '<span>&nbsp; ' + dataPoint.systemName + '&nbsp;</span>' +
             '<br />' +
-            '<span>&nbsp;Incidents: ' + dataPoint.incidentCounter + '&nbsp;</span>' +
+            '<span>&nbsp;&nbsp;Incidents: ' + dataPoint.incidentCounter + '&nbsp;</span>' +
             '</div>'
           );
         }
