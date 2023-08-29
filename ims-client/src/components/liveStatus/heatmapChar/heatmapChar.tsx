@@ -7,8 +7,6 @@ import "./heatmapChar.css";
 import { left } from '@popperjs/core';
 import theme from '../../../theme';
 
- 
-
 interface HeatmapCharProps {
   systemsStatusCollection: liveStatusEntry[];
   colors: IcolorScale[]
@@ -27,27 +25,33 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         offsetX: 0,
         offsetY: 0,
         tools: {
-          download: false, // Disable the download button
-          selection: true, // Disable the selection tool
-          zoom: true, // Disable zooming tool
-          zoomin: true,
-          zoomout: true,
-          pan: true,
+          download: true,  
+          selection: false,  
+          zoom: false, 
+          zoomin: false,
+          zoomout: false,
+          pan: false,
         },
       },
     },
+    legend: {	
+      fontSize: "16px",	
+      markers: {	
+        height: 16,	
+        width: 16	
+      }},
     grid:{
       padding:{
-        top:20,
+        top:10,
         right:40,
-         bottom:50,
+         bottom:10,
          left:20
   }
 
     },
     responsive: [
       {
-        breakpoint: 787,
+        breakpoint: 5000,
         options: {
           chart: {
             width: '100%', 
@@ -100,15 +104,15 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         const dataPoint = props.systemsStatusCollection[seriesIndex].systemData[dataPointIndex];
         const date = dayjs(dataPoint.date).format("DD/MM/YYYY")
         if (dataPoint.date !== undefined) {
-          return (
-            '<div class="arrow_box">' +
-            '<div class="title_tooltip"  > Date:' + date + '</div>' +
-            '<span> ' + dataPoint.systemName + '</span>' +
-            '<br />' +
-            '<span>Incidents: ' + dataPoint.incidentCounter + '</span>' +
-            '</div>'
-          );
-        }
+          return (	
+            '<div class="arrow_box">' +	
+            '<div class="title_tooltip"  >&nbsp;&nbsp;Date:' + date + '&nbsp;</div>' +	
+            '<span>&nbsp; ' + dataPoint.systemName + '&nbsp;</span>' +	
+            '<br />' +	
+            '<span>&nbsp;&nbsp;Incidents: ' + dataPoint.incidentCounter + '&nbsp;</span>' +	
+            '</div>'	
+          );	
+        }	
         return '';
       }
     }
@@ -122,8 +126,7 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         const from: number | undefined = priorityInfo?.from;
         const to: number | undefined = priorityInfo?.to;
         const formattedDate: string = dayjs(systemData.date).format("DD/MM/YYYY")
-        //const isExist:boolean|undefined = props.dates?.includes(formattedDate);
-        //  if (isExist)
+   
         if (from !== undefined && to !== undefined) {
           const priorityValue: number = from + (to - from) / 2;
           return {

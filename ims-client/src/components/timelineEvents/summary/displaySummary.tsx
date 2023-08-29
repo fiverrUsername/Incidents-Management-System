@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { CustomScrollbar, StyledBox, StyledPaper } from '../../../pages/timeLine/timeLinePage.style'
+import {  StyledBox, StyledPaper } from '../../../pages/timeLine/timeLinePage.style'
 import { ISummary } from '../../../interfaces/ISummary';
-import {  Box, Chip, Grid, colors } from '@mui/material';
+import {  Box, Chip, Grid,} from '@mui/material';
 import theme from '../../../theme';
 import dayjs from 'dayjs';
 import { ITag } from '../../../interfaces/ITag';
-import CustomAutocomplete, { CustomSyntheticEvent } from '../../base/autoCompleteTag/autoComplete';
 interface propsDisplaySummary {
     summaryIncident: ISummary
 }
@@ -28,15 +27,11 @@ const DisplaySummary = ({ summaryIncident }: propsDisplaySummary) => {
                 <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
 
                     <StyledBox>Affected services:</StyledBox> 
-                    {summaryIncident.tags.length!=0?
-                    <CustomAutocomplete options={selectedTags} selectedOptions={selectedTags} getOptionLabel={getOptionLabel} placeholderText={''} onChangeOptions={function (event: CustomSyntheticEvent): void {
-                            console.log('Function not implemented.');
-                        } } disable={true}/>:''}
-                    {/* {summaryIncident.tags.length!=0 &&<> 
+                    {summaryIncident.tags.length!=0 &&<> 
                     <Box style={{borderRadius: '10px' ,border: '1px solid'+ theme.palette.info.main,width:"100%",height:"auto", padding:"1.5% "}} > 
                     {summaryIncident.tags.map((tag, index) => {
                         return   <Chip sx={{ border: '1px solid' + theme.palette.secondary.main, color: theme.palette.secondary.main, backgroundColor: theme.palette.secondary.light,margin:"0.5%"  }}  key={index} label={tag.name}/> 
-                    })} </Box> </> } */}
+                    })} </Box> </> }
                 </Grid>
             </Grid>
         </StyledPaper>
