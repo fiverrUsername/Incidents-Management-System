@@ -19,10 +19,13 @@ export const NO_INCIDENT_NAME = 'NO INCIDENT NAME';
 export const IMS_SERVER_ROUTING = "https://ims-server-pbkw.onrender.com/";
 export const CHANNEL_REDIRECT = "https://slack.com/app_redirect?channel="
 export const ERROR_EXTRACTING_FILES = 'Error extracting files:';
-export const SLACK_API_TOKEN =
-  "xoxb-5609511342163-5604717800598-y92xHQ34EQ59T5ZPQkv1jtnH";
-export const SLACK_TOKEN =
-  "xoxe-1-My0xLTU2MDk1MTEzNDIxNjMtNTU5NTYwNzQ4MjAwNy01NjY5OTk2MzAwNjMwLWFmZTkwMTc2NzBkM2Q2ZmQ2MjdhOGNiNDMwMmIwMzQxMzU3OTA5MjIzYzgxMmRjZmQ4ZWVmZTJlYmI3YWM3YWI"
+// export const SLACK_API_TOKEN =
+//   "xoxb-5609511342163-5604717800598-y92xHQ34EQ59T5ZPQkv1jtnH";
+// export const SLACK_TOKEN =
+//   "xoxe-1-My0xLTU2MDk1MTEzNDIxNjMtNTU5NTYwNzQ4MjAwNy01NjY5OTk2MzAwNjMwLWFmZTkwMTc2NzBkM2Q2ZmQ2MjdhOGNiNDMwMmIwMzQxMzU3OTA5MjIzYzgxMmRjZmQ4ZWVmZTJlYmI3YWM3YWI"
+
+export const SLACK_API_TOKEN ="xoxb-5609511342163-5604717800598-YYd1DEMsSL42Q2IC9tlim83T"
+export const SLACK_TOKEN= "xoxe-1-My0xLTU2MDk1MTEzNDIxNjMtNTU5NTYwNzQ4MjAwNy01ODI3NTY1OTc1MDczLWEyNDE5ODlmNGY3YzM2NmIyMzEzZGNlNTAxYmRmZTUxYzg5OGUyNzJiOGEzNDAyZjgwMGRjOTRiODc3MzZiMTg"
 export const client = new WebClient(SLACK_API_TOKEN, {
   logLevel: LogLevel.DEBUG,
 });
