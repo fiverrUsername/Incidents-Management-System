@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit"
-import IIncident from "../../../interface/incidentInterface"
+import IIncident from "../../../interfaces/IIncident"
 
 
 export const INCIDENT_STATE_KEY = 'INCIDENT'

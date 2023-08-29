@@ -1,15 +1,15 @@
-import { TimelineEvent } from "aws-sdk/clients/ssmincidents";
+import { validate } from "class-validator";
 import { ITimelineEventDto } from "../dto/timelineEventDto";
+import { Priority } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
+import { ITag } from "../interfaces/tagInterface";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import incidentRepository from "../repositories/incidentRepository";
 import timelineEventRepository from "../repositories/timelineEventRepository";
-import { validate } from "class-validator";
-import liveStatusService from "./liveStatusService";
 import incidentService from "./incidentService";
-import { Priority } from "../enums/enum";
+import liveStatusService from "./liveStatusService";
 
 class TimelineEventService {
   async getAllTimelineEvents(): Promise<ITimelineEvent[] | any> {
@@ -56,6 +56,7 @@ class TimelineEventService {
     try {
       const incident: IIncident = await incidentRepository.getIncidentByField(newTimelineEvent.incidentId!, "id");
       const priority: Priority = incident.currentPriority
+      const tags: ITag[] = incident.currentTags
       newTimelineEvent.channelId = incident.channelId;
       const _timelineEvent = new ITimelineEventDto(newTimelineEvent);
       const validationErrors = await validate(_timelineEvent);
@@ -63,9 +64,19 @@ class TimelineEventService {
         logger.error({ source: constants.TIMELINE_EVENT, err: "Validation error", validationErrors: validationErrors.map((error) => error.toString()), });
         return new Error("Validation error");
       }
-      newTimelineEvent.tags.map((tag) => {
-        debugger
-        liveStatusService.updateLiveStatusByTimeLineEvent(newTimelineEvent,String(tag.name), priority)
+      if (tags.length != newTimelineEvent.tags.length) {
+        const newIncident = incident
+        const newTags = newTimelineEvent.tags.filter(tag => {
+          return !tags.some(existingTag => existingTag.name === tag.name);
+        });
+
+        newTags.forEach(tag => {
+          newIncident.currentTags = [tag]
+          liveStatusService.liveStatusByIncident(newIncident)
+        })
+      }
+      tags.map((tag) => {
+        liveStatusService.updateLiveStatusByTimeLineEvent(newTimelineEvent, String(tag.name), priority)
       })
       logger.info({ sourece: constants.TIMELINE_EVENT, method: constants.METHOD.POST, timelineEventId: newTimelineEvent.id });
       return await timelineEventRepository.addTimelineEvent(newTimelineEvent);
