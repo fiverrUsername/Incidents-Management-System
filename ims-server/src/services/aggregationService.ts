@@ -9,7 +9,6 @@ class AggregateService {
     } catch (error: any) {
       logger.error({ err: constants.ERROR_AGGGREATION });
       console.error(`error: ${error}`);
-      return error;
     }
   }
 }

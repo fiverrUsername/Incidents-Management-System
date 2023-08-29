@@ -1,12 +1,10 @@
 import dayjs from "dayjs";
-
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ISummary } from "../interfaces/ISummary";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import incidentRepository from "../repositories/incidentRepository";
 import liveStatusService from './liveStatusService';
-
 
 class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {
@@ -26,7 +24,6 @@ class IncidentService {
         err: constants.ERROR_ADDING_INCIDENT,
       });
       console.error(`error: ${error}`);
-      return error;
     }
   }
 
@@ -35,7 +32,7 @@ class IncidentService {
       const isValidId: IIncident | any = await incidentRepository.getIncidentById(id);
       if (isValidId === null || isValidId instanceof Error) {
         logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentId: id, });
-        return new Error(constants.INCIDENT_NOT_FOUND);
+        return;
       }
       const updatedIncident: IIncident = await incidentRepository.updateIncident(id, data);
       if (updatedIncident) {
@@ -43,11 +40,9 @@ class IncidentService {
         return updatedIncident;
       }
       logger.error({ source: constants.SERVER_ERROR, method: constants.METHOD.PUT, error: true })
-      return new Error(constants.SERVER_ERROR)
     } catch (error: any) {
       logger.error({ source: constants.INCIDENT_COTROLLER, method: constants.METHOD.PUT, incidetID: id, });
       console.error(`error: ${error}`);
-      return error;
     }
   }
 
@@ -69,7 +64,6 @@ class IncidentService {
         err: constants.ERROR_GETTING_ALL_INCIDENTS,
       });
       console.error(`error: ${error}`);
-      return error;
     }
   }
 
@@ -91,7 +85,6 @@ class IncidentService {
         incidentID: fieldValue,
       });
       console.error(`error: ${error}`);
-      return error;
     }
   }
 
@@ -107,13 +100,11 @@ class IncidentService {
           tags: incident.currentTags
         }
         logger.info({ source: constants.INCIDENT_COTROLLER, method: constants.METHOD.GET, incidentId: id })
-        return summary;
       }
       return summary;
     } catch (error: any) {
       logger.error({ source: constants.INCIDENT_COTROLLER, err: true, incidentID: id });
       console.error(`error: ${error}`);
-      return error;
     }
   }
 
