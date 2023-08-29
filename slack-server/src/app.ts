@@ -14,6 +14,7 @@ app.use(cors({
 }));
 
 app.get('/test', (req: Request, res: Response) => {
+  console.log(process.env.d);
   res.status(200).send('OK');
 });
 
