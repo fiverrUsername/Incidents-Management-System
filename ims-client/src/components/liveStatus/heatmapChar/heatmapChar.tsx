@@ -25,29 +25,29 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         offsetX: 0,
         offsetY: 0,
         tools: {
-          download: false,
-          selection: true,
-          zoom: true,
-          zoomin: true,
-          zoomout: true,
-          pan: true,
+          download: true,  
+          selection: false,  
+          zoom: false, 
+          zoomin: false,
+          zoomout: false,
+          pan: false,
         },
       },
     },
-    legend: {
-      fontSize: "16px",
-      markers: {
-        height: 16,
-        width: 16
-      }
-    },
-    grid: {
-      padding: {
-        top: 20,
-        right: 40,
-        bottom: 50,
-        left: 20
-      }
+    legend: {	
+      fontSize: "16px",	
+      markers: {	
+        height: 16,	
+        width: 16	
+      }},
+    grid:{
+      padding:{
+        top:10,
+        right:40,
+         bottom:10,
+         left:20
+  }
+
     },
     responsive: [
       {

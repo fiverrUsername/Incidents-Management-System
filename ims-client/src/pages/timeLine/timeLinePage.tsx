@@ -35,7 +35,7 @@ const TimeLinePage = ({ id }: WithIdProps) => {
       setIncident(getIncidentById);
     };
     fetchIncident();
-  }, [id]);
+  }, [id,summaryIncident]);
 
   let filter: ITimeLineEvent[] = [];
   const [myValue, setMyValue] = useState<string>("");
@@ -45,16 +45,16 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   const addNewTimeline = (newTimeline: ITimeLineEvent) => {
     setTimelineObjects([...timelineObjects, newTimeline]);
     //The summary should be updated
-    window.location.reload()
+    //window.location.reload()
   }
   return (
     <>
       <Search setValue={setMyValue}></Search>
-      {summaryIncident && <DisplaySummary summaryIncident={{ ...summaryIncident }} ></DisplaySummary>}
+      {summaryIncident && <DisplaySummary summaryIncident={summaryIncident } ></DisplaySummary>}
       <StyledPaper>
         <Grid container direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="nowrap">
           <Typography variant='bold'>Consectetur massa</Typography>
-          {incident && <AddTimelineEvent addNewTimelineFunction={addNewTimeline} incident={{ ...incident }} />}
+          {incident && <AddTimelineEvent addNewTimelineFunction={addNewTimeline} incident={incident} />}
         </Grid>
         {timelineObjects && (
           <CustomScrollbar>
