@@ -10,7 +10,7 @@ export async function createIncident(channelId: string) {
   try {
     const slackData: ConversationsInfoResponse | null = await getSlackDataByChannelId(channelId);
     if (!slackData) {
-      throw new Error('Channel not found in Slack');
+      throw new Error('Channel not found in Slack ');
     }
     const newIncident: IIncident = {
       //TODO
