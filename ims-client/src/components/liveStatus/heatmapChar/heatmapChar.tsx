@@ -7,8 +7,6 @@ import "./heatmapChar.css";
 import { left } from '@popperjs/core';
 import theme from '../../../theme';
 
-
-
 interface HeatmapCharProps {
   systemsStatusCollection: liveStatusEntry[];
   colors: IcolorScale[]
@@ -21,43 +19,49 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
       width: 1200,
       height: 300,
       type: 'heatmap',
-      fontFamily:theme.typography.fontFamily,
+      fontFamily: theme.typography.fontFamily,
       toolbar: {
         show: true,
         offsetX: 0,
         offsetY: 0,
         tools: {
-          download: false, // Disable the download button
-          selection: true, // Disable the selection tool
-          zoom: true, // Disable zooming tool
+          download: false,
+          selection: true,
+          zoom: true,
           zoomin: true,
           zoomout: true,
           pan: true,
         },
       },
     },
-    grid:{
-      padding:{
-        top:20,
-        right:40,
-         bottom:50,
-         left:20
-  }
-
+    legend: {
+      fontSize: "16px",
+      markers: {
+        height: 16,
+        width: 16
+      }
+    },
+    grid: {
+      padding: {
+        top: 20,
+        right: 40,
+        bottom: 50,
+        left: 20
+      }
     },
     responsive: [
       {
         breakpoint: 5000,
         options: {
           chart: {
-            width: '100%', 
+            width: '100%',
             height: 250,
           },
         },
       },
     ],
-    stroke: {   
-      width: 3, 
+    stroke: {
+      width: 3,
     },
     plotOptions: {
       heatmap: {
@@ -81,8 +85,8 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
     yaxis: {
       labels: {
         show: true,
-        style:{
-          fontSize:'18px'
+        style: {
+          fontSize: '18px'
         }
       },
       tooltip: {
@@ -120,15 +124,12 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         const from: number | undefined = priorityInfo?.from;
         const to: number | undefined = priorityInfo?.to;
         const formattedDate: string = dayjs(systemData.date).format("DD/MM/YYYY")
-        //const isExist:boolean|undefined = props.dates?.includes(formattedDate);
-        //  if (isExist)
         if (from !== undefined && to !== undefined) {
           const priorityValue: number = from + (to - from) / 2;
           return {
             x: formattedDate,
             y: priorityValue,
             z: formattedDate,
-
           };
         }
         else {
