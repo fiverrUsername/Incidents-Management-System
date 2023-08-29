@@ -31,7 +31,9 @@ app.post('/webhook', (req: Request, res: Response) => {
 console.log("process.env.SLACK_API_TOKEN", process.env.SLACK_API_TOKEN);
 
 app.listen(port, () => {
-  console.log(`Server is on http://localhost:${port}`);
+  // console.log(`Server is on http://localhost:${port}`);
+  console.log("port in listen in slack-server", port);
+
 });
 
 
