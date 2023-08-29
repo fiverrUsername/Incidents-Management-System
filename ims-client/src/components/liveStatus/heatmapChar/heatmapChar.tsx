@@ -19,7 +19,7 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
       width: 1200,
       height: 300,
       type: 'heatmap',
-      fontFamily:theme.typography.fontFamily,
+      fontFamily: theme.typography.fontFamily,
       toolbar: {
         show: true,
         offsetX: 0,
@@ -54,16 +54,14 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         breakpoint: 5000,
         options: {
           chart: {
-            width: '100%', 
+            width: '100%',
             height: 250,
           },
         },
       },
     ],
     stroke: {
-       
       width: 3,
-      
     },
     plotOptions: {
       heatmap: {
@@ -87,8 +85,8 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
     yaxis: {
       labels: {
         show: true,
-        style:{
-          fontSize:'18px'
+        style: {
+          fontSize: '18px'
         }
       },
       tooltip: {
@@ -104,15 +102,15 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         const dataPoint = props.systemsStatusCollection[seriesIndex].systemData[dataPointIndex];
         const date = dayjs(dataPoint.date).format("DD/MM/YYYY")
         if (dataPoint.date !== undefined) {
-          return (	
-            '<div class="arrow_box">' +	
-            '<div class="title_tooltip"  >&nbsp;&nbsp;Date:' + date + '&nbsp;</div>' +	
-            '<span>&nbsp; ' + dataPoint.systemName + '&nbsp;</span>' +	
-            '<br />' +	
-            '<span>&nbsp;&nbsp;Incidents: ' + dataPoint.incidentCounter + '&nbsp;</span>' +	
-            '</div>'	
-          );	
-        }	
+          return (
+            '<div class="arrow_box">' +
+            '<div class="title_tooltip"  >&nbsp;&nbsp;Date:' + date + '&nbsp;</div>' +
+            '<span>&nbsp; ' + dataPoint.systemName + '&nbsp;</span>' +
+            '<br />' +
+            '<span>&nbsp;&nbsp;Incidents: ' + dataPoint.incidentCounter + '&nbsp;</span>' +
+            '</div>'
+          );
+        }
         return '';
       }
     }
@@ -126,14 +124,12 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         const from: number | undefined = priorityInfo?.from;
         const to: number | undefined = priorityInfo?.to;
         const formattedDate: string = dayjs(systemData.date).format("DD/MM/YYYY")
-   
         if (from !== undefined && to !== undefined) {
           const priorityValue: number = from + (to - from) / 2;
           return {
             x: formattedDate,
             y: priorityValue,
             z: formattedDate,
-
           };
         }
         else {
