@@ -15,7 +15,6 @@ import liveStatusRouter from "./routes/liveStatusRouter";
 import tagRouter from './routes/tagRouter';
 import timelineEventRouter from './routes/timelineEventRouter';
 import dailySchedule from './services/schedule';
-
 const port = config.server.port
 const app = express()
 const swaggerFile: any = (process.cwd() + "/src/Swagger.json");

@@ -5,6 +5,7 @@ import ReactApexChart from 'react-apexcharts';
 import { IcolorScale, liveStatusEntry } from '../../../interfaces/ILiveStatus';
 import "./heatmapChar.css";
 import { left } from '@popperjs/core';
+import theme from '../../../theme';
 
  
 
@@ -20,6 +21,7 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
       width: 1200,
       height: 300,
       type: 'heatmap',
+      fontFamily:theme.typography.fontFamily,
       toolbar: {
         show: true,
         offsetX: 0,
@@ -48,8 +50,8 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         breakpoint: 787,
         options: {
           chart: {
-            width: '70%', // Adjust width for mobile
-            height: 200,
+            width: '100%', 
+            height: 250,
           },
         },
       },
@@ -61,9 +63,9 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
     },
     plotOptions: {
       heatmap: {
-        shadeIntensity: 0.5,
+        shadeIntensity: 0,
         colorScale: {
-          ranges: props.colors
+          ranges: props.colors,
         },
       },
     },
@@ -81,6 +83,9 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
     yaxis: {
       labels: {
         show: true,
+        style:{
+          fontSize:'18px'
+        }
       },
       tooltip: {
         enabled: false,
