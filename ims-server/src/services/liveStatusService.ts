@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 import moment from "moment-timezone";
-
 import { Priority, Status } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
@@ -9,6 +8,7 @@ import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import liveStatusRepository from "../repositories/liveStatusRepository";
 import tagService from "./tagService";
+
 class liveStatusService {
     constructor() {
         this.autoUpdateLiveStatus = this.autoUpdateLiveStatus.bind(this);
@@ -24,13 +24,15 @@ class liveStatusService {
         try {
             const tags = await tagService.getAllTags();
             let liveStatuses: liveStatusEntry[] = [];
-            for (const tag of tags) {
-                const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name, date);
-                if (latestStatusForTag) {
-                    liveStatuses.push({
-                        systemName: tag.name,
-                        systemData: latestStatusForTag
-                    });
+            if (tags != null) {
+                for (const tag of tags) {
+                    const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name, date);
+                    if (latestStatusForTag) {
+                        liveStatuses.push({
+                            systemName: tag.name,
+                            systemData: latestStatusForTag
+                        });
+                    }
                 }
             }
             logger.info({
@@ -44,7 +46,6 @@ class liveStatusService {
                 err: constants.GET_SYSTEMS_BY_DATE_FAILED,
             });
             console.error(`error: ${error}`);
-            return error;
         }
     }
 
@@ -81,7 +82,6 @@ class liveStatusService {
                 err: constants.UPDATE_SYSTEMS_FAILED,
             });
             console.error(`error: ${error}`);
-            return error;
         }
     }
     async updateLiveStatusByTimeLineEvent(timeLineEvent: ITimelineEvent, system: string, previousPriority: Priority): Promise<void | null> {
@@ -139,7 +139,7 @@ class liveStatusService {
         });
     }
 
-    async liveStatusByIncident(incident: IIncident): Promise<(IliveStatus | any)[]> {
+    async liveStatusByIncident(incident: IIncident): Promise<(IliveStatus[] | any)> {
         try {
             const promises: Promise<IliveStatus | any>[] = incident.currentTags.map(async (tag) => {
                 const liveStatusData: IliveStatus = {
@@ -160,7 +160,6 @@ class liveStatusService {
                 err: constants.GET_TODAYS_LIVE_BY_TAG_FAILED,
             });
             console.error(`error: ${error}`);
-            return [error];
         }
     }
 }

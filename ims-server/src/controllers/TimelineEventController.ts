@@ -11,40 +11,36 @@ import attachmentService from "../services/attachmentService";
 
 export default class TimelineEventController {
 
-    async getAllTimelineEvents(req: Request, res: Response): Promise<void> {
+    async getAllTimelineEvents(req: Request, res: Response): Promise<Response> {
         try {
             const timelineEvents: ITimelineEvent[] | null = await timelineEventService.getAllTimelineEvents();
             if (timelineEvents instanceof Error) {
-                res.status(status.PAGE_NOT_FOUND).json({ message: timelineEvents, error: true });
+                return res.status(status.PAGE_NOT_FOUND).json({ message: timelineEvents, error: true });
             }
-            else res.status(status.SUCCESS).json(timelineEvents);
+            return res.status(status.SUCCESS).json(timelineEvents);
         }
         catch (error: any) {
-            res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: error });
+            return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: error });
         }
     }
 
-    async getTimelineEventByIncidentId(req: Request, res: Response): Promise<void> {
+    async getTimelineEventByIncidentId(req: Request, res: Response): Promise<Response> {
         try {
             const timelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventByIncidentId(req.params.id);
-
             if (timelineEvents instanceof Error) {
-                res.status(status.PAGE_NOT_FOUND).json({ message: timelineEvents, error: true });
+                return res.status(status.PAGE_NOT_FOUND).json({ message: timelineEvents, error: true });
             }
-            else res.status(status.SUCCESS).json(timelineEvents);
+            return res.status(status.SUCCESS).json(timelineEvents);
         }
         catch (error: any) {
-            res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: error });
+            return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: error });
         }
     }
 
     async addTimelineEvent(req: Request, res: Response): Promise<Response> {
         try {
             const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
-            if (_timelineEvent instanceof Error) {
-                if (_timelineEvent.message === "Validation error" || _timelineEvent.message === "Incident ID not found") {
-                    return res.status(status.BAD_REQUEST).json({ message: constants.INVALID_MESSAGE })
-                }
+            if (_timelineEvent == null || _timelineEvent == undefined || _timelineEvent instanceof Error) {
                 return res.status(status.SERVER_ERROR).json({ message: constants.SERVER_ERROR });
             }
             sendToSocket(req.body as ITimelineEvent, ObjectType.TimelineEvent, ActionType.Add);
@@ -56,50 +52,40 @@ export default class TimelineEventController {
         }
     }
 
-    async deleteTimelineEvent(req: Request, res: Response): Promise<void> {
+    async deleteTimelineEvent(req: Request, res: Response): Promise<Response> {
         try {
             const _timelineEvent: ITimelineEvent | null = await timelineEventService.deleteTimelineEvent(req.params.id);
             if (_timelineEvent instanceof Error || _timelineEvent === null) {
-                res.status(status.PAGE_NOT_FOUND).send({ message: constants.NOT_FOUND, error: true })
+                return res.status(status.PAGE_NOT_FOUND).send({ message: constants.NOT_FOUND, error: true })
             }
-            else {
-                res.status(status.SUCCESS).send(_timelineEvent)
-            }
+            return res.status(status.SUCCESS).send(_timelineEvent)
         }
         catch (error: any) {
-            res.status(status.MISSNG_REQUIRED_FIELDS).send({ message: error, error: true })
+            return res.status(status.MISSNG_REQUIRED_FIELDS).send({ message: error, error: true })
         }
     }
 
-    async updateTimelineEvent(req: Request, res: Response): Promise<void> {
+    async updateTimelineEvent(req: Request, res: Response): Promise<Response> {
         try {
             const _timelineEvent = await timelineEventService.updateTimelineEvent(req.params.id, req.body);
             if (_timelineEvent instanceof Error) {
-                if (_timelineEvent.message === constants.MISSNG_REQUIRED_FIELDS) {
-                    res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: constants.MISSNG_REQUIRED_FIELDS, error: true });
-                } else if (_timelineEvent.message === constants.NOT_FOUND) {
-                    res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND });
-                } else {
-                    res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: _timelineEvent, error: true });
-                }
+                return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND });
             }
-            else {
-                res.status(status.SUCCESS).json(_timelineEvent);
-            }
+            return res.status(status.SUCCESS).json(_timelineEvent);
         } catch (error: any) {
-            res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: error.message, error: true });
+            return res.status(status.SERVER_ERROR).json({ message: error.message, error: true });
         }
     }
 
-    async getTimelineEventById(req: Request, res: Response): Promise<void> {
+    async getTimelineEventById(req: Request, res: Response): Promise<Response> {
         try {
             const _timelineEvent: ITimelineEvent | null = await timelineEventService.getTimelineEventById(req.params.id);
             if (_timelineEvent instanceof Error || _timelineEvent === null) {
-                res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, error: true });
+                return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, error: true });
             }
-            else res.status(status.SUCCESS).json(_timelineEvent);
+            else return res.status(status.SUCCESS).json(_timelineEvent);
         } catch (error: any) {
-            res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: error });
+            return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: error });
         }
     }
 
@@ -108,14 +94,8 @@ export default class TimelineEventController {
             const timelineEventId: string = req.params.id;
             const index: number = parseInt(req.query.index as string);
             const file = await timelineEventService.getFileInTimelineEventByIndex(timelineEventId, index);
-            if (file instanceof Error) {
-                if (file.message == 'Timeline event not found') {
-                    return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id });
-                }
-                if (file.message == 'Invalid index') {
-                    return res.status(status.BAD_REQUEST).json({ message: constants.BAD_REQUEST, error: constants.INDEX_NOT_VALID });
-                }
-                return res.status(500).json({ message: constants.SERVER_ERROR });
+            if (file === null || file == undefined) {
+                return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id });
             }
             logger.info({ source: constants.TIMELINE_EVENT, msg: constants.SUCCESS, timelineEventId, indexFile: index, method: constants.METHOD.GET });
             return res.status(status.SUCCESS).json(file);
@@ -130,15 +110,7 @@ export default class TimelineEventController {
             const index: number = parseInt(req.query.index as string);
             const updatedTimelineEvent = await timelineEventService.deleteFileInTimelineEventByIndex(timelineEventId, index);
             if (updatedTimelineEvent instanceof Error) {
-                if (updatedTimelineEvent.message == 'Timeline event not found') {
-                    return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id });
-                }
-                if (updatedTimelineEvent.message == 'Invalid index') {
-                    return res.status(status.BAD_REQUEST).json({ message: constants.BAD_REQUEST, error: constants.INDEX_NOT_VALID });
-                }
-                else {
-                    return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: constants.SERVER_ERROR });
-                }
+                return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id });
             }
             logger.info({ source: constants.TIMELINE_EVENT, msg: constants.SUCCESS, timelineEventId, indexFile: index, method: constants.METHOD.DELETE });
             return res.status(status.SUCCESS).json(updatedTimelineEvent);
@@ -150,13 +122,11 @@ export default class TimelineEventController {
     async deleteFileInTimelineEventByValue(req: Request, res: Response): Promise<Response> {
         try {
             const timelineEventId: string = req.params.id;
-            const file: string | any = req.query.key;
+            const file: string | any = req.query.fileString;
+            console.log(file);
             const updatedTimelineEvent = await timelineEventService.deleteFileInTimelineEventByValue(timelineEventId, file);
-            if (updatedTimelineEvent instanceof Error) {
-                if (updatedTimelineEvent.message == 'Timeline event not found' || updatedTimelineEvent.message === 'string file not exist') {
-                    return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id, stringFile: req.query.fileString });
-                }
-                return res.status(status.SERVER_ERROR).json({ message: constants.SERVER_ERROR });
+            if (updatedTimelineEvent == null || updatedTimelineEvent == undefined || updatedTimelineEvent instanceof Error) {
+                return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id, stringFile: req.query.fileString });
             }
             logger.info({ source: constants.TIMELINE_EVENT, msg: constants.SUCCESS, timelineEventId, file: file, method: constants.METHOD.DELETE });
             return res.status(status.SUCCESS).json(updatedTimelineEvent);
