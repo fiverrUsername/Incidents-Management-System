@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+//import dayjs from "dayjs";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ISummary } from "../interfaces/ISummary";
 import { constants } from "../loggers/constants";
@@ -54,8 +54,8 @@ class IncidentService {
       });
       const incidents = await incidentRepository.getAllIncidents();
       const orderedIncidents = incidents.sort((a: IIncident, b: IIncident) => {
-        const diff = dayjs(b.date).diff(dayjs(a.date));
-        return diff;
+        // const diff = dayjs(b.date).diff(dayjs(a.date));
+        // return diff;
       });
       return orderedIncidents;
     } catch (error: any) {
