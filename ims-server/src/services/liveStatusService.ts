@@ -95,7 +95,7 @@ class liveStatusService {
     }
     async updateLiveStatusByTimeLineEvent(timeLineEvent: ITimelineEvent, system: string, previousPriority: Priority): Promise<void | null> {
         try {
-            if (previousPriority == timeLineEvent.priority && timeLineEvent.status == Status.Active)
+            if (previousPriority === timeLineEvent.priority && timeLineEvent.status === Status.Active)
                 return
             const liveStatus = await liveStatusRepository.getTodaysLiveStatusByTag(system);
             if (!liveStatus)
@@ -106,12 +106,14 @@ class liveStatusService {
                 (incidentId) => incidentId !== timeLineEvent.incidentId
             );
             if (previousPriority != timeLineEvent.priority) {
+                const eventPriority = this.priorityIndexMap[timeLineEvent.priority];
                 updatedIncidents[this.priorityIndexMap[timeLineEvent.priority]].push(timeLineEvent.incidentId)
-                if (this.priorityIndexMap[liveStatus.maxPriority] > this.priorityIndexMap[timeLineEvent.priority]) {
+                if (this.priorityIndexMap[liveStatus.maxPriority] > eventPriority) {
                     liveStatus.maxPriority = timeLineEvent.priority;
                 }
             }
-            liveStatus.resolvedIncidents++
+            if (timeLineEvent.status === Status.Resolved)
+                liveStatus.resolvedIncidents++
             liveStatus.incidents = updatedIncidents
             return await liveStatusRepository.updateLiveStatus(liveStatus, liveStatus.id);
         } catch (e) {
@@ -127,7 +129,6 @@ class liveStatusService {
         }
         return Priority.P3;
     }
-
     async autoUpdateLiveStatus() {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
