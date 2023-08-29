@@ -14,7 +14,7 @@ app.use(cors({
 }));
 
 app.get('/test', (req: Request, res: Response) => {
-  console.log(process.env.d);
+  console.log(process.env.SLACK_API_TOKEN);
   res.status(200).send('OK');
 });
 
