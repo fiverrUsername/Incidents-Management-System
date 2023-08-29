@@ -10,7 +10,7 @@ interface AutocompleteProps {
   onChangeOptions: (event: CustomSyntheticEvent) => void;
   getOptionLabel: (option: any) => string;
   placeholderText: string;
-  disable?:boolean
+  disable?: boolean
 }
 export interface CustomSyntheticEvent extends SyntheticEvent {
   selectedTags: ITag[];
@@ -19,9 +19,9 @@ const CustomAutocomplete = (props: AutocompleteProps) => {
   const [value, setValue] = useState<any[]>(props.selectedOptions || []);
   const [readOnly, setReadOnly] = useState(false);
   const [filteredOptions, setFilteredOptions] = useState<ITag[]>(props.options);
-  
+
   useEffect(() => {
-    if(props.disable){setReadOnly(true)}
+    if (props.disable) { setReadOnly(true) }
     if (props.selectedOptions) {
       const selectedValues = props.selectedOptions.map((selected) => props.getOptionLabel(selected));
       const newFilteredOptions = props.options.filter(
@@ -32,7 +32,7 @@ const CustomAutocomplete = (props: AutocompleteProps) => {
         setFilteredOptions(newFilteredOptions);
       }
     }
-    else{
+    else {
       setFilteredOptions(props.options);
     }
   }, [props.selectedOptions, props.options]);
@@ -45,7 +45,7 @@ const CustomAutocomplete = (props: AutocompleteProps) => {
     setFilteredOptions(newFilteredOptions);
     setValue(newValue);
     const customEvent: CustomSyntheticEvent = {
-      ...event, 
+      ...event,
       selectedTags: newValue,
     };
     props.onChangeOptions(customEvent);

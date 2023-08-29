@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
-import { CustomScrollbar, StyledBox, StyledPaper } from '../../../pages/timeLine/timeLinePage.style'
-import { ISummary } from '../../../interfaces/ISummary';
-import {  Box, Chip, Grid, colors } from '@mui/material';
-import theme from '../../../theme';
+import React from 'react';
+import { Grid } from '@mui/material';
 import dayjs from 'dayjs';
+
+import { ISummary } from '../../../interfaces/ISummary';
 import { ITag } from '../../../interfaces/ITag';
-import CustomAutocomplete, { CustomSyntheticEvent } from '../../base/autoCompleteTag/autoComplete';
+import { StyledBox, StyledPaper } from '../../../pages/timeLine/timeLinePage.style';
+import theme from '../../../theme';
+import CustomAutocomplete from '../../base/autoCompleteTag/autoComplete';
 interface propsDisplaySummary {
     summaryIncident: ISummary
 }
@@ -27,11 +28,11 @@ const DisplaySummary = ({ summaryIncident }: propsDisplaySummary) => {
                 </Grid>
                 <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
 
-                    <StyledBox>Affected services:</StyledBox> 
-                    {summaryIncident.tags.length!=0?
-                    <CustomAutocomplete options={selectedTags} selectedOptions={selectedTags} getOptionLabel={getOptionLabel} placeholderText={''} onChangeOptions={function (event: CustomSyntheticEvent): void {
+                    <StyledBox>Affected services:</StyledBox>
+                    {summaryIncident.tags.length != 0 ?
+                        <CustomAutocomplete options={selectedTags} selectedOptions={selectedTags} getOptionLabel={getOptionLabel} placeholderText={''} onChangeOptions={function (): void {
                             console.log('Function not implemented.');
-                        } } disable={true}/>:''}
+                        }} disable={true} /> : ''}
                     {/* {summaryIncident.tags.length!=0 &&<> 
                     <Box style={{borderRadius: '10px' ,border: '1px solid'+ theme.palette.info.main,width:"100%",height:"auto", padding:"1.5% "}} > 
                     {summaryIncident.tags.map((tag, index) => {
@@ -41,5 +42,5 @@ const DisplaySummary = ({ summaryIncident }: propsDisplaySummary) => {
             </Grid>
         </StyledPaper>
     );
-}; 
+};
 export default DisplaySummary;
