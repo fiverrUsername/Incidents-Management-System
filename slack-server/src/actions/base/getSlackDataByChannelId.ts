@@ -2,6 +2,7 @@ import { ERROR_GETTING_SLACK_CHANNEL_DATA, client } from "../../constPage";
 
 export async function getSlackDataByChannelId(channelId: string) {
     try {
+        console.log("-------i am in getSlackDataByChannelId")
         const response = await client.conversations.info({
             channel: channelId,
         });
