@@ -12,6 +12,7 @@ const ws = new WebSocket(wsPort);
 const messageQueue: any[] = []; // Replace 'any' with the type of messages you are sending
 
 ws.on('open', () => {
+console.log("process.env.SLACK_API_TOKEN", process.env.SLACK_API_TOKEN);
   console.log('WebSocket connection is open in ims-slack.');
   // Process the message queue
   while (messageQueue.length > 0) {

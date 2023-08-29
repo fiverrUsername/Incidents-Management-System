@@ -28,7 +28,8 @@ app.post('/webhook', (req: Request, res: Response) => {
   }
   events(data);
 });
-console.log(process.env.P1+"fdd")
+console.log("process.env.SLACK_API_TOKEN", process.env.SLACK_API_TOKEN);
+
 app.listen(port, () => {
   console.log(`Server is on http://localhost:${port}`);
 });
