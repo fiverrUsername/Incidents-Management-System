@@ -30,6 +30,7 @@ export async function createIncident(channelId: string) {
       cost: 0,
       createdBy: '',
     };
+    console.log('----------------------------i am going to socet to create incident')
     sendToSocket(newIncident, ObjectType.Incident, ActionType.Add);
     console.log('Incident created successfully');
   } catch (error) {
