@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
+
 import HeatmapChar from "../../components/liveStatus/heatmapChar/heatmapChar";
 import backendServices from "../../services/backendServices/backendServices";
 import { IcolorScale, liveStatusEntry } from "../../interfaces/ILiveStatus";
@@ -29,8 +30,9 @@ const LiveStatus = () => {
         fetchData();
     }, [date]);
 
-    const handleDateChange = (event: any) => {
-        setDate(event);
+    const handleDateChange = (event: Dayjs | null) => {
+        if (event)
+            setDate(event);
     };
 
     return (
