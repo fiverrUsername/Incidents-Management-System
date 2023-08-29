@@ -41,9 +41,9 @@ const LiveStatus = () => {
             <DateTimePickerValue date={date} onDateChange={handleDateChange} />
             {
                 systemsStatusCollection &&
-               <StyledPaper>
-                <HeatmapChar systemsStatusCollection={systemsStatusCollection} colors={colorScaleDefault} />
-              </StyledPaper> 
+                <StyledPaper>
+                    <HeatmapChar systemsStatusCollection={systemsStatusCollection} colors={colorScaleDefault} />
+                </StyledPaper>
             }
         </div>
     );

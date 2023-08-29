@@ -5,8 +5,7 @@ import ReactApexChart from 'react-apexcharts';
 import { IcolorScale, liveStatusEntry } from '../../../interfaces/ILiveStatus';
 import "./heatmapChar.css";
 import { left } from '@popperjs/core';
-
- 
+import theme from '../../../theme';
 
 interface HeatmapCharProps {
   systemsStatusCollection: liveStatusEntry[];
@@ -20,50 +19,55 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
       width: 1200,
       height: 300,
       type: 'heatmap',
+      fontFamily: theme.typography.fontFamily,
       toolbar: {
         show: true,
         offsetX: 0,
         offsetY: 0,
         tools: {
-          download: false, // Disable the download button
-          selection: true, // Disable the selection tool
-          zoom: true, // Disable zooming tool
-          zoomin: true,
-          zoomout: true,
-          pan: true,
+          download: true,  
+          selection: false,  
+          zoom: false, 
+          zoomin: false,
+          zoomout: false,
+          pan: false,
         },
       },
     },
+    legend: {	
+      fontSize: "16px",	
+      markers: {	
+        height: 16,	
+        width: 16	
+      }},
     grid:{
       padding:{
-        top:20,
+        top:10,
         right:40,
-         bottom:50,
+         bottom:10,
          left:20
   }
 
     },
     responsive: [
       {
-        breakpoint: 787,
+        breakpoint: 5000,
         options: {
           chart: {
-            width: '70%', // Adjust width for mobile
-            height: 200,
+            width: '100%',
+            height: 250,
           },
         },
       },
     ],
     stroke: {
-       
       width: 3,
-      
     },
     plotOptions: {
       heatmap: {
-        shadeIntensity: 0.5,
+        shadeIntensity: 0,
         colorScale: {
-          ranges: props.colors
+          ranges: props.colors,
         },
       },
     },
@@ -81,6 +85,9 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
     yaxis: {
       labels: {
         show: true,
+        style: {
+          fontSize: '18px'
+        }
       },
       tooltip: {
         enabled: false,
@@ -97,10 +104,10 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         if (dataPoint.date !== undefined) {
           return (
             '<div class="arrow_box">' +
-            '<div class="title_tooltip"  >Date:' + date + '</div>' +
-            '<span> ' + dataPoint.systemName + '</span>' +
+            '<div class="title_tooltip"  >&nbsp;&nbsp;Date:' + date + '&nbsp;</div>' +
+            '<span>&nbsp; ' + dataPoint.systemName + '&nbsp;</span>' +
             '<br />' +
-            '<span>Incidents: ' + dataPoint.incidentCounter + '</span>' +
+            '<span>&nbsp;&nbsp;Incidents: ' + dataPoint.incidentCounter + '&nbsp;</span>' +
             '</div>'
           );
         }
@@ -117,15 +124,12 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         const from: number | undefined = priorityInfo?.from;
         const to: number | undefined = priorityInfo?.to;
         const formattedDate: string = dayjs(systemData.date).format("DD/MM/YYYY")
-        //const isExist:boolean|undefined = props.dates?.includes(formattedDate);
-        //  if (isExist)
         if (from !== undefined && to !== undefined) {
           const priorityValue: number = from + (to - from) / 2;
           return {
             x: formattedDate,
             y: priorityValue,
             z: formattedDate,
-
           };
         }
         else {

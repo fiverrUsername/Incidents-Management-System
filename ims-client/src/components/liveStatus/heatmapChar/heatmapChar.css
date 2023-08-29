@@ -1,33 +1,37 @@
-
+#chart{
+  margin-left:4%;
+}
 .arrow_box {
-    position: relative;
-    background: hsl(0, 14%, 95%);
-    border: 2px solid  #c0b9b9;
-  }
-  .arrow_box:after, .arrow_box:before {
-    right: 100%;
-    top: 50%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-  }
-  
-  .arrow_box:after {
-    border-color: #c0b9b9;
-    border-right-color:  #c0b9b9;
-    border-width: 10px;
-    margin-top: -10px;
-  }
-  .arrow_box:before {
-    border-color:  #c0b9b9;
-    border-right-color:  #c0b9b9;
-    border-width: 13px;
-    margin-top: -13px;
-  }
+  position: relative;
+  background: hsl(0, 14%, 95%);
+}
 
-  .title_tooltip{
-    background-color: #d0c8c8;
-  }
+.arrow_box:after,
+.arrow_box:before {
+  right: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.arrow_box:after {
+  border-color: #c0b9b9;
+  border-right-color: #c0b9b9;
+  border-width: 10px;
+  margin-top: -10px;
+}
+
+.arrow_box:before {
+  border-color: #c0b9b9;
+  border-right-color: #c0b9b9;
+  border-width: 13px;
+  margin-top: -13px;
+}
+
+.title_tooltip {
+  background-color: #d0c8c8;
+}
