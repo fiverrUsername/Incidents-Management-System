@@ -4,13 +4,9 @@ import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { IcolorScale, liveStatusEntry } from '../../../interfaces/ILiveStatus';
 import "./heatmapChar.css";
+import { left } from '@popperjs/core';
 
-interface DataPoint {
-  x: string;
-  y: number;
-  z: string;
-  incident: number;
-}
+ 
 
 interface HeatmapCharProps {
   systemsStatusCollection: liveStatusEntry[];
@@ -21,7 +17,7 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
 
   const options: ApexOptions = {
     chart: {
-      width: 1000,
+      width: 1200,
       height: 300,
       type: 'heatmap',
       toolbar: {
@@ -30,26 +26,38 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         offsetY: 0,
         tools: {
           download: false, // Disable the download button
-          selection: false, // Disable the selection tool
-          zoom: false, // Disable zooming tool
-          zoomin: false,
-          zoomout: false,
-          pan: false,
+          selection: true, // Disable the selection tool
+          zoom: true, // Disable zooming tool
+          zoomin: true,
+          zoomout: true,
+          pan: true,
         },
       },
     },
+    grid:{
+      padding:{
+        top:20,
+        right:40,
+         bottom:50,
+         left:20
+  }
+
+    },
     responsive: [
       {
-        breakpoint: 767,
+        breakpoint: 787,
         options: {
           chart: {
-            width: '100%', // Adjust width for mobile
-            height: 300,
+            width: '70%', // Adjust width for mobile
+            height: 200,
           },
         },
       },
     ],
     stroke: {
+       
+      width: 3,
+      
     },
     plotOptions: {
       heatmap: {
@@ -80,23 +88,7 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
       }
     },
     tooltip: {
-      x: {
-        show: true,
-        format: 'dd MMM',
-        formatter: undefined,
-      },
-      y: {
-        formatter: () => '', // Set the formatter to an empty function to hide the y value
-        title: {
-          formatter: () => '',
-        },
-      },
-      z: {
-        formatter: undefined,
-        title: 'date: ',
-      },
       custom: function ({ seriesIndex, dataPointIndex }: {
-        series: Array<{ data: Array<DataPoint> }>,
         seriesIndex: number,
         dataPointIndex: number
       }) {

@@ -6,37 +6,36 @@ import { IliveStatus } from "../interfaces/liveStatusInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 
 export default class liveStatusController {
-  
-   async getLiveStatus(req: Request, res: Response): Promise<void> {
+
+    async getLiveStatus(req: Request, res: Response): Promise<Response> {
         try {
             let systems: IliveStatus[] | any;
-            if (req.params.date) {
-                const filterDate = new Date(req.params.date);
+            if (req.query.date) {
+                const filterDate = new Date(req.query.date.toString());
                 filterDate.setHours(0, 0, 0, 0);
                 systems = await liveStatusService.getLiveStatus(filterDate);
             }
-            else{
+            else {
                 systems = await liveStatusService.getLiveStatus();
             }
-            
-            if (systems instanceof Error) {
-                res.status(status.SERVER_ERROR).json({ message: systems, error: true });
-            } else res.status(status.SUCCESS).json(systems);
+            if (systems == null || systems == undefined || systems instanceof Error) {
+                return res.status(status.SERVER_ERROR).json({ message: systems, error: true });
+            } return res.status(status.SUCCESS).json(systems);
         } catch (error: any) {
-            res.status(status.SERVER_ERROR).json({ message: error });
+            return res.status(status.SERVER_ERROR).json({ message: error });
         }
     }
     //after test remove this
-    async createLiveStatus(req: Request, res: Response): Promise<void> {
+    async createLiveStatus(req: Request, res: Response): Promise<Response> {
         try {
             const tag: string = "inbox"
-            const data:IliveStatus=req.body
-            const systems = await liveStatusService.createOrUpdateLiveStatus(data,'',tag);
-            if (systems instanceof Error) {
-                res.status(status.SERVER_ERROR).json({ message: systems, error: true });
-            } else res.status(status.SUCCESS).json(systems);
+            const data: IliveStatus = req.body
+            const systems = await liveStatusService.createOrUpdateLiveStatus(data, '', tag);
+            if (systems == null || systems == undefined || systems instanceof Error) {
+                return res.status(status.SERVER_ERROR).json({ message: systems, error: true });
+            } return res.status(status.SUCCESS).json(systems);
         } catch (error: any) {
-            res.status(status.SERVER_ERROR).json({ message: error });
+            return res.status(status.SERVER_ERROR).json({ message: error });
         }
     }
 }
