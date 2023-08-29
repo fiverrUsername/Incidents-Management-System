@@ -16,7 +16,7 @@ export const SLACK_UPLOAD_FILES = 'https://slack.com/api/files.upload';
 export const ERROR_UPDATING_CHANNEL_DESCRIPTION = 'Error updating channel description:';
 export const NO_CHANNEL_NAME = 'NO CHANNEL NAME';
 export const NO_INCIDENT_NAME = 'NO INCIDENT NAME';
-export const IMS_SERVER_ROUTING = "http://localhost:7000/";
+export const IMS_SERVER_ROUTING = "https://ims-server-pbkw.onrender.com/";
 export const CHANNEL_REDIRECT = "https://slack.com/app_redirect?channel="
 export const ERROR_EXTRACTING_FILES = 'Error extracting files:';
 export const SLACK_API_TOKEN =
