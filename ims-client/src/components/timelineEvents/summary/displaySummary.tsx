@@ -5,13 +5,12 @@ import {  Box, Chip, Grid, colors } from '@mui/material';
 import theme from '../../../theme';
 import dayjs from 'dayjs';
 import { ITag } from '../../../interfaces/ITag';
-import CustomAutocomplete from '../../base/autoCompleteTag/autoComplete';
+import CustomAutocomplete, { CustomSyntheticEvent } from '../../base/autoCompleteTag/autoComplete';
 interface propsDisplaySummary {
     summaryIncident: ISummary
 }
 const DisplaySummary = ({ summaryIncident }: propsDisplaySummary) => {
-    const [selectedTags, setSelectedTags] = useState<ITag[]>(summaryIncident.tags);
-    const [s, setS] = useState<ITag[]>([]);
+    const selectedTags = summaryIncident.tags;
     const getOptionLabel = (tag: ITag) => tag.name;
     const date = dayjs(summaryIncident.createdAt).format("DD/MM/YYYY")
     return (
@@ -30,7 +29,9 @@ const DisplaySummary = ({ summaryIncident }: propsDisplaySummary) => {
 
                     <StyledBox>Affected services:</StyledBox> 
                     {summaryIncident.tags.length!=0?
-                    <CustomAutocomplete options={s} selectedOptions={selectedTags} setSelectedOptions={setSelectedTags} getOptionLabel={getOptionLabel} disabled={true} placehOlderText={''}/>:''}
+                    <CustomAutocomplete options={selectedTags} selectedOptions={selectedTags} getOptionLabel={getOptionLabel} placeholderText={''} onChangeOptions={function (event: CustomSyntheticEvent): void {
+                            console.log('Function not implemented.');
+                        } } disable={true}/>:''}
                     {/* {summaryIncident.tags.length!=0 &&<> 
                     <Box style={{borderRadius: '10px' ,border: '1px solid'+ theme.palette.info.main,width:"100%",height:"auto", padding:"1.5% "}} > 
                     {summaryIncident.tags.map((tag, index) => {

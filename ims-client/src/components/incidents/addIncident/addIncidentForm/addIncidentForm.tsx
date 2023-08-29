@@ -11,7 +11,7 @@ import backendServices from '../../../../services/backendServices/backendService
 import submitIncident from '../../../../services/functions/incident/submitIncident';
 import theme from '../../../../theme';
 import TextFieldInput from '../../../../trash/TextFields';
-import CustomAutocomplete from '../../../base/autoCompleteTag/autoComplete';
+import CustomAutocomplete, { CustomSyntheticEvent } from '../../../base/autoCompleteTag/autoComplete';
 import BannerNotification from "../../../base/bannerNotification/BannerNotification";
 import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import DropDown from '../../../base/dropDown/DropDown';
@@ -61,7 +61,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
       data.date = date
     data.type = type
     data.tags = selectedTags
-    if (type && tags) {
+    if (type && selectedTags.length>0) {
       const isSuccess = await submitIncident(data, incidents, setIncidents);
       setIsSuccess(isSuccess);
       setShowBanner(true);
@@ -165,7 +165,9 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
   const handlePriorityChange = (Event: SelectChangeEvent) => {
     setPriority(Event.target.value as Priority);
   };
-
+  const handleTagChange = (Event: CustomSyntheticEvent) => {
+    setSelectedTags(Event.selectedTags);
+  };
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addIncident" style={popupStyles}>
@@ -240,9 +242,9 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Tags</label>
                 <div id="tags">
-                  <CustomAutocomplete options={tags} selectedOptions={selectedTags} setSelectedOptions={setSelectedTags} getOptionLabel={getOptionLabel} placehOlderText={"Write to add"} />
+                  <CustomAutocomplete options={tags} getOptionLabel={getOptionLabel} placeholderText={"Write to add"} onChangeOptions={handleTagChange} />
                 </div>
-                {isSubmit && tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>}
+                {isSubmit && selectedTags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>}
               </FormControl>
             </Grid>
             <Grid item xs={12}>

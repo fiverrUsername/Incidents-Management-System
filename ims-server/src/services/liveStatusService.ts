@@ -1,6 +1,4 @@
 import { v4 as uuidv4 } from 'uuid';
-import moment from "moment-timezone";
-
 import { Priority, Status } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
@@ -22,21 +20,32 @@ class liveStatusService {
 
     async getLiveStatus(date?: Date): Promise<liveStatusEntry[] | any> {
         try {
+            //date not correct/not found
+            //systemData is empty
+            //check if date is defined..???
+            console.log(date)
             const tags = await tagService.getAllTags();
-            let liveStatuses: liveStatusEntry[] = [];
+            //let liveStatuses: liveStatusEntry[] = [];
+            let liveStatuses: Array<liveStatusEntry | null> = [];
+            const systemDate = date || new Date();
+            // console.log(systemDate)
             for (const tag of tags) {
-                const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name, date);
-                if (latestStatusForTag) {
+                   const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name,systemDate);
+                // if (latestStatusForTag && latestStatusForTag.length === 0) {
+                //     liveStatuses.push(null);
+                // } 
+                // else {
                     liveStatuses.push({
                         systemName: tag.name,
                         systemData: latestStatusForTag
                     });
-                }
+               // }
             }
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,
                 msg: constants.GET_SYSTEMS_BY_DATE_SUCCESS,
             });
+            console.log("liveStatuses",liveStatuses)
             return liveStatuses;
         } catch (error: any) {
             logger.error({
