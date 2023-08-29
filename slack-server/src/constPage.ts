@@ -2,8 +2,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import { LogLevel, WebClient } from "@slack/web-api";
-// export const port = 4700;
-export const port = 'https://slack-server-71aw.onrender.com';
+export const port = 4700;
 
 // export const wsPort = 'ws://127.0.0.1:8080';
 export const wsPort = 'wss://ims-socket.onrender.com';
