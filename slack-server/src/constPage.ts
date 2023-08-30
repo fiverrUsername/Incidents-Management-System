@@ -23,6 +23,8 @@ export const CHANNEL_REDIRECT = "https://slack.com/app_redirect?channel="
 
 export const SLACK_API_TOKEN ="xoxb-5609511342163-5604717800598-Pu5kgQESjOXRmHjgyO4Urd6Z"
 export const SLACK_TOKEN= "xoxe-1-My0xLTU2MDk1MTEzNDIxNjMtNTU5NTYwNzQ4MjAwNy01ODE2MTQ4MDExMjg2LTZhZTkwNTAzNjUxNDc2NTljZGM4ZmQyNDUwNDhjODc0ZjFhOWNjZmFlMmQ2ZmIzMDlkNGYxM2Y3NTY5YjYxNzI"
+
+
 export const client = new WebClient(SLACK_API_TOKEN, {
   logLevel: LogLevel.DEBUG,
 });
