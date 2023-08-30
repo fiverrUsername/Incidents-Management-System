@@ -3,6 +3,8 @@ import { constants } from "../loggers/constants";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import { Priority, Status } from "../enums/enum";
 import { TagDto } from "./tagDto";
+import { IsExistingUserId } from "./userIdValidators";
+import { IsExistingIncidentId } from "./incidentIdValidators";
 
 export interface ITimelineEventDto {
     incidentId: string;
@@ -13,7 +15,7 @@ export interface ITimelineEventDto {
     files: string[];
     createdDate: string;
     updatedDate: string;
-    status:Status;
+    status: Status;
 }
 
 export class ITimelineEventDto {
@@ -22,27 +24,26 @@ export class ITimelineEventDto {
         this.incidentId = "";
         this.userId = "";
         this.description = "";
-        this.status=Status.Active;
+        this.status = Status.Active;
         this.priority = Priority.P0;
         this.type = "";
         this.files = [];
         this.createdDate = Date.now().toString();
         this.updatedDate = Date.now().toString();
-        this.tags=[];
+        this.tags = [];
         Object.assign(this, init);
     }
 
     @IsNotEmpty({ message: `incidentId ${constants.EMPTY_OBJECT}` })
     @IsString({ message: `incidentId ${constants.INVALID_MESSAGE}` })
-   // @IsExistingIncidentId({ message: `incidentId must be a valid existing incident ID` })
+    @IsExistingIncidentId({ message: `incidentId must be a valid existing incident ID` })
     incidentId: string;
 
     @IsNotEmpty({ message: `userId ${constants.EMPTY_OBJECT}` })
     @IsString({ message: `userId ${constants.INVALID_MESSAGE}` })
-    // @IsExistingUserId({message: `userId must be valid existing user Id`})
+    // @IsExistingUserId({ message: `userId must be valid existing user Id` })
     userId: string;
 
-    // @IsNotEmpty({ message: `description ${constants.EMPTY_OBJECT}` })
     @IsString({ message: `description ${constants.INVALID_MESSAGE}` })
     description: string;
 
