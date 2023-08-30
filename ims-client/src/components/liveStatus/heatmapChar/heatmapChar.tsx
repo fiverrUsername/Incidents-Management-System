@@ -129,14 +129,14 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
           return {
             x: formattedDate,
             y: priorityValue,
-            z: formattedDate,
+         
           };
         }
         else {
           return {
             x: '',
             y: 0,
-            z: 0,
+            
           };
         }
       })
