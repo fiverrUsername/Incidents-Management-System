@@ -5,6 +5,7 @@ import aggregationRepository from "../repositories/aggregationRepository";
 
 class AggregateService {
   async aggregateIncident(): Promise<any> {
+    
     try {
       return await aggregationRepository.aggregateIncident();
     } catch (error: any) {
