@@ -9,7 +9,7 @@ import IAggregation from '../../../interfaces/IAggregation';
 import Widget from './widget';
 import backendServices from '../../../services/backendServices/backendServices';
 
-const NewStack = styled(Stack)(({ theme }) => ({
+const NewStack = styled(Stack)(() => ({
   '&': {
     'top': '123px',
     'left': '122px',
