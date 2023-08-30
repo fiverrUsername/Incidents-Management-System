@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default async function submitTimeLine(props: Props) {
-  let flag: boolean;
+  let isSuccess: boolean;
   const timeLineEvent: ITimeLineEvent = {
     incidentId: props.incident.id,
     channelId: props.incident.channelId,
@@ -19,7 +19,7 @@ export default async function submitTimeLine(props: Props) {
     priority: props.data.priority,
     type: props.data.type,
     tags: props.data.tags,
-    files: props.data.files,
+    files: props.data.filesString,
     createdDate: props.data.date,
     updatedDate: new Date(),
     status: props.data.status,
@@ -27,10 +27,10 @@ export default async function submitTimeLine(props: Props) {
   try {
    const newTimeLine= await backendServices.addTimelineEvent(timeLineEvent);
    props.addNewTimelineFunction(newTimeLine);
-    flag = true;
+   isSuccess = true;
   }
   catch (error) {
-    flag = false;
+    isSuccess = false;
   }
-  return flag;
+  return isSuccess;
 }
