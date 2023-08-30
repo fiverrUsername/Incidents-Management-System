@@ -4,7 +4,7 @@ import { ITimeLineEvent } from "../../interfaces/ITimeLineEvent"
 import { Dayjs } from "dayjs";
 
 const baseUrl = process.env.REACT_APP_API_KEY;
-
+console.log("base",baseUrl);
 const backendService = {
   getIncidents: () => axios.get(`${baseUrl}/incident`).then(response => response.data),
   getAggregation: () => axios.get(`${baseUrl}/aggregation`).then(response => response.data),
