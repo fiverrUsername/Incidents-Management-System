@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from 'uuid';
-
 import { Priority, Status } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
@@ -21,21 +20,32 @@ class liveStatusService {
 
     async getLiveStatus(date?: Date): Promise<liveStatusEntry[] | any> {
         try {
+            //date not correct/not found
+            //systemData is empty
+            //check if date is defined..???
+            console.log(date)
             const tags = await tagService.getAllTags();
-            let liveStatuses: liveStatusEntry[] = [];
+            //let liveStatuses: liveStatusEntry[] = [];
+            let liveStatuses: Array<liveStatusEntry | null> = [];
+            const systemDate = date || new Date();
+            // console.log(systemDate)
             for (const tag of tags) {
-                const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name, date);
-                if (latestStatusForTag) {
+                   const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name,systemDate);
+                // if (latestStatusForTag && latestStatusForTag.length === 0) {
+                //     liveStatuses.push(null);
+                // } 
+                // else {
                     liveStatuses.push({
                         systemName: tag.name,
                         systemData: latestStatusForTag
                     });
-                }
+               // }
             }
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,
                 msg: constants.GET_SYSTEMS_BY_DATE_SUCCESS,
             });
+            console.log("liveStatuses",liveStatuses)
             return liveStatuses;
         } catch (error: any) {
             logger.error({
@@ -101,6 +111,7 @@ class liveStatusService {
                     liveStatus.maxPriority = timeLineEvent.priority;
                 }
             }
+            liveStatus.resolvedIncidents++
             liveStatus.incidents = updatedIncidents
             return await liveStatusRepository.updateLiveStatus(liveStatus, liveStatus.id);
         } catch (e) {
@@ -109,13 +120,12 @@ class liveStatusService {
     }
 
     getUpdatedMaxPriority(incidentsIds: string[][]) {
-        let maxPriority = Priority.P3
         const priorityValues = Object.values(Priority) as string[];
-        incidentsIds.map((incidentsId, index: number) => {
+        for (const [index, incidentsId] of incidentsIds.entries()) {
             if (incidentsId.length > 0)
-                maxPriority = priorityValues[index] as Priority;
-        })
-        return maxPriority;
+                return priorityValues[priorityValues.length - index - 1] as Priority;
+        }
+        return Priority.P3;
     }
 
     async autoUpdateLiveStatus() {
@@ -123,6 +133,8 @@ class liveStatusService {
         yesterday.setDate(yesterday.getDate() - 1);
         const systems: IliveStatus[] = await liveStatusRepository.getLiveStatusSystemsByDate(yesterday.toISOString());
         systems.forEach(async system => {
+            if (!(system.incidentCounter > system.resolvedIncidents))
+                return
             await liveStatusRepository.createLiveStatus(
                 {
                     id: uuidv4(),
@@ -130,7 +142,8 @@ class liveStatusService {
                     incidents: system.incidents,
                     date: new Date,
                     maxPriority: this.getUpdatedMaxPriority(system.incidents),
-                    incidentCounter: system.incidentCounter,
+                    incidentCounter: system.incidentCounter - system.resolvedIncidents,
+                    resolvedIncidents: 0
                 });
         });
     }
@@ -144,7 +157,8 @@ class liveStatusService {
                     incidents: [[], [], [], []],
                     date: new Date,
                     maxPriority: incident.currentPriority,
-                    incidentCounter: 0
+                    incidentCounter: 0,
+                    resolvedIncidents: 0,
                 };
                 return await this.createOrUpdateLiveStatus(liveStatusData, incident.id ? incident.id : '', tag.name);
             });
