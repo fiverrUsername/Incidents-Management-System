@@ -12,22 +12,17 @@ import incidentService from "./incidentService";
 import liveStatusService from "./liveStatusService";
 
 class TimelineEventService {
-  
+
   async getAllTimelineEvents(): Promise<ITimelineEvent[] | any> {
     try {
-      const timelines=await timelineEventRepository.getAllTimelineEvents();
-      logger.info({
-        source: constants.TIMELINE_EVENT,
-        method: constants.METHOD.GET,
-        success: true
-      });
+      const timelines = await timelineEventRepository.getAllTimelineEvents();
+      if (timelines instanceof Error) {
+        logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.GET, err: true });
+        return;
+      }
+      logger.info({ source: constants.TIMELINE_EVENT, method: constants.METHOD.GET, success: true });
       return timelines;
     } catch (error: any) {
-      logger.error({
-        source: constants.TIMELINE_EVENT,
-        method: constants.METHOD.GET,
-        err: true
-      });
       console.error(`error: ${error}`);
     }
   }
@@ -35,14 +30,13 @@ class TimelineEventService {
   async getTimelineEventByIncidentId(id: string): Promise<ITimelineEvent[] | any> {
     try {
       const timelineEvent = await timelineEventRepository.getTimelineEventByIncidentId(id);
-      logger.info({
-        source: constants.TIMELINE_EVENT, msg: constants.METHOD.GET, success: true
-      });
+      if (timelineEvent instanceof Error) {
+        logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.GET, err: true });
+        return;
+      }
+      logger.info({ source: constants.TIMELINE_EVENT, msg: constants.METHOD.GET, success: true });
       return timelineEvent;
     } catch (error: any) {
-      logger.error({
-        source: constants.TIMELINE_EVENT, method: constants.METHOD.GET, err: true
-      });
       console.error(`error: ${error}`);
     }
   }
