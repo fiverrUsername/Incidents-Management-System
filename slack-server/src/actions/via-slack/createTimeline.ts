@@ -11,6 +11,7 @@ import { decodeMessageStatus } from '../base/decode/decodeMessageStatus';
 import { fileResponse } from './fileResponse';
 
 // Load environment variables from .env file
+export const date:Date=new Date();
 dotenv.config();
 export default async function handleMessageEvent(event: any) {
   const headers = {
@@ -26,8 +27,8 @@ export default async function handleMessageEvent(event: any) {
       priority: decodeMessagePriority(event.text) || Priority.P0,
       type: EncidentType.Securing,
       files: event.files && (await fileResponse(event.files, answer.data.id!)) || [],
-      createdDate: new Date(),
-      updatedDate: decodeMessageDate(event.text) || new Date(),
+      createdDate: date,
+      updatedDate: decodeMessageDate(event.text) || date,
       status: decodeMessageStatus(event.text) || Status.Active,
       tags: []
     };
