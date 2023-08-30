@@ -3,6 +3,9 @@ import bodyParser from 'body-parser';
 import events from './slackTracking';
 import cors from 'cors';
 import { WEBHOOK_EVENT_RECEIVED_SUCCESSFULLY, port } from './constPage';
+import { constants, files } from './loggers/constants';
+import logger from './loggers/log';
+
 const app = express();
 require('dotenv').config()
 
@@ -28,12 +31,11 @@ app.post('/webhook', (req: Request, res: Response) => {
   }
   events(data);
 });
-console.log("process.env.SLACK_API_TOKEN", process.env.SLACK_API_TOKEN);
+
+
 
 app.listen(port, () => {
-  // console.log(`Server is on http://localhost:${port}`);
-  console.log("port in listen in slack-server", port);
-
+  logger.info({ source: constants.SERVER_IS_OS_IN_LOCALHOST_PORT+""+port, file: files.APP })
 });
 
 

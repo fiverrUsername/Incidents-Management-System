@@ -1,42 +1,37 @@
-import FormData from 'form-data';
-import { SLACK_UPLOAD_FILES, client, SLACK_API_TOKEN } from '../../constPage';
 import axios from "axios";
+import { client } from '../../constPage';
 import { IAttachmentData } from '../../interfaces/attachmentData';
 import { IMessageData } from '../../interfaces/messageData';
+import { constants, files } from '../../loggers/constants';
+import logger from '../../loggers/log';
 
 export async function sendMessage(messageData: IMessageData) {
-  try {
-    const massage = (messageData.userName ? "name: <@" + messageData.userName+" \n": "") + (messageData.text ? messageData.text : "")
-    await client.chat.postMessage({
-      channel: messageData.channelId,
-      text: massage,
-      as_user: true,
-      username: messageData.userName,
-    });
-    if (messageData.files !== null) {
-      const fileUploads = messageData.files?.map(async (file: string) => {
-        try {
-          const formData = new FormData();
-          formData.append('channels', messageData.channelId);
-          formData.append('file', Buffer.from(file), {
-            filename: "test"
-          });
-          await axios.post(SLACK_UPLOAD_FILES, formData, {
-            headers: {
-              ...formData.getHeaders(),
-              Authorization: `Bearer ${SLACK_API_TOKEN}`
-            },
-          });
-
-        } catch (error) {
-          console.error('Error uploading file:', error);
-          return null;
-        }
+   const message = (messageData.userName ? `name: <@${messageData.userName}>\n` : '') + (messageData.text ? messageData.text : '');
+   try {
+      await client.chat.postMessage({
+        channel: messageData.channelId,
+        text: message,
+        as_user: true,
+        username: messageData.userName,
       });
-      await Promise.all(fileUploads ? fileUploads : "");
+   } catch (error) {
+      logger.error({ source: constants.CLIENT_ERROR_POST_MASSAGE, file: files.SEND_MESSAGE ,method:constants.METHOD.CLIENT, error: error })
+   }
+   if ( messageData.files!.length > 0) {
+      await Promise.all(
+        messageData.files!.map(async (file: IAttachmentData) => {
+          try {
+            const response = await axios.get(file.url.toString(), { responseType: 'arraybuffer' });
+            await client.files.upload({
+              channels: messageData.channelId,
+              file: response.data,
+              filename: file.key.substring(file.key.lastIndexOf('?')+1)
+            });
+          } catch (error) {
+            logger.error({ source: constants.CLIENT_ERROR_SENDING_FILES_TO_SLACK,  file: files.SEND_MESSAGE ,method:constants.METHOD.CLIENT , error: error})
+          }
+        })
+      );
     }
-    console.log('Message and files sent successfully!');
-  } catch (error) {
-    console.error('Error sending message:', error);
-  }
+    logger.info({ source: constants.MESSAGE_SENDING_MESSAGE_SUCCESSFULLY, file: files.SEND_MESSAGE ,method:constants.METHOD.CLIENT })
 }

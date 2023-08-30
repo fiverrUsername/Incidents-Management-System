@@ -1,26 +1,27 @@
-import {Button } from "@mui/material";
-import React,{ useState } from "react";
+import { Button } from "@mui/material";
+import React, { useState } from "react";
+
 import { ITimeLineEvent } from "../../../interfaces/ITimeLineEvent";
 import { Status } from "../../../interfaces/enums";
 import AddTimelineForm, { receivedIncident } from "./addTimelineEventForm/addTimelineEventForm";
 
 interface Props {
-    incident:receivedIncident;
+    incident: receivedIncident;
     addNewTimelineFunction: (newTimeline: ITimeLineEvent) => void
 }
 
 export default function AddTimelineEvent({ incident,addNewTimelineFunction }: Props) {
-    const [open, setOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const handleClick = () => {
-        setOpen(true);
+        setIsOpen(true);
     };
     const handleClose = () => {
-        setOpen(false);
+        setIsOpen(false);
     };
     return (
         <div>
-            {incident.status==Status.Active&&<Button onClick={handleClick} variant='outlined'>+ Add Update</Button>}
-            {open && <AddTimelineForm addNewTimelineFunction={addNewTimelineFunction} open={open} onClose={handleClose} incident={incident} />}
+            {incident.status == Status.Active && <Button onClick={handleClick} variant='outlined'>+ Add Update</Button>}
+            {isOpen && <AddTimelineForm addNewTimelineFunction={addNewTimelineFunction} isOpen={isOpen} onClose={handleClose} incident={incident} />}
         </div>
     )
 }

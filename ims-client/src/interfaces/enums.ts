@@ -15,3 +15,11 @@ export enum Types {
   comment = "Comment",
 }
 
+export enum Level {
+  info = 'info',
+  debug = 'debug',
+  error = 'erorr',
+  trace = 'trace',
+  warn = 'warn',
+}
+

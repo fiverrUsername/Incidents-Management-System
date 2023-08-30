@@ -11,7 +11,6 @@ const messageQueue: any[] = []; // Replace 'any' with the type of messages you a
 
 ws.on('open', () => {
   console.log('WebSocket connection is open in ims-server.');
-
   // Process the message queue
   while (messageQueue.length > 0) {
     const message = messageQueue.shift();

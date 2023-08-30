@@ -3,16 +3,18 @@ import bodyParser from 'body-parser';
 import express, { NextFunction, Request, Response } from 'express';
 import fs from 'fs';
 import swaggerUI from 'swagger-ui-express';
+import clientLogRouter from './routes/clientLoggerRouter'
 import '../src/services/socket';
 import config from './config/config';
 import logger from './loggers/log';
 import { connect } from './models/db';
 import incidentRoute from './routes/IncidentRout';
 import aggregationRouter from './routes/aggrigationRouter';
+import attachmentRouter from './routes/attachmentRouter';
+import liveStatusRouter from "./routes/liveStatusRouter";
 import tagRouter from './routes/tagRouter';
 import timelineEventRouter from './routes/timelineEventRouter';
-import liveStatusRouter from "./routes/liveStatusRouter";
-import attachmentRouter from './routes/attachmentRouter';
+import dailySchedule from './services/schedule';
 
 const port = config.server.port
 
@@ -38,7 +40,7 @@ const corsOptions: cors.CorsOptions = {
 
 connect();
 app.use(cors(corsOptions));
-
+dailySchedule
 app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use(bodyParser.json())
 app.use('/incident', incidentRoute)
@@ -47,6 +49,8 @@ app.use('/tag', tagRouter)
 app.use('/timelineEvent', timelineEventRouter)
 app.use('/attachment', attachmentRouter)
 app.use('/livestatus', liveStatusRouter)
+app.use('/log',clientLogRouter);
+
 
 // בדיקה אם השרת מורשה לגשת לשרת
 app.use((req: Request, res: Response, next: NextFunction) => {
