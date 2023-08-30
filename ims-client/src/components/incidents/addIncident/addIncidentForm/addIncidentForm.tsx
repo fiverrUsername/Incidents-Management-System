@@ -25,7 +25,7 @@ export interface FormData {
   ChannelId: string;
   channelName: string;
   type: string;
-  tags: ITag[];
+  tags: (string|ITag)[];
 }
 interface Props {
   open: boolean;
@@ -39,7 +39,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
   const [priority, setPriority] = React.useState<Priority>(Priority.P0);
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [type, setType] = React.useState('');
-  const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<(string|ITag)[]>([]);
   const [tags, setTags] = useState<ITag[]>([]);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -47,7 +47,12 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
 
 
 
-  const getOptionLabel = (option: ITag) => option.name;
+  const getOptionLabel = (option: ITag | string) => {
+    if (typeof option === 'string') {
+      return option;
+    }
+    return option.name;
+  };
 
   async function onSubmit(data: FormData) {
     setIsSubmit(true);

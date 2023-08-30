@@ -11,7 +11,7 @@ export interface ITimeLineEvent  {
   priority:Priority,
   status: Status,
   type:string,
-  tags:ITag[],
+  tags:(string|ITag)[],
   files:string[],
   createdDate: dayjs.Dayjs,
   updatedDate:Date
