@@ -67,6 +67,7 @@ ws.onmessage = (webSocketMessage: { data: { toString: () => string; }; }) => {
 };
 
 export const sendToSocket = (object: IIncident | ITimelineEvent, objectType: ObjectType, actionType: ActionType) => {
+  console.log("------sendToSocket timeline  or incident: ", object)
   const sendObj: IMessage = { objectType, actionType, object };
   if (ws.readyState === WebSocket.OPEN) {
     send(sendObj);

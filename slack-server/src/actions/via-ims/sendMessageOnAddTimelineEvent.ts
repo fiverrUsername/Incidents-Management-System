@@ -11,6 +11,8 @@ import { constants, files } from "../../loggers/constants";
 dotenv.config();
 export async function sendMessageOnAddTimelineEvent(timeline: ITimelineEvent) {
    try {
+     console.log("----------------------------i am in sendMassageOnSpecificPriorityChannel");
+         
         const headers = {
             Authorization: `Bearer ${process.env.API_KEY}`
         };
