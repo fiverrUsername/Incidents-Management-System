@@ -18,7 +18,8 @@ export default async function submitIncident(data: FormData, incident: IIncident
         slackLink: "",
         channelName: data.channelName,
         channelId: "",
-        currentTags: data.tags.map(tag => ({ id: tag.id, name: tag.name })),
+        currentTags: data.tags.map(tag => {if(typeof tag ==="string") return "";
+    return ({ id: tag.id, name: tag.name })}),
         date: data.date.toDate(),
         createdAt: new Date(),
         updatedAt: new Date(),

@@ -11,7 +11,7 @@ interface propsDisplaySummary {
 }
 const DisplaySummary = ({ summaryIncident }: propsDisplaySummary) => {
     const selectedTags = summaryIncident.tags;
-    const getOptionLabel = (tag: ITag) => tag.name;
+    const getOptionLabel = (tag: any|ITag) => tag.name;
     const date = dayjs(summaryIncident.createdAt).format("DD/MM/YYYY")
     return (
         <StyledPaper>
