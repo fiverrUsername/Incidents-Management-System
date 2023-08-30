@@ -61,7 +61,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
       data.date = date
     data.type = type
     data.tags = selectedTags
-    if (type && selectedTags.length>0) {
+    if (type && selectedTags.length > 0) {
       const isSuccess = await submitIncident(data, incidents, setIncidents);
       setIsSuccess(isSuccess);
       setShowBanner(true);
@@ -126,22 +126,6 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
     return true;
   };
 
-
-
-
-  const validatechannelId = (value: string) => {
-    if (!value) {
-      return 'Slack Channel Id is required';
-    }
-
-    try {
-      new URL(value);
-    } catch (error) {
-      return 'Invalid Slack Channel Id';
-    }
-
-    return undefined;
-  };
   const backdropStyles: React.CSSProperties = {
     background: 'rgba(0, 48, 18, 0.84)',
   };

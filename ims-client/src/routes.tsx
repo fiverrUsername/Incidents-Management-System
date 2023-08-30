@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, Route, Routes,HashRouter } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { withId } from './HOC';
 import IncidentsPage from './pages/incidents/incidentsPage';
