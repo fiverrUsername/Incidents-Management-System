@@ -19,7 +19,8 @@ const slice = createSlice({
     }
 })
 
-const getState = (state: any) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getState = (state:any) => {
     return state[LIVE_STATUS_STATE_KEY] || initialState
 }
 

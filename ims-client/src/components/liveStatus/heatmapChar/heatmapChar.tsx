@@ -4,7 +4,6 @@ import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { IcolorScale, liveStatusEntry } from '../../../interfaces/ILiveStatus';
 import "./heatmapChar.css";
-import { left } from '@popperjs/core';
 import theme from '../../../theme';
 
 interface HeatmapCharProps {
