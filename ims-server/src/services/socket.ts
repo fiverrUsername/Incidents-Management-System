@@ -4,10 +4,9 @@ import { ITimelineEvent } from '../interfaces/ItimelineEvent';
 import { IMessage, ActionType, ObjectType } from '../../../ims-socket/src/interfaces';
 import incidentRepository from '../repositories/incidentRepository';
 import timelineEventRepository from '../repositories/timelineEventRepository';
-
-const ws = new WebSocket('wss://ims-socket.onrender.com/');
-
-const messageQueue: any[] = []; // Replace 'any' with the type of messages you are sending
+const wsp=process.env.SOCKET_PORT
+const ws = new WebSocket(wsp as string);
+const messageQueue: any[] = []; 
 
 ws.on('open', () => {
   console.log('WebSocket connection is open in ims-server.');
