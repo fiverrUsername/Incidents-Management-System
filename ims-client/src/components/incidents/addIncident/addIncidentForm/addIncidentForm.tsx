@@ -3,7 +3,6 @@ import { Button, Dialog, FormControl, Grid, SelectChangeEvent } from "@mui/mater
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-
 import IIncident from '../../../../interfaces/IIncident';
 import { ITag } from '../../../../interfaces/ITag';
 import { Priority } from '../../../../interfaces/enums';
@@ -32,7 +31,7 @@ interface Props {
   open: boolean;
   onClose: () => void;
   incidents: IIncident[];
-  setIncidents: any;
+  setIncidents: (value: React.SetStateAction<IIncident[]>) => void;
 }
 
 export default function addIncidentForm({ open, onClose, incidents, setIncidents }: Props) {
@@ -129,19 +128,19 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
 
 
 
-  const validatechannelId = (value: string) => {
-    if (!value) {
-      return 'Slack Channel Id is required';
-    }
+  // const validatechannelId = (value: string) => {
+  //   if (!value) {
+  //     return 'Slack Channel Id is required';
+  //   }
 
-    try {
-      new URL(value);
-    } catch (error) {
-      return 'Invalid Slack Channel Id';
-    }
+  //   try {
+  //     new URL(value);
+  //   } catch (error) {
+  //     return 'Invalid Slack Channel Id';
+  //   }
 
-    return undefined;
-  };
+  //   return undefined;
+  // };
   const backdropStyles: React.CSSProperties = {
     background: 'rgba(0, 48, 18, 0.84)',
   };
@@ -155,7 +154,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
   }, []);
 
 
-  const handleDateChange = (Event: any) => {
+  const handleDateChange = (Event: React.SetStateAction<dayjs.Dayjs | null>) => {
     setDate(Event);
   };
   const handleTypeChange = (Event: SelectChangeEvent) => {

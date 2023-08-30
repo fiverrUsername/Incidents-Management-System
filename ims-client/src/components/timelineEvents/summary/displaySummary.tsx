@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-import { CustomScrollbar, StyledBox, StyledPaper } from '../../../pages/timeLine/timeLinePage.style'
+import React from 'react'
+import { StyledBox, StyledPaper } from '../../../pages/timeLine/timeLinePage.style'
 import { ISummary } from '../../../interfaces/ISummary';
-import {  Box, Chip, Grid, colors } from '@mui/material';
+import { Grid } from '@mui/material';
 import theme from '../../../theme';
 import dayjs from 'dayjs';
 import { ITag } from '../../../interfaces/ITag';
-import CustomAutocomplete, { CustomSyntheticEvent } from '../../base/autoCompleteTag/autoComplete';
+import CustomAutocomplete from '../../base/autoCompleteTag/autoComplete';
 interface propsDisplaySummary {
     summaryIncident: ISummary
 }
@@ -29,7 +29,7 @@ const DisplaySummary = ({ summaryIncident }: propsDisplaySummary) => {
 
                     <StyledBox>Affected services:</StyledBox> 
                     {summaryIncident.tags.length!=0?
-                    <CustomAutocomplete options={selectedTags} selectedOptions={selectedTags} getOptionLabel={getOptionLabel} placeholderText={''} onChangeOptions={function (event: CustomSyntheticEvent): void {
+                    <CustomAutocomplete options={selectedTags} selectedOptions={selectedTags} getOptionLabel={getOptionLabel} placeholderText={''} onChangeOptions={function (): void {
                             console.log('Function not implemented.');
                         } } disable={true}/>:''}
                     {/* {summaryIncident.tags.length!=0 &&<> 

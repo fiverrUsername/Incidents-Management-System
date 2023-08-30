@@ -17,7 +17,6 @@ import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import DropDown from '../../../base/dropDown/DropDown';
 import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
 import UploadFiles from '../../../base/uploadFiles/UploadFiles';
-import log from '../../../../loggers/logger'
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 
 export interface dataFromForm {
