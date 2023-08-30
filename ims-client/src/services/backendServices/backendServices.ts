@@ -3,9 +3,9 @@ import IIncident from "../../interfaces/IIncident"
 import { ITimeLineEvent } from "../../interfaces/ITimeLineEvent"
 import { Dayjs } from "dayjs";
 
-// const baseUrl = process.env.REACT_APP_API_KEY;
+const baseUrl = process.env.REACT_APP_API_KEY;
 
-const baseUrl = 'https://ims-server-pbkw.onrender.com/'
+// const baseUrl = 'https://ims-server-pbkw.onrender.com/'
 
 console.log("base",baseUrl);
 const backendService = {
