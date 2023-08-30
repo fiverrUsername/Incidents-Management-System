@@ -27,6 +27,7 @@ const whitelist = ['https://ims-client-mep8.onrender.com/','wss://ims-socket.onr
 const apiKey = process.env.API_KEY;
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
+    console.log("o",origin);
     if (origin === undefined || whitelist.includes(origin)) {
       callback(null, true);
     } else {
