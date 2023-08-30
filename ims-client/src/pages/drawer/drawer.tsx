@@ -9,7 +9,6 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import { CSSObject, Theme, styled } from '@mui/material/styles'
 import React from 'react'
-import { ComponentType } from 'react';
 import { IconType } from 'react-icons/lib'
 import { useNavigate } from 'react-router-dom'
 import logo from '../../assets/images/logo.png'
