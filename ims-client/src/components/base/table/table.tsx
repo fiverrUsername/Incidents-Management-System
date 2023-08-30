@@ -26,7 +26,7 @@ const Table = <T extends object>({ columns, rows, isLoading, visibilityModel }: 
     page: 0,
   });
 
-  const [columnVisibilityModel, setColumnVisibilityModel] = React.useState<GridColumnVisibilityModel>(visibilityModel!);
+  const [columnVisibilityModel, setColumnVisibilityModel] = React.useState<GridColumnVisibilityModel>(visibilityModel || {});
 
   const handleSelectionChange = (rowSelectionModel: GridRowSelectionModel) => {
     const timelineUrl = `/timeline/${rowSelectionModel[0]}`;
