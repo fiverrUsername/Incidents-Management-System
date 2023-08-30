@@ -17,8 +17,6 @@ import timelineEventRouter from './routes/timelineEventRouter';
 import dailySchedule from './services/schedule';
 
 const port = config.server.port
-
-
 const app = express()
 const swaggerFile: any = (process.cwd() + "/src/Swagger.json");
 const swaggerData: any = fs.readFileSync(swaggerFile, 'utf8');
