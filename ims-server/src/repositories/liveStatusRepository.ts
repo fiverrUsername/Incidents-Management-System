@@ -21,7 +21,7 @@ class liveStatusRepository {
         }
     }
 
-    async getLiveStatusByTag(tag: string, date?: Date): Promise<IliveStatus[] | any> {
+    async getLiveStatusByTag(tag: string, date: Date): Promise<IliveStatus[] | any> {
         try {
             let query: Record<string, any> = { systemName: tag };
             if (date) {

@@ -4,51 +4,60 @@ import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { IcolorScale, liveStatusEntry } from '../../../interfaces/ILiveStatus';
 import "./heatmapChar.css";
+import { left } from '@popperjs/core';
 
-interface DataPoint {
-  x: string; // Assuming this is a string
-  y: number; // Assuming this is a number
-  z: string; // Assuming this is a string (formattedDate)
-  incident: number; // Assuming this is a number (systemData.incidentCounter)
-}
+ 
 
 interface HeatmapCharProps {
   systemsStatusCollection: liveStatusEntry[];
-  colors?: IcolorScale[]
-  dates: string[] | undefined
-
+  colors: IcolorScale[]
 }
 
-//{ systemsStatusCollection, colors = colorScaleDefault }
 const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
-  
+
   const options: ApexOptions = {
     chart: {
-      width: 1000,
+      width: 1200,
       height: 300,
       type: 'heatmap',
+      toolbar: {
+        show: true,
+        offsetX: 0,
+        offsetY: 0,
+        tools: {
+          download: false, // Disable the download button
+          selection: true, // Disable the selection tool
+          zoom: true, // Disable zooming tool
+          zoomin: true,
+          zoomout: true,
+          pan: true,
+        },
+      },
     },
+    grid:{
+      padding:{
+        top:20,
+        right:40,
+         bottom:50,
+         left:20
+  }
+
+    },
+    responsive: [
+      {
+        breakpoint: 787,
+        options: {
+          chart: {
+            width: '70%', // Adjust width for mobile
+            height: 200,
+          },
+        },
+      },
+    ],
     stroke: {
-    },
-    grid: {
-      xaxis: {
-        lines: {
-          offsetX: 12,
-          offsetY: 12
-        }
-      },
-      yaxis: {
-        lines: {
-          offsetX: 12,
-          offsetY: 12
-        }
-      },
-      row: {
-        opacity: 12
-      },
-      column: {
-        opacity: 12
-      },
+       
+      width: 3,
+      
     },
     plotOptions: {
       heatmap: {
@@ -62,7 +71,6 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
       enabled: false,
     },
     xaxis: {
-      //categories:props.dates  ,
       labels: {
         show: false,
       },
@@ -80,23 +88,7 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
       }
     },
     tooltip: {
-      x: {
-        show: true,
-        format: 'dd MMM',
-        formatter: undefined,
-      },
-      y: {
-        formatter: () => '', // Set the formatter to an empty function to hide the y value
-        title: {
-          formatter: () => '',
-        },
-      },
-      z: {
-        formatter: undefined,
-        title: 'date: ',
-      },
       custom: function ({ seriesIndex, dataPointIndex }: {
-        series: Array<{ data: Array<DataPoint> }>,
         seriesIndex: number,
         dataPointIndex: number
       }) {
@@ -105,7 +97,7 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         if (dataPoint.date !== undefined) {
           return (
             '<div class="arrow_box">' +
-            '<div class="title_tooltip"  >Date:'+ date  + '</div>' +
+            '<div class="title_tooltip"  >Date:' + date + '</div>' +
             '<span> ' + dataPoint.systemName + '</span>' +
             '<br />' +
             '<span>Incidents: ' + dataPoint.incidentCounter + '</span>' +
@@ -149,7 +141,6 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
 
 
   });
-  console.log("series", series)
 
   return (
     <div id="chart">

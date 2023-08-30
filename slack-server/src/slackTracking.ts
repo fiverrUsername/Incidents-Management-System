@@ -8,13 +8,10 @@ const slackEvents: SlackEventAdapter = createEventAdapter(process.env.SLACK_SIGI
 
 export default function events(data: any) {
   const { event } = data;
-  console.log("event", event);
   switch (event.type) {
     case 'message':
       if(!event.bot_profile)
         handleMessageEvent(event);
-      break;
-    case 'app_mention':
       break;
     case 'channel_created':
       if(event.channel.creator!=='U05HSM3PJHL')

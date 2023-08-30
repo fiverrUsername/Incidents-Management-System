@@ -11,17 +11,17 @@ interface Props {
 }
 
 export default function AddTimelineEvent({ incident,addNewTimelineFunction }: Props) {
-    const [open, setOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const handleClick = () => {
-        setOpen(true);
+        setIsOpen(true);
     };
     const handleClose = () => {
-        setOpen(false);
+        setIsOpen(false);
     };
     return (
         <div>
             {incident.status == Status.Active && <Button onClick={handleClick} variant='outlined'>+ Add Update</Button>}
-            {open && <AddTimelineForm addNewTimelineFunction={addNewTimelineFunction} open={open} onClose={handleClose} incident={incident} />}
+            {isOpen && <AddTimelineForm addNewTimelineFunction={addNewTimelineFunction} isOpen={isOpen} onClose={handleClose} incident={incident} />}
         </div>
     )
 }
