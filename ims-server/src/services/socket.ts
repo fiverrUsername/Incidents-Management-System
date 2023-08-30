@@ -28,6 +28,7 @@ ws.onmessage = (webSocketMessage: { data: { toString: () => string; }; }) => {
     case ObjectType.Incident:
       switch (messageBody.actionType) {
         case ActionType.Add:
+          console.log("---add incident ,messageBody:",messageBody )
           incidentRepository.addIncident(messageBody.object as IIncident)
           break;
         case ActionType.Update:
@@ -45,6 +46,7 @@ ws.onmessage = (webSocketMessage: { data: { toString: () => string; }; }) => {
     case ObjectType.TimelineEvent:
       switch (messageBody.actionType) {
         case ActionType.Add:
+          console.log("---add timeline ,messageBody:",messageBody )
           timelineEventRepository.addTimelineEvent(messageBody.object as ITimelineEvent)
           break;
         case ActionType.Update:

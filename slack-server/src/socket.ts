@@ -31,6 +31,7 @@ ws.onmessage = (webSocketMessage) => {
     case ObjectType.Incident:
       switch (messageBody.actionType) {
         case ActionType.Add:
+          console.log("-------add chanel, messageBody:", messageBody)
           IMS_CreateChannel(messageBody.object as IIncident);
           break;
         case ActionType.Update:
@@ -47,6 +48,7 @@ ws.onmessage = (webSocketMessage) => {
     case ObjectType.TimelineEvent:
       switch (messageBody.actionType) {
         case ActionType.Add:
+          console.log("-------add massage, messageBody:", messageBody)
           sendMessageOnAddTimelineEvent(messageBody.object as ITimelineEvent)
           break;
         case ActionType.Update:

@@ -13,6 +13,7 @@ function uuidv4(): string {
 ws.on('connection', (ws: WebSocket) => {
   const id = uuidv4();
   clients.set(id, ws);
+  console.log("--------------socket")
   ws.on('message', (messageAsString: string) => {
     [...clients.entries()].forEach(([clientId, client]) => {
       if (clientId !== id) // Don't send the message back to the sender
