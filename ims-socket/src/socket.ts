@@ -15,6 +15,8 @@ ws.on('connection', (ws: WebSocket) => {
   clients.set(id, ws);
   console.log("--------------socket")
   ws.on('message', (messageAsString: string) => {
+    console.log("----i an in ws.on message");
+    
     [...clients.entries()].forEach(([clientId, client]) => {
       if (clientId !== id) // Don't send the message back to the sender
         client.send(messageAsString);
