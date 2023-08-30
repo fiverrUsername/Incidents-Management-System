@@ -2,6 +2,7 @@ import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import aggregationRepository from "../repositories/aggregationRepository";
 
+
 class AggregateService {
   async aggregateIncident(): Promise<any> {
     try {
