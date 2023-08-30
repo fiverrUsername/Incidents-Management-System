@@ -5,7 +5,7 @@ interface TextFieldProps {
   size: 'small' | 'medium' | 'large';
 }
 
-const TextFieldInput = styled(TextField)<TextFieldProps>(({ size }) => ({
+const TextFieldInput = styled(TextField)<TextFieldProps>(() => ({
   '& .MuiInputBase-root': {
     margin: '10px 10px 10px 0px',
     padding: '16px 20px',

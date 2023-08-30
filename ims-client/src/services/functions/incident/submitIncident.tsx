@@ -1,4 +1,4 @@
-import React from 'react'
+
 import IIncident from '../../../interfaces/IIncident'
 import { FormData } from '../../../components/incidents/addIncident/addIncidentForm/addIncidentForm'
 import { Status } from '../../../interfaces/enums'
