@@ -5,6 +5,7 @@ const meta = {
     component: CustomAutocomplete,
     tags: ['autodocs'],
   parameters: {
+    
     layout: 'fullscreen',
   },
 };
