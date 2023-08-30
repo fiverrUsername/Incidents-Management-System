@@ -3,19 +3,20 @@ import { Button, Dialog, FormControl, Grid, SelectChangeEvent } from "@mui/mater
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+
+import IIncident from '../../../../interfaces/IIncident';
 import { ITag } from '../../../../interfaces/ITag';
 import { Priority } from '../../../../interfaces/enums';
-import IIncident from '../../../../interfaces/IIncident';
+import backendServices from '../../../../services/backendServices/backendServices';
+import submitIncident from '../../../../services/functions/incident/submitIncident';
 import theme from '../../../../theme';
-import CustomAutocomplete from '../../../base/autoCompleteTag/autoComplete';
+import TextFieldInput from '../../../../trash/TextFields';
+import CustomAutocomplete, { CustomSyntheticEvent } from '../../../base/autoCompleteTag/autoComplete';
 import BannerNotification from "../../../base/bannerNotification/BannerNotification";
 import DateTimePickerValue from '../../../base/datePicker/datePicker';
-import ToggleButtons from '../../../base/priorityButtons/priorityButtons';
-import TextFieldInput from '../../../../trash/TextFields';
-import submitIncident from '../../../../services/functions/incident/submitIncident';
-import backendServices from '../../../../services/backendServices/backendServices';
 import DropDown from '../../../base/dropDown/DropDown';
-import {TypesIncident} from '../../../base/dropDown/Types';
+import { TypesIncident } from '../../../base/dropDown/Types';
+import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 
 export interface FormData {
   name: string;
@@ -60,7 +61,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
       data.date = date
     data.type = type
     data.tags = selectedTags
-    if (type && tags) {
+    if (type && selectedTags.length>0) {
       const isSuccess = await submitIncident(data, incidents, setIncidents);
       setIsSuccess(isSuccess);
       setShowBanner(true);
@@ -156,12 +157,17 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
 
   const handleDateChange = (Event: any) => {
     setDate(Event);
-   console.log('New Date:', Event);
-   };
-   const handleTypeChange = (Event: SelectChangeEvent) => {
-   setType(Event.target.value);
-     console.log('New T:', Event);
-      };
+  };
+  const handleTypeChange = (Event: SelectChangeEvent) => {
+    setType(Event.target.value);
+  };
+
+  const handlePriorityChange = (Event: SelectChangeEvent) => {
+    setPriority(Event.target.value as Priority);
+  };
+  const handleTagChange = (Event: CustomSyntheticEvent) => {
+    setSelectedTags(Event.selectedTags);
+  };
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addIncident" style={popupStyles}>
@@ -196,7 +202,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
-                  <ToggleButtons setPriority={setPriority} priority={priority} />
+                  <PriorityButtons onChangePriority={handlePriorityChange} priority={priority} />
                 </div>
               </FormControl>
             </Grid>
@@ -205,7 +211,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
-                    <DateTimePickerValue date={date} onDateChange={handleDateChange} /> 
+                    <DateTimePickerValue date={date} onDateChange={handleDateChange} />
                   </FormControl>
                 </Grid>
                 <Grid item xs={6}>
@@ -236,9 +242,9 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Tags</label>
                 <div id="tags">
-                  <CustomAutocomplete options={tags} selectedOptions={selectedTags} setSelectedOptions={setSelectedTags} getOptionLabel={getOptionLabel} placehOlderText={"Write to add"} />
+                  <CustomAutocomplete options={tags} getOptionLabel={getOptionLabel} placeholderText={"Write to add"} onChangeOptions={handleTagChange} />
                 </div>
-                {isSubmit && tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>}
+                {isSubmit && selectedTags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>}
               </FormControl>
             </Grid>
             <Grid item xs={12}>

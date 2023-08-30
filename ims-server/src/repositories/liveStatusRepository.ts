@@ -3,7 +3,17 @@ import liveStatusModel from "../models/liveStatusModel";
 class liveStatusRepository {
     async getLiveStatusSystemsByDate(_date: string): Promise<IliveStatus[] | any> {
         try {
-            return await liveStatusModel.find({ date: _date })
+            const startDate = new Date(_date);
+            startDate.setHours(0, 0, 0, 0);
+            const endDate = new Date(_date);
+            endDate.setHours(23, 59, 59, 999);
+            const results = await liveStatusModel.find({
+                date: {
+                    $gte: startDate,
+                    $lte: endDate,
+                }
+            });
+            return results;
         }
         catch (e) {
             console.error(`error: ${e}`);
@@ -11,7 +21,7 @@ class liveStatusRepository {
         }
     }
 
-    async getLiveStatusByTag(tag: string, date?: Date): Promise<IliveStatus[] | any> {
+    async getLiveStatusByTag(tag: string, date: Date): Promise<IliveStatus[] | any> {
         try {
             let query: Record<string, any> = { systemName: tag };
             if (date) {

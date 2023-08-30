@@ -23,7 +23,7 @@ export default async function submitIncident(data: FormData, incident: IIncident
         createdAt: new Date(),
         updatedAt: new Date(),
         //TODO
-        createdBy: "?",
+        createdBy: "698cbeda854a5d4d8bcf303l",
         cost: 0,
     }
     const updatedIncidents = [incidentcR, ...incident];

@@ -1,4 +1,5 @@
 import { validate } from "class-validator";
+
 import { ITimelineEventDto } from "../dto/timelineEventDto";
 import { Priority } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
@@ -69,7 +70,6 @@ class TimelineEventService {
         const newTags = newTimelineEvent.tags.filter(tag => {
           return !tags.some(existingTag => existingTag.name === tag.name);
         });
-
         newTags.forEach(tag => {
           newIncident.currentTags = [tag]
           liveStatusService.liveStatusByIncident(newIncident)
@@ -206,12 +206,13 @@ class TimelineEventService {
     }
   }
 
-  async updateStatusAndPriorityOfIncidentById(timeline: ITimelineEvent): Promise<IIncident | any> {
+  async updateFieldsOfIncidentById(timeline: ITimelineEvent): Promise<IIncident | any> {
     try {
       const incident: IIncident = await incidentRepository.getIncidentById(timeline.incidentId);
       incident.currentPriority = timeline.priority;
       incident.status = timeline.status;
       incident.currentTags = timeline.tags;
+      incident.type=timeline.type;
       return await incidentService.updateIncident(incident.id!, incident);
     } catch (err: any) {
       return new Error(err);

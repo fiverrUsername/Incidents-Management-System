@@ -3,27 +3,22 @@ import { AlertColor, Button, Dialog, FormControl, Grid, SelectChangeEvent } from
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Priority, Status } from '../../../../interfaces/enums';
 import { ITag } from '../../../../interfaces/ITag';
 import { ITimeLineEvent } from '../../../../interfaces/ITimeLineEvent';
-import TextFieldInput from '../../../../trash/TextFields';
-import UploadFiles from '../../../base/uploadFiles/UploadFiles';
-import ToggleButtons from '../../../base/priorityButtons/priorityButtons';
-import DatePicker from '../../../base/datePicker/datePicker';
-import theme from '../../../../theme';
-import CustomAutocomplete from '../../../base/autoCompleteTag/autoComplete';
-import BannerNotification from '../../../base/bannerNotification/BannerNotification';
-import submitTimeLine from '../../../../services/functions/timeline/submitTimeLine';
+import { Priority, Status } from '../../../../interfaces/enums';
 import attachmentServices from '../../../../services/backendServices/attachmentServices';
 import backendServices from '../../../../services/backendServices/backendServices';
+import submitTimeLine from '../../../../services/functions/timeline/submitTimeLine';
+import theme from '../../../../theme';
+import TextFieldInput from '../../../../trash/TextFields';
+import CustomAutocomplete, { CustomSyntheticEvent } from '../../../base/autoCompleteTag/autoComplete';
+import BannerNotification from '../../../base/bannerNotification/BannerNotification';
 import DateTimePickerValue from '../../../base/datePicker/datePicker';
-
 import DropDown from '../../../base/dropDown/DropDown';
-import { TypesIncident,StatusIncident } from '../../../base/dropDown/Types';
-
-
-// import DropDown from '../base/dropDown/DropDown';
-// import DropDown from './StatusDropDown';
+import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
+import UploadFiles from '../../../base/uploadFiles/UploadFiles';
+import log from '../../../../loggers/logger'
+import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 
 export interface dataFromForm {
   text: string;
@@ -31,7 +26,7 @@ export interface dataFromForm {
   date: dayjs.Dayjs;
   type: string;
   tags: ITag[];
-  files: string[];
+  filesString: string[];
   status: Status;
 }
 export interface receivedIncident {
@@ -53,61 +48,60 @@ export interface receivedIncident {
   createdBy: string;
 }
 interface Props {
-  open: boolean;
+  isOpen: boolean;
   incident: receivedIncident;
   onClose: () => void;
   addNewTimelineFunction: (newTimeline: ITimeLineEvent) => void;
 }
-export default function addTimelineForm({ open, incident, onClose, addNewTimelineFunction }: Props) {
+
+
+export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimelineFunction }: Props) {
 
   const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();
+  console.log("incident.currentTags",incident.currentTags)
+  const [formObject, setFormObject] = React.useState<dataFromForm>({
+    text: "",
+    priority: incident.currentPriority,
+    date: dayjs(),
+    type: incident.type,
+    status: incident.status,
+    tags: incident.currentTags,
+    filesString: [],
+  });
 
-  const [priority, setPriority] = React.useState<Priority>(incident.currentPriority);
-  const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
-  const [showBanner, setShowBanner] = useState(false);
-  const [isSubmit, setIsSubmit] = useState(false);
-  const [type, setType] = React.useState(incident.type);
-  const [status, setStatus] = React.useState<Status>(incident.status);
-  const [tags, setTags] = useState<ITag[]>([]);
+  const [showBanner, setShowBanner] = useState<boolean>(false);
+  const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [files, setFiles] = useState<File[]>([]);
-  const [filesString, setFilesString] = useState<string[]>([]);
   const [severityValue, setSeverityValue] = useState<AlertColor>('error');
   const [messageValue, setMessageValue] = useState<string>("");
-  const [selectedTags, setSelectedTags] = useState<ITag[]>(incident.currentTags);
-
+  const [tags, setTags] = useState<ITag[]>([]);
   const getOptionLabel = (option: ITag) => option.name;
 
   async function onSubmit(data: dataFromForm) {
     setIsSubmit(true);
-    if (priority != null)
-      data.priority = priority
-    if (date == null)
-      data.date = dayjs();
-    else
-      data.date = date;
-    data.type = type;
-    data.status = status;
-    data.tags = selectedTags;
+    data.date = formObject.date;
+    data.priority = formObject.priority;
+    data.type = formObject.type;
+    data.status = formObject.status;
+    data.tags = formObject.tags;
     const formData = new FormData();
     files.map((file) => {
       const newName = `incidence?${incident.id}?${Date.now()}${file.name}`
-      filesString.push(newName)
+      formObject.filesString.push(newName)
       formData.append('files', file, newName);
     })
-    data.files = filesString;
+    data.filesString = formObject.filesString;
     await attachmentServices.uploadAttachment(formData);
-    if (type && tags && status) {
-      const flag = await submitTimeLine({ data, incident, addNewTimelineFunction });
-      if (flag) {
-        setSeverityValue('success');
-        setMessageValue('new update Added Successfully');
-      }
-      else {
-        setSeverityValue('error');
-        setMessageValue('failed to add update');
-      }
-      setShowBanner(true);
+    const isSuccess = await submitTimeLine({ data, incident, addNewTimelineFunction });
+    if (isSuccess) {
+      setSeverityValue('success');
+      setMessageValue('new update Added Successfully');
     }
+    else {
+      setSeverityValue('error');
+      setMessageValue('failed to add update');
+    }
+    setShowBanner(true);
   }
 
   const closeIconStyles: React.CSSProperties = {
@@ -142,16 +136,22 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
     getTags();
   }, []);
   const handleDateChange = (Event: any) => {
-    setDate(Event);
-   console.log('New Date:', Event);
-   };
-   const handleTypeChange = (Event: SelectChangeEvent) => {
-    setType(Event.target.value);
-      console.log('New T:', Event);
-       };
-
+    setFormObject({ ...formObject, date: Event });
+  };
+  const handleTypeChange = (Event: SelectChangeEvent) => {
+    setFormObject({ ...formObject, type: Event.target.value });
+  };
+  const handleStatusChange = (Event: SelectChangeEvent) => {
+    setFormObject({ ...formObject, status: Event.target.value as Status });
+  };
+  const handlePriorityChange = (Event: SelectChangeEvent) => {
+    setFormObject({ ...formObject, priority: Event.target.value as Priority });
+  };
+  const handleTagChange = (Event: CustomSyntheticEvent) => {
+    setFormObject({ ...formObject, tags: Event.selectedTags });
+  };
   return (
-    <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
+    <Dialog open={isOpen} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addUpdate" style={popupStyles}>
         <CloseIcon style={closeIconStyles} onClick={onClose} />
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
@@ -177,7 +177,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
-                  <ToggleButtons setPriority={setPriority} priority={priority} />
+                  <PriorityButtons onChangePriority={handlePriorityChange} priority={formObject.priority} />
                 </div>
               </FormControl>
             </Grid>
@@ -186,7 +186,7 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
-                    <DateTimePickerValue date={date} onDateChange={handleDateChange} /> 
+                    <DateTimePickerValue date={formObject.date} onDateChange={handleDateChange} />
                   </FormControl>
                 </Grid>
               </Grid>
@@ -195,24 +195,24 @@ export default function addTimelineForm({ open, incident, onClose, addNewTimelin
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="type">Type</label>
-                <DropDown Types={TypesIncident} onChangeType={handleTypeChange} />
-                {isSubmit && !type && <span style={{ color: errorColor }}>Type is required</span>}
+                <DropDown defaultValue={incident.type} Types={TypesIncident} onChangeType={handleTypeChange} />
+                {isSubmit && !formObject.type && <span style={{ color: errorColor }}>Type is required</span>}
               </FormControl>
             </Grid>
             <Grid item xs={12}>
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="status">Status</label>
-                <DropDown Types={StatusIncident} onChangeType={handleTypeChange} />
-                {/* <StatusDropDown status={status} setStatus={setStatus}/> */}
-                {isSubmit && !status && <span style={{ color: errorColor }}>Type is required</span>}
+                <DropDown defaultValue={incident.status} Types={StatusIncident} onChangeType={handleStatusChange} />
+                {isSubmit && !formObject.status && <span style={{ color: errorColor }}>Status is required</span>}
               </FormControl>
             </Grid>
             <Grid item xs={12}>
               <FormControl style={{ width: '100%' }}>
-                <label htmlFor="tags">Tags</label>
+                <label htmlFor="tags">Affected services</label>
                 <div id="tags">
-                  <CustomAutocomplete options={tags} selectedOptions={selectedTags} setSelectedOptions={setSelectedTags} getOptionLabel={getOptionLabel} placehOlderText={"Write to add"} />
+                  <CustomAutocomplete options={tags} selectedOptions={formObject.tags} getOptionLabel={getOptionLabel} placeholderText={"Write to add"} onChangeOptions={handleTagChange } />
+                  {/* {isSubmit && formObject.tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>} */}
                 </div>
               </FormControl>
             </Grid>

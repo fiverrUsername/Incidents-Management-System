@@ -7,17 +7,17 @@ import { ITimelineEvent } from '../../ims-server/src/interfaces/ItimelineEvent';
 import { sendMessageOnAddTimelineEvent } from './actions/via-ims/sendMessageOnAddTimelineEvent';
 import { sendMassageOnSpecificPriorityChannel } from './actions/via-ims/sendMassageOnChangePriority';
 import { wsPort } from './constPage';
+import logger from './loggers/log';
+import { constants, files } from './loggers/constants';
 
 const ws = new WebSocket(wsPort);
-const messageQueue: any[] = []; // Replace 'any' with the type of messages you are sending
+const messageQueue: IMessage[] = []; 
 
 ws.on('open', () => {
-console.log("process.env.SLACK_API_TOKEN", process.env.SLACK_API_TOKEN);
-  console.log('WebSocket connection is open in ims-slack.');
-  // Process the message queue
+  logger.info({ source: constants.SOCKET_WEBSOCKET_CONNECTION_IS_OPEN, file: files.SOCKET ,method:constants.METHOD.CLIENT })
   while (messageQueue.length > 0) {
     const message = messageQueue.shift();
-    send(message);
+    send(message!);
   }
 });
 
@@ -40,7 +40,7 @@ ws.onmessage = (webSocketMessage) => {
           // Perform some action for deleting a TimelineEvent
           break;
         default:
-          console.log('Received unknown action type for Incident:', messageBody);
+          logger.error({ source: constants.SOCKET_ERROR_RECEIVED_UNKNOWN_ACTION_TYPE_FOR_TIMELINE+": "+messageBody,  file: files.SOCKET })
           break;
       }
       break;
@@ -59,12 +59,12 @@ ws.onmessage = (webSocketMessage) => {
           sendMassageOnSpecificPriorityChannel(messageBody.object.channelId, messageBody.object.priority)
           break;
         default:
-          console.log('Received unknown action type for TimelineEvent:', messageBody);
+          logger.error({ source: constants.SOCKET_ERROR_RECEIVED_UNKNOWN_ACTION_TYPE_FOR_TIMELINE+": "+messageBody,  file: files.SOCKET })
           break;
       }
       break;
     default:
-      console.log('Received unknown object type:', messageBody);
+      logger.error({ source: constants.SOCKET_ERROR_RECEIVED_UNKNOWN_OBJECT_TYPE+": "+messageBody,  file: files.SOCKET})
       break;
   }
 };
