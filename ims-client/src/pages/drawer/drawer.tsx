@@ -10,6 +10,7 @@ import ListItemText from '@mui/material/ListItemText'
 import { CSSObject, Theme, styled } from '@mui/material/styles'
 import React from 'react'
 import { ComponentType } from 'react';
+import { IconType } from 'react-icons/lib'
 import { useNavigate } from 'react-router-dom'
 import logo from '../../assets/images/logo.png'
 
@@ -51,10 +52,9 @@ interface Props {
 }
 export interface IIcon {
   text: string,
-  icon: ComponentType<any>,
+  icon: IconType,
   navigation: string,
 }
-
 styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })<AppBarProps>(({ theme, open }) => ({
@@ -131,7 +131,7 @@ export default function LeftDrawer({ icons }: Props) {
                     justifyContent: 'flex-end', // Align icon to the right
                   }}
                 >
-                  < icon.icon size={24}></icon.icon>
+                  <icon.icon size={24}></icon.icon>
                 </ListItemIcon>
               </ListItemButton>
 
