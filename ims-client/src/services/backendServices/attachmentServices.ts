@@ -1,5 +1,7 @@
 import axios from 'axios'
-const baseUrl = process.env.REACT_APP_API_KEY
+// const baseUrl = process.env.REACT_APP_API_KEY
+const baseUrl = 'https://ims-server-pbkw.onrender.com/'
+
 
 const attachmentServices = {
   uploadAttachment: (forms: FormData) => axios.post(`${baseUrl}/attachment`, forms, {
