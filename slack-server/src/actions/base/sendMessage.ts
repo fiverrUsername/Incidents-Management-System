@@ -8,6 +8,7 @@ import logger from '../../loggers/log';
 export async function sendMessage(messageData: IMessageData) {
    const message = (messageData.userName ? `name: <@${messageData.userName}>\n` : '') + (messageData.text ? messageData.text : '');
    try {
+    console.log("------ send massege messageData:", messageData)
       await client.chat.postMessage({
         channel: messageData.channelId,
         text: message,
