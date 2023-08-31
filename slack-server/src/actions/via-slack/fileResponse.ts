@@ -28,9 +28,10 @@ export async function fileResponse(files: any[], incidentId: string): Promise<st
           responseType: "blob", // Use "arraybuffer" for binary data
           validateStatus: () => true,
         });
+        console.log("-----------file.filetype ",file.filetype)
         const myFile = new Blob(
           [response.data],
-          { type: file.filetype });
+          { type: 'docx' });
 
         console.log("-----------file.filetype ",file.filetype)
         const newName: string = `incidence?${incidentId}?${Date.now()}${file.name}`;
