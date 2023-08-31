@@ -60,5 +60,9 @@ export const status = {
     SOCKET_ERROR_RECEIVED_UNKNOWN_ACTION_TYPE_FOR_TIMELINE:"Received unknown action type for TimelineEvent:",
     SOCKET_ERROR_RECEIVED_UNKNOWN_ACTION_TYPE_FOR_INCIDENT:"'Received unknown action type for Incident:'",
     SOCKET_WEBSOCKET_CONNECTION_IS_OPEN:"WebSocket connection is open in ims-slack",
-    SERVER_IS_OS_IN_LOCALHOST_PORT:"Server is on http://localhost:"
+    SERVER_IS_OS_IN_LOCALHOST_PORT:"Server is on http://localhost:",
+    ACCESS_KEY:"ACCESS_KEY",
+    UPLOAD_SUCCESS: "UPLOAD_FILES_SUCCESSFULLY",
+    UPLOAD_FAILED: "UPLOAD_FILES_FAILED",
+    ERROR_EXTRACTING_FILES:"ERROR_EXTRACTING_FILES"
   };
