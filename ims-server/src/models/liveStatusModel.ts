@@ -35,7 +35,7 @@ const liveStatusSchema = new Schema<IliveStatus>({
     }
 });
 
-liveStatusSchema.index({ date: 1 }); // הוספת האינדקס על שדה ה-"date"
+liveStatusSchema.index({ date: 1 }); 
 
 const LiveStatus = mongoose.model<IliveStatus>("liveStatus", liveStatusSchema);
 
