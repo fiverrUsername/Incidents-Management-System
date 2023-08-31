@@ -28,17 +28,19 @@ class liveStatusService {
             let liveStatuses: Array<liveStatusEntry | null> = [];
             const systemDate = date || new Date();
             // console.log(systemDate)
-            for (const tag of tags) {
-                const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name, systemDate);
-                // if (latestStatusForTag && latestStatusForTag.length === 0) {
-                //     liveStatuses.push(null);
-                // } 
-                // else {
-                liveStatuses.push({
-                    systemName: tag.name,
-                    systemData: latestStatusForTag
-                });
-                // }
+            if (tags) {
+                for (const tag of tags) {
+                    const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name, systemDate);
+                    // if (latestStatusForTag && latestStatusForTag.length === 0) {
+                    //     liveStatuses.push(null);
+                    // } 
+                    // else {
+                    liveStatuses.push({
+                        systemName: tag.name,
+                        systemData: latestStatusForTag
+                    });
+                    // }
+                }
             }
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,
@@ -149,7 +151,7 @@ class liveStatusService {
             systems.forEach(async system => {
                 if (!(system.incidentCounter > system.resolvedIncidents))
                     return;
-                const liveStatus:IliveStatus= await liveStatusRepository.createLiveStatus(
+                const liveStatus: IliveStatus = await liveStatusRepository.createLiveStatus(
                     {
                         id: uuidv4(),
                         systemName: system.systemName,
@@ -159,13 +161,13 @@ class liveStatusService {
                         incidentCounter: system.incidentCounter - system.resolvedIncidents,
                         resolvedIncidents: 0
                     });
-                if(liveStatus instanceof Error){
+                if (liveStatus instanceof Error) {
                     logger.error({
                         source: constants.SYSTEM_STATUS_SERVICE,
                         err: constants.AUTO_UPDATE_LIVE_STATUS,
                     });
                 }
-                else{
+                else {
                     logger.info({
                         source: constants.SYSTEM_STATUS_SERVICE,
                         message: constants.AUTO_UPDATE_LIVE_STATUS,
