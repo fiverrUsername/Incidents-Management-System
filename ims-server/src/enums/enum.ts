@@ -16,3 +16,12 @@ export enum Priority {
     P1 = 'p1',
     P0 = 'p0',
 }
+export enum Level {
+    info = 'info',
+    debug = 'debug',
+    error = 'erorr',
+    trace = 'trace',
+    warn = 'warn',
+  }
+  
+  

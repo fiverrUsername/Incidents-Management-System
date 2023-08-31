@@ -19,6 +19,7 @@ import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
 import UploadFiles from '../../../base/uploadFiles/UploadFiles';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 import { keyDate, keyPriority, keyStatus, keyTags, keyType } from '../../../../const';
+import log from '../../../../loggers/logger'
 
 export interface dataFromForm {
   text: string;
@@ -52,13 +53,13 @@ interface Props {
   incident: receivedIncident;
   onClose: () => void;
   addNewTimelineFunction: (newTimeline: ITimeLineEvent) => void;
+  updateIncidentFunction: (newIncident: receivedIncident) => void;
+
 }
 
 
-export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimelineFunction }: Props) {
-
+export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimelineFunction,updateIncidentFunction }: Props) {
   const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();
-
   const [formObject, setFormObject] = React.useState<dataFromForm>({
     text: "",
     priority: incident.currentPriority,
@@ -91,8 +92,8 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
       formData.append('files', file, newName);
     })
     data.filesString = formObject.filesString;
-    //await attachmentServices.uploadAttachment(formData);
-    const isSuccess = await submitTimeLine({ data, incident, addNewTimelineFunction });
+    await attachmentServices.uploadAttachment(formData);
+    const isSuccess = await submitTimeLine({ data, incident, addNewTimelineFunction ,updateIncidentFunction});
     if (isSuccess) {
       setSeverityValue('success');
       setMessageValue('new update Added Successfully');

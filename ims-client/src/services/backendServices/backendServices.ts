@@ -22,7 +22,7 @@ const backendService = {
   deleteFileInTimeLine: (id: string, key: string) => axios.delete(`${baseUrl}/timelineEvent/${id}/files`, {
     params: { key }
   }).then(response => response.data),
-  getLiveStatus: (date?:Date | null) => axios.get(`${baseUrl}/livestatus/${date || ''}`).then(response => response.data),
+  getLiveStatus: (date:Date) => axios.get(`${baseUrl}/livestatus?date=${date}`).then(response => response.data),
 }
 
 export default backendService;
