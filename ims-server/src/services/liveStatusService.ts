@@ -26,7 +26,9 @@ class liveStatusService {
             const systemDate = date || new Date();
             if (tags) {
                 for (const tag of tags) {
-                    const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name, systemDate);
+                    const startDate = new Date(systemDate);
+                    startDate.setDate(startDate.getDate() - 9);
+                    const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name, startDate, systemDate);
                     liveStatuses.push({
                         systemName: tag.name,
                         systemData: latestStatusForTag
@@ -37,7 +39,6 @@ class liveStatusService {
                 source: constants.SYSTEM_STATUS_SERVICE,
                 msg: constants.GET_SYSTEMS_BY_DATE_SUCCESS,
             });
-            console.log("liveStatuses", liveStatuses)
             return liveStatuses;
         } catch (error: any) {
             logger.error({
@@ -49,14 +50,19 @@ class liveStatusService {
         }
     }
 
-    async createOrUpdateLiveStatus(data: IliveStatus, incidentId: string, tag: string): Promise<void | any> {
+    async createOrUpdateLiveStatus(data: IliveStatus, incidentId: string, tag: string, liveStatus?: IliveStatus): Promise<void | any> {
         try {
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,
                 msg: constants.UPDATE_SYSTEMS_SUCCESS,
             });
             //here i need the index
-            const existingLiveStatus = await liveStatusRepository.getTodaysLiveStatusByTag(tag);
+            let existingLiveStatus;
+            if (liveStatus) {
+                existingLiveStatus = liveStatus;
+            } else {
+                existingLiveStatus = await liveStatusRepository.getTodaysLiveStatusByTag(tag);
+            }
             if (existingLiveStatus) {
                 if (data.maxPriority > existingLiveStatus.maxPriority) {
                     data.maxPriority = existingLiveStatus.maxPriority;
@@ -163,7 +169,31 @@ class liveStatusService {
             return error;
         }
     }
-
+    async liveStatusByIncidentWithPreviousDate(incident: IIncident): Promise<(IliveStatus | any)[]> {
+        try {
+            const promises: Promise<IliveStatus | any>[] = incident.currentTags.map(async (tag) => {
+                const systems = await liveStatusRepository.getLiveStatusByTag(tag.name, new Date(incident.date), new Date())
+                if (systems)
+                    systems.map(async (system: IliveStatus) => {
+                        const liveStatusData: IliveStatus = system
+                        liveStatusData.maxPriority = incident.currentPriority
+                        return await this.createOrUpdateLiveStatus(liveStatusData, incident.id ? incident.id : '', tag.name, system);
+                    })  
+            });
+            logger.info({
+                source: constants.SYSTEM_STATUS_SERVICE,
+                message: constants.GET_TODAYS_LIVE_BY_TAG_SUCCESS,
+            });
+            return Promise.all(promises);
+        } catch (error: any) {
+            logger.error({
+                source: constants.SYSTEM_STATUS_SERVICE,
+                err: constants.GET_TODAYS_LIVE_BY_TAG_FAILED,
+            });
+            console.error(`error: ${error}`);
+            return [error];
+        }
+    }
     async liveStatusByIncident(incident: IIncident): Promise<(IliveStatus | any)[]> {
         try {
             const promises: Promise<IliveStatus | any>[] = incident.currentTags.map(async (tag) => {
