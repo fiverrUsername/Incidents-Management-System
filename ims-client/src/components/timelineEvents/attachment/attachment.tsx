@@ -3,7 +3,7 @@ import { faFile, faFileAlt, faFileExcel, faFilePowerpoint, faFileWord, } from '@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
-import { Dialog, DialogContent, Grid, IconButton, Tooltip } from '@mui/material';
+import { Dialog, DialogContent, Grid, IconButton } from '@mui/material';
 import { Document, Page } from 'react-pdf';
 
 import attachmentServices from '../../../services/backendServices/attachmentServices';
