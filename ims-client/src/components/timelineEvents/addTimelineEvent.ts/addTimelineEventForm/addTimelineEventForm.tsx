@@ -58,7 +58,6 @@ interface Props {
 export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimelineFunction }: Props) {
 
   const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();
-
   const [formObject, setFormObject] = React.useState<dataFromForm>({
     text: "",
     priority: incident.currentPriority,

@@ -6,32 +6,25 @@ import { IliveStatus } from "../interfaces/liveStatusInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 
 export default class liveStatusController {
-  
-   async getLiveStatus(req: Request, res: Response): Promise<void> {
+
+    async getLiveStatus(req: Request, res: Response): Promise<void> {
         try {
-            let systems: IliveStatus[] | any;
+            let systems: IliveStatus[] | null;
             if (req.query.date) {
                 const filterDate = new Date(req.query.date.toString());
+                //focus on a specific day without considering the time component.
                 filterDate.setHours(0, 0, 0, 0);
-                systems = await liveStatusService.getLiveStatus(filterDate);
+                //if calling this action not from client
+                if (isNaN(filterDate.getTime())) {
+                    console.log("Invalid date format:", filterDate);
+                    return;
+                } else {
+                    systems = await liveStatusService.getLiveStatus(filterDate);
+                }
             }
-            else{
+            else {
                 systems = await liveStatusService.getLiveStatus();
             }
-            
-            if (systems instanceof Error) {
-                res.status(status.SERVER_ERROR).json({ message: systems, error: true });
-            } else res.status(status.SUCCESS).json(systems);
-        } catch (error: any) {
-            res.status(status.SERVER_ERROR).json({ message: error });
-        }
-    }
-    //after test remove this
-    async createLiveStatus(req: Request, res: Response): Promise<void> {
-        try {
-            const tag: string = "inbox"
-            const data:IliveStatus=req.body
-            const systems = await liveStatusService.createOrUpdateLiveStatus(data,'',tag);
             if (systems instanceof Error) {
                 res.status(status.SERVER_ERROR).json({ message: systems, error: true });
             } else res.status(status.SUCCESS).json(systems);
