@@ -5,10 +5,16 @@ import aggregationRepository from "../repositories/aggregationRepository";
 class AggregateService {
   async aggregateIncident(): Promise<any> {
     try {
-      return await aggregationRepository.aggregateIncident();
+      const aggregation = await aggregationRepository.aggregateIncident();
+      if (aggregation instanceof Error) {
+        logger.error({ source: constants.AGGREGATION, err: constants.ERROR_AGGGREATION });
+      }
+      logger.info({ source: constants.AGGREGATION, success: true });
+      return aggregation;
     } catch (error: any) {
-      logger.error({ err: constants.ERROR_AGGGREATION });
+      logger.error({ source: constants.AGGREGATION, err: constants.ERROR_AGGGREATION });
       console.error(`error: ${error}`);
+      return error;
     }
   }
 }

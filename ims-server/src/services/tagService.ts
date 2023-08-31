@@ -6,7 +6,6 @@ import logger from "../loggers/log";
 import { constants } from "../loggers/constants";
 
 class TagService {
-
   async addTag(newTag: ITag): Promise<void | any> {
     try {
       const tag = new TagDto(newTag);
@@ -17,29 +16,35 @@ class TagService {
           err: "Validation error",
           validationErrors: validationErrors.map((error) => error.toString()),
         });
+        return new Error("Validation error");
+      }
+      const _tag: ITag | null = await tagRepository.addTag(newTag);
+      if (!_tag) {
+        logger.error({ source: constants.TAG_SERVICE, err: constants.ERROR_ADDING_TAG, tag: newTag })
         return;
       }
-      return await tagRepository.addTag(newTag);
+      logger.info({ source: constants.TAG_SERVICE, method: constants.METHOD.POST, tag: _tag })
+      return _tag;
     } catch (error) {
       console.error(`error: ${error}`);
+      throw error;
     }
   }
 
-  async getAllTags(): Promise<ITag[] | null | undefined> {
+  async getAllTags(): Promise<ITag[] | undefined> {
     try {
       const tags = await tagRepository.getAllTags();
-      if (tags === null) {
+      if (!tags) {
         logger.error({ source: constants.TAG_SERVICE, method: constants.METHOD.GET });
         return;
       }
-      logger.info({ source: constants.TAG_SERVICE, method: constants.METHOD.GET });
       return tags;
     } catch (error) {
-      logger.error({ source: constants.TAG_SERVICE, method: constants.METHOD.GET });
       console.error(`error: ${error}`);
+      throw error;
     }
   }
-  
+
 }
 
 export default new TagService();

@@ -25,29 +25,21 @@ describe("timeline events", () => {
     describe("add timeline event", () => {
         describe("success", () => {
             it("should add a timeline event and return 201", async () => {
-                const newtimelineEvent =  {
-                    "incidentId": "dbf6cea0-5108-4a3a-9587-51347f64d2d2",
-                    "userId": "698cbeda854a5d4d8bcf303l",
-                    "description": "add files",
-                    "priority": "p1",
-                    "status": "Active",
-                    "type": "Technical",
+                const newtimelineEvent = {
+                    "status":Status.Active,
+                    "incidentId": "21d723cf-0ce9-4d37-9b76-e6d9873c8c57",
+                    "userId": "14785",
+                    "description": "description of a timeline event",
+                    "priority": Priority.P3,
+                    "type": "technical",
                     "files": [
-                      "incidence?dbf6cea0-5108-4a3a-9587-51347f64d2d2?16933794766421.jpg",
-                      "incidence?dbf6cea0-5108-4a3a-9587-51347f64d2d2?16933794766422.jpg",
-                      "incidence?dbf6cea0-5108-4a3a-9587-51347f64d2d2?1693379476642firefighter-848346_960_720.jpg",
-                      "incidence?dbf6cea0-5108-4a3a-9587-51347f64d2d2?1693379476642pexels-photo-279979.jpeg"
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB9hfMxrD1ywcTDkrqvYu2CPDaDifO3AtmLztsKh4ZqkvS1jZdEQ1DWupA9KJCrQ-wnZI&usqp=CAU",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB9hfMxrD1ywcTDkrqvYu2CPDaDifO3AtmLztsKh4ZqkvS1jZdEQ1DWupA9KJCrQ-wnZI&usqp=CAU",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB9hfMxrD1ywcTDkrqvYu2CPDaDifO3AtmLztsKh4ZqkvS1jZdEQ1DWupA9KJCrQ-wnZI&usqp=CAU"
                     ],
-                    "createdDate": "2023-08-30T07:10:44.541Z",
-                    "updatedDate": "2023-08-30T07:11:21.862Z",
-                    "tags": [
-                      {
-                        "id": "1234",
-                        "name": "inbox",
-                        "_id": "64eeeb3c1a96ad5cc8944411"
-                      }
-                    ]
-                  }
+                    "createdDate": "2023-07-21T11:39:23.414Z",
+                    "updatedDate": "2023-07-19T12:43:07.004Z"
+                }
                 const res = await supertest(app)
                     .post("/timelineEvent/")
                     .send(newtimelineEvent);
@@ -55,10 +47,19 @@ describe("timeline events", () => {
             });
         });
         describe("error", () => {
+            it("should return 400 on validation error", async () => {
+                const newtimelineEvent = {
+                    "incidentId": "21d723cf-0ce9-4d37-9b76-e6d9873c8c57",
+                }
+                const res = await supertest(app)
+                    .post("/timelineEvent/")
+                    .send(newtimelineEvent);
+                expect(res.status).toBe(400);
+            });
             it("should return 500 on error", async () => {
                 jest.spyOn(timelineEvent, 'create').mockRejectedValueOnce(new Error());
                 const newtimelineEvent = {
-                    "status": Status.Active,
+                    "status":Status.Active,
                     "incidentId": "21d723cf-0ce9-4d37-9b76-e6d9873c8c57",
                     "userId": "14785",
                     "description": "description of a timeline event",
@@ -106,7 +107,7 @@ describe("timeline events", () => {
     describe("get timeline event by ID", () => {
         describe("succeed", () => {
             it("should return data", async () => {
-                const id = "22955f32-2a96-4ad0-a8fe-845fb9aa9070"
+                const id = "4693fee3-670a-47a9-ae36-81c24fe9b77f"
                 const res = await supertest(app).get(`/timelineEvent/${id}/`);
                 expect(res.status).toBe(200);
             });
@@ -126,7 +127,7 @@ describe("timeline events", () => {
                 const id = "6d8815c8-989c-4ad5-8e36-587c5ff46cc6";
                 const index = "0";
                 const timelineEvent = {
-                    "status": Status.Active,
+                    "status":Status.Active,
                     "_id": "6d8815c8-989c-4ad5-8e36-587c5ff46cc6",
                     "incidentId": "649cbeda942a5d4d8bcf3044",
                     "userId": "14785",
@@ -154,6 +155,21 @@ describe("timeline events", () => {
                 const res = await supertest(app)
                     .get(`/timelineEvent/${id}/files/?index=${index}`);
                 expect(res.status).toBe(404);
+            })
+            it("should return 400 if file is not found", async () => {
+                const id = "e0ce5574-e942-4c37-83a5-04e0b3349cec";
+                const index = "8";
+                const res = await supertest(app)
+                    .get(`/timelineEvent/${id}/files/?index=${index}`);
+                expect(res.status).toBe(400);
+            })
+            it("should return 500 on error", async () => {
+                const id = "6d8815c8-989c-4ad5-8e36-587c5ff46cc6";
+                const index = 0;
+                jest.spyOn(timelineEventService, 'getTimelineEventById').mockRejectedValueOnce(new Error());
+                const res = await supertest(app)
+                    .get(`/timelineEvent/${id}/files/?index=${index}`);
+                expect(res.status).toBe(500);
             })
         })
     })
@@ -189,7 +205,7 @@ describe("timeline events", () => {
                 const id = "000";
                 jest.spyOn(timelineEventService, 'getTimelineEventById').mockResolvedValueOnce(null);
                 const file: string = "incidence_649cbeda942a5d4d8bcf303b_IMS with Slack Integration.docx";
-                const res = await supertest(app).delete(`/timelineEvent/${id}/files?fileString=${file}`);
+                const res = await supertest(app).delete(`/timelineEvent/${id}/fileString?=${file}`);
                 expect(res.status).toBe(404);
                 expect(timelineEventService.getTimelineEventById).toHaveBeenCalledWith(mockTimelineEventId);
                 expect(timelineEventRepository.updateTimelineEvent).not.toHaveBeenCalledWith(mockTimelineEventId);
@@ -208,6 +224,22 @@ describe("timeline events", () => {
                 const file: string = "xxx";
                 const res = await supertest(app).delete(`/timelineEvent/${mockTimelineEventId}/files?fileString=${file}`);
                 expect(res.status).toBe(404);
+                expect(timelineEventService.getTimelineEventById).toHaveBeenCalledWith(mockTimelineEventId);
+                expect(timelineEventRepository.updateTimelineEvent).not.toHaveBeenCalledWith(mockTimelineEventId);
+            })
+            it("should return 500", async () => {
+                const timelineEventWithFiles = {
+                    "id": mockTimelineEventId,
+                    "files": [
+                        "incidence_649cbeda942a5d4d8bcf303b_1690964760095Technical Interviews Preparation - week 4.docx",
+                        "incidence_649cbeda942a5d4d8bcf303b_1690964760096Support environment variable configuration1.pdf",
+                        "incidence_649cbeda942a5d4d8bcf303b_1690964760096React App (4).csv"
+                    ]
+                };
+                jest.spyOn(timelineEventService, 'deleteFileInTimelineEventByValue').mockResolvedValueOnce(new Error());
+                const file: string = "incidence_649cbeda942a5d4d8bcf303b_1690964760095Technical Interviews Preparation - week 4.docx";
+                const res = await supertest(app).delete(`/timelineEvent/${mockTimelineEventId}/files?fileString=${file}`);
+                expect(res.status).toBe(500);
                 expect(timelineEventService.getTimelineEventById).toHaveBeenCalledWith(mockTimelineEventId);
                 expect(timelineEventRepository.updateTimelineEvent).not.toHaveBeenCalledWith(mockTimelineEventId);
             })

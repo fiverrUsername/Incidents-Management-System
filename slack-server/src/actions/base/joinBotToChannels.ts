@@ -1,5 +1,7 @@
 
 import { client } from "../../constPage";
+import { constants, files } from "../../loggers/constants";
+import logger from "../../loggers/log";
 
 export async function JoinBotToChannels(channelId:string){
     (async () => {
@@ -7,14 +9,13 @@ export async function JoinBotToChannels(channelId:string){
           const response = await client.conversations.join({
             channel: channelId,
           });
-      
           if (response.ok) {
-            console.log(`Bot successfully joined channel ${channelId}`);
+            logger.info({ source: constants.BOT_SUCCESSFULLY_JOINED_CHANNEL+" "+channelId, file: files.JOIN_BOT_TO_CHANNEL ,method:constants.METHOD.CLIENT })
           } else {
-            console.error('Error joining channel:', response.error);
+            logger.error({ source: constants.CLIENT_ERROR_JOIN_BOT_TO_CHANNEL,  file: files.JOIN_BOT_TO_CHANNEL ,method:constants.METHOD.CLIENT , error: response.error})
           }
         } catch (error) {
-          console.error('An error occurred:', error);
+            logger.error({ source: constants.CLIENT_ERROR_JOIN_BOT_TO_CHANNEL,  file: files.JOIN_BOT_TO_CHANNEL ,method:constants.METHOD.CLIENT , error: error})
         }
       })();
 }

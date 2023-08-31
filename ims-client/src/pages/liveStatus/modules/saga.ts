@@ -8,7 +8,7 @@ function* onGetLiveStatus() {
     try {
         const data: liveStatusCollection = yield call(backendServices.getLiveStatus)
         yield put(actions.onGetLiveStatusSuccess(data))
-    } catch (error:any) {
+    } catch (error) {
         console.error(error)
     }
 }

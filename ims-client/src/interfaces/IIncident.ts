@@ -12,7 +12,7 @@ export default interface IIncident {
   channelId?:string;
   slackLink: string;
   channelName?: string;
-  currentTags: ITag[];
+  currentTags: (string|ITag)[];
   date: Date;
   createdAt: Date;
   updatedAt: Date;

@@ -5,13 +5,12 @@ import React from 'react';
 import { ISummary } from '../../../interfaces/ISummary';
 import { StyledBox, StyledPaper } from '../../../pages/timeLine/timeLinePage.style';
 import theme from '../../../theme';
-import { ITag } from '../../../interfaces/ITag';
+
 interface propsDisplaySummary {
     summaryIncident: ISummary
 }
 const DisplaySummary = ({ summaryIncident }: propsDisplaySummary) => {
-    const selectedTags = summaryIncident.tags;
-    const getOptionLabel = (tag: ITag) => tag.name;
+
     const date = dayjs(summaryIncident.createdAt).format("DD/MM/YYYY")
     return (
         <StyledPaper>
