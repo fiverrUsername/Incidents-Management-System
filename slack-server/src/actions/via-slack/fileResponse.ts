@@ -29,9 +29,10 @@ export async function fileResponse(files: any[], incidentId: string): Promise<st
           responseType: 'arraybuffer', // Use "arraybuffer" for binary data
           validateStatus: () => true,
         });
+        
         const newName: string = `incidence?${incidentId}?${Date.now()}${file.name}`;
-        const filePath = path.join(__dirname, 'temp', newName); // Define the path where you want to save the downloaded file
-        fs.writeFileSync(filePath, response.data); // Save the downloaded file
+        const filePath = path.join('/tmp', newName);
+        fs.writeFileSync(filePath, response.data); 
         // const bufferData: Buffer = Buffer.from(response.data, 'binary'); // Convert binary data to Buffer        console.log("-----------newName ",newName)
         filesKeys.push(newName);
         const params: AWS.S3.PutObjectRequest = {
