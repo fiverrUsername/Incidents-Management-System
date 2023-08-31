@@ -29,6 +29,7 @@ const LiveStatus = () => {
         fetchData();
     }, [date]);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleDateChange = (event: any) => {
         setDate(event);
     };
