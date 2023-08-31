@@ -21,26 +21,17 @@ class liveStatusService {
 
     async getLiveStatus(date?: Date): Promise<liveStatusEntry[] | any> {
         try {
-            //date not correct/not found
-            //systemData is empty
-            //check if date is defined..???
-            console.log(date)
             const tags = await tagService.getAllTags();
-            //let liveStatuses: liveStatusEntry[] = [];
             let liveStatuses: Array<liveStatusEntry | null> = [];
             const systemDate = date || new Date();
-            // console.log(systemDate)
-            for (const tag of tags) {
-                const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name, systemDate);
-                // if (latestStatusForTag && latestStatusForTag.length === 0) {
-                //     liveStatuses.push(null);
-                // } 
-                // else {
-                liveStatuses.push({
-                    systemName: tag.name,
-                    systemData: latestStatusForTag
-                });
-                // }
+            if (tags) {
+                for (const tag of tags) {
+                    const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name, systemDate);
+                    liveStatuses.push({
+                        systemName: tag.name,
+                        systemData: latestStatusForTag
+                    });
+                }
             }
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,
