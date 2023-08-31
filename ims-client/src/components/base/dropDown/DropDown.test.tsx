@@ -1,6 +1,6 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import DropDown from './DropDown';
+ import React from 'react';
+ import { render, screen, fireEvent } from '@testing-library/react';
+ import DropDown from './DropDown';
 
 //  describe('DropDown component', () => {
 //    it('renders the select box with options', () => {
@@ -10,5 +10,6 @@ import DropDown from './DropDown';
 //         { value: 'comment', label: 'c' },
 //     ];
 //     render(<DropDown arroption={Types1} />);
-   
+    
 //     });});
+

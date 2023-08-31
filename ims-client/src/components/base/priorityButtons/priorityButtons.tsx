@@ -18,14 +18,15 @@ const selectedButtonStyles: React.CSSProperties = {
 };
 
 interface PriorityButtonProps{
+  keyType:string;
   priority: Priority;
-  onChangePriority: (event:any) => void;
+  onChangePriority: (keyType:string,event:any) => void;
 }
 
 export default function PriorityButtons(props:PriorityButtonProps) {
   
   const handlePriority = (event:any) => {
-      props.onChangePriority(event)  
+      props.onChangePriority( props.keyType, event.target.value)  
     }
 
   return (
