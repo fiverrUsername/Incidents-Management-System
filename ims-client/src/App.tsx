@@ -9,7 +9,7 @@ import theme from "./theme";
 import Router from "./routes";
 import { Provider } from "react-redux";
 import ConfigureStoreFunction from "./redux/configureStore";
-import { HashRouter } from "react-router-dom";
+
 
 function App() {
 

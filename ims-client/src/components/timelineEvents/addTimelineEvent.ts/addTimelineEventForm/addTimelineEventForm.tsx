@@ -17,7 +17,6 @@ import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import DropDown from '../../../base/dropDown/DropDown';
 import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
 import UploadFiles from '../../../base/uploadFiles/UploadFiles';
-import log from '../../../../loggers/logger'
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 
 export interface dataFromForm {
@@ -25,7 +24,7 @@ export interface dataFromForm {
   priority: Priority;
   date: dayjs.Dayjs;
   type: string;
-  tags: ITag[];
+  tags: (string|ITag)[];
   filesString: string[];
   status: Status;
 }
@@ -75,7 +74,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
   const [severityValue, setSeverityValue] = useState<AlertColor>('error');
   const [messageValue, setMessageValue] = useState<string>("");
   const [tags, setTags] = useState<ITag[]>([]);
-  const getOptionLabel = (option: ITag) => option.name;
+  const getOptionLabel = (option: ITag|any) => option.name;
 
   async function onSubmit(data: dataFromForm) {
     setIsSubmit(true);
@@ -91,7 +90,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
       formData.append('files', file, newName);
     })
     data.filesString = formObject.filesString;
-    await attachmentServices.uploadAttachment(formData);
+    //await attachmentServices.uploadAttachment(formData);
     const isSuccess = await submitTimeLine({ data, incident, addNewTimelineFunction });
     if (isSuccess) {
       setSeverityValue('success');

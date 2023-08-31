@@ -1,4 +1,4 @@
-import React from 'react'
+
 import {ITimeLineEvent} from '../../../interfaces/ITimeLineEvent'
 import { dataFromForm, receivedIncident } from '../../../components/timelineEvents/addTimelineEvent.ts/addTimelineEventForm/addTimelineEventForm';
 import backendServices from '../../backendServices/backendServices';

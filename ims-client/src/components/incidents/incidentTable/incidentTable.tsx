@@ -14,7 +14,7 @@ interface IInceidentTableProps {
   rows: IIncident[];
   isLoading: boolean;
   incident: IIncident[];
-  setIncident: any;
+  setIncident: React.Dispatch<React.SetStateAction<IIncident[]>>;
 }
 
 const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading, incident, setIncident }) => {

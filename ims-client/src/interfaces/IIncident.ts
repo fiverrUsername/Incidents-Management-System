@@ -2,7 +2,7 @@ import { ITag } from "./ITag";
 import { Priority, Status } from "./enums";
   
 export default interface IIncident {
-  // id: string;
+  id?: string;
   name: string;
   status: Status;
   description: string;
@@ -12,7 +12,7 @@ export default interface IIncident {
   channelId?:string;
   slackLink: string;
   channelName?: string;
-  currentTags: ITag[];
+  currentTags: (string|ITag)[];
   date: Date;
   createdAt: Date;
   updatedAt: Date;
