@@ -17,7 +17,6 @@ class liveStatusRepository {
                 query.systemName = tag
             }
             const results = await liveStatusModel.find(query);
-            console.log("results", results)
             return results;
         }
         catch (e) {

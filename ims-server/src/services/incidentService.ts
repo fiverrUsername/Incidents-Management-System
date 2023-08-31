@@ -17,8 +17,13 @@ class IncidentService {
         incidentId: newIncident.id
       });
       const incident = await incidentRepository.addIncident(newIncident);
-      if (new Date(newIncident.date).getDate() === new Date().getDate())
-        await liveStatusService.liveStatusByIncident(incident)
+      const newIncidentDate = new Date(newIncident.date);
+      const currentDate = new Date();
+      if (
+        newIncidentDate.getDate() === currentDate.getDate() &&
+        newIncidentDate.getMonth() === currentDate.getMonth() &&
+        newIncidentDate.getFullYear() === currentDate.getFullYear()
+      ) await liveStatusService.liveStatusByIncident(incident)
       else
         await liveStatusService.liveStatusByIncidentWithPreviousDate(incident)
       return incident
