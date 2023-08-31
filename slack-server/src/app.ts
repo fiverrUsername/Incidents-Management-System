@@ -53,7 +53,7 @@ app.post('/webhook', (req: Request, res: Response) => {
   events(data);
 });
 
-
+console.log(process.env.SLACK_API_TOKEN)
 
 app.listen(port, () => {
   logger.info({ source: constants.SERVER_IS_OS_IN_LOCALHOST_PORT+""+port, file: files.APP })
