@@ -3,7 +3,6 @@ import { AlertColor, Button, Dialog, FormControl, Grid, SelectChangeEvent } from
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-
 import { ITag } from '../../../../interfaces/ITag';
 import { ITimeLineEvent } from '../../../../interfaces/ITimeLineEvent';
 import { Priority, Status } from '../../../../interfaces/enums';
@@ -16,16 +15,16 @@ import CustomAutocomplete, { CustomSyntheticEvent } from '../../../base/autoComp
 import BannerNotification from '../../../base/bannerNotification/BannerNotification';
 import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import DropDown from '../../../base/dropDown/DropDown';
-import { StatusIncident, TypesIncident } from '../../../base/dropDown/Types';
-import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
+import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
 import UploadFiles from '../../../base/uploadFiles/UploadFiles';
+import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 
 export interface dataFromForm {
   text: string;
   priority: Priority;
   date: dayjs.Dayjs;
   type: string;
-  tags: (string | ITag)[];
+  tags: (string|ITag)[];
   filesString: string[];
   status: Status;
 }
@@ -58,7 +57,7 @@ interface Props {
 export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimelineFunction }: Props) {
 
   const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();
-  console.log("incident.currentTags", incident.currentTags)
+  console.log("incident.currentTags",incident.currentTags)
   const [formObject, setFormObject] = React.useState<dataFromForm>({
     text: "",
     priority: incident.currentPriority,
@@ -75,7 +74,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
   const [severityValue, setSeverityValue] = useState<AlertColor>('error');
   const [messageValue, setMessageValue] = useState<string>("");
   const [tags, setTags] = useState<ITag[]>([]);
-  const getOptionLabel = (option: ITag | any) => option.name;
+  const getOptionLabel = (option: ITag|any) => option.name;
 
   async function onSubmit(data: dataFromForm) {
     setIsSubmit(true);
@@ -211,7 +210,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Affected services</label>
                 <div id="tags">
-                  <CustomAutocomplete options={tags} selectedOptions={formObject.tags} getOptionLabel={getOptionLabel} placeholderText={"Write to add"} onChangeOptions={handleTagChange} />
+                  <CustomAutocomplete options={tags} selectedOptions={formObject.tags} getOptionLabel={getOptionLabel} placeholderText={"Write to add"} onChangeOptions={handleTagChange } />
                   {/* {isSubmit && formObject.tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>} */}
                 </div>
               </FormControl>

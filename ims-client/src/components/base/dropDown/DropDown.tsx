@@ -7,16 +7,16 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { option } from './Types';
 
 interface DropDownProps {
-    defaultValue?: string;
-    Types: option[];
-    onChangeType: (event: SelectChangeEvent) => void;
+  defaultValue?:string;
+  Types:option[];
+  onChangeType: (event: SelectChangeEvent) => void;
 }
-export default function DropDown(props: DropDownProps) {
-    const [type, setType] = React.useState(props.defaultValue);
-    const handleChange = (event: SelectChangeEvent) => {
+export default function DropDown(props:DropDownProps) {
+  const [type, setType] = React.useState(props.defaultValue);
+  const handleChange = (event: SelectChangeEvent) => {
         setType(event.target.value);
         props.onChangeType(event)
-    };
+      };
     return (
         <FormControl>
             <Select
