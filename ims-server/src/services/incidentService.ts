@@ -16,9 +16,11 @@ class IncidentService {
         msg: constants.ADD_INCIDENT_SUCCESS,
         incidentId: newIncident.id
       });
-      // const live = await liveStatusService.liveStatusByIncident(newIncident);
       const incident = await incidentRepository.addIncident(newIncident);
-      await liveStatusService.liveStatusByIncident(incident)
+      if (new Date(newIncident.date).getDate() === new Date().getDate())
+        await liveStatusService.liveStatusByIncident(incident)
+      else
+        await liveStatusService.liveStatusByIncidentWithPreviousDate(incident)
       return incident
     } catch (error: any) {
       logger.error({

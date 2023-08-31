@@ -17,8 +17,8 @@ import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import DropDown from '../../../base/dropDown/DropDown';
 import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
 import UploadFiles from '../../../base/uploadFiles/UploadFiles';
-import log from '../../../../loggers/logger'
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
+import { keyDate, keyPriority, keyStatus, keyTags, keyType } from '../../../../const';
 
 export interface dataFromForm {
   text: string;
@@ -58,7 +58,7 @@ interface Props {
 export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimelineFunction }: Props) {
 
   const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();
-  console.log("incident.currentTags",incident.currentTags)
+
   const [formObject, setFormObject] = React.useState<dataFromForm>({
     text: "",
     priority: incident.currentPriority,
@@ -75,7 +75,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
   const [severityValue, setSeverityValue] = useState<AlertColor>('error');
   const [messageValue, setMessageValue] = useState<string>("");
   const [tags, setTags] = useState<ITag[]>([]);
-  const getOptionLabel = (option: ITag) => option.name;
+ 
 
   async function onSubmit(data: dataFromForm) {
     setIsSubmit(true);
@@ -91,7 +91,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
       formData.append('files', file, newName);
     })
     data.filesString = formObject.filesString;
-    await attachmentServices.uploadAttachment(formData);
+    //await attachmentServices.uploadAttachment(formData);
     const isSuccess = await submitTimeLine({ data, incident, addNewTimelineFunction });
     if (isSuccess) {
       setSeverityValue('success');
@@ -135,20 +135,12 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
     }
     getTags();
   }, []);
-  const handleDateChange = (Event: any) => {
-    setFormObject({ ...formObject, date: Event });
-  };
-  const handleTypeChange = (Event: SelectChangeEvent) => {
-    setFormObject({ ...formObject, type: Event.target.value });
-  };
-  const handleStatusChange = (Event: SelectChangeEvent) => {
-    setFormObject({ ...formObject, status: Event.target.value as Status });
-  };
-  const handlePriorityChange = (Event: SelectChangeEvent) => {
-    setFormObject({ ...formObject, priority: Event.target.value as Priority });
-  };
-  const handleTagChange = (Event: CustomSyntheticEvent) => {
-    setFormObject({ ...formObject, tags: Event.selectedTags });
+  const handleChange = async (keyType: string, event: any) => {
+
+    setFormObject((prevFormObject) => ({
+      ...prevFormObject,
+      [keyType]: event
+    }));
   };
   return (
     <Dialog open={isOpen} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
@@ -177,8 +169,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
-                  <PriorityButtons onChangePriority={handlePriorityChange} priority={formObject.priority} />
-                </div>
+                <PriorityButtons keyType={keyPriority} onChangePriority={handleChange} priority={formObject.priority} />                </div>
               </FormControl>
             </Grid>
             <Grid item xs={12}  >
@@ -186,7 +177,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
-                    <DateTimePickerValue date={formObject.date} onDateChange={handleDateChange} />
+                    <DateTimePickerValue  keyType={keyDate} date={formObject.date} onDateChange={handleChange} />
                   </FormControl>
                 </Grid>
               </Grid>
@@ -195,7 +186,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="type">Type</label>
-                <DropDown defaultValue={incident.type} Types={TypesIncident} onChangeType={handleTypeChange} />
+                <DropDown keyType={keyType} defaultValue={formObject.type} Types={TypesIncident} onChangeType={handleChange}  />
                 {isSubmit && !formObject.type && <span style={{ color: errorColor }}>Type is required</span>}
               </FormControl>
             </Grid>
@@ -203,7 +194,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="status">Status</label>
-                <DropDown defaultValue={incident.status} Types={StatusIncident} onChangeType={handleStatusChange} />
+                <DropDown keyType={keyStatus} defaultValue={formObject.status} Types={StatusIncident} onChangeType={handleChange} />
                 {isSubmit && !formObject.status && <span style={{ color: errorColor }}>Status is required</span>}
               </FormControl>
             </Grid>
@@ -211,7 +202,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Affected services</label>
                 <div id="tags">
-                  <CustomAutocomplete options={tags} selectedOptions={formObject.tags} getOptionLabel={getOptionLabel} placeholderText={"Write to add"} onChangeOptions={handleTagChange } />
+                <CustomAutocomplete selectedOptions={formObject.tags} options={tags} keytype={keyTags}  onChangeOptions={handleChange} />
                   {/* {isSubmit && formObject.tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>} */}
                 </div>
               </FormControl>

@@ -7,9 +7,9 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
-import { CSSObject, Theme, styled, useTheme } from '@mui/material/styles'
+import { CSSObject, Theme, styled } from '@mui/material/styles'
 import React from 'react'
-import { ComponentType } from 'react';
+import { IconType } from 'react-icons/lib'
 import { useNavigate } from 'react-router-dom'
 import logo from '../../assets/images/logo.png'
 
@@ -51,10 +51,10 @@ interface Props {
 }
 export interface IIcon {
   text: string,
-  icon: ComponentType<any>,
+  icon: IconType,
   navigation: string,
 }
-const AppBar = styled(MuiAppBar, {
+styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
@@ -90,7 +90,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 )
 
 export default function LeftDrawer({ icons }: Props) {
-  const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
   const handleClick = (navigation: string) => {
@@ -114,7 +113,7 @@ export default function LeftDrawer({ icons }: Props) {
         </DrawerHeader>
         <Divider />
         <List>
-          {icons.map((icon, index) => (
+          {icons.map((icon) => (
             <ListItem onClick={() => {handleClick(icon.navigation)
             if(open) setOpen(false)}} key={icon.text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
@@ -131,7 +130,7 @@ export default function LeftDrawer({ icons }: Props) {
                     justifyContent: 'flex-end', // Align icon to the right
                   }}
                 >
-                  < icon.icon size={24}></icon.icon>
+                  <icon.icon size={24}></icon.icon>
                 </ListItemIcon>
               </ListItemButton>
 

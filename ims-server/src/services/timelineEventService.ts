@@ -1,5 +1,4 @@
 import { validate } from "class-validator";
-
 import { ITimelineEventDto } from "../dto/timelineEventDto";
 import { Priority } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
@@ -23,11 +22,7 @@ class TimelineEventService {
       const timelineEvent = await timelineEventRepository.getAllTimelineEvents();
       return timelineEvent;
     } catch (error: any) {
-      logger.error({
-        source: constants.TIMELINE_EVENT,
-        method: constants.METHOD.GET,
-        err: true
-      });
+      logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.GET, err: true });
       console.error(`error: ${error}`);
       return error;
     }
@@ -43,11 +38,7 @@ class TimelineEventService {
       const timelineEvent = await timelineEventRepository.getTimelineEventByIncidentId(id);
       return timelineEvent;
     } catch (error: any) {
-      logger.error({
-        source: constants.TIMELINE_EVENT,
-        method: constants.METHOD.GET,
-        err: true
-      });
+      logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.GET, err: true });
       console.error(`error: ${error}`);
       return error;
     }
@@ -62,8 +53,8 @@ class TimelineEventService {
       const _timelineEvent = new ITimelineEventDto(newTimelineEvent);
       const validationErrors = await validate(_timelineEvent);
       if (validationErrors.length > 0) {
-        logger.error({ source: constants.TIMELINE_EVENT, err: "Validation error", validationErrors: validationErrors.map((error) => error.toString()), });
-        return new Error("Validation error");
+        logger.error({ source: constants.TIMELINE_EVENT, err: constants.VALIDATION_ERROR, validationErrors: validationErrors.map((error) => error.toString()), });
+        return new Error(constants.VALIDATION_ERROR);
       }
       if (tags.length != newTimelineEvent.tags.length) {
         const newIncident = incident
@@ -196,7 +187,8 @@ class TimelineEventService {
         return new Error('Timeline event not found');
       }
       if (!timelineEvent.files.some((v) => v === file)) {
-        return new Error('string file not exist')
+        logger.error({ source: constants.TIMELINE_EVENT, err: constants.NOT_FOUND, timelineEventId: id, file: file, method: constants.METHOD.DELETE })
+        return;
       }
       timelineEvent.files = timelineEvent.files.filter((v) => v !== file);
       return await timelineEventRepository.updateTimelineEvent(id, timelineEvent);;

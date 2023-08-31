@@ -6,21 +6,21 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 interface DateTimePickerProps {
+    keyType:string;
     date: Dayjs | null;
-    onDateChange: (newDate: Dayjs | null) => void;
+    onDateChange: (keyType:string,newDate: Dayjs | null) => void;
 }
-
 export default function DateTimePickerValue(props: DateTimePickerProps) {
     const lastYear = dayjs().set('year', dayjs().year() - 1);
 
     const handleDateChange = (newDate: Dayjs | null) => {
-        props.onDateChange(newDate);
+        props.onDateChange(props.keyType,newDate);
     };
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
-                <div style={{ height: '80px', overflow: 'hidden',padding:'2%' }}>
+                <div style={{ height: '80px', overflow: 'hidden',padding:'1%' }}>
                     <DateTimePicker
                         value={props.date}
                         onChange={handleDateChange}
