@@ -2,10 +2,10 @@ import { ApexOptions } from 'apexcharts';
 import dayjs from 'dayjs';
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
-
 import { IcolorScale, liveStatusEntry } from '../../../interfaces/ILiveStatus';
-import theme from '../../../theme';
 import "./heatmapChar.css";
+import { left } from '@popperjs/core';
+import theme from '../../../theme';
 
 interface HeatmapCharProps {
   systemsStatusCollection: liveStatusEntry[];
@@ -25,29 +25,28 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         offsetX: 0,
         offsetY: 0,
         tools: {
-          download: true,
-          selection: false,
-          zoom: false,
+          download: true,  
+          selection: false,  
+          zoom: false, 
           zoomin: false,
           zoomout: false,
           pan: false,
         },
       },
     },
-    legend: {
-      fontSize: "16px",
-      markers: {
-        height: 16,
-        width: 16
-      }
-    },
-    grid: {
-      padding: {
-        top: 10,
-        right: 40,
-        bottom: 10,
-        left: 20
-      }
+    legend: {	
+      fontSize: "16px",	
+      markers: {	
+        height: 16,	
+        width: 16	
+      }},
+    grid:{
+      padding:{
+        top:10,
+        right:40,
+         bottom:10,
+         left:20
+  }
 
     },
     responsive: [
