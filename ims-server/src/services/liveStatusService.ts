@@ -60,7 +60,7 @@ class liveStatusService {
             } else {
                 existingLiveStatus = await liveStatusRepository.getTodaysLiveStatusByTag(tag);
             }
-            if (existingLiveStatus) {
+            if (existingLiveStatus != undefined) {
                 if (data.maxPriority > existingLiveStatus.maxPriority) {
                     data.maxPriority = existingLiveStatus.maxPriority;
                 }
@@ -179,7 +179,7 @@ class liveStatusService {
                         const liveStatusData: IliveStatus = system
                         liveStatusData.maxPriority = incident.currentPriority
                         return await this.createOrUpdateLiveStatus(liveStatusData, incident.id ? incident.id : '', tag.name, system);
-                    })  
+                    })
             });
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,
