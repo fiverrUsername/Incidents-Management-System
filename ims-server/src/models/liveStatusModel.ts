@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { IliveStatus } from "../interfaces/liveStatusInterface";
 import { Priority } from "../enums/enum";
 
-export const liveStatusSchema = new Schema<IliveStatus>({
+const liveStatusSchema = new Schema<IliveStatus>({
     id: {
         type: String,
         default: uuidv4,
@@ -34,4 +34,9 @@ export const liveStatusSchema = new Schema<IliveStatus>({
         required: true,
     }
 });
-export default mongoose.model<IliveStatus>("liveStatus", liveStatusSchema);
+
+liveStatusSchema.index({ date: 1 }); 
+
+const LiveStatus = mongoose.model<IliveStatus>("liveStatus", liveStatusSchema);
+
+export default LiveStatus;

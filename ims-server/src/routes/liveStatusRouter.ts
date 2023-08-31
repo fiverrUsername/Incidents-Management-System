@@ -4,8 +4,6 @@ import liveStatusController from "../controllers/liveStatusController";
 const router = express.Router();
 const liveStatus = new liveStatusController();
 
-router.get("/:date?", liveStatus.getLiveStatus);
-//testing
-router.post("/", liveStatus.createLiveStatus);
+router.get("/", liveStatus.getLiveStatus);
 
 export default router;

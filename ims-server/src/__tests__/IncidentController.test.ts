@@ -156,8 +156,8 @@ describe("incidents", () => {
     describe("get summary incident", () => {
         describe("succed", () => {
             it("should return data", async () => {
-                const id = "649cbeda942a5d4d8bcf3044"
-                const res = await supertest(app).get(`/incident/${id}`);
+                const id = "0de79832-339b-49df-bdeb-aa9425f77564"
+                const res = await supertest(app).get(`/incident/result/summary/${id}`);
                 expect(res.status).toBe(200);
             })
         })
