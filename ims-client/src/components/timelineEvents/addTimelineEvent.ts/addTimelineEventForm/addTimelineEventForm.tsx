@@ -19,6 +19,7 @@ import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
 import UploadFiles from '../../../base/uploadFiles/UploadFiles';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 import { keyDate, keyPriority, keyStatus, keyTags, keyType } from '../../../../const';
+import log from '../../../../loggers/logger'
 
 export interface dataFromForm {
   text: string;
@@ -58,7 +59,6 @@ interface Props {
 
 
 export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimelineFunction,updateIncidentFunction }: Props) {
-
   const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();
   const [formObject, setFormObject] = React.useState<dataFromForm>({
     text: "",

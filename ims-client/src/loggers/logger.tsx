@@ -1,41 +1,39 @@
 import log from 'loglevel';
 import axios from 'axios';
 import { Level } from '../interfaces/enums';
-// import remote from 'loglevel-plugin-remote'; 
+import { ILogData, ILogRecievedData } from '../interfaces/ILogger';
 
 const baseUrl = process.env.REACT_APP_API_KEY
 
 export default class Logger {
- static info(msg: string): void {
-    log.info(msg);
-    sendLogToServer(Level.info, msg);
+ static info(data: ILogRecievedData): void {
+    log.info(data.message);
+    sendLogToServer(Level.info, data);
   }
-  static debug(msg: string): void {
-    log.debug(msg);
-    sendLogToServer(Level.debug, msg);
+  static debug(data: ILogRecievedData): void {
+    log.debug(data.message);
+    sendLogToServer(Level.debug, data);
   }
-  static error(msg: string): void {
-    log.error(msg);
-    sendLogToServer(Level.error, msg);
+  static error(data: ILogRecievedData): void {
+    log.error(data.message);
+    sendLogToServer(Level.error, data);
   }
-  static trace(msg: string): void {
-    log.trace(msg);
-    sendLogToServer(Level.trace, msg);
+  static trace(data: ILogRecievedData): void {
+    log.trace(data.message);
+    sendLogToServer(Level.trace, data);
   }
-  static warn(msg: string): void {
-    log.warn(msg);
-    sendLogToServer(Level.warn, msg);
+  static warn(data: ILogRecievedData): void {
+    log.warn(data.message);
+    sendLogToServer(Level.warn, data);
   }
 }
-
-// פונקציה לשליחת הלוג לשרת
- function sendLogToServer(level: Level, message: string) {
-  const logData = {
+ function sendLogToServer(level:Level, data:ILogRecievedData) {
+  const logData:ILogData = {
     level,
-    message,
+    message:data.message,
     timestamp: new Date().toISOString(),
-  };
-  // remote.apply(`${baseUrl}/log`, logData)
+    ...(data.source && { source :data.source}),
+    };
   axios.post(`${baseUrl}/log`, logData)
     .then(response => { 
       console.log(response.data);
