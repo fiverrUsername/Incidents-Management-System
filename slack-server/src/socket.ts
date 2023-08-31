@@ -78,8 +78,10 @@ export const sendToSocket = (object: ITimelineEvent | IIncident, objectType: Obj
   console.log("-----------------slack server! sendToSocket , object: ",object)
   const sendObj: IMessage = { objectType, actionType, object };
   if (ws.readyState === WebSocket.OPEN) {
+    console.log("socket open!!!!!!!!!!!!!!!!1")
     send(sendObj);
   } else {
+    console.log("socket close!!!!!!!!!!!!")
     messageQueue.push(sendObj);
   }
 }
