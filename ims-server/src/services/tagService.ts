@@ -16,20 +16,27 @@ class TagService {
           err: "Validation error",
           validationErrors: validationErrors.map((error) => error.toString()),
         });
-        throw new Error("Validation error");
+        return new Error("Validation error");
       }
-      return await tagRepository.addTag(newTag);
+      const _tag: ITag | null = await tagRepository.addTag(newTag);
+      if (!_tag) {
+        logger.error({ source: constants.TAG_SERVICE, err: constants.ERROR_ADDING_TAG, tag: newTag })
+        return;
+      }
+      logger.info({ source: constants.TAG_SERVICE, method: constants.METHOD.POST, tag: _tag })
+      return _tag;
     } catch (error) {
       console.error(`error: ${error}`);
       throw error;
     }
   }
 
-  async getAllTags(): Promise<ITag[]> {
+  async getAllTags(): Promise<ITag[] | undefined> {
     try {
       const tags = await tagRepository.getAllTags();
-      if (tags === null) {
-        throw new Error("Failed to retrieve tags");
+      if (!tags) {
+        logger.error({ source: constants.TAG_SERVICE, method: constants.METHOD.GET });
+        return;
       }
       return tags;
     } catch (error) {
@@ -37,6 +44,7 @@ class TagService {
       throw error;
     }
   }
+
 }
 
 export default new TagService();

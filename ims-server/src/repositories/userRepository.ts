@@ -2,9 +2,9 @@ import { User } from "../interfaces/userI";
 import userModel from "../models/user";
 
 class UserRepository {
-  async createUser(newUser: User): Promise<void | null> {
+  async createUser(newUser: User): Promise<User | undefined> {
     try {
-      await userModel.create(newUser);
+      return await userModel.create(newUser);
     } catch (error) {
       console.error(`error: ${error}`);
     }
