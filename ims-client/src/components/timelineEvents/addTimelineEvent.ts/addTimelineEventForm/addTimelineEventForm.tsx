@@ -93,7 +93,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
       formData.append('files', file, newName);
     })
     data.filesString = formObject.filesString;
-    //await attachmentServices.uploadAttachment(formData);
+    await attachmentServices.uploadAttachment(formData);
     const isSuccess = await submitTimeLine({ data, incident, addNewTimelineFunction ,updateIncidentFunction});
     if (isSuccess) {
       setSeverityValue('success');
