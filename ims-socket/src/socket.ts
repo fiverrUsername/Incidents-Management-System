@@ -14,12 +14,14 @@ ws.on('connection', (ws: WebSocket) => {
   const id = uuidv4();
   clients.set(id, ws);
   ws.on('message', (messageAsString: string) => {
+    console.log("--------ws.on ");
     [...clients.entries()].forEach(([clientId, client]) => {
       if (clientId !== id) // Don't send the message back to the sender
         client.send(messageAsString);
     });
   });
   ws.on('close', () => {
+    console.log("--------ws.close ");
     clients.delete(id);
   });
 });
