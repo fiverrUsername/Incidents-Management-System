@@ -28,16 +28,16 @@ export async function fileResponse(files: any[], incidentId: string): Promise<st
           responseType: "blob", // Use "arraybuffer" for binary data
           validateStatus: () => true,
         });
-        const blob = await response.data.buffer()
-        console.log("-----------blob ",blob)
+        //console.log("-----------blob ",filee)
         const newName: string = `incidence?${incidentId}?${Date.now()}${file.name}`;
+        let filee = new File(response.data, newName, { type: 'docx'})
         console.log("-----------newName ",newName)
         filesKeys.push(newName);
         const params: AWS.S3.PutObjectRequest = {
           Bucket: 'ims-fiverr',
           Key: newName.replace(/\?/g, '/'),
           // Body: new File([response.data], "docx") //myFile //Buffer.from(response.data)
-          Body:blob
+          Body:filee
         };
         console.log("##########################params.body", params.Body);
         await s3.upload(params).promise();
