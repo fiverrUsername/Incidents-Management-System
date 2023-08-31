@@ -4,7 +4,6 @@ import logger from "../../loggers/log";
 
 export async function getSlackDataByChannelId(channelId: string) {
     try {
-        console.log("-------i am in getSlackDataByChannelId")
         const response = await client.conversations.info({
             channel: channelId,
         });

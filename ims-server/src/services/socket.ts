@@ -10,7 +10,6 @@ const ws = new WebSocket('wss://ims-socket.onrender.com/');
 const messageQueue: any[] = []; // Replace 'any' with the type of messages you are sending
 
 ws.on('open', () => {
-  console.log('WebSocket connection is open in ims-server.');
   // Process the message queue
   while (messageQueue.length > 0) {
     const message = messageQueue.shift();
@@ -28,7 +27,6 @@ ws.onmessage = (webSocketMessage: { data: { toString: () => string; }; }) => {
     case ObjectType.Incident:
       switch (messageBody.actionType) {
         case ActionType.Add:
-          console.log("---add incident ,messageBody:",messageBody )
           incidentRepository.addIncident(messageBody.object as IIncident)
           break;
         case ActionType.Update:
@@ -39,14 +37,12 @@ ws.onmessage = (webSocketMessage: { data: { toString: () => string; }; }) => {
           // Perform some action for deleting a TimelineEvent
           break;
         default:
-          console.log('Received unknown action type for Incident:', messageBody);
           break;
       }
       break;
     case ObjectType.TimelineEvent:
       switch (messageBody.actionType) {
         case ActionType.Add:
-          console.log("---add timeline ,messageBody:",messageBody )
           timelineEventRepository.addTimelineEvent(messageBody.object as ITimelineEvent)
           break;
         case ActionType.Update:
@@ -67,7 +63,6 @@ ws.onmessage = (webSocketMessage: { data: { toString: () => string; }; }) => {
 };
 
 export const sendToSocket = (object: IIncident | ITimelineEvent, objectType: ObjectType, actionType: ActionType) => {
-  console.log("------sendToSocket timeline  or incident: ", object)
   const sendObj: IMessage = { objectType, actionType, object };
   if (ws.readyState === WebSocket.OPEN) {
     send(sendObj);

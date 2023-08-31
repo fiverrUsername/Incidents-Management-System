@@ -4,7 +4,6 @@ dotenv.config();
 import { LogLevel, WebClient } from "@slack/web-api";
 export const port = 4700;
 
-// export const wsPort = 'ws://127.0.0.1:8080';
 export const wsPort = 'wss://ims-socket.onrender.com';
 
 
@@ -18,7 +17,6 @@ export const CHANNEL_REDIRECT = "https://slack.com/app_redirect?channel="
 
 
 
-const token=process.env.SLACK_API_TOKEN  as string;
-export const client = new WebClient(token, {
+export const client = new WebClient(process.env.SLACK_API_TOKEN as string, {
   logLevel: LogLevel.DEBUG,
 });
