@@ -75,7 +75,7 @@
                 }
             }
         },
-        "/incident/result/summary/{id}": {
+        "/incident/summary/{id}": {
             "get": {
                 "tags": [
                     "incident"

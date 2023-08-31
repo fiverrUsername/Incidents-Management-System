@@ -7,14 +7,14 @@ describe("incidents", () => {
     describe("get all incidents", () => {
         describe("succed", () => {
             it("should return data", async () => {
-                const res = await supertest(app).get("/incident");
+                const res = await supertest(app).get("/incident/");
                 expect(res.status).toBe(200);
             })
         })
         describe("error", () => {
             it("should return 404", async () => {
                 jest.spyOn(IncidentModel, 'find').mockRejectedValueOnce(new Error());
-                const res = (await supertest(app).get("/incident"));
+                const res = (await supertest(app).get("/incident/"));
                 expect(res.status).toBe(404);
             })
         })
@@ -22,7 +22,7 @@ describe("incidents", () => {
     describe("get incident by ID", () => {
         describe("succeed", () => {
             it("should return data", async () => {
-                const id = "ae9fc696-71d3-4f7e-b8d0-f0c633740a00"
+                const id = "649cbeda942a5d4d8bcf303b"
                 const res = await supertest(app).get(`/incident/${id}`);
                 expect(res.status).toBe(200);
             });
@@ -78,29 +78,29 @@ describe("incidents", () => {
         describe("success", () => {
             it("should update an incident and return 200", async () => {
                 const updatedIncident = {
-                    "name": "update new incident",
-                    "status": "Active",
-                    "description": "bla bla bla",
-                    "currentPriority": "p0",
-                    "type": "Securing",
-                    "durationHours": 0,
+                    "name": "Unresolved Incident adding",
+                    "status": Status.Active,
+                    "description": "Issue Description",
+                    "currentPriority": "P3",
+                    "type": "technical",
+                    "durationHours": 24,
                     "channelId": "",
-                    "channelName": "new_channel",
-                    "slackLink": "https://slack.com/app_redirect?channel=null",
+                    "slackLink": "",
+                    "channelName": "https://join.slack.com/t/fi-verr/shared_invite/zt-1xip09fur-ERWbAQen_A~dz5s42ltnvw",
                     "currentTags": [
                         {
-                            "id": "5678",
+                            "id": "45sfeda992a5dd8bcf403m",
                             "name": "checkout",
-                            "_id": "64ed899a0c8a43809c7bd0f3"
+                            "_id": "64b3b4e485111aaa57652310"
                         }
                     ],
-                    "date": "2023-08-29T06:00:58.234Z",
-                    "createdAt": "2023-08-29T06:00:58.234Z",
-                    "updatedAt": "2023-08-29T06:00:58.234Z",
-                    "cost": 0,
-                    "createdBy": "698cbeda854a5d4d8bcf303l"
+                    "date": "2023-07-29T10:30:00.000Z",
+                    "createdAt": "2023-07-05T10:30:00.000Z",
+                    "updatedAt": "2023-08-15T10:30:00.000Z",
+                    "cost": 900,
+                    "createdBy":"someone"
                 }
-                const id = "d7524c2e-092a-4b49-bfba-bc23eb7c293a";
+                const id = "649cbeda942a5d4d8bcf303b";
                 const res = await supertest(app)
                     .put(`/incident/updateIncident/${id}`)
                     .send(updatedIncident);
@@ -140,13 +140,24 @@ describe("incidents", () => {
                     .send(updatedIncident);
                 expect(res.status).toBe(404);
             })
+            it("should return 500 on error", async () => {
+                jest.spyOn(IncidentModel, 'findOneAndUpdate').mockRejectedValueOnce(new Error());
+                const updatedIncident = {
+                    name: "Unresolved Incident adding"
+                }
+                const id = "649cbeda942a5d4d8bcf303b";
+                const res = await supertest(app)
+                    .put(`/incident/updateIncident/${id}`)
+                    .send(updatedIncident);
+                expect(res.status).toBe(500);
+            })
         })
     })
     describe("get summary incident", () => {
         describe("succed", () => {
             it("should return data", async () => {
                 const id = "649cbeda942a5d4d8bcf3044"
-                const res = await supertest(app).get(`/incident/result/summary/${id}`);
+                const res = await supertest(app).get(`/incident/${id}`);
                 expect(res.status).toBe(200);
             })
         })
@@ -154,7 +165,7 @@ describe("incidents", () => {
             it("should return 404", async () => {
                 // jest.spyOn(IncidentModel, 'findById').mockResolvedValueOnce(new Error());
                 const id = "5555";
-                const res = (await supertest(app).get(`/incident/result/summary/${id}`));
+                const res = (await supertest(app).get(`/incident/${id}`));
                 expect(res.status).toBe(404);
             })
         })

@@ -1,10 +1,11 @@
+
 import IIncident from '../../../interfaces/IIncident'
 import { FormData } from '../../../components/incidents/addIncident/addIncidentForm/addIncidentForm'
 import { Status } from '../../../interfaces/enums'
 import backendServices from '../../backendServices/backendServices'
 
 
-export default async function submitIncident(data: FormData, incident: IIncident[], setIncident: any) {
+export default async function submitIncident(data: FormData, incident: IIncident[], setIncident: React.Dispatch<React.SetStateAction<IIncident[]>>) {
 
     const incidentcR: IIncident = {
         //TODO
@@ -17,7 +18,8 @@ export default async function submitIncident(data: FormData, incident: IIncident
         slackLink: "",
         channelName: data.channelName,
         channelId: "",
-        currentTags: data.tags.map(tag => ({ id: tag.id, name: tag.name })),
+        currentTags: data.tags.map(tag => {if(typeof tag ==="string") return "";
+    return ({ id: tag.id, name: tag.name })}),
         date: data.date.toDate(),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -28,10 +30,7 @@ export default async function submitIncident(data: FormData, incident: IIncident
     const updatedIncidents = [incidentcR, ...incident];
     setIncident(updatedIncidents);
     try {
-        const newIncident = await backendServices.createIncident(incidentcR);
-        incidentcR.id = newIncident.id
-        const updatedIncidents = [incidentcR, ...incident];
-        setIncident(updatedIncidents);
+        await backendServices.createIncident(incidentcR);
         return true;
     } catch (error) {
         console.error('Error creating incident:', error);

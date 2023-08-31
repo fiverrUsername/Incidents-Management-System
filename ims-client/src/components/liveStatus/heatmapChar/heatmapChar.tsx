@@ -6,6 +6,13 @@ import { IcolorScale, liveStatusEntry } from '../../../interfaces/ILiveStatus';
 import "./heatmapChar.css";
 import theme from '../../../theme';
 
+interface DataPoint {
+  x: string;
+  y: number;
+  z: string;
+  incident: number;
+}
+
 interface HeatmapCharProps {
   systemsStatusCollection: liveStatusEntry[];
   colors: IcolorScale[]
@@ -15,58 +22,41 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
 
   const options: ApexOptions = {
     chart: {
-      width: 1200,
+      width: 1000,
       height: 300,
       type: 'heatmap',
-      fontFamily: theme.typography.fontFamily,
       toolbar: {
         show: true,
         offsetX: 0,
         offsetY: 0,
         tools: {
-          download: true,  
-          selection: false,  
-          zoom: false, 
+          download: false, // Disable the download button
+          selection: false, // Disable the selection tool
+          zoom: false, // Disable zooming tool
           zoomin: false,
           zoomout: false,
           pan: false,
         },
       },
     },
-    legend: {	
-      fontSize: "16px",	
-      markers: {	
-        height: 16,	
-        width: 16	
-      }},
-    grid:{
-      padding:{
-        top:10,
-        right:40,
-         bottom:10,
-         left:20
-  }
-
-    },
     responsive: [
       {
-        breakpoint: 5000,
+        breakpoint: 767,
         options: {
           chart: {
-            width: '100%',
-            height: 250,
+            width: '100%', // Adjust width for mobile
+            height: 300,
           },
         },
       },
     ],
     stroke: {
-      width: 3,
     },
     plotOptions: {
       heatmap: {
-        shadeIntensity: 0,
+        shadeIntensity: 0.5,
         colorScale: {
-          ranges: props.colors,
+          ranges: props.colors
         },
       },
     },
@@ -84,9 +74,6 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
     yaxis: {
       labels: {
         show: true,
-        style: {
-          fontSize: '18px'
-        }
       },
       tooltip: {
         enabled: false,
@@ -94,7 +81,23 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
       }
     },
     tooltip: {
+      x: {
+        show: true,
+        format: 'dd MMM',
+        formatter: undefined,
+      },
+      y: {
+        formatter: () => '', // Set the formatter to an empty function to hide the y value
+        title: {
+          formatter: () => '',
+        },
+      },
+      z: {
+        formatter: undefined,
+        title: 'date: ',
+      },
       custom: function ({ seriesIndex, dataPointIndex }: {
+        series: Array<{ data: Array<DataPoint> }>,
         seriesIndex: number,
         dataPointIndex: number
       }) {
@@ -103,10 +106,10 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         if (dataPoint.date !== undefined) {
           return (
             '<div class="arrow_box">' +
-            '<div class="title_tooltip"  >&nbsp;&nbsp;Date:' + date + '&nbsp;</div>' +
-            '<span>&nbsp; ' + dataPoint.systemName + '&nbsp;</span>' +
+            '<div class="title_tooltip"  >Date:' + date + '</div>' +
+            '<span> ' + dataPoint.systemName + '</span>' +
             '<br />' +
-            '<span>&nbsp;&nbsp;Incidents: ' + dataPoint.incidentCounter + '&nbsp;</span>' +
+            '<span>Incidents: ' + dataPoint.incidentCounter + '</span>' +
             '</div>'
           );
         }
@@ -123,12 +126,15 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         const from: number | undefined = priorityInfo?.from;
         const to: number | undefined = priorityInfo?.to;
         const formattedDate: string = dayjs(systemData.date).format("DD/MM/YYYY")
+        //const isExist:boolean|undefined = props.dates?.includes(formattedDate);
+        //  if (isExist)
         if (from !== undefined && to !== undefined) {
           const priorityValue: number = from + (to - from) / 2;
           return {
             x: formattedDate,
             y: priorityValue,
-         
+            z: formattedDate,
+
           };
         }
         else {
