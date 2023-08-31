@@ -60,7 +60,7 @@ class liveStatusRepository {
                 },
                 systemName: tag
             });
-        } catch (e) {
+        } catch (e:any) {
             console.error(`error: ${e}`);
             return null;
         }

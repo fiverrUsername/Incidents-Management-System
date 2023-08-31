@@ -6,7 +6,7 @@ class TagRepository {
     try {
       const createdTag = await tagModel.create(newTag);
       return createdTag;
-    } catch (error) {
+    } catch (error:any) {
       console.error(`error: ${error}`);
       return null;
     }
