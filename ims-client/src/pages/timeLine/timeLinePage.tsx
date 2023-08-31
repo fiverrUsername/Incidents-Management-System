@@ -36,7 +36,10 @@ const TimeLinePage = ({ id }: WithIdProps) => {
       setIncident(getIncidentById);
     };
     fetchIncident();
-  }, [id,summaryIncident]);
+  }, [id]);
+
+  
+
 
   let filter: ITimeLineEvent[] = [];
   const [myValue, setMyValue] = useState<string>("");
