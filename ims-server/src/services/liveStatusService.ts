@@ -31,22 +31,22 @@ class liveStatusService {
             const systemDate = date || new Date();
             // console.log(systemDate)
             for (const tag of tags) {
-                   const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name,systemDate);
+                const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name, systemDate);
                 // if (latestStatusForTag && latestStatusForTag.length === 0) {
                 //     liveStatuses.push(null);
                 // } 
                 // else {
-                    liveStatuses.push({
-                        systemName: tag.name,
-                        systemData: latestStatusForTag
-                    });
-               // }
+                liveStatuses.push({
+                    systemName: tag.name,
+                    systemData: latestStatusForTag
+                });
+                // }
             }
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,
                 msg: constants.GET_SYSTEMS_BY_DATE_SUCCESS,
             });
-            console.log("liveStatuses",liveStatuses)
+            console.log("liveStatuses", liveStatuses)
             return liveStatuses;
         } catch (error: any) {
             logger.error({
@@ -94,7 +94,7 @@ class liveStatusService {
             return error;
         }
     }
-    async updateLiveStatusByTimeLineEvent(timeLineEvent: ITimelineEvent, system: string, previousPriority: Priority): Promise<void | null> {
+    async updateLiveStatusByTimeLineEvent(timeLineEvent: ITimelineEvent, system: string, previousPriority: Priority): Promise<void | any> {
         try {
             if (previousPriority == timeLineEvent.priority && timeLineEvent.status == Status.Active)
                 return
@@ -112,11 +112,21 @@ class liveStatusService {
                     liveStatus.maxPriority = timeLineEvent.priority;
                 }
             }
-            liveStatus.resolvedIncidents++
+            if (timeLineEvent.status === Status.Resolved)
+                liveStatus.resolvedIncidents++
             liveStatus.incidents = updatedIncidents
+            logger.error({
+                source: constants.SYSTEM_STATUS_SERVICE,
+                err: constants.UPDATE_LIVE_STATUS_BY_TIMELINE_EVENT_SUCCESS,
+            });
             return await liveStatusRepository.updateLiveStatus(liveStatus, liveStatus.id);
-        } catch (e) {
-            console.log(e);
+        } catch (error) {
+            logger.error({
+                source: constants.SYSTEM_STATUS_SERVICE,
+                err: constants.UPDATE_LIVE_STATUS_BY_TIMELINE_EVENT_FAILD,
+            });
+            console.error(`error: ${error}`);
+            return error;
         }
     }
 
@@ -130,23 +140,37 @@ class liveStatusService {
     }
 
     async autoUpdateLiveStatus() {
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        const systems: IliveStatus[] = await liveStatusRepository.getLiveStatusSystemsByDate(yesterday.toISOString());
-        systems.forEach(async system => {
-            if (!(system.incidentCounter > system.resolvedIncidents))
-                return
-            await liveStatusRepository.createLiveStatus(
-                {
-                    id: uuidv4(),
-                    systemName: system.systemName,
-                    incidents: system.incidents,
-                    date: new Date,
-                    maxPriority: this.getUpdatedMaxPriority(system.incidents),
-                    incidentCounter: system.incidentCounter - system.resolvedIncidents,
-                    resolvedIncidents: 0
-                });
-        });
+        try {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const systems: IliveStatus[] = await liveStatusRepository.getLiveStatusSystemsByDate(yesterday.toISOString());
+            systems.forEach(async system => {
+                if (!(system.incidentCounter > system.resolvedIncidents))
+                    return
+                await liveStatusRepository.createLiveStatus(
+                    {
+                        id: uuidv4(),
+                        systemName: system.systemName,
+                        incidents: system.incidents,
+                        date: new Date,
+                        maxPriority: this.getUpdatedMaxPriority(system.incidents),
+                        incidentCounter: system.incidentCounter - system.resolvedIncidents,
+                        resolvedIncidents: 0
+                    });
+            });
+            logger.error({
+                source: constants.SYSTEM_STATUS_SERVICE,
+                err: constants.LIVE_STATUS_AUTO_UPDATE_SUCCESS,
+            });
+        }
+        catch (error) {
+            logger.error({
+                source: constants.SYSTEM_STATUS_SERVICE,
+                err: constants.LIVE_STATUS_AUTO_UPDATE_FAILD,
+            });
+            console.error(`error: ${error}`);
+            return error;
+        }
     }
 
     async liveStatusByIncident(incident: IIncident): Promise<(IliveStatus | any)[]> {
