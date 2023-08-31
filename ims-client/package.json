@@ -33,6 +33,7 @@
     "dayjs": "^1.11.9",
     "downloadjs": "^1.4.7",
     "install": "^0.13.0",
+    "loglevel": "^1.8.1",
     "mongoose": "^7.3.1",
     "npm": "^9.7.2",
     "react": "^18.2.0",
@@ -45,7 +46,6 @@
     "react-pdf": "^7.3.3",
     "react-redux": "^8.1.1",
     "react-router-dom": "^6.14.1",
-    "react-scripts": "5.0.1",
     "redux-saga": "^1.2.3",
     "redux-tooltip": "^0.7.3",
     "styled-components": "^6.0.3",
@@ -112,6 +112,7 @@
     "gh-pages": "^6.0.0",
     "prop-types": "^15.8.1",
     "react-refresh": "^0.14.0",
+    "react-scripts": "^5.0.1",
     "storybook": "^7.0.26",
     "ts-jest": "^29.1.1",
     "webpack": "^5.88.1"

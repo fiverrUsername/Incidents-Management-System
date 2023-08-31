@@ -7,7 +7,7 @@ import { IcolorScale, liveStatusEntry } from "../../interfaces/ILiveStatus";
 const LiveStatus = () => {
     const colorScaleDefault: IcolorScale[] = [
         { from: 0, to: 24, name: 'p3', color: '#7FFF00' },   //grean
-        { from: 25, to: 49, name: 'p2', color: '#FFC000' },  //light orange
+        { from: 25, to: 49, name: 'p2', color: '#4CAF50' },  //light orange
         { from: 50, to: 74, name: 'p1', color: '#FF8000' },  //orange
         { from: 75, to: 100, name: 'p0', color: '#FF0000' }, //red
       ]

@@ -19,7 +19,7 @@ export default async function submitTimeLine(props: Props) {
     priority: props.data.priority,
     type: props.data.type,
     tags: props.data.tags,
-    files: props.data.files,
+    files: props.data.filesString,
     createdDate: props.data.date,
     updatedDate: new Date(),
     status: props.data.status,
