@@ -15,6 +15,7 @@ AWS.config.getCredentials(function(err) {
   if (err) console.log(err.stack);
   // credentials not loaded
   else {
+    logger.info({ source: constants.UPLOAD_SUCCESS, msg: constants.METHOD.GET, success: true });
     console.log("Access key:", AWS.config.credentials?.accessKeyId);
   }
 });

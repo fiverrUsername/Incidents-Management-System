@@ -40,7 +40,6 @@ export default class TimelineEventController {
 
     async addTimelineEvent(req: Request, res: Response): Promise<Response> {
         try {
-            console.log("----------addTimelineEvent controller");
             const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
             if (_timelineEvent instanceof Error) {
                 if (_timelineEvent.message === "Validation error" || _timelineEvent.message === "Incident ID not found") {
