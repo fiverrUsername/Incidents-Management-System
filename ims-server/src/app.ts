@@ -27,6 +27,7 @@ const apiKey = process.env.API_KEY;
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
     if (origin === undefined || whitelist.includes(origin)) {
+      console.log("i am in app of ims-server");
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
