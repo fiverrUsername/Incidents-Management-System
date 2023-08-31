@@ -17,9 +17,15 @@ class TagService {
           err: "Validation error",
           validationErrors: validationErrors.map((error) => error.toString()),
         });
+        return new Error("Validation error");
+      }
+      const _tag: ITag | null = await tagRepository.addTag(newTag);
+      if (!_tag) {
+        logger.error({ source: constants.TAG_SERVICE, err: constants.ERROR_ADDING_TAG, tag: newTag })
         return;
       }
-      return await tagRepository.addTag(newTag);
+      logger.info({ source: constants.TAG_SERVICE, method: constants.METHOD.POST, tag: _tag })
+      return _tag;
     } catch (error) {
       console.error(`error: ${error}`);
     }
@@ -28,7 +34,7 @@ class TagService {
   async getAllTags(): Promise<ITag[] | null | undefined> {
     try {
       const tags = await tagRepository.getAllTags();
-      if (tags === null) {
+      if (!tags) {
         logger.error({ source: constants.TAG_SERVICE, method: constants.METHOD.GET });
         return;
       }
@@ -39,7 +45,7 @@ class TagService {
       console.error(`error: ${error}`);
     }
   }
-  
+
 }
 
 export default new TagService();

@@ -23,6 +23,7 @@ class TimelineEventService {
       logger.info({ source: constants.TIMELINE_EVENT, method: constants.METHOD.GET, success: true });
       return timelines;
     } catch (error: any) {
+      logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.GET, err: true });
       console.error(`error: ${error}`);
     }
   }
@@ -37,6 +38,7 @@ class TimelineEventService {
       logger.info({ source: constants.TIMELINE_EVENT, msg: constants.METHOD.GET, success: true });
       return timelineEvent;
     } catch (error: any) {
+      logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.GET, err: true });
       console.error(`error: ${error}`);
     }
   }
@@ -50,8 +52,8 @@ class TimelineEventService {
       const _timelineEvent = new ITimelineEventDto(newTimelineEvent);
       const validationErrors = await validate(_timelineEvent);
       if (validationErrors.length > 0) {
-        logger.error({ source: constants.TIMELINE_EVENT, err: "Validation error", validationErrors: validationErrors.map((error) => error.toString()), });
-        return new Error("Validation Error");
+        logger.error({ source: constants.TIMELINE_EVENT, err: constants.VALIDATION_ERROR, validationErrors: validationErrors.map((error) => error.toString()), });
+        return new Error(constants.VALIDATION_ERROR);
       }
       if (tags.length != newTimelineEvent.tags.length) {
         const newIncident = incident
@@ -176,6 +178,7 @@ class TimelineEventService {
         return;
       }
       if (!timelineEvent.files.some((v) => v === file)) {
+        logger.error({ source: constants.TIMELINE_EVENT, err: constants.NOT_FOUND, timelineEventId: id, file: file, method: constants.METHOD.DELETE })
         return;
       }
       timelineEvent.files = timelineEvent.files.filter((v) => v !== file);

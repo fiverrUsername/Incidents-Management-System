@@ -25,7 +25,6 @@ class liveStatusService {
             //date not correct/not found
             //systemData is empty
             //check if date is defined..???
-            console.log(date)
             const tags = await tagService.getAllTags();
             let liveStatuses: Array<liveStatusEntry | null> = [];
             const systemDate = date || new Date();
@@ -47,7 +46,6 @@ class liveStatusService {
                 source: constants.SYSTEM_STATUS_SERVICE,
                 msg: constants.GET_SYSTEMS_BY_DATE_SUCCESS,
             });
-            console.log("liveStatuses", liveStatuses)
             return liveStatuses;
         } catch (error: any) {
             logger.error({
@@ -60,10 +58,6 @@ class liveStatusService {
 
     async createOrUpdateLiveStatus(data: IliveStatus, incidentId: string, tag: string): Promise<void | any> {
         try {
-            logger.info({
-                source: constants.SYSTEM_STATUS_SERVICE,
-                msg: constants.UPDATE_SYSTEMS_SUCCESS,
-            });
             const existingLiveStatus = await liveStatusRepository.getTodaysLiveStatusByTag(tag);
             if (existingLiveStatus) {
                 if (data.maxPriority > existingLiveStatus.maxPriority) {
@@ -74,7 +68,13 @@ class liveStatusService {
                 const incidentIndex = this.priorityIndexMap[data.maxPriority];
                 updatedIncidents[incidentIndex].push(incidentId);
                 data.incidents = updatedIncidents;
-                return await liveStatusRepository.updateLiveStatus(data, existingLiveStatus.id);
+                const liveStatus: IliveStatus | any = await liveStatusRepository.updateLiveStatus(data, existingLiveStatus.id);
+                if (liveStatus instanceof Error) {
+                    logger.error({ source: constants.SYSTEM_STATUS_SERVICE, err: constants.UPDATE_SYSTEMS_FAILED });
+                    return;
+                }
+                logger.info({ source: constants.SYSTEM_STATUS_SERVICE, message: constants.UPDATE_SYSTEMS_SUCCESS });
+                return liveStatus;
             } else {
                 data.id = uuidv4()
                 data.incidentCounter = 1;
@@ -82,17 +82,21 @@ class liveStatusService {
                 const updatedIncidents = [...data.incidents];
                 updatedIncidents[incidentIndex].push(incidentId);
                 data.incidents = updatedIncidents;
-                return await liveStatusRepository.createLiveStatus(data);
+                const liveStatus = await liveStatusRepository.createLiveStatus(data);
+                if (liveStatus instanceof Error) {
+                    logger.error({ source: constants.SYSTEM_STATUS_SERVICE, err: constants.UPDATE_SYSTEMS_FAILED });
+                    return;
+                }
+                logger.info({ source: constants.SYSTEM_STATUS_SERVICE, message: constants.UPDATE_SYSTEMS_SUCCESS });
+                return liveStatus;
             }
         } catch (error: any) {
-            logger.error({
-                source: constants.SYSTEM_STATUS_SERVICE,
-                err: constants.UPDATE_SYSTEMS_FAILED,
-            });
+            logger.error({ source: constants.SYSTEM_STATUS_SERVICE, err: constants.UPDATE_SYSTEMS_FAILED, });
             console.error(`error: ${error}`);
         }
     }
-    async updateLiveStatusByTimeLineEvent(timeLineEvent: ITimelineEvent, system: string, previousPriority: Priority): Promise<void | null> {
+
+    async updateLiveStatusByTimeLineEvent(timeLineEvent: ITimelineEvent, system: string, previousPriority: Priority): Promise<IliveStatus | null | undefined> {
         try {
             if (previousPriority === timeLineEvent.priority && timeLineEvent.status === Status.Active)
                 return
@@ -113,9 +117,16 @@ class liveStatusService {
             }
             if (timeLineEvent.status === Status.Resolved)
                 liveStatus.resolvedIncidents++
-            liveStatus.incidents = updatedIncidents
-            return await liveStatusRepository.updateLiveStatus(liveStatus, liveStatus.id);
+            liveStatus.incidents = updatedIncidents;
+            const _liveStatus: IliveStatus = await liveStatusRepository.updateLiveStatus(liveStatus, liveStatus.id);
+            if (_liveStatus instanceof Error) {
+                logger.error({ source: constants.SYSTEM_STATUS_SERVICE, err: constants.UPDATE_SYSTEMS_FAILED })
+                return;
+            }
+            logger.info({ source: constants.SYSTEM_STATUS_SERVICE, message: constants.UPLOAD_SUCCESS });
+            return _liveStatus;
         } catch (e) {
+            logger.error({ source: constants.SYSTEM_STATUS_SERVICE, err: constants.UPDATE_SYSTEMS_FAILED })
             console.log(e);
         }
     }
@@ -123,11 +134,13 @@ class liveStatusService {
     getUpdatedMaxPriority(incidentsIds: string[][]) {
         const priorityValues = Object.values(Priority) as string[];
         for (const [index, incidentsId] of incidentsIds.entries()) {
-            if (incidentsId.length > 0)
+            if (incidentsId.length > 0) {
                 return priorityValues[priorityValues.length - index - 1] as Priority;
+            }
         }
         return Priority.P3;
     }
+
     async autoUpdateLiveStatus() {
         try {
             const yesterday = new Date();
@@ -135,8 +148,8 @@ class liveStatusService {
             const systems: IliveStatus[] = await liveStatusRepository.getLiveStatusSystemsByDate(yesterday.toISOString());
             systems.forEach(async system => {
                 if (!(system.incidentCounter > system.resolvedIncidents))
-                    return
-                await liveStatusRepository.createLiveStatus(
+                    return;
+                const liveStatus:IliveStatus= await liveStatusRepository.createLiveStatus(
                     {
                         id: uuidv4(),
                         systemName: system.systemName,
@@ -146,6 +159,18 @@ class liveStatusService {
                         incidentCounter: system.incidentCounter - system.resolvedIncidents,
                         resolvedIncidents: 0
                     });
+                if(liveStatus instanceof Error){
+                    logger.error({
+                        source: constants.SYSTEM_STATUS_SERVICE,
+                        err: constants.AUTO_UPDATE_LIVE_STATUS,
+                    });
+                }
+                else{
+                    logger.info({
+                        source: constants.SYSTEM_STATUS_SERVICE,
+                        message: constants.AUTO_UPDATE_LIVE_STATUS,
+                    });
+                }
             });
         } catch (error) {
             logger.error({
@@ -170,6 +195,10 @@ class liveStatusService {
                     resolvedIncidents: 0,
                 };
                 return await this.createOrUpdateLiveStatus(liveStatusData, incident.id ? incident.id : '', tag.name);
+            });
+            logger.info({
+                source: constants.SYSTEM_STATUS_SERVICE,
+                message: constants.GET_TODAYS_LIVE_BY_TAG_SUCCESS,
             });
             return Promise.all(promises);
         } catch (error: any) {
