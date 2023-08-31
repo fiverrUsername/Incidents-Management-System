@@ -27,7 +27,6 @@ const apiKey = process.env.API_KEY;
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
     if (origin === undefined || whitelist.includes(origin)) {
-      console.log("gvhhhhbhb");
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
