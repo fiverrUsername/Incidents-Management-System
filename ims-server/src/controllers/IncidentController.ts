@@ -10,6 +10,7 @@ import { sendToSocket } from '../services/socket'
 export default class IncidentController {
   async addIncident(req: Request, res: Response): Promise<void> {
     try {
+      console.log("----------IncidentController: req.body:   ", req.body)
       const incident: IncidentDto = await incidentService.addIncident(req.body);
       if (incident instanceof Error) {
         res.status(status.SERVER_ERROR).json({ message: incident, error: true });
