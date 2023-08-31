@@ -28,12 +28,8 @@ export async function fileResponse(files: any[], incidentId: string): Promise<st
           responseType: "blob", // Use "arraybuffer" for binary data
           validateStatus: () => true,
         });
-        console.log("-----------file.filetype ",file.filetype)
-        const myFile = new Blob(
-          [response.data],
-          { type: 'docx' });
-
-        console.log("-----------file.filetype ",file.filetype)
+        const blob = await response.data.buffer()
+        console.log("-----------blob ",blob)
         const newName: string = `incidence?${incidentId}?${Date.now()}${file.name}`;
         console.log("-----------newName ",newName)
         filesKeys.push(newName);
@@ -41,7 +37,7 @@ export async function fileResponse(files: any[], incidentId: string): Promise<st
           Bucket: 'ims-fiverr',
           Key: newName.replace(/\?/g, '/'),
           // Body: new File([response.data], "docx") //myFile //Buffer.from(response.data)
-          Body:myFile
+          Body:blob
         };
         console.log("##########################params.body", params.Body);
         await s3.upload(params).promise();
