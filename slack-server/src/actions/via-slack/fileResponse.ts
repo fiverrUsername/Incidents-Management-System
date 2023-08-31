@@ -15,6 +15,7 @@ AWS.config.getCredentials(function(err) {
     console.log("Access key:", AWS.config.credentials?.accessKeyId);
   }
 });
+
 export async function fileResponse(files: any[], incidentId: string): Promise<string[]> {
   const filesKeys: string[] = [];
   try {
@@ -30,12 +31,16 @@ export async function fileResponse(files: any[], incidentId: string): Promise<st
         const myFile = new Blob(
           [response.data],
           { type: file.filetype });
+
+        console.log("-----------file.filetype ",file.filetype)
         const newName: string = `incidence?${incidentId}?${Date.now()}${file.name}`;
+        console.log("-----------newName ",newName)
         filesKeys.push(newName);
         const params: AWS.S3.PutObjectRequest = {
           Bucket: 'ims-fiverr',
           Key: newName.replace(/\?/g, '/'),
-          Body: new File([response.data], "docx") //myFile //Buffer.from(response.data)
+          // Body: new File([response.data], "docx") //myFile //Buffer.from(response.data)
+          Body:myFile
         };
         console.log("##########################params.body", params.Body);
         await s3.upload(params).promise();
