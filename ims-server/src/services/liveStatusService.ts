@@ -7,6 +7,7 @@ import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import liveStatusRepository from "../repositories/liveStatusRepository";
 import tagService from "./tagService";
+
 class liveStatusService {
     constructor() {
         this.autoUpdateLiveStatus = this.autoUpdateLiveStatus.bind(this);
