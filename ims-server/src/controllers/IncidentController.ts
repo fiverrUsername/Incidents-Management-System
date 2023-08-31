@@ -12,7 +12,7 @@ export default class IncidentController {
   async addIncident(req: Request, res: Response): Promise<Response> {
     try {
       const incident: IncidentDto = await incidentService.addIncident(req.body);
-      if (incident instanceof Error || incident == null || incident == undefined) {
+      if (incident instanceof Error || !incident) {
         return res.status(status.SERVER_ERROR).json({ message: incident, error: true });
       }
       sendToSocket(incident as IIncident, ObjectType.Incident, ActionType.Add);

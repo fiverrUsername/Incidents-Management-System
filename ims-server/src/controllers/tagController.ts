@@ -9,7 +9,7 @@ export default class TagController {
     try {
       const tagData: TagDto = req.body;
       const tag: TagDto = await tagService.addTag(tagData);
-      if (tag instanceof Error || tag == null || tag == undefined) {
+      if (tag instanceof Error || !tag) {
         return res.status(status.SERVER_ERROR).json({ message: tag, error: true });
       } return res.status(status.CREATED_SUCCESS).json(tag);
     } catch (error: any) {
@@ -20,7 +20,7 @@ export default class TagController {
   async getAllTags(req: Request, res: Response): Promise<Response> {
     try {
       const tags = await tagService.getAllTags();
-      if (tags instanceof Error || tags == null || tags == undefined) {
+      if (tags instanceof Error || !tags) {
         return res.status(status.SERVER_ERROR).json({ message: tags, error: true });
       } return res.status(status.CREATED_SUCCESS).json(tags);
     } catch (error: any) {

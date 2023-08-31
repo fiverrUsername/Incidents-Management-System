@@ -7,6 +7,7 @@ describe("incidents", () => {
     describe("get all incidents", () => {
         describe("succed", () => {
             it("should return data", async () => {
+                jest.spyOn(IncidentModel, 'find').mockResolvedValueOnce([]);
                 const res = await supertest(app).get("/incident");
                 expect(res.status).toBe(200);
             })
@@ -22,7 +23,7 @@ describe("incidents", () => {
     describe("get incident by ID", () => {
         describe("succeed", () => {
             it("should return data", async () => {
-                const id = "ae9fc696-71d3-4f7e-b8d0-f0c633740a00"
+                const id = "1c740683-624e-4002-b79e-e526a755014a"
                 const res = await supertest(app).get(`/incident/${id}`);
                 expect(res.status).toBe(200);
             });
@@ -78,29 +79,23 @@ describe("incidents", () => {
         describe("success", () => {
             it("should update an incident and return 200", async () => {
                 const updatedIncident = {
-                    "name": "update new incident",
+                    "name": "Stuck Incident",
                     "status": "Active",
-                    "description": "bla bla bla",
+                    "description": "Issue Description",
                     "currentPriority": "p0",
-                    "type": "Securing",
-                    "durationHours": 0,
-                    "channelId": "",
-                    "channelName": "new_channel",
+                    "type": "comment",
+                    "durationHours": 72,
+                    "channelName": "channel name",
                     "slackLink": "https://slack.com/app_redirect?channel=null",
-                    "currentTags": [
-                        {
-                            "id": "5678",
-                            "name": "checkout",
-                            "_id": "64ed899a0c8a43809c7bd0f3"
-                        }
-                    ],
-                    "date": "2023-08-29T06:00:58.234Z",
-                    "createdAt": "2023-08-29T06:00:58.234Z",
-                    "updatedAt": "2023-08-29T06:00:58.234Z",
-                    "cost": 0,
-                    "createdBy": "698cbeda854a5d4d8bcf303l"
-                }
-                const id = "d7524c2e-092a-4b49-bfba-bc23eb7c293a";
+                    "currentTags": [],
+                    "date": "2023-07-29T13:30:00Z",
+                    "createdAt": "2023-07-01T13:30:00Z",
+                    "updatedAt": "2023-07-03T13:30:00Z",
+                    "cost": 1600,
+                    "createdBy": "aaa",
+                    "channelId": ""
+                  }
+                const id = "f23d13fc-d1b3-46e9-a278-8cb820db8983";
                 const res = await supertest(app)
                     .put(`/incident/updateIncident/${id}`)
                     .send(updatedIncident);
@@ -145,14 +140,13 @@ describe("incidents", () => {
     describe("get summary incident", () => {
         describe("succed", () => {
             it("should return data", async () => {
-                const id = "649cbeda942a5d4d8bcf3044"
+                const id = "1c740683-624e-4002-b79e-e526a755014a"
                 const res = await supertest(app).get(`/incident/result/summary/${id}`);
                 expect(res.status).toBe(200);
             })
         })
         describe("error", () => {
             it("should return 404", async () => {
-                // jest.spyOn(IncidentModel, 'findById').mockResolvedValueOnce(new Error());
                 const id = "5555";
                 const res = (await supertest(app).get(`/incident/result/summary/${id}`));
                 expect(res.status).toBe(404);

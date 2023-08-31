@@ -20,7 +20,7 @@ export default class AwsController {
     try {
       const keys = req.body as string[];
       const file = await attachmentsService.getSignedUrlForKeys(keys);
-      if (file instanceof Error || file == null || file == undefined) {
+      if (file instanceof Error || !file) {
         return res.status(status.PAGE_NOT_FOUND).json({ message: file, error: true });
       }
       return res.status(status.SUCCESS).json(file);

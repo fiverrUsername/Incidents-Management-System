@@ -51,7 +51,7 @@ class TimelineEventService {
       const validationErrors = await validate(_timelineEvent);
       if (validationErrors.length > 0) {
         logger.error({ source: constants.TIMELINE_EVENT, err: "Validation error", validationErrors: validationErrors.map((error) => error.toString()), });
-        return;
+        return new Error("Validation Error");
       }
       if (tags.length != newTimelineEvent.tags.length) {
         const newIncident = incident
@@ -66,8 +66,13 @@ class TimelineEventService {
       tags.map((tag) => {
         liveStatusService.updateLiveStatusByTimeLineEvent(newTimelineEvent, String(tag.name), priority)
       })
+      const timeline = await timelineEventRepository.addTimelineEvent(newTimelineEvent);
+      if (timeline instanceof Error) {
+        logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.POST, error: true, timelineEventId: newTimelineEvent.id });
+        return;
+      }
       logger.info({ sourece: constants.TIMELINE_EVENT, method: constants.METHOD.POST, timelineEventId: newTimelineEvent.id });
-      return await timelineEventRepository.addTimelineEvent(newTimelineEvent);
+      return timeline;
     } catch (error: any) {
       logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.POST, error: true, timelineEventId: newTimelineEvent.id });
       console.error(`error: ${error}`);
@@ -76,8 +81,13 @@ class TimelineEventService {
 
   async updateTimelineEvent(timeLineEventId: string, newTimelineEvent: ITimelineEvent): Promise<void | any> {
     try {
+      const timeline = await timelineEventRepository.updateTimelineEvent(timeLineEventId, newTimelineEvent);
+      if (timeline instanceof Error) {
+        logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.PUT, error: true, timelineEventId: timeLineEventId });
+        return;
+      }
       logger.info({ sourece: constants.TIMELINE_EVENT, method: constants.METHOD.PUT, timelineEventId: timeLineEventId });
-      return await timelineEventRepository.updateTimelineEvent(timeLineEventId, newTimelineEvent);
+      return timeline;
     } catch (error: any) {
       logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.PUT, error: true, timelineEventId: timeLineEventId });
       console.error(`error: ${error}`);
@@ -87,20 +97,14 @@ class TimelineEventService {
   async getTimelineEventById(id: String): Promise<ITimelineEvent | any> {
     try {
       const _timelineEvent = await timelineEventRepository.getTimelineEventById(id);
-      if (_timelineEvent) {
-        logger.info({
-          source: constants.TIMELINE_EVENT,
-          method: constants.METHOD.GET,
-          timelineEventId: id
-        });
+      if (_timelineEvent instanceof Error) {
+        logger.error({ source: constants.TIMELINE_EVENT, err: constants.NOT_FOUND, timelineEventId: id });
+        return;
       }
+      logger.info({ source: constants.TIMELINE_EVENT, method: constants.METHOD.GET, timelineEventId: id });
       return _timelineEvent;
     } catch (error: any) {
-      logger.error({
-        source: constants.TIMELINE_EVENT,
-        err: constants.NOT_FOUND,
-        timelineEventId: id
-      });
+      logger.error({ source: constants.TIMELINE_EVENT, err: constants.NOT_FOUND, timelineEventId: id });
       console.error(`error: ${error}`);
     }
   }
@@ -108,14 +112,14 @@ class TimelineEventService {
   async deleteTimelineEvent(timeLineEventId: string): Promise<void | any> {
     try {
       const timeline: ITimelineEvent = await timelineEventRepository.deleteTimelineEvent(timeLineEventId);
-      logger.info({
-        sourece: constants.TIMELINE_EVENT, method: constants.METHOD.DELETE, timelineEventId: timeLineEventId
-      });
+      if (timeline instanceof Error) {
+        logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.DELETE, error: true, timelineEventId: timeLineEventId });
+        return;
+      }
+      logger.info({ sourece: constants.TIMELINE_EVENT, method: constants.METHOD.DELETE, timelineEventId: timeLineEventId });
       return timeline;
     } catch (error: any) {
-      logger.error({
-        source: constants.TIMELINE_EVENT, method: constants.METHOD.DELETE, error: true, timelineEventId: timeLineEventId
-      });
+      logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.DELETE, error: true, timelineEventId: timeLineEventId });
       console.error(`error: ${error}`);
     }
   }
@@ -132,6 +136,7 @@ class TimelineEventService {
         logger.error({ source: constants.TIMELINE_EVENT, err: constants.INDEX_NOT_VALID, timelineEventId: timelineEvent?.id, indexFile: index, method: constants.METHOD.GET })
         return;
       }
+      logger.info({ source: constants.TIMELINE_EVENT, timelineEventId: timelineEvent?.id, indexFile: index, method: constants.METHOD.GET })
       return files[index];
     } catch (error: any) {
       logger.error({ source: constants.TIMELINE_EVENT, err: constants.SERVER_ERROR, method: constants.METHOD.GET })
@@ -151,7 +156,13 @@ class TimelineEventService {
         return;
       }
       timelineEvent.files.splice(index, 1);
-      return await timelineEventRepository.updateTimelineEvent(id, timelineEvent);;
+      const timeline = await timelineEventRepository.updateTimelineEvent(id, timelineEvent);
+      if (timeline instanceof Error) {
+        logger.error({ source: constants.TIMELINE_EVENT, timelineEventId: timelineEvent?.id, indexFile: index, method: constants.METHOD.DELETE })
+        return;
+      }
+      logger.info({ source: constants.TIMELINE_EVENT, timelineEventId: timelineEvent?.id, indexFile: index, method: constants.METHOD.DELETE })
+      return timeline;
     } catch (error: any) {
       logger.error({ source: constants.TIMELINE_EVENT, err: constants.SERVER_ERROR, method: constants.METHOD.DELETE });
     }
@@ -168,7 +179,13 @@ class TimelineEventService {
         return;
       }
       timelineEvent.files = timelineEvent.files.filter((v) => v !== file);
-      return await timelineEventRepository.updateTimelineEvent(id, timelineEvent);;
+      const timeline = await timelineEventRepository.updateTimelineEvent(id, timelineEvent);
+      if (timeline instanceof Error) {
+        logger.error({ source: constants.TIMELINE_EVENT, file: file, method: constants.METHOD.DELETE });
+        return;
+      }
+      logger.info({ source: constants.TIMELINE_EVENT, file: file, method: constants.METHOD.DELETE });
+      return timeline;
     } catch (error: any) {
       logger.error({ source: constants.TIMELINE_EVENT, err: constants.SERVER_ERROR, method: constants.METHOD.DELETE });
     }

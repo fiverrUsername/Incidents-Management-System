@@ -25,25 +25,29 @@ describe("timeline events", () => {
     describe("add timeline event", () => {
         describe("success", () => {
             it("should add a timeline event and return 201", async () => {
-                const newtimelineEvent = {
-                    "incidentId": "1cf9d420-db3c-42df-a85a-5321a5fce459",
+                const newtimelineEvent =  {
+                    "incidentId": "dbf6cea0-5108-4a3a-9587-51347f64d2d2",
                     "userId": "698cbeda854a5d4d8bcf303l",
-                    "description": "Add files",
-                    "priority": "p0",
+                    "description": "add files",
+                    "priority": "p1",
                     "status": "Active",
-                    "type": "securing",
+                    "type": "Technical",
                     "files": [
-                        "incidence?1cf9d420-db3c-42df-a85a-5321a5fce459?1692731017660a.jpg",
-                        "incidence?1cf9d420-db3c-42df-a85a-5321a5fce459?1692731017660b.jpg",
-                        "incidence?1cf9d420-db3c-42df-a85a-5321a5fce459?1692731017660c.jpg",
-                        "incidence?1cf9d420-db3c-42df-a85a-5321a5fce459?1692731017660d.jpg",
-                        "incidence?1cf9d420-db3c-42df-a85a-5321a5fce459?1692731017660e.jpg",
-                        "incidence?1cf9d420-db3c-42df-a85a-5321a5fce459?1692731017660f.jpg"
+                      "incidence?dbf6cea0-5108-4a3a-9587-51347f64d2d2?16933794766421.jpg",
+                      "incidence?dbf6cea0-5108-4a3a-9587-51347f64d2d2?16933794766422.jpg",
+                      "incidence?dbf6cea0-5108-4a3a-9587-51347f64d2d2?1693379476642firefighter-848346_960_720.jpg",
+                      "incidence?dbf6cea0-5108-4a3a-9587-51347f64d2d2?1693379476642pexels-photo-279979.jpeg"
                     ],
-                    "createdDate": "2023-08-22T19:03:37.660Z",
-                    "updatedDate": "2023-08-22T19:03:40.358Z",
-                    "tags": []
-                }
+                    "createdDate": "2023-08-30T07:10:44.541Z",
+                    "updatedDate": "2023-08-30T07:11:21.862Z",
+                    "tags": [
+                      {
+                        "id": "1234",
+                        "name": "inbox",
+                        "_id": "64eeeb3c1a96ad5cc8944411"
+                      }
+                    ]
+                  }
                 const res = await supertest(app)
                     .post("/timelineEvent/")
                     .send(newtimelineEvent);
@@ -102,7 +106,7 @@ describe("timeline events", () => {
     describe("get timeline event by ID", () => {
         describe("succeed", () => {
             it("should return data", async () => {
-                const id = "6d3e46ad-7285-438c-b65c-7ebb7fdc95ed"
+                const id = "22955f32-2a96-4ad0-a8fe-845fb9aa9070"
                 const res = await supertest(app).get(`/timelineEvent/${id}/`);
                 expect(res.status).toBe(200);
             });

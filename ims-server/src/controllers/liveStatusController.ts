@@ -18,7 +18,7 @@ export default class liveStatusController {
             else {
                 systems = await liveStatusService.getLiveStatus();
             }
-            if (systems == null || systems == undefined || systems instanceof Error) {
+            if (!systems || systems instanceof Error) {
                 return res.status(status.SERVER_ERROR).json({ message: systems, error: true });
             } return res.status(status.SUCCESS).json(systems);
         } catch (error: any) {
@@ -31,7 +31,7 @@ export default class liveStatusController {
             const tag: string = "inbox"
             const data: IliveStatus = req.body
             const systems = await liveStatusService.createOrUpdateLiveStatus(data, '', tag);
-            if (systems == null || systems == undefined || systems instanceof Error) {
+            if (!systems || systems instanceof Error) {
                 return res.status(status.SERVER_ERROR).json({ message: systems, error: true });
             } return res.status(status.SUCCESS).json(systems);
         } catch (error: any) {
