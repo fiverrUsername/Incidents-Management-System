@@ -10,7 +10,6 @@ import Router from "./routes";
 import { Provider } from "react-redux";
 import ConfigureStoreFunction from "./redux/configureStore";
 
-
 function App() {
 
   const store = ConfigureStoreFunction();

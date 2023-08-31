@@ -54,10 +54,12 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "npm run build",
     "test": "cross-env NODE_ENV=test react-scripts test",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
+  
   "eslintConfig": {
     "extends": [
       "react-app",

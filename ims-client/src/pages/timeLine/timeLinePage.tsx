@@ -1,16 +1,17 @@
 import { Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
+
 import { WithIdProps } from "../../HOC";
+import Search from "../../components/base/search/search";
+import AddTimelineEvent from "../../components/timelineEvents/addTimelineEvent.ts/addTimelineEvent";
+import { receivedIncident } from "../../components/timelineEvents/addTimelineEvent.ts/addTimelineEventForm/addTimelineEventForm";
 import DisplaySummary from "../../components/timelineEvents/summary/displaySummary";
+import TimeLine from "../../components/timelineEvents/timeline/timeLine";
 import { ISummary } from "../../interfaces/ISummary";
 import { ITimeLineEvent } from "../../interfaces/ITimeLineEvent";
-import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
-import Search from "../../components/base/search/search";
-import { receivedIncident } from "../../components/timelineEvents/addTimelineEvent.ts/addTimelineEventForm/addTimelineEventForm";
-import TimeLine from "../../components/timelineEvents/timeline/timeLine";
-import { filterTimeLineBySearch } from "../../services/functions/timeline/filterTimeLineBySearch";
 import backendServices from "../../services/backendServices/backendServices";
-import AddTimelineEvent from "../../components/timelineEvents/addTimelineEvent.ts/addTimelineEvent";
+import { filterTimeLineBySearch } from "../../services/functions/timeline/filterTimeLineBySearch";
+import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
 
 
 const TimeLinePage = ({ id }: WithIdProps) => {

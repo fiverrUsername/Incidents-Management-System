@@ -1,7 +1,7 @@
-import axios from "axios"
-import IIncident from "../../interfaces/IIncident"
-import { ITimeLineEvent } from "../../interfaces/ITimeLineEvent"
-import { Dayjs } from "dayjs";
+import axios from "axios";
+
+import IIncident from "../../interfaces/IIncident";
+import { ITimeLineEvent } from "../../interfaces/ITimeLineEvent";
 
 const baseUrl = process.env.REACT_APP_API_KEY;
 
@@ -19,7 +19,6 @@ const backendService = {
   deleteFileInTimeLine: (id: string, key: string) => axios.delete(`${baseUrl}/timelineEvent/${id}/files`, {
     params: { key }
   }).then(response => response.data),
-  getLiveStatus: (date?:Date | null) => axios.get(`${baseUrl}/livestatus/${date || ''}`).then(response => response.data),
+  getLiveStatus: (date?: Date | null) => axios.get(`${baseUrl}/livestatus?date=${date || ''}`).then(response => response.data),
 }
-
 export default backendService;

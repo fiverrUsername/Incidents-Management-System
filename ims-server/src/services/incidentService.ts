@@ -1,5 +1,4 @@
-import dayjs from "dayjs";
-
+//import dayjs from "dayjs";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ISummary } from "../interfaces/ISummary";
 import { constants } from "../loggers/constants";
@@ -7,35 +6,31 @@ import logger from "../loggers/log";
 import incidentRepository from "../repositories/incidentRepository";
 import liveStatusService from './liveStatusService';
 
-
 class IncidentService {
+  
   async addIncident(newIncident: IIncident): Promise<void | any> {
     try {
-      logger.info({
-        sourece: constants.INCIDENT_COTROLLER,
-        msg: constants.ADD_INCIDENT_SUCCESS,
-        incidentId: newIncident.id
-      });
       // const live = await liveStatusService.liveStatusByIncident(newIncident);
       const incident = await incidentRepository.addIncident(newIncident);
+      if (incident instanceof Error) {
+        logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.ERROR_ADDING_INCIDENT, });
+        return;
+      }
+      logger.info({ source: constants.INCIDENT_COTROLLER, msg: constants.ADD_INCIDENT_SUCCESS, incidentId: newIncident.id });
       await liveStatusService.liveStatusByIncident(incident)
-      return incident
+      return incident;
     } catch (error: any) {
-      logger.error({
-        source: constants.INCIDENT_COTROLLER,
-        err: constants.ERROR_ADDING_INCIDENT,
-      });
+      logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.ERROR_ADDING_INCIDENT, });
       console.error(`error: ${error}`);
-      return error;
     }
   }
 
   async updateIncident(id: string, data: any): Promise<IIncident | any> {
     try {
       const isValidId: IIncident | any = await incidentRepository.getIncidentById(id);
-      if (isValidId === null || isValidId instanceof Error) {
+      if (!isValidId  || isValidId instanceof Error) {
         logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentId: id, });
-        return new Error(constants.INCIDENT_NOT_FOUND);
+        return;
       }
       const updatedIncident: IIncident = await incidentRepository.updateIncident(id, data);
       if (updatedIncident) {
@@ -43,55 +38,42 @@ class IncidentService {
         return updatedIncident;
       }
       logger.error({ source: constants.SERVER_ERROR, method: constants.METHOD.PUT, error: true })
-      return new Error(constants.SERVER_ERROR)
     } catch (error: any) {
       logger.error({ source: constants.INCIDENT_COTROLLER, method: constants.METHOD.PUT, incidetID: id, });
       console.error(`error: ${error}`);
-      return error;
     }
   }
 
   async getAllIncidents(): Promise<IIncident[] | any> {
     try {
-      logger.info({
-        source: constants.INCIDENT_COTROLLER,
-        msg: constants.GET_ALL_INCIDENTS_SUCCESS,
-      });
       const incidents = await incidentRepository.getAllIncidents();
+      if (incidents instanceof Error) {
+        logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.ERROR_GETTING_ALL_INCIDENTS, });
+        return;
+      }
+      logger.info({ source: constants.INCIDENT_COTROLLER, msg: constants.GET_ALL_INCIDENTS_SUCCESS, });
       const orderedIncidents = incidents.sort((a: IIncident, b: IIncident) => {
-        const diff = dayjs(b.date).diff(dayjs(a.date));
-        return diff;
+        // const diff = dayjs(b.date).diff(dayjs(a.date));
+        // return diff;
       });
       return orderedIncidents;
     } catch (error: any) {
-      logger.error({
-        source: constants.INCIDENT_COTROLLER,
-        err: constants.ERROR_GETTING_ALL_INCIDENTS,
-      });
+      logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.ERROR_GETTING_ALL_INCIDENTS, });
       console.error(`error: ${error}`);
-      return error;
     }
   }
 
   async getIncidentByField(fieldValue: string, fieldName: string): Promise<IIncident | any> {
     try {
       const incident = await incidentRepository.getIncidentByField(fieldValue, fieldName);
-      if (incident) {
-        logger.info({
-          source: constants.INCIDENT_COTROLLER,
-          method: constants.METHOD.GET,
-          incidentId: fieldValue,
-        });
+      if (incident instanceof Error) {
+        logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentID: fieldValue, });
       }
+      logger.info({ source: constants.INCIDENT_COTROLLER, method: constants.METHOD.GET, incidentId: fieldValue, });
       return incident;
     } catch (error: any) {
-      logger.error({
-        source: constants.INCIDENT_COTROLLER,
-        err: constants.INCIDENT_NOT_FOUND,
-        incidentID: fieldValue,
-      });
+      logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentID: fieldValue, });
       console.error(`error: ${error}`);
-      return error;
     }
   }
 
@@ -99,21 +81,21 @@ class IncidentService {
     try {
       let summary: ISummary | null = null;
       const incident = await incidentRepository.getIncidentByField(id, 'id');
-      if (incident) {
-        summary = {
-          createdBy: incident.createdBy,
-          createdAt: incident.createdAt,
-          currentPriority: incident.currentPriority,
-          tags: incident.currentTags
-        }
-        logger.info({ source: constants.INCIDENT_COTROLLER, method: constants.METHOD.GET, incidentId: id })
-        return summary;
+      if (incident instanceof Error  || !incident) {
+        logger.error({ source: constants.INCIDENT_COTROLLER, err: true, incidentID: id });
+        return;
       }
+      summary = {
+        createdBy: incident.createdBy,
+        createdAt: incident.createdAt,
+        currentPriority: incident.currentPriority,
+        tags: incident.currentTags
+      }
+      logger.info({ source: constants.INCIDENT_COTROLLER, method: constants.METHOD.GET, incidentId: id })
       return summary;
     } catch (error: any) {
       logger.error({ source: constants.INCIDENT_COTROLLER, err: true, incidentID: id });
       console.error(`error: ${error}`);
-      return error;
     }
   }
 

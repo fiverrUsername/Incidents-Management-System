@@ -65,7 +65,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
       data.date = date
     data.type = type
     data.tags = selectedTags
-    if (type && selectedTags.length>0) {
+    if (type && selectedTags.length > 0) {
       const isSuccess = await submitIncident(data, incidents, setIncidents);
       setIsSuccess(isSuccess);
       setShowBanner(true);
