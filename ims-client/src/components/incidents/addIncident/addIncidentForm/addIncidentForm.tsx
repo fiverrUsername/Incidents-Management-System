@@ -141,23 +141,6 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
 
     return true;
   };
-
-
-
-
-  // const validatechannelId = (value: string) => {
-  //   if (!value) {
-  //     return 'Slack Channel Id is required';
-  //   }
-
-  //   try {
-  //     new URL(value);
-  //   } catch (error) {
-  //     return 'Invalid Slack Channel Id';
-  //   }
-
-  //   return undefined;
-  // };
   const backdropStyles: React.CSSProperties = {
     background: 'rgba(0, 48, 18, 0.84)',
   };
