@@ -18,7 +18,7 @@ export const CHANNEL_REDIRECT = "https://slack.com/app_redirect?channel="
 
 
 const SLACK_API_TOKEN =
-"xoxb-5609511342163-5604717800598-Pu5kgQESjOXRmHjgyO4Urd6Z"
+"xoxb-5609511342163-5604717800598-RZ0xrfQTWl2EqumOmHAUOYQ8"
 // const token=process.env.SLACK_API_TOKEN  as string;
 // export const client = new WebClient(token, {
 export const client = new WebClient(SLACK_API_TOKEN, {
