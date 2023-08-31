@@ -5,10 +5,19 @@ import logger from "../loggers/log";
 import { constants } from '../loggers/constants';
 import { KeyUrlPair } from '../interfaces/IAttachment';
 dotenv.config()
-const s3 = new AWS.S3();
+// const s3 = new AWS.S3();
 const expiration = 3600;
 
-
+const s3 = new AWS.S3({
+  region: process.env.AWS_REGION,
+});
+AWS.config.getCredentials(function(err) {
+  if (err) console.log(err.stack);
+  // credentials not loaded
+  else {
+    console.log("Access key:", AWS.config.credentials?.accessKeyId);
+  }
+});
 class AttachmentsRepository {
 
   async uploadAttachment(files: Express.Multer.File[]): Promise<AWS.S3.ManagedUpload.SendData | any> {
