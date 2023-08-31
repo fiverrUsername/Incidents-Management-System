@@ -1,15 +1,14 @@
- import React from 'react';
- import { render, screen, fireEvent } from '@testing-library/react';
- import DropDown from './DropDown';
+import { render } from '@testing-library/react';
+import DropDown from './DropDown';
 
-//  describe('DropDown component', () => {
-//    it('renders the select box with options', () => {
-//      const Types1: Type[] = [
-//         { value: 'securing', label: 'a' },
-//         { value: 'technical', label: 'b' },
-//         { value: 'comment', label: 'c' },
-//     ];
-//     render(<DropDown arroption={Types1} />);
-    
-//     });});
+describe('DropDown component', () => {
+  const Types1 = [
+    { value: 'securing', label: 'a' },
+    { value: 'technical', label: 'b' },
+    { value: 'comment', label: 'c' },
+  ];
 
+  it('renders the select box with options', () => {
+    render(<DropDown Types={Types1} onChangeType={() => {}} />);
+  });
+});
