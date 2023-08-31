@@ -22,7 +22,10 @@ ws.on('open', () => {
 });
 
 const send = (message: IMessage) => {
+  console.log("---------Im in send")
   ws.send(JSON.stringify(message));
+  console.log("---------Im finish send")
+
 }
 
 ws.onmessage = (webSocketMessage) => {
@@ -31,6 +34,7 @@ ws.onmessage = (webSocketMessage) => {
     case ObjectType.Incident:
       switch (messageBody.actionType) {
         case ActionType.Add:
+          console.log("-----------socket page add incident messageBody.object:  ", messageBody.object)
           IMS_CreateChannel(messageBody.object as IIncident);
           break;
         case ActionType.Update:
@@ -47,6 +51,7 @@ ws.onmessage = (webSocketMessage) => {
     case ObjectType.TimelineEvent:
       switch (messageBody.actionType) {
         case ActionType.Add:
+          console.log("-----------socket page add timeline messageBody.object:  ", messageBody.object)
           sendMessageOnAddTimelineEvent(messageBody.object as ITimelineEvent)
           break;
         case ActionType.Update:
@@ -70,6 +75,7 @@ ws.onmessage = (webSocketMessage) => {
 };
 
 export const sendToSocket = (object: ITimelineEvent | IIncident, objectType: ObjectType, actionType: ActionType) => {
+  console.log("-----------------slack server! sendToSocket , object: ",object)
   const sendObj: IMessage = { objectType, actionType, object };
   if (ws.readyState === WebSocket.OPEN) {
     send(sendObj);
