@@ -16,8 +16,17 @@ import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import DropDown from '../../../base/dropDown/DropDown';
 import { TypesIncident } from '../../../base/dropDown/Types';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
+import{keyTags,keyPriority,keyDate,keyStatus,keyType}from '../../../../const'
 
+export interface FormFormData {
+
+  priority: Priority;
+  date: dayjs.Dayjs;
+  type: string;
+  tags: ITag[];
+}
 export interface FormData {
+
   name: string;
   description: string;
   priority: Priority;
@@ -36,15 +45,18 @@ interface Props {
 
 export default function addIncidentForm({ open, onClose, incidents, setIncidents }: Props) {
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>();
-  const [priority, setPriority] = React.useState<Priority>(Priority.P0);
-  const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
-  const [type, setType] = React.useState('');
-  const [selectedTags, setSelectedTags] = useState<(string|ITag)[]>([]);
+
   const [tags, setTags] = useState<ITag[]>([]);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
-
+  const [formObject, setFormObject] = React.useState<FormFormData>({
+    priority: Priority.P0,
+    date: dayjs(),
+    type: "",
+    tags: [],
+   
+  });
 
 
   const getOptionLabel = (option: ITag | string) => {
@@ -56,16 +68,16 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
 
   async function onSubmit(data: FormData) {
     setIsSubmit(true);
-    if (priority != null)
-      data.priority = priority
+    if (formObject.priority != null)
+      data.priority = formObject.priority
 
-    if (date == null)
+    if (formObject.date == null)
       data.date = dayjs();
     else
-      data.date = date
-    data.type = type
-    data.tags = selectedTags
-    if (type && selectedTags.length>0) {
+      data.date = formObject.date
+    data.type = formObject.type
+    data.tags = formObject.tags
+    if (formObject.type && tags.length>0) {
       const isSuccess = await submitIncident(data, incidents, setIncidents);
       setIsSuccess(isSuccess);
       setShowBanner(true);
@@ -159,19 +171,14 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
   }, []);
 
 
-  const handleDateChange = (Event: React.SetStateAction<dayjs.Dayjs | null>) => {
-    setDate(Event);
-  };
-  const handleTypeChange = (Event: SelectChangeEvent) => {
-    setType(Event.target.value);
-  };
-
-  const handlePriorityChange = (Event: SelectChangeEvent) => {
-    setPriority(Event.target.value as Priority);
-  };
-  const handleTagChange = (Event: CustomSyntheticEvent) => {
-    setSelectedTags(Event.selectedTags);
-  };
+  const handleChange = async (keyType: string, event: any) => {
+    console.log(event)
+        setFormObject((prevFormObject) => ({
+          ...prevFormObject,
+          [keyType]: event 
+          
+        }));
+      };
   return (
     <Dialog open={open} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addIncident" style={popupStyles}>
@@ -206,7 +213,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
-                  <PriorityButtons onChangePriority={handlePriorityChange} priority={priority} />
+                <PriorityButtons keyType={keyPriority} onChangePriority={handleChange} priority={formObject.priority} />
                 </div>
               </FormControl>
             </Grid>
@@ -215,7 +222,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
-                    <DateTimePickerValue date={date} onDateChange={handleDateChange} />
+                    <DateTimePickerValue keyType='string' date={formObject.date} onDateChange={handleChange} /> 
                   </FormControl>
                 </Grid>
                 <Grid item xs={6}>
@@ -238,17 +245,17 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="type">Type</label>
-                <DropDown Types={TypesIncident} onChangeType={handleTypeChange} />
-                {isSubmit && !type && <span style={{ color: errorColor }}>Type is required</span>}
+                <DropDown  keyType={keyType}   defaultValue={formObject.type} Types={TypesIncident} onChangeType={handleChange} />
+                {isSubmit && !formObject.type && <span style={{ color: errorColor }}>Type is required</span>}
               </FormControl>
             </Grid>
             <Grid item xs={12}>
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Tags</label>
                 <div id="tags">
-                  <CustomAutocomplete options={tags} getOptionLabel={getOptionLabel} placeholderText={"Write to add"} onChangeOptions={handleTagChange} />
+                <CustomAutocomplete options={tags} keytype= {keyTags}  onChangeOptions={handleChange} />
                 </div>
-                {isSubmit && selectedTags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>}
+                {isSubmit && tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>}
               </FormControl>
             </Grid>
             <Grid item xs={12}>
