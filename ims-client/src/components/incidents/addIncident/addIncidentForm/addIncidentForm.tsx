@@ -3,7 +3,6 @@ import { Button, Dialog, FormControl, Grid, SelectChangeEvent } from "@mui/mater
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-
 import IIncident from '../../../../interfaces/IIncident';
 import { ITag } from '../../../../interfaces/ITag';
 import { Priority } from '../../../../interfaces/enums';
@@ -26,13 +25,13 @@ export interface FormData {
   ChannelId: string;
   channelName: string;
   type: string;
-  tags: ITag[];
+  tags: (string|ITag)[];
 }
 interface Props {
   open: boolean;
   onClose: () => void;
   incidents: IIncident[];
-  setIncidents: any;
+  setIncidents: (value: React.SetStateAction<IIncident[]>) => void;
 }
 
 export default function addIncidentForm({ open, onClose, incidents, setIncidents }: Props) {
@@ -40,7 +39,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
   const [priority, setPriority] = React.useState<Priority>(Priority.P0);
   const [date, setDate] = React.useState<dayjs.Dayjs | null>(null);
   const [type, setType] = React.useState('');
-  const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<(string|ITag)[]>([]);
   const [tags, setTags] = useState<ITag[]>([]);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -48,7 +47,12 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
 
 
 
-  const getOptionLabel = (option: ITag) => option.name;
+  const getOptionLabel = (option: ITag | string) => {
+    if (typeof option === 'string') {
+      return option;
+    }
+    return option.name;
+  };
 
   async function onSubmit(data: FormData) {
     setIsSubmit(true);
@@ -126,6 +130,22 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
     return true;
   };
 
+
+
+
+  // const validatechannelId = (value: string) => {
+  //   if (!value) {
+  //     return 'Slack Channel Id is required';
+  //   }
+
+  //   try {
+  //     new URL(value);
+  //   } catch (error) {
+  //     return 'Invalid Slack Channel Id';
+  //   }
+
+  //   return undefined;
+  // };
   const backdropStyles: React.CSSProperties = {
     background: 'rgba(0, 48, 18, 0.84)',
   };
@@ -139,7 +159,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
   }, []);
 
 
-  const handleDateChange = (Event: any) => {
+  const handleDateChange = (Event: React.SetStateAction<dayjs.Dayjs | null>) => {
     setDate(Event);
   };
   const handleTypeChange = (Event: SelectChangeEvent) => {

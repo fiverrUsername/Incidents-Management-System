@@ -16,7 +16,8 @@ import CustomAutocomplete, { CustomSyntheticEvent } from '../../../base/autoComp
 import BannerNotification from '../../../base/bannerNotification/BannerNotification';
 import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import DropDown from '../../../base/dropDown/DropDown';
-import { StatusIncident, TypesIncident } from '../../../base/dropDown/Types';
+import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
+import UploadFiles from '../../../base/uploadFiles/UploadFiles';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 import UploadFiles from '../../../base/uploadFiles/UploadFiles';
 
@@ -25,7 +26,7 @@ export interface dataFromForm {
   priority: Priority;
   date: dayjs.Dayjs;
   type: string;
-  tags: ITag[];
+  tags: (string|ITag)[];
   filesString: string[];
   status: Status;
 }
@@ -75,7 +76,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
   const [severityValue, setSeverityValue] = useState<AlertColor>('error');
   const [messageValue, setMessageValue] = useState<string>("");
   const [tags, setTags] = useState<ITag[]>([]);
-  const getOptionLabel = (option: ITag) => option.name;
+  const getOptionLabel = (option: ITag|any) => option.name;
 
   async function onSubmit(data: dataFromForm) {
     setIsSubmit(true);

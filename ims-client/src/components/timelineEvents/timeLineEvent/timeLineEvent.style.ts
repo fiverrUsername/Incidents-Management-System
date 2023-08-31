@@ -7,9 +7,11 @@ export const TimelineConnectorWrapper = styled(TimelineConnector)`
         'border': '5px solid #EBF3EE',
         'borderRadius': '50px'
 `
-export const TimelineItemWrapper = styled(TimelineItem)`
-    flex: 2,
-`
+export const TimelineItemWrapper = styled(TimelineItem)(() => ({
+    ' &': {
+        flex: 2,
+    },
+}))
 
 
 

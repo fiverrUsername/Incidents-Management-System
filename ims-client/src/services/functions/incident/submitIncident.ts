@@ -4,7 +4,7 @@ import { Status } from '../../../interfaces/enums'
 import backendServices from '../../backendServices/backendServices'
 
 
-export default async function submitIncident(data: FormData, incident: IIncident[], setIncident: any) {
+export default async function submitIncident(data: FormData, incident: IIncident[], setIncident: React.Dispatch<React.SetStateAction<IIncident[]>>) {
 
     const incidentcR: IIncident = {
         //TODO
@@ -17,7 +17,8 @@ export default async function submitIncident(data: FormData, incident: IIncident
         slackLink: "",
         channelName: data.channelName,
         channelId: "",
-        currentTags: data.tags.map(tag => ({ id: tag.id, name: tag.name })),
+        currentTags: data.tags.map(tag => {if(typeof tag ==="string") return "";
+    return ({ id: tag.id, name: tag.name })}),
         date: data.date.toDate(),
         createdAt: new Date(),
         updatedAt: new Date(),

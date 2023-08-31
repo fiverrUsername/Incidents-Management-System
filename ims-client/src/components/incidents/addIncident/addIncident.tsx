@@ -4,7 +4,7 @@ import IIncident from "../../../interfaces/IIncident";
 import AddIncidentForm from "./addIncidentForm/addIncidentForm";
 export interface Props {
     incidents: IIncident[]
-    setIncident: any
+    setIncident: (value: React.SetStateAction<IIncident[]>) => void
 }
 
 export default function AddIncident({ incidents, setIncident }: Props) {
