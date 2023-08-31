@@ -25,21 +25,17 @@ class liveStatusRepository {
             return null;
         }
     }
-    async getLiveStatusByTag(tag: string, date: Date): Promise<IliveStatus[] | any> {
+    async getLiveStatusByTag(tag: string, startDate: Date, endDate: Date): Promise<IliveStatus[] | any> {
         try {
-                // Calculate the start date (10 days ago from the specified date)
-                const startDate = new Date(date);
-                startDate.setDate(startDate.getDate() - 9);
-                const endDate = new Date(date);
-                endDate.setHours(23, 59, 59, 999);
-                let query: Record<string, any> = { systemName: tag ,date: {
-                    $gte: startDate,
-                    $lte: endDate,
-                }};
+            let query: Record<string, any> = { systemName: tag };
+            endDate.setHours(23, 59, 59, 999);
+            query.date = {
+                $gte: startDate,
+                $lte: endDate,
+            };
             const liveStatusList: IliveStatus[] = await liveStatusModel
                 .find(query)
                 .sort({ date: 1 })
-                .limit(10);
             return liveStatusList;
         } catch (error: any) {
             console.error(`error: ${error}`);
