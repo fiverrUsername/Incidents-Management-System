@@ -20,7 +20,7 @@ export default function DateTimePickerValue(props: DateTimePickerProps) {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
-                <div style={{ height: '80px', overflow: 'hidden',padding:'2%' }}>
+                <div style={{ height: '80px', overflow: 'hidden',padding:'1%' }}>
                     <DateTimePicker
                         value={props.date}
                         onChange={handleDateChange}
