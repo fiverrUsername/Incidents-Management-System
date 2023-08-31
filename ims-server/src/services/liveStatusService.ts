@@ -7,6 +7,7 @@ import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import liveStatusRepository from "../repositories/liveStatusRepository";
 import tagService from "./tagService";
+
 class liveStatusService {
     constructor() {
         this.autoUpdateLiveStatus = this.autoUpdateLiveStatus.bind(this);
@@ -20,26 +21,16 @@ class liveStatusService {
 
     async getLiveStatus(date?: Date): Promise<liveStatusEntry[] | any> {
         try {
-            //date not correct/not found
-            //systemData is empty
-            //check if date is defined..???
             const tags = await tagService.getAllTags();
-            //let liveStatuses: liveStatusEntry[] = [];
             let liveStatuses: Array<liveStatusEntry | null> = [];
             const systemDate = date || new Date();
-            // console.log(systemDate)
             if (tags) {
                 for (const tag of tags) {
                     const latestStatusForTag: IliveStatus[] = await liveStatusRepository.getLiveStatusByTag(tag.name, systemDate);
-                    // if (latestStatusForTag && latestStatusForTag.length === 0) {
-                    //     liveStatuses.push(null);
-                    // } 
-                    // else {
                     liveStatuses.push({
                         systemName: tag.name,
                         systemData: latestStatusForTag
                     });
-                    // }
                 }
             }
             logger.info({
