@@ -15,7 +15,6 @@ import AddTimelineEvent from "../../components/timelineEvents/addTimelineEvent.t
 
 const TimeLinePage = ({ id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<ITimeLineEvent[]>([]);
-  const [summaryIncident, setSummaryIncident] = useState<ISummary>();
   const [incident, setIncident] = useState<receivedIncident>();
   //gets incident id
   useEffect(() => {
@@ -26,11 +25,6 @@ const TimeLinePage = ({ id }: WithIdProps) => {
       setTimelineObjects(getTimeLineEventsById);
     };
     fetchTimeline();
-    const fetchSummaryIncident = async () => {
-      const summary = await backendServices.getSummaryIncident(id);
-      setSummaryIncident(summary)
-    }
-    fetchSummaryIncident();
     const fetchIncident = async () => {
       const getIncidentById = await backendServices.getIncidentById(id);
       setIncident(getIncidentById);
@@ -48,8 +42,6 @@ const TimeLinePage = ({ id }: WithIdProps) => {
 
   const addNewTimeline = (newTimeline: ITimeLineEvent) => {
     setTimelineObjects([...timelineObjects, newTimeline]);
-    //The summary should be updated
-    //window.location.reload()
   }
    const updateIncidentFunction = (newIncident: receivedIncident) => {
     setIncident(newIncident);
@@ -57,7 +49,9 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   return (
     <>
       <Search setValue={setMyValue}></Search>
-      {summaryIncident && <DisplaySummary summaryIncident={summaryIncident } ></DisplaySummary>}
+      <DisplaySummary id={id}
+       ></DisplaySummary>
+      {/* } */}
       <StyledPaper>
         <Grid container direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="nowrap">
           <Typography variant='bold'>Consectetur massa</Typography>

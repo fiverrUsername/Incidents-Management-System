@@ -34,7 +34,7 @@ export interface FormData {
   ChannelId: string;
   channelName: string;
   type: string;
-  tags: (string|ITag)[];
+  tags: (string | ITag)[];
 }
 interface Props {
   open: boolean;
@@ -45,7 +45,6 @@ interface Props {
 
 export default function addIncidentForm({ open, onClose, incidents, setIncidents }: Props) {
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>();
-
   const [tags, setTags] = useState<ITag[]>([]);
   const [showBanner, setShowBanner] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -141,23 +140,6 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
 
     return true;
   };
-
-
-
-
-  // const validatechannelId = (value: string) => {
-  //   if (!value) {
-  //     return 'Slack Channel Id is required';
-  //   }
-
-  //   try {
-  //     new URL(value);
-  //   } catch (error) {
-  //     return 'Invalid Slack Channel Id';
-  //   }
-
-  //   return undefined;
-  // };
   const backdropStyles: React.CSSProperties = {
     background: 'rgba(0, 48, 18, 0.84)',
   };

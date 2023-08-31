@@ -1,3 +1,5 @@
+test
+
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';  
@@ -14,9 +16,9 @@ const mockSummary:ISummary = {
   currentPriority: Priority.P0,
   tags: [{id:"aaa", name: 'Tag 1' }, { id:"bbb",name: 'Tag 2' }],
 };
-
+const mockId="58328664-5d85-4d28-b3bb-596ba66bda50"
 test('renders the DisplaySummary component with correct information',async  () => {
-  const { getByText,queryByText  } = render(<DisplaySummary summaryIncident={mockSummary} />);
+  const { getByText,queryByText  } = render(<DisplaySummary id={mockId} />);
 
 
   await waitFor(() => {
@@ -46,7 +48,7 @@ test('does not render the tags section when tags are empty', () => {
   // Create a mock summary with empty tags
   const mockSummaryWithNoTags = { ...mockSummary, tags: [] };
 
-  const { queryByText } = render(<DisplaySummary summaryIncident={mockSummaryWithNoTags} />);
+  const { queryByText } = render(<DisplaySummary id={mockId} />);
 
   // Test if the tags section is not rendered
   expect(queryByText('Affected services:')).toBeNull();

@@ -18,7 +18,6 @@ export async function createIncident(channelId: string) {
       logger.fatal({ source: constants.CHANNEL_NOT_FOUND_IN_SLACK, file: files.CREATEINCIDENT });
     }
     const newIncident: IIncident = {
-      //TODO
       name: slackData?.channel?.name || NO_INCIDENT_NAME,
       status: Status.Active,
       description: "This channel created in slack",
