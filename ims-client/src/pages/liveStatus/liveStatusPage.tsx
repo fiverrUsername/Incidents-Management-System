@@ -6,6 +6,7 @@ import backendServices from "../../services/backendServices/backendServices";
 import { IcolorScale, liveStatusEntry } from "../../interfaces/ILiveStatus";
 import DateTimePickerValue from "../../components/base/datePicker/datePicker";
 import { StyledPaper } from "../timeLine/timeLinePage.style";
+import { keyDate } from "../../const";
 
 const LiveStatus = () => {
 
@@ -31,14 +32,14 @@ const LiveStatus = () => {
         fetchData();
     }, [date]);
 
-    const handleDateChange = (event: Dayjs | null) => {
+    const handleDateChange = (keyType:string,event: Dayjs | null) => {
         if (event)
             setDate(event);
     };
 
     return (
         <div>
-            <DateTimePickerValue date={date} onDateChange={handleDateChange} />
+                    <DateTimePickerValue keyType={keyDate} date={date} onDateChange={handleDateChange} /> 
             {
                 systemsStatusCollection &&
                 <StyledPaper>

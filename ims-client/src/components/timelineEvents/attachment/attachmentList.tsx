@@ -8,6 +8,7 @@ import backendServices from '../../../services/backendServices/backendServices';
 import attachmentServices from '../../../services/backendServices/attachmentServices';
 interface AttachmentlistProps {
   id: string;
+  files:string[];
 }
 interface KeyUrlPair  {
   key: string;
@@ -24,7 +25,7 @@ type SupportedFileTypes =
   | 'excel'
   | 'txt'
   | 'default';
-const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
+const Attachmentlist: React.FC<AttachmentlistProps> = ({ id ,files}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [filesData, setFilesData] = useState<KeyUrlPair[]>([]);
   const filesToDisplay = 3
@@ -79,8 +80,8 @@ const getFileType = (key: string): SupportedFileTypes => {
 
   const fetchTimelineData = async (id: string) => {
     try {
-      const timelineData: ITimeLineEvent = await backendServices.getTimeLineEventsById(id)
-      const signUrl:KeyUrlPair[]= await attachmentServices.getUrls(timelineData.files);
+      // const timelineData: ITimeLineEvent = await backendServices.getTimeLineEventsById(id)
+      const signUrl:KeyUrlPair[]= await attachmentServices.getUrls(files);
       setFilesData(signUrl)
     } catch (error) {
       console.error('Error Fetching Timeline Data:', error);

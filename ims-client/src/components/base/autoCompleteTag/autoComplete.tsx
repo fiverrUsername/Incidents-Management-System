@@ -1,56 +1,49 @@
-import React,{ SyntheticEvent, useState, useEffect } from 'react';
-import Autocomplete, { AutocompleteRenderInputParams } from '@mui/material/Autocomplete';
+import React, { SyntheticEvent, useState, useEffect } from 'react';
+import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import theme from '../../../theme';
 import { ITag } from '../../../interfaces/ITag';
-
 interface AutocompleteProps {
+  keytype:string;
   options: ITag[];
-  selectedOptions?: (string|ITag)[];
-  onChangeOptions: (event: CustomSyntheticEvent) => void;
-  getOptionLabel: (option: string|ITag) => string;
-  placeholderText: string;
-  disable?: boolean
+  selectedOptions?: ITag[];
+  onChangeOptions: (keytype:string,event: any) => void;
 }
 export interface CustomSyntheticEvent extends SyntheticEvent {
-  selectedTags: (string|ITag)[];
+  selectedTags: ITag[];
 }
 const CustomAutocomplete = (props: AutocompleteProps) => {
-  const [value, setValue] = useState(props.selectedOptions || []);
-  const [readOnly, setReadOnly] = useState(false);
+
+  const [value, setValue] = useState<ITag[]>(props.selectedOptions || []);
   const [filteredOptions, setFilteredOptions] = useState<ITag[]>(props.options);
-
   useEffect(() => {
-    if (props.disable) { setReadOnly(true) }
     if (props.selectedOptions) {
-      const selectedValues = props.selectedOptions.map((selected) => props.getOptionLabel(selected));
+      const selectedValues = props.selectedOptions.map((selected) => selected.name);
       const newFilteredOptions = props.options.filter(
-        (option) => !selectedValues.includes(props.getOptionLabel(option))
+        (option) => !selectedValues.includes(option.name)
       );
-
       if (newFilteredOptions.length > 0) {
         setFilteredOptions(newFilteredOptions);
       }
     }
-    else {
+    else{
       setFilteredOptions(props.options);
     }
   }, [props.selectedOptions, props.options]);
-
-  const handleChange = (event: SyntheticEvent, newValue: (ITag|string)[]) => {
+  const handleChange = (event: SyntheticEvent, newValue: any[]) => {
     const newFilteredOptions = filteredOptions.filter(
-      (option:ITag) => !newValue.includes(option)
+      (option) => !newValue.includes(option)
     );
-
     setFilteredOptions(newFilteredOptions);
     setValue(newValue);
     const customEvent: CustomSyntheticEvent = {
       ...event,
       selectedTags: newValue,
     };
-    props.onChangeOptions(customEvent);
+    props.onChangeOptions(props.keytype, customEvent.selectedTags);
   };
-
+ // eslint-disable-next-line @typescript-eslint/no-explicit-any
+ const getOptionLabel= (option: any) => option.name;
   return (
     <Autocomplete
       ChipProps={{
@@ -69,12 +62,12 @@ const CustomAutocomplete = (props: AutocompleteProps) => {
       multiple
       options={filteredOptions}
       value={value}
-      getOptionLabel={props.getOptionLabel}
+      getOptionLabel={getOptionLabel}
       onChange={handleChange}
-      renderInput={(params:AutocompleteRenderInputParams) => (
+      renderInput={(params) => (
         <TextField
           {...params}
-          placeholder={props.placeholderText}
+          placeholder="Write to add"
         />
       )}
       sx={{
@@ -83,10 +76,8 @@ const CustomAutocomplete = (props: AutocompleteProps) => {
         background: theme.palette.primary.contrastText,
         width: "100%",
       }}
-      readOnly={readOnly}
       freeSolo
     />
   );
 };
-
 export default CustomAutocomplete;

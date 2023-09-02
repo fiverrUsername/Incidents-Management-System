@@ -8,9 +8,11 @@ import AddTimelineForm, { receivedIncident } from "./addTimelineEventForm/addTim
 interface Props {
     incident: receivedIncident;
     addNewTimelineFunction: (newTimeline: ITimeLineEvent) => void
+    updateIncidentFunction: (newIncident: receivedIncident) => void
+
 }
 
-export default function AddTimelineEvent({ incident,addNewTimelineFunction }: Props) {
+export default function AddTimelineEvent({ incident,addNewTimelineFunction,updateIncidentFunction }: Props) {
     const [isOpen, setIsOpen] = useState(false);
     const handleClick = () => {
         setIsOpen(true);
@@ -21,7 +23,7 @@ export default function AddTimelineEvent({ incident,addNewTimelineFunction }: Pr
     return (
         <div>
             {incident.status == Status.Active && <Button onClick={handleClick} variant='outlined'>+ Add Update</Button>}
-            {isOpen && <AddTimelineForm addNewTimelineFunction={addNewTimelineFunction} isOpen={isOpen} onClose={handleClose} incident={incident} />}
+            {isOpen && <AddTimelineForm updateIncidentFunction={updateIncidentFunction} addNewTimelineFunction={addNewTimelineFunction} isOpen={isOpen} onClose={handleClose} incident={incident} />}
         </div>
     )
 }

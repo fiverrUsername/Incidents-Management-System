@@ -15,7 +15,6 @@ import AddTimelineEvent from "../../components/timelineEvents/addTimelineEvent.t
 
 const TimeLinePage = ({ id }: WithIdProps) => {
   const [timelineObjects, setTimelineObjects] = useState<ITimeLineEvent[]>([]);
-  const [summaryIncident, setSummaryIncident] = useState<ISummary>();
   const [incident, setIncident] = useState<receivedIncident>();
   //gets incident id
   useEffect(() => {
@@ -24,18 +23,12 @@ const TimeLinePage = ({ id }: WithIdProps) => {
       setTimelineObjects(getTimeLineEventsById);
     };
     fetchTimeline();
-    const fetchSummaryIncident = async () => {
-      const summary = await backendServices.getSummaryIncident(id);
-      setSummaryIncident(summary)
-    }
-    fetchSummaryIncident();
     const fetchIncident = async () => {
       const getIncidentById = await backendServices.getIncidentById(id);
       setIncident(getIncidentById);
     };
     fetchIncident();
-  }, [summaryIncident ]);
- 
+  }, [id]);
 
   let filter: ITimeLineEvent[] = [];
   const [myValue, setMyValue] = useState<string>("");
@@ -45,14 +38,17 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   const addNewTimeline = (newTimeline: ITimeLineEvent) => {
     setTimelineObjects([...timelineObjects, newTimeline]);
   }
+  const updateIncidentFunction = (newIncident: receivedIncident) => {
+    setIncident(newIncident);
+  }
   return (
     <>
       <Search setValue={setMyValue}></Search>
-      {summaryIncident && <DisplaySummary summaryIncident={summaryIncident} ></DisplaySummary>}
+      <DisplaySummary id={id}></DisplaySummary>
       <StyledPaper>
         <Grid container direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="nowrap">
           <Typography variant='bold'>Consectetur massa</Typography>
-          {incident && <AddTimelineEvent addNewTimelineFunction={addNewTimeline} incident={incident} />}
+          {incident && <AddTimelineEvent updateIncidentFunction={updateIncidentFunction} addNewTimelineFunction={addNewTimeline} incident={incident} />}
         </Grid>
         {timelineObjects && (
           <CustomScrollbar>

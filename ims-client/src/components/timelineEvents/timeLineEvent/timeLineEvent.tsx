@@ -36,10 +36,10 @@ const timeLineEvent: React.FC<ITimeLineEventprops> = (props) => {
                 <Typography variant='longText'>
                     {description}
                 </Typography>
-
             </TimelineContent>
         </TimelineItemWrapper>
-        <Attachmentlist id={timeline.id ? timeline.id : ""} />
+        <Attachmentlist id={timeline.id ? timeline.id : ""} files={timeline.files} />
+
     </div>
 }
 
