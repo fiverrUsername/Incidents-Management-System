@@ -1,10 +1,10 @@
 import { Box, Chip, Grid, } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
-
 import { ISummary } from '../../../interfaces/ISummary';
 import { StyledBox, StyledPaper } from '../../../pages/timeLine/timeLinePage.style';
 import theme from '../../../theme';
+ 
 
 interface propsDisplaySummary {
     summaryIncident: ISummary

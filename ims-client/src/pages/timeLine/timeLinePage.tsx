@@ -21,8 +21,6 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   useEffect(() => {
     const fetchTimeline = async () => {
       const getTimeLineEventsById = await backendServices.timelineEventByIncidentId(id)
-      console.log('getTimeLineEventsById:',getTimeLineEventsById);
-      
       setTimelineObjects(getTimeLineEventsById);
     };
     fetchTimeline();
@@ -36,7 +34,8 @@ const TimeLinePage = ({ id }: WithIdProps) => {
       setIncident(getIncidentById);
     };
     fetchIncident();
-  }, [id,summaryIncident]);
+  }, [summaryIncident ]);
+ 
 
   let filter: ITimeLineEvent[] = [];
   const [myValue, setMyValue] = useState<string>("");
@@ -45,13 +44,11 @@ const TimeLinePage = ({ id }: WithIdProps) => {
 
   const addNewTimeline = (newTimeline: ITimeLineEvent) => {
     setTimelineObjects([...timelineObjects, newTimeline]);
-    //The summary should be updated
-    //window.location.reload()
   }
   return (
     <>
       <Search setValue={setMyValue}></Search>
-      {summaryIncident && <DisplaySummary summaryIncident={summaryIncident } ></DisplaySummary>}
+      {summaryIncident && <DisplaySummary summaryIncident={summaryIncident} ></DisplaySummary>}
       <StyledPaper>
         <Grid container direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="nowrap">
           <Typography variant='bold'>Consectetur massa</Typography>

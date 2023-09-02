@@ -31,11 +31,20 @@ border: 1px solid #bfbfbf;
 background: #fff;
 padding: 20px;
 margin-top: 2%;
+
+@media (max-width: 600px) {
+  padding: 10px;
+}
 `;
 export const StyledBox = styled(Box)`
  color: ${theme.palette.secondary.main};
  font-weight: ${theme.typography.bold.fontWeight};
  margin: 2%
+
+ @media (max-width: 600px) {
+  font-size: 16px;
+  margin: 1%;
+}
 `;
  
 
