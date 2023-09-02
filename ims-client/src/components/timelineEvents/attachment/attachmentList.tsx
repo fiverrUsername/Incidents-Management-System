@@ -95,7 +95,8 @@ const getFileType = (key: string): SupportedFileTypes => {
 
   useEffect(() => {
     fetchTimelineData(id);
-  }, []);
+  }, [id, files]);
+  
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', flex: 2, flexWrap: 'nowrap' }}>
