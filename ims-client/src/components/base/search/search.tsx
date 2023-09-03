@@ -21,7 +21,12 @@ const Search: React.FC<IEventFilterProps> = ({ setValue }) => {
     return (
         <Paper
             component="form"
-            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 ,'@media (max-width: 600px)': {
+                width: '100%', 
+                flexDirection: 'row', 
+                alignItems: 'center', 
+                padding: '2px 4px', 
+            }, }}
         >
             <IconButton type="button" sx={{ p: '10px', color: "#7F8085" }} aria-label="search" >
                 <SearchIcon />

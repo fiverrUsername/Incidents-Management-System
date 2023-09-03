@@ -63,11 +63,11 @@ const TimeLinePage = ({ id }: WithIdProps) => {
           <Typography variant='bold'>Consectetur massa</Typography>
           {incident && <AddTimelineEvent updateIncidentFunction={updateIncidentFunction} addNewTimelineFunction={addNewTimeline} incident={incident} />}
         </Grid>
+        <CustomScrollbar>
         {timelineObjects && (
-          <CustomScrollbar>
             <TimeLine timelineList={filter} />
-          </CustomScrollbar>
         )}
+        </CustomScrollbar>
       </StyledPaper>
     </>
   );
