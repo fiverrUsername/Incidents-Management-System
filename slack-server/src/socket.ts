@@ -70,7 +70,7 @@ ws.onmessage = (webSocketMessage) => {
 };
 
 export const sendToSocket = (object: ITimelineEvent | IIncident, objectType: ObjectType, actionType: ActionType) => {
-  console.log("---------sendToSocket in slack server")
+  console.log("---------sendToSocket in slack server. the objet: ", object)
   const sendObj: IMessage = { objectType, actionType, object };
   if (ws.readyState === WebSocket.OPEN) {
     send(sendObj);

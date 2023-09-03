@@ -46,6 +46,8 @@ class TimelineEventService {
 
   async addTimelineEvent(newTimelineEvent: ITimelineEvent): Promise<void | any> {
     try {
+      console.log("-------TimelineEventService ,",newTimelineEvent)
+
       const incident: IIncident = await incidentRepository.getIncidentByField(newTimelineEvent.incidentId!, "id");
       const priority: Priority = incident.currentPriority
       const tags: ITag[] = incident.currentTags
