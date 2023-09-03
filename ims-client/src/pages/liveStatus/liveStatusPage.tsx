@@ -7,6 +7,7 @@ import { IcolorScale, liveStatusEntry } from "../../interfaces/ILiveStatus";
 import DateTimePickerValue from "../../components/base/datePicker/datePicker";
 import { StyledPaper } from "../timeLine/timeLinePage.style";
 import { keyDate } from "../../const";
+import Logger from "../../loggers/logger";
 
 const LiveStatus = () => {
 
@@ -24,22 +25,24 @@ const LiveStatus = () => {
         const fetchData = async () => {
             try {
                 const _systemsStatusCollection: liveStatusEntry[] = await backendServices.getLiveStatus(date.toDate());
+                Logger.info({ source: "Live status page", message: "Getting live status by date success!" })
                 setSystemsStatusCollection(_systemsStatusCollection);
-            } catch (error) {
-                console.error(error);
+            } catch (error: any) {
+                Logger.error({ source: "Live status page", message: "Error getting live status by date." });
             }
         };
         fetchData();
     }, [date]);
 
-    const handleDateChange = (keyType:string,event: Dayjs | null) => {
-        if (event)
+    const handleDateChange = (keyType: string, event: Dayjs | null) => {
+        if (event) {
             setDate(event);
+        }
     };
 
     return (
         <div>
-                    <DateTimePickerValue keyType={keyDate} date={date} onDateChange={handleDateChange} /> 
+            <DateTimePickerValue keyType={keyDate} date={date} onDateChange={handleDateChange} />
             {
                 systemsStatusCollection &&
                 <StyledPaper>

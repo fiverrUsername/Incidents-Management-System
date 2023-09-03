@@ -17,6 +17,7 @@ import DropDown from '../../../base/dropDown/DropDown';
 import { TypesIncident } from '../../../base/dropDown/Types';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 import { keyTags, keyPriority, keyDate, keyStatus, keyType } from '../../../../const'
+import Logger from '../../../../loggers/logger';
 
 export interface FormFormData {
 
@@ -145,8 +146,13 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
 
   useEffect(() => {
     const FetchData = async () => {
-      const getAllTags = await backendServices.getTags();
-      setTags(getAllTags);
+      try {
+        const getAllTags: ITag[] = await backendServices.getTags();
+        Logger.info({ source: "Add incident Form", message: "Getting all tags success!" })
+        setTags(getAllTags);
+      } catch (error: any) {
+        Logger.error({ source: "Add incident Form", message: "Error getting all tags" })
+      }
     };
     FetchData();
   }, []);

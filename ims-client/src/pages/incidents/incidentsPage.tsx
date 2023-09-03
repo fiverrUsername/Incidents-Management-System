@@ -3,6 +3,7 @@ import IncidentTable from "../../components/incidents/incidentTable/incidentTabl
 import IIncident from "../../interfaces/IIncident";
 import WidgetsStack from "../../components/incidents/widget/widgetsStack";
 import backendServices from "../../services/backendServices/backendServices";
+import Logger from "../../loggers/logger";
 
 const IncidentsPage = () => {
   const [incidents, setIncidents] = useState<Array<IIncident>>([]);
@@ -11,9 +12,15 @@ const IncidentsPage = () => {
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
-      const getIncidents = await backendServices.getIncidents();
-      setIncidents(getIncidents);
-      setIsLoading(false);
+      try {
+        const getIncidents: IIncident[] = await backendServices.getIncidents();
+        Logger.info({ source: "Incidents page", message: "Getting incidents success!" });
+        setIncidents(getIncidents);
+        setIsLoading(false);
+      }
+      catch (err: any) {
+        Logger.error({ source: "Incidents page", message: "Error getting incidents:(" });
+      }
     };
     fetchData();
   }, []);
