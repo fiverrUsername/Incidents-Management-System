@@ -83,8 +83,8 @@ export async function fileResponse(files: any[], incidentId: string): Promise<st
     await Promise.all(files.map(async (file) => {
       const newName: string = `incidence?${incidentId}?${Date.now()}${file.name}`;
       console.log('------before new blob')
-      const myBlob = new Blob([file.url_private_download, { type: 'application/docx' }]);
-      console.log('------after new blob', myBlob)
+      // const myBlob = new Blob([file.url_private_download, { type: 'application/docx' }]);
+      console.log('------after new blob')
       filesKeys.push(newName);
       const params: AWS.S3.PutObjectRequest = {
         Bucket: 'ims-fiverr',
