@@ -8,6 +8,7 @@ import backendServices from '../../../services/backendServices/backendServices';
 import attachmentServices from '../../../services/backendServices/attachmentServices';
 interface AttachmentlistProps {
   id: string;
+  files:string[];
 }
 interface KeyUrlPair  {
   key: string;
@@ -23,8 +24,9 @@ type SupportedFileTypes =
   | 'powerpoint'
   | 'excel'
   | 'txt'
+  |'code'
   | 'default';
-const Attachmentlist: React.FC<AttachmentlistProps> = ({ id }) => {
+const Attachmentlist: React.FC<AttachmentlistProps> = ({ id ,files}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [filesData, setFilesData] = useState<KeyUrlPair[]>([]);
   const filesToDisplay = 3
@@ -60,6 +62,27 @@ const getFileType = (key: string): SupportedFileTypes => {
     xls: 'excel',
     xlsx: 'excel',
     csv: 'excel',
+    c: 'code',
+    cpp: 'code',
+    java: 'code',
+    py: 'code',
+    js: 'code',
+    jsx: 'code',
+    ts: 'code',
+    html: 'code',
+    css: 'code',
+    sql: 'code',
+    rb: 'code',
+    php: 'code',
+    swift: 'code',
+    go: 'code',
+    R: 'code',
+    pl: 'code',
+    kt: 'code',
+    scala: 'code',
+    rs: 'code',
+    dart: 'code',
+    json: 'code',
   };
 
   try {
@@ -79,8 +102,8 @@ const getFileType = (key: string): SupportedFileTypes => {
 
   const fetchTimelineData = async (id: string) => {
     try {
-      const timelineData: ITimeLineEvent = await backendServices.getTimeLineEventsById(id)
-      const signUrl:KeyUrlPair[]= await attachmentServices.getUrls(timelineData.files);
+      // const timelineData: ITimeLineEvent = await backendServices.getTimeLineEventsById(id)
+      const signUrl:KeyUrlPair[]= await attachmentServices.getUrls(files);
       setFilesData(signUrl)
     } catch (error) {
       console.error('Error Fetching Timeline Data:', error);
@@ -94,7 +117,8 @@ const getFileType = (key: string): SupportedFileTypes => {
 
   useEffect(() => {
     fetchTimelineData(id);
-  }, []);
+  }, [id, files]);
+  
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', flex: 2, flexWrap: 'nowrap' }}>
