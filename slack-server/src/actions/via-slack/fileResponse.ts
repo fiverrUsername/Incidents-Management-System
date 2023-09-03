@@ -65,7 +65,6 @@ import path from "path";
 import logger from "../../loggers/log";
 import { constants } from "../../loggers/constants";
 import fi from "date-fns/locale/fi";
-import { Blob } from 'buffer';
 
 const s3 = new AWS.S3({
   region: process.env.AWS_REGION,
@@ -90,7 +89,7 @@ export async function fileResponse(files: any[], incidentId: string): Promise<st
       const params: AWS.S3.PutObjectRequest = {
         Bucket: 'ims-fiverr',
         Key: newName.replace(/\?/g, '/'),
-        Body: myBlob,
+        Body: file.url_private_download,
       };
       console.log("##########################params.body", params);
       await s3.upload(params).promise();
