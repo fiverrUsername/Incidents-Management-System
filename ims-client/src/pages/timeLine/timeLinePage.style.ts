@@ -32,8 +32,14 @@ background: #fff;
 padding: 20px;
 margin-top: 2%;
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   padding: 10px;
+  font-size: 60%
+}
+
+@media (max-width: 768px) {
+  padding: 10px;
+  font-size: 70%
 }
 `;
 export const StyledBox = styled(Box)`
@@ -41,9 +47,14 @@ export const StyledBox = styled(Box)`
  font-weight: ${theme.typography.bold.fontWeight};
  margin: 2%
 
- @media (max-width: 600px) {
-  font-size: 16px;
+ @media (max-width: 480px) {
+  font-size: 60%
   margin: 1%;
+}
+
+@media (max-width: 768px) {
+  padding: 10px;
+  font-size: 60%
 }
 `;
  

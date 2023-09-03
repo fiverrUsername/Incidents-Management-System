@@ -1,10 +1,11 @@
-import { Box, Chip, Grid, } from '@mui/material';
+import { Box, Chip, Grid, ThemeProvider, createTheme, useMediaQuery, } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { ISummary } from '../../../interfaces/ISummary';
-import { StyledBox, StyledPaper } from '../../../pages/timeLine/timeLinePage.style';
+import { StyledBox, StyledPaper } from './displaySummary.style'
 import theme from '../../../theme';
 import backendServices from '../../../services/backendServices/backendServices';
+import { StyleLabel } from './displaySummary.style';
 
 interface propsDisplaySummary {
     id: string
@@ -21,18 +22,25 @@ const DisplaySummary = ({ id }: propsDisplaySummary) => {
     const date = summaryIncident?.createdAt
         ? dayjs(summaryIncident.createdAt).format("DD/MM/YYYY")
         : "";
+        
+        const isMobile480px = useMediaQuery('(max-width: 480px)');
+        const isMobile768px = useMediaQuery('(max-width: 820px)');
+        const gridDirection = isMobile480px ? 'column' : isMobile768px?'column':'row';
+
     return (
-        <StyledPaper>
+        <StyledPaper  >
             {summaryIncident && (
-                <Grid container direction="row" justifyContent="center" alignItems="flex-start" flexWrap="nowrap">
+               < div>
+                <Grid container direction={gridDirection}  justifyContent="center" alignItems="flex-start" flexWrap="nowrap">
                     <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
-                        <StyledBox >Created by:<label style={{ color: theme.palette.primary.dark, fontSize: theme.typography.fontSize }}>{summaryIncident.createdBy}</label></StyledBox>
+                        <StyledBox >Created by:<StyleLabel >{summaryIncident.createdBy}</StyleLabel></StyledBox>
+                        {isMobile480px?'':isMobile768px?'': <br />} 
                         <StyledBox>Created at:
-                            <label style={{ color: theme.palette.primary.dark, fontSize: theme.typography.fontSize }}> {date.toString()}</label>
+                            <StyleLabel > {date.toString()}</StyleLabel>
                         </StyledBox>
                     </Grid>
                     <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
-                        <StyledBox>Current priority: <label style={{ color: theme.palette.primary.dark, fontSize: theme.typography.fontSize }}>{summaryIncident.currentPriority}</label></StyledBox>
+                        <StyledBox>Current priority: <StyleLabel  >{summaryIncident.currentPriority}</StyleLabel></StyledBox>
                     </Grid>
                     <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
 
@@ -44,6 +52,7 @@ const DisplaySummary = ({ id }: propsDisplaySummary) => {
                                 })} </Box> </>}
                     </Grid>
                 </Grid>
+                </div>
             )}
         </StyledPaper>
     );
