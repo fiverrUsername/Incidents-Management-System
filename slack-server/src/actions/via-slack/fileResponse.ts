@@ -81,7 +81,9 @@ export async function fileResponse(files: any[], incidentId: string): Promise<st
   try {
     await Promise.all(files.map(async (file) => {
       const newName: string = `incidence?${incidentId}?${Date.now()}${file.name}`;
-      const myBlob = new Blob([file.url_private_download]);
+      console.log('------before new blob')
+      const myBlob = new Blob([file.url_private_download, 'docx']);
+      console.log('------after new blob', myBlob)
       filesKeys.push(newName);
       const params: AWS.S3.PutObjectRequest = {
         Bucket: 'ims-fiverr',
@@ -95,6 +97,7 @@ export async function fileResponse(files: any[], incidentId: string): Promise<st
     }));
     return filesKeys;
   } catch (error: any) {
+    console.log('----- error in file response', error)
     logger.error({ source: constants.ERROR_EXTRACTING_FILES, msg: error });
     return [];
   }
