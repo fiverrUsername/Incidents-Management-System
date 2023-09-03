@@ -1,4 +1,3 @@
-
 import { ITimeLineEvent } from '../../../interfaces/ITimeLineEvent'
 import { dataFromForm, receivedIncident } from '../../../components/timelineEvents/addTimelineEvent.ts/addTimelineEventForm/addTimelineEventForm';
 import backendServices from '../../backendServices/backendServices';
@@ -40,7 +39,6 @@ export default async function submitTimeLine(props: Props) {
     props.updateIncidentFunction(newIncident);
     isSuccess = true;
     log.info({message:"succes to add time line event to server",source:"submitTimeLineEvent"})
-
   }
   catch (error) {
     isSuccess = false;
