@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import IAggregation from '../../../interfaces/IAggregation';
 import Widget from './widget';
 import backendServices from '../../../services/backendServices/backendServices';
+import Logger from '../../../loggers/logger';
 
 const NewStack = styled(Stack)(() => ({
   '&': {
@@ -16,7 +17,7 @@ const NewStack = styled(Stack)(() => ({
     'gap': '20px',
     'display': 'flex',
     'paddingLeft': '25px',
-    'paddingRight':'25px'
+    'paddingRight': '25px'
   }
 }));
 const iconMapping = {
@@ -31,8 +32,10 @@ export default function WidgetsStack() {
   const fetchData = async () => {
     try {
       const response = await backendServices.getAggregation();
+      Logger.info({ source: "Widget stack", message: "Get aggregation success!" })
       setAggregateIncident(response);
     } catch (error) {
+      Logger.error({ source: "Widget stack", message: "Error getting aggregation." });
       console.error('Error fetching data:', error);
     }
   };

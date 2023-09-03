@@ -19,6 +19,8 @@ import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
 import UploadFiles from '../../../base/uploadFiles/UploadFiles';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 import { keyDate, keyPriority, keyStatus, keyTags, keyType } from '../../../../const';
+import log from '../../../../loggers/logger'
+import Logger from '../../../../loggers/logger';
 
 export interface dataFromForm {
   text: string;
@@ -56,6 +58,7 @@ interface Props {
   updateIncidentFunction: (newIncident: receivedIncident) => void;
 }
 
+
 export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimelineFunction, updateIncidentFunction }: Props) {
   const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();
   const [formObject, setFormObject] = React.useState<dataFromForm>({
@@ -75,6 +78,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
   const [messageValue, setMessageValue] = useState<string>("");
   const [tags, setTags] = useState<ITag[]>([]);
 
+
   async function onSubmit(data: dataFromForm) {
     setIsSubmit(true);
     data.date = formObject.date;
@@ -89,7 +93,12 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
       formData.append('files', file, newName);
     })
     data.filesString = formObject.filesString;
-    await attachmentServices.uploadAttachment(formData);
+    try {
+      await attachmentServices.uploadAttachment(formData);
+      Logger.info({ source: "Add timeline event form", message: "Uploading attachment success!" });
+    } catch (error) {
+      Logger.error({ source: "Add timeline event form", message: "Error uploading attachment" });
+    }
     const isSuccess = await submitTimeLine({ data, incident, addNewTimelineFunction, updateIncidentFunction });
     if (isSuccess) {
       setSeverityValue('success');
@@ -129,8 +138,13 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
 
   useEffect(() => {
     const getTags = async () => {
-      const getAllTags = await backendServices.getTags();
-      setTags(getAllTags);
+      try {
+        const getAllTags: ITag[] = await backendServices.getTags();
+        Logger.info({ source: "Add timeline event form", message: "Getting tags success!" })
+        setTags(getAllTags);
+      } catch (error: any) {
+        Logger.error({ source: "Add timeline event form", message: "Error getting tags" })
+      }
     }
     getTags();
   }, []);

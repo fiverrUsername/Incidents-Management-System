@@ -13,13 +13,13 @@ interface propsDisplaySummary {
 
 const DisplaySummary = ({ id }: propsDisplaySummary) => {
     const [summaryIncident, setSummaryIncident] = useState<ISummary | null>(null);
-    
+
     const fetchData = async () => {
         try {
             const summary = await backendServices.getSummaryIncident(id);
             setSummaryIncident(summary);
         } catch (error) {
-            log.error({message:"failed to fetch summary",source:"displaySummary"});
+            log.error({ message: "failed to fetch summary\t IncidentId:" + id, source: "displaySummary" });
         }
     };
 

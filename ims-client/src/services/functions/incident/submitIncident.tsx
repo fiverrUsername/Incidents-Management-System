@@ -39,7 +39,7 @@ export default async function submitIncident(data: FormData, incident: IIncident
         return true;
     } catch (error) {
         console.error('Error creating incident:', error);
-        Logger.error({ source: "services/functions/submitIncident", message: "Error adding incident" });
+        Logger.error({ source: "services/functions/submitIncident", message: `Error adding incident\tIncident:${incident}` });
         return false;
     }
 }
