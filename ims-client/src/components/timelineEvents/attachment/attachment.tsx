@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { faFile, faFileAlt, faFileExcel, faFilePowerpoint, faFileWord, } from '@fortawesome/free-solid-svg-icons';
+import { faFile, faFileAlt, faFileExcel, faFilePowerpoint, faFileWord,faFileCode, faFilePdf} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
 import { Dialog, DialogContent, Grid, IconButton } from '@mui/material';
-import { Document, Page } from 'react-pdf';
-
 import attachmentServices from '../../../services/backendServices/attachmentServices';
 import Loading from '../../base/loading/loading';
 import { SingleAttachment, StyledFilePreview, StyledImage } from './attachment.style';
@@ -59,7 +57,8 @@ export default function Attachment({fileType,file,onDelete,}: {  fileType: strin
     word: { icon: faFileWord, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
     excel: { icon: faFileExcel, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
     powerpoint: { icon: faFilePowerpoint, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
-
+    pdf: { icon: faFilePdf, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
+    code: { icon: faFileCode, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
   };
 
   const fileTypeMappings = {
@@ -73,14 +72,7 @@ export default function Attachment({fileType,file,onDelete,}: {  fileType: strin
         </Dialog>
       </>
     ),
-    pdf: () => (
-      <StyledFilePreview >
-        <Document file={file.url} >
-          <Page pageNumber={1} onClick={handleDownload} />
-        </Document>
-      </StyledFilePreview>
 
-    ),
     audio: () => (
       <StyledFilePreview >
         <audio controls>
@@ -121,7 +113,7 @@ export default function Attachment({fileType,file,onDelete,}: {  fileType: strin
       );
     }
 
-    if (['image', 'pdf', 'video', 'audio'].includes(fileType)) {
+    if (['image', 'video', 'audio'].includes(fileType)) {
       return (
         <StyledFilePreview title={getFileName(file.key)}>
           {fileTypeMappings[fileType]()}

@@ -24,6 +24,7 @@ type SupportedFileTypes =
   | 'powerpoint'
   | 'excel'
   | 'txt'
+  |'code'
   | 'default';
 const Attachmentlist: React.FC<AttachmentlistProps> = ({ id ,files}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -61,6 +62,27 @@ const getFileType = (key: string): SupportedFileTypes => {
     xls: 'excel',
     xlsx: 'excel',
     csv: 'excel',
+    c: 'code',
+    cpp: 'code',
+    java: 'code',
+    py: 'code',
+    js: 'code',
+    jsx: 'code',
+    ts: 'code',
+    html: 'code',
+    css: 'code',
+    sql: 'code',
+    rb: 'code',
+    php: 'code',
+    swift: 'code',
+    go: 'code',
+    R: 'code',
+    pl: 'code',
+    kt: 'code',
+    scala: 'code',
+    rs: 'code',
+    dart: 'code',
+    json: 'code',
   };
 
   try {
