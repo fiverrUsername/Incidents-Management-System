@@ -9,13 +9,13 @@ import { Priority } from '../../../../interfaces/enums';
 import backendServices from '../../../../services/backendServices/backendServices';
 import submitIncident from '../../../../services/functions/incident/submitIncident';
 import theme from '../../../../theme';
-import TextFieldInput from '../../../../trash/TextFields';
 import CustomAutocomplete, { CustomSyntheticEvent } from '../../../base/autoCompleteTag/autoComplete';
 import BannerNotification from "../../../base/bannerNotification/BannerNotification";
 import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import DropDown from '../../../base/dropDown/DropDown';
 import { TypesIncident } from '../../../base/dropDown/Types';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
+import TextFieldInput from "../../../base/customTextField/TextFields";
 
 export interface FormData {
   name: string;
