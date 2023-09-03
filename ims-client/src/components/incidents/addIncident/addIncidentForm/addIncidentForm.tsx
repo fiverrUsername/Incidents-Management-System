@@ -3,7 +3,6 @@ import { Button, Dialog, FormControl, Grid } from "@mui/material";
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { keyPriority, keyTags, keyType } from '../../../../const';
 import IIncident from '../../../../interfaces/IIncident';
 import { ITag } from '../../../../interfaces/ITag';
 import { Priority } from '../../../../interfaces/enums';
@@ -117,10 +116,12 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
 
     try {
       const allIncidents: IIncident[] | undefined = await backendServices.getIncidents();
+      Logger.info({ source: "Add incident form", message: "Fetching incidents success!" })
       allChannelNames = (allIncidents || [])
         .filter((incident: IIncident) => incident.channelName !== undefined)
         .map((incident: IIncident) => incident.channelName as string);
     } catch (error) {
+      Logger.error({ source: "Add incident form", message: "Error fetching incidents" })
       console.error('Error fetching incidents:', error);
     }
 
@@ -158,7 +159,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
     FetchData();
   }, []);
 
-
+  
   const handleChange = async (keyType: string, event: any) => {
     console.log(event)
     setFormObject((prevFormObject) => ({

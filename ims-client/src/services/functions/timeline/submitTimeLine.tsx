@@ -39,12 +39,12 @@ export default async function submitTimeLine(props: Props) {
     props.addNewTimelineFunction(newTimeLine);
     props.updateIncidentFunction(newIncident);
     isSuccess = true;
-    log.info({message:"succes to add time line event to server",source:"submitTimeLineEvent"})
+    log.info({ message: "succes to add time line event to server", source: "submitTimeLineEvent" })
 
   }
   catch (error) {
     isSuccess = false;
-    log.error({message:"failed to add time line event to server",source:"submitTimeLineEvent"})
+    log.error({ message: "failed to add time line event to server", source: "submitTimeLineEvent" })
   }
   return isSuccess;
 }

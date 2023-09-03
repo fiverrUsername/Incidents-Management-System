@@ -20,6 +20,7 @@ import UploadFiles from '../../../base/uploadFiles/UploadFiles';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 import { keyDate, keyPriority, keyStatus, keyTags, keyType } from '../../../../const';
 import log from '../../../../loggers/logger'
+import Logger from '../../../../loggers/logger';
 
 export interface dataFromForm {
   text: string;
@@ -58,7 +59,7 @@ interface Props {
 }
 
 
-export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimelineFunction,updateIncidentFunction }: Props) {
+export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimelineFunction, updateIncidentFunction }: Props) {
   const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();
   const [formObject, setFormObject] = React.useState<dataFromForm>({
     text: "",
@@ -76,7 +77,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
   const [severityValue, setSeverityValue] = useState<AlertColor>('error');
   const [messageValue, setMessageValue] = useState<string>("");
   const [tags, setTags] = useState<ITag[]>([]);
- 
+
 
   async function onSubmit(data: dataFromForm) {
     setIsSubmit(true);
@@ -92,8 +93,13 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
       formData.append('files', file, newName);
     })
     data.filesString = formObject.filesString;
-    await attachmentServices.uploadAttachment(formData);
-    const isSuccess = await submitTimeLine({ data, incident, addNewTimelineFunction ,updateIncidentFunction});
+    try {
+      await attachmentServices.uploadAttachment(formData);
+      Logger.info({ source: "Add timeline event form", message: "Uploading attachment success!" });
+    } catch (error) {
+      Logger.error({ source: "Add timeline event form", message: "Error uploading attachment" });
+    }
+    const isSuccess = await submitTimeLine({ data, incident, addNewTimelineFunction, updateIncidentFunction });
     if (isSuccess) {
       setSeverityValue('success');
       setMessageValue('new update Added Successfully');
@@ -131,8 +137,13 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
   };
   useEffect(() => {
     const getTags = async () => {
-      const getAllTags = await backendServices.getTags();
-      setTags(getAllTags);
+      try {
+        const getAllTags: ITag[] = await backendServices.getTags();
+        Logger.info({ source: "Add timeline event form", message: "Getting tags success!" })
+        setTags(getAllTags);
+      } catch (error: any) {
+        Logger.error({ source: "Add timeline event form", message: "Error getting tags" })
+      }
     }
     getTags();
   }, []);
@@ -170,7 +181,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
-                <PriorityButtons keyType={keyPriority} onChangePriority={handleChange} priority={formObject.priority} />                </div>
+                  <PriorityButtons keyType={keyPriority} onChangePriority={handleChange} priority={formObject.priority} />                </div>
               </FormControl>
             </Grid>
             <Grid item xs={12}  >
@@ -178,7 +189,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
-                    <DateTimePickerValue  keyType={keyDate} date={formObject.date} onDateChange={handleChange} />
+                    <DateTimePickerValue keyType={keyDate} date={formObject.date} onDateChange={handleChange} />
                   </FormControl>
                 </Grid>
               </Grid>
@@ -187,7 +198,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="type">Type</label>
-                <DropDown keyType={keyType} defaultValue={formObject.type} Types={TypesIncident} onChangeType={handleChange}  />
+                <DropDown keyType={keyType} defaultValue={formObject.type} Types={TypesIncident} onChangeType={handleChange} />
                 {isSubmit && !formObject.type && <span style={{ color: errorColor }}>Type is required</span>}
               </FormControl>
             </Grid>
@@ -203,7 +214,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Affected services</label>
                 <div id="tags">
-                <CustomAutocomplete selectedOptions={formObject.tags} options={tags} keytype={keyTags}  onChangeOptions={handleChange} />
+                  <CustomAutocomplete selectedOptions={formObject.tags} options={tags} keytype={keyTags} onChangeOptions={handleChange} />
                   {/* {isSubmit && formObject.tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>} */}
                 </div>
               </FormControl>

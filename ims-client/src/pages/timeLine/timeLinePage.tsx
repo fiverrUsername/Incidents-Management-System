@@ -27,17 +27,17 @@ const TimeLinePage = ({ id }: WithIdProps) => {
         setTimelineObjects(getTimeLineEventsById);
       }
       catch (err: any) {
-        Logger.error({ source: "Time line page", message: "Error getting timeline events by Incident id" });
+        Logger.error({ source: "Time line page", message: "Error getting timeline events by Incident id.\t IncidentId:" + id });
       }
     };
     fetchTimeline();
     const fetchIncident = async () => {
       try {
         const getIncidentById: receivedIncident = await backendServices.getIncidentById(id);
-        Logger.info({ source: "Time line page", message: "Getting incident by id success!" });
+        Logger.info({ source: "Time line page", message: `Getting incident by id=${id} success!` });
         setIncident(getIncidentById);
       } catch (error: any) {
-        Logger.error({ source: "Time line page", message: "Error getting incident by id" });
+        Logger.error({ source: "Time line page", message: `Error getting incident by id\tId:${id}` });
       }
     };
     fetchIncident();
