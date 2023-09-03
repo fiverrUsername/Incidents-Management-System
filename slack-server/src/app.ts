@@ -9,12 +9,37 @@ import logger from './loggers/log';
 const app = express();
 require('dotenv').config()
 
-app.use(bodyParser.json());
-app.use(cors({
-  origin: true,
+const whitelist = ['wss://ims-socket.onrender.com/','ws://ims-socket.onrender.com/','https://ims-socket.onrender.com','https://ims-server-pbkw.onrender.com'];
+const apiKey = process.env.API_KEY;
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    if (origin === undefined || whitelist.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('slack server! Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: 'POST,GET,PUT,OPTIONS,DELETE'
-}));
+};
+
+app.use(bodyParser.json());
+app.use(cors(corsOptions));
+// app.use(cors({
+//   origin: "https://ims-server-pbkw.onrender.com",
+//   credentials: true,
+//   methods: 'POST, GET, PUT, OPTIONS, DELETE',
+//   allowedHeaders: 'Content-Type,Authorization' // Add any other required headers here
+// }));
+// app.use(cors({
+//   origin: true,
+//   credentials: true,
+//   methods: 'POST,GET,PUT,OPTIONS,DELETE'
+// }));
+
+app.get('/test', (req: Request, res: Response) => {
+  res.status(200).send('OK');
+});
 
 app.post('/webhook', (req: Request, res: Response) => {
   const data: any = req.body;
@@ -26,8 +51,6 @@ app.post('/webhook', (req: Request, res: Response) => {
   }
   events(data);
 });
-
-
 
 app.listen(port, () => {
   logger.info({ source: constants.SERVER_IS_OS_IN_LOCALHOST_PORT+""+port, file: files.APP })

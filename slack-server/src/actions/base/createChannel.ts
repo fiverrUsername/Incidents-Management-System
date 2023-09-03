@@ -16,7 +16,6 @@ export async function createChannel(data: IChannelData) {
             user_ids: data.userIds,
             is_private: data.isPrivate
         });
-        console.log('New public channel created:', response.channel?.name);
         const channelId = response.channel?.id || "no channel id";
         await InvitePeopleToChannel(channelId, data.userIds);
         await updateChannelDescription(channelId, data.description) || "no description";

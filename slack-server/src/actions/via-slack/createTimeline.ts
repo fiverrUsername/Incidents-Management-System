@@ -23,6 +23,7 @@ export default async function handleMessageEvent(event: any) {
   try {
       const answer = await axios.get(`${IMS_SERVER_ROUTING}incident/${event.channel}/channelId`, { headers });
       if (answer.data) {
+        console.log("---------event", event.files)
         const timelineEvent: ITimelineEvent = {
           channelId: event.channel,
           incidentId: answer.data.id!,
