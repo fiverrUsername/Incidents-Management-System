@@ -2,6 +2,14 @@ import log, { levels } from 'loglevel';
 import axios from 'axios';
 import { Level } from '../interfaces/enums';
 import { ILogData, ILogRecievedData } from '../interfaces/ILogger';
+import axiosRetry from 'axios-retry';
+
+const axiosInstance = axios.create();
+
+axiosRetry(axiosInstance, {
+  retries: 3, 
+  retryDelay: axiosRetry.exponentialDelay, 
+})
 
 log.setDefaultLevel(levels.TRACE);
 
@@ -36,7 +44,7 @@ function sendLogToServer(level: Level, data: ILogRecievedData) {
     timestamp: new Date().toISOString(),
     source: data.source,
   };
-  axios.post(`${baseUrl}/log`, logData)
+  axiosInstance.post(`${baseUrl}/log`, logData)
     .then(response => {
       log.info(response.data.message);
     })
