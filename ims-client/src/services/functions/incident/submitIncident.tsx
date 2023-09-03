@@ -24,7 +24,6 @@ export default async function submitIncident(data: FormData, incident: IIncident
         date: data.date.toDate(),
         createdAt: new Date(),
         updatedAt: new Date(),
-        //TODO
         createdBy: "698cbeda854a5d4d8bcf303l",
         cost: 0,
     }
