@@ -65,6 +65,8 @@ import path from "path";
 import logger from "../../loggers/log";
 import { constants } from "../../loggers/constants";
 import fi from "date-fns/locale/fi";
+import { Blob } from 'buffer';
+
 const s3 = new AWS.S3({
   region: process.env.AWS_REGION,
 });
@@ -82,7 +84,7 @@ export async function fileResponse(files: any[], incidentId: string): Promise<st
     await Promise.all(files.map(async (file) => {
       const newName: string = `incidence?${incidentId}?${Date.now()}${file.name}`;
       console.log('------before new blob')
-      const myBlob = new Blob([file.url_private_download, 'docx']);
+      const myBlob = new Blob([file.url_private_download, { type: 'application/docx' }]);
       console.log('------after new blob', myBlob)
       filesKeys.push(newName);
       const params: AWS.S3.PutObjectRequest = {
