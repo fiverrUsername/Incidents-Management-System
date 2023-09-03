@@ -1,5 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Button, Dialog, FormControl, Grid, SelectChangeEvent } from "@mui/material";
+import { Button, Dialog, FormControl, Grid } from "@mui/material";
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -9,14 +9,15 @@ import { Priority } from '../../../../interfaces/enums';
 import backendServices from '../../../../services/backendServices/backendServices';
 import submitIncident from '../../../../services/functions/incident/submitIncident';
 import theme from '../../../../theme';
-import TextFieldInput from '../../../../trash/TextFields';
-import CustomAutocomplete, { CustomSyntheticEvent } from '../../../base/autoCompleteTag/autoComplete';
+import CustomAutocomplete from '../../../base/autoCompleteTag/autoComplete';
 import BannerNotification from "../../../base/bannerNotification/BannerNotification";
+import TextFieldInput from "../../../base/customTextField/TextFields";
 import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import DropDown from '../../../base/dropDown/DropDown';
 import { TypesIncident } from '../../../base/dropDown/Types';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 import { keyTags, keyPriority, keyDate, keyStatus, keyType } from '../../../../const'
+import Logger from '../../../../loggers/logger';
 
 export interface FormFormData {
 
@@ -56,14 +57,6 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
     tags: [],
 
   });
-
-
-  const getOptionLabel = (option: ITag | string) => {
-    if (typeof option === 'string') {
-      return option;
-    }
-    return option.name;
-  };
 
   async function onSubmit(data: FormData) {
     setIsSubmit(true);
@@ -115,10 +108,12 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
 
     try {
       const allIncidents: IIncident[] | undefined = await backendServices.getIncidents();
+      Logger.info({ source: "Add incident form", message: "Fetching incidents success!" })
       allChannelNames = (allIncidents || [])
         .filter((incident: IIncident) => incident.channelName !== undefined)
         .map((incident: IIncident) => incident.channelName as string);
     } catch (error) {
+      Logger.error({ source: "Add incident form", message: "Error fetching incidents" })
       console.error('Error fetching incidents:', error);
     }
 
@@ -145,13 +140,18 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
 
   useEffect(() => {
     const FetchData = async () => {
-      const getAllTags = await backendServices.getTags();
-      setTags(getAllTags);
+      try {
+        const getAllTags: ITag[] = await backendServices.getTags();
+        Logger.info({ source: "Add incident Form", message: "Getting all tags success!" })
+        setTags(getAllTags);
+      } catch (error: any) {
+        Logger.error({ source: "Add incident Form", message: "Error getting all tags" })
+      }
     };
     FetchData();
   }, []);
 
-
+  
   const handleChange = async (keyType: string, event: any) => {
     console.log(event)
     setFormObject((prevFormObject) => ({
@@ -203,7 +203,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
-                    <DateTimePickerValue keyType='string' date={formObject.date} onDateChange={handleChange} />
+                    <DateTimePickerValue keyType={keyDate} date={formObject.date} onDateChange={handleChange} />
                   </FormControl>
                 </Grid>
                 <Grid item xs={6}>

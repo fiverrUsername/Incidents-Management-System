@@ -1,12 +1,22 @@
-import log from 'loglevel';
+import log, { levels } from 'loglevel';
 import axios from 'axios';
 import { Level } from '../interfaces/enums';
 import { ILogData, ILogRecievedData } from '../interfaces/ILogger';
+import axiosRetry from 'axios-retry';
+
+const axiosInstance = axios.create();
+
+axiosRetry(axiosInstance, {
+  retries: 3, 
+  retryDelay: axiosRetry.exponentialDelay, 
+})
+
+log.setDefaultLevel(levels.TRACE);
 
 const baseUrl = process.env.REACT_APP_API_KEY
 
 export default class Logger {
- static info(data: ILogRecievedData): void {
+  static info(data: ILogRecievedData): void {
     log.info(data.message);
     sendLogToServer(Level.info, data);
   }
@@ -27,18 +37,18 @@ export default class Logger {
     sendLogToServer(Level.warn, data);
   }
 }
- function sendLogToServer(level:Level, data:ILogRecievedData) {
-  const logData:ILogData = {
+function sendLogToServer(level: Level, data: ILogRecievedData) {
+  const logData: ILogData = {
     level,
-    message:data.message,
+    message: data.message,
     timestamp: new Date().toISOString(),
-    ...(data.source && { source :data.source}),
-    };
-  axios.post(`${baseUrl}/log`, logData)
-    .then(response => { 
-      console.log(response.data);
+    source: data.source,
+  };
+  axiosInstance.post(`${baseUrl}/log`, logData)
+    .then(response => {
+      log.info(response.data.message);
     })
     .catch(error => {
-      console.log(error);
+      log.error(error);
     });
 }

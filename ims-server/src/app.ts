@@ -15,6 +15,8 @@ import liveStatusRouter from "./routes/liveStatusRouter";
 import tagRouter from './routes/tagRouter';
 import timelineEventRouter from './routes/timelineEventRouter';
 import dailySchedule from './services/schedule';
+import { authenticateWithApiKey } from './authenticateWithApiKey ';
+import { corsOptions } from './corsConfig';
 
 const port = config.server.port
 const app = express()
@@ -22,24 +24,11 @@ const swaggerFile: any = (process.cwd() + "/src/Swagger.json");
 const swaggerData: any = fs.readFileSync(swaggerFile, 'utf8');
 const swaggerDocument = JSON.parse(swaggerData);
 swaggerDocument.servers[0].url = `http://localhost:${process.env.SERVER_PORT}`
-const whitelist = ['http://localhost:3000', 'http://localhost:4700', 'http://localhost:7071', 'http://localhost:7000'];
-const apiKey = process.env.API_KEY;
-const corsOptions: cors.CorsOptions = {
-  origin: (origin, callback) => {
-    if (origin === undefined || whitelist.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: 'POST,GET,PUT,OPTIONS,DELETE'
-};
 
 
 connect();
-app.use(cors(corsOptions));
 dailySchedule
+app.use(cors(corsOptions));
 app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use(bodyParser.json())
 app.use('/incident', incidentRoute)
@@ -48,19 +37,8 @@ app.use('/tag', tagRouter)
 app.use('/timelineEvent', timelineEventRouter)
 app.use('/attachment', attachmentRouter)
 app.use('/livestatus', liveStatusRouter)
-app.use('/log',clientLogRouter);
-
-
-// בדיקה אם השרת מורשה לגשת לשרת
-app.use((req: Request, res: Response, next: NextFunction) => {
-  if (req.headers.authorization === `Bearer ${apiKey}`) {
-    next();
-  } else {
-    res.status(401).json({ error: 'Unauthorized' });
-  }
-});
-
-
+app.use('/log', clientLogRouter);
+app.use(authenticateWithApiKey());
 app.get('/', (req: Request, res: Response): void => {
   res.redirect('/swagger')
 });

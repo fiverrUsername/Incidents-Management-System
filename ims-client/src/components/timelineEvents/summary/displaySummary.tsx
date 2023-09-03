@@ -6,19 +6,30 @@ import { StyledBox, StyledPaper } from './displaySummary.style'
 import theme from '../../../theme';
 import backendServices from '../../../services/backendServices/backendServices';
 import { StyleLabel } from './displaySummary.style';
+import log from '../../../loggers/logger'
 
 interface propsDisplaySummary {
     id: string
 }
+
 const DisplaySummary = ({ id }: propsDisplaySummary) => {
-    const [summaryIncident, setSummaryIncident] = useState<ISummary>();
-    useEffect(() => {
-        const fetchSummaryIncident = async () => {
+    const [summaryIncident, setSummaryIncident] = useState<ISummary | null>(null);
+
+    const fetchData = async () => {
+        try {
             const summary = await backendServices.getSummaryIncident(id);
-            setSummaryIncident(summary)
+            setSummaryIncident(summary);
+        } catch (error) {
+            log.error({ message: "failed to fetch summary\t IncidentId:" + id, source: "displaySummary" });
         }
-        fetchSummaryIncident();
-    }, [id, summaryIncident]);
+    };
+
+    useEffect(() => {
+        fetchData();
+        const intervalId = setInterval(fetchData, 3600000); // 1 hour
+        return () => clearInterval(intervalId);
+    }, [id]);
+
     const date = summaryIncident?.createdAt
         ? dayjs(summaryIncident.createdAt).format("DD/MM/YYYY")
         : "";
@@ -43,13 +54,14 @@ const DisplaySummary = ({ id }: propsDisplaySummary) => {
                         <StyledBox>Current priority: <StyleLabel  >{summaryIncident.currentPriority}</StyleLabel></StyledBox>
                     </Grid>
                     <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
-
                         <StyledBox>Affected services:</StyledBox>
-                        {summaryIncident.tags.length != 0 && <>
-                            <Box style={{ borderRadius: '10px', border: '1px solid' + theme.palette.info.main, width: "100%", height: "auto", padding: "1.5% " }} >
-                                {summaryIncident.tags.map((tag, index) => {
-                                    return <Chip sx={{ border: '1px solid' + theme.palette.secondary.main, color: theme.palette.secondary.main, backgroundColor: theme.palette.secondary.light, margin: "0.5%" }} key={index} label={tag.name} />
-                                })} </Box> </>}
+                        {summaryIncident.tags.length !== 0 && (
+                            <Box style={{ borderRadius: '10px', border: '1px solid' + theme.palette.info.main, width: "100%", height: "auto", padding: "1.5% " }}>
+                                {summaryIncident.tags.map((tag, index) => (
+                                    <Chip sx={{ border: '1px solid' + theme.palette.secondary.main, color: theme.palette.secondary.main, backgroundColor: theme.palette.secondary.light, margin: "0.5%" }} key={index} label={tag.name} />
+                                ))}
+                            </Box>
+                        )}
                     </Grid>
                 </Grid>
                 </div>
@@ -57,4 +69,5 @@ const DisplaySummary = ({ id }: propsDisplaySummary) => {
         </StyledPaper>
     );
 };
+
 export default DisplaySummary;
