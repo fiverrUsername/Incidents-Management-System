@@ -3,7 +3,7 @@ import { Button, Dialog, FormControl, Grid } from "@mui/material";
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { keyPriority, keyTags, keyType } from '../../../../const';
+
 import IIncident from '../../../../interfaces/IIncident';
 import { ITag } from '../../../../interfaces/ITag';
 import { Priority } from '../../../../interfaces/enums';
@@ -58,14 +58,6 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
     tags: [],
 
   });
-
-
-  const getOptionLabel = (option: ITag | string) => {
-    if (typeof option === 'string') {
-      return option;
-    }
-    return option.name;
-  };
 
   async function onSubmit(data: FormData) {
     setIsSubmit(true);

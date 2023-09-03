@@ -25,7 +25,7 @@ const DisplaySummary = ({ id }: propsDisplaySummary) => {
 
     useEffect(() => {
         fetchData();
-        const intervalId = setInterval(fetchData, 60000); // 60000 milliseconds = 1 minute
+        const intervalId = setInterval(fetchData, 3600000); // 1 hour
         return () => clearInterval(intervalId);
     }, [id]);
 

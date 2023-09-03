@@ -1,4 +1,3 @@
-import { option } from "../../components/base/dropDown/Types";
 import { ITag } from "../../interfaces/ITag";
 import backendServices from "./backendServices";
 export async function getTags(): Promise<ITag[]> {
