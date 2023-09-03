@@ -1,6 +1,5 @@
 import { Button } from "@mui/material";
 import React, { useState } from "react";
-
 import { ITimeLineEvent } from "../../../interfaces/ITimeLineEvent";
 import { Status } from "../../../interfaces/enums";
 import AddTimelineForm, { receivedIncident } from "./addTimelineEventForm/addTimelineEventForm";
