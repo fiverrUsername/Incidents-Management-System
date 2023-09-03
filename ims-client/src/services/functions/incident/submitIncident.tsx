@@ -8,7 +8,6 @@ import backendServices from '../../backendServices/backendServices'
 export default async function submitIncident(data: FormData, incident: IIncident[], setIncident: React.Dispatch<React.SetStateAction<IIncident[]>>) {
 
     const incidentcR: IIncident = {
-        //TODO
         name: data.name,
         status: Status.Active,
         description: data.description,

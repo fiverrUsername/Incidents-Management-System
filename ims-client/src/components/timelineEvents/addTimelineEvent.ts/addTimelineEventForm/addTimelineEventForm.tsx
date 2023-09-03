@@ -10,7 +10,7 @@ import attachmentServices from '../../../../services/backendServices/attachmentS
 import backendServices from '../../../../services/backendServices/backendServices';
 import submitTimeLine from '../../../../services/functions/timeline/submitTimeLine';
 import theme from '../../../../theme';
-import TextFieldInput from '../../../../trash/TextFields';
+import TextFieldInput from "../../../base/customTextField/TextFields";
 import CustomAutocomplete, { CustomSyntheticEvent } from '../../../base/autoCompleteTag/autoComplete';
 import BannerNotification from '../../../base/bannerNotification/BannerNotification';
 import DateTimePickerValue from '../../../base/datePicker/datePicker';

@@ -1,22 +1,22 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Button, Dialog, FormControl, Grid, SelectChangeEvent } from "@mui/material";
+import { Button, Dialog, FormControl, Grid } from "@mui/material";
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { keyPriority, keyTags, keyType } from '../../../../const';
 import IIncident from '../../../../interfaces/IIncident';
 import { ITag } from '../../../../interfaces/ITag';
 import { Priority } from '../../../../interfaces/enums';
 import backendServices from '../../../../services/backendServices/backendServices';
 import submitIncident from '../../../../services/functions/incident/submitIncident';
 import theme from '../../../../theme';
-import TextFieldInput from '../../../../trash/TextFields';
-import CustomAutocomplete, { CustomSyntheticEvent } from '../../../base/autoCompleteTag/autoComplete';
+import CustomAutocomplete from '../../../base/autoCompleteTag/autoComplete';
 import BannerNotification from "../../../base/bannerNotification/BannerNotification";
+import TextFieldInput from "../../../base/customTextField/TextFields";
 import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import DropDown from '../../../base/dropDown/DropDown';
 import { TypesIncident } from '../../../base/dropDown/Types';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
-import { keyTags, keyPriority, keyDate, keyStatus, keyType } from '../../../../const'
 
 export interface FormFormData {
 
