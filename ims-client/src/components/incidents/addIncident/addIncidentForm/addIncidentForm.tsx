@@ -54,7 +54,6 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
     date: dayjs(),
     type: "",
     tags: [],
-   
   });
 
 
@@ -154,7 +153,6 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
 
 
   const handleChange = async (keyType: string, event: any) => {
-    console.log(event)
         setFormObject((prevFormObject) => ({
           ...prevFormObject,
           [keyType]: event 
@@ -204,7 +202,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
-                    <DateTimePickerValue keyType='string' date={formObject.date} onDateChange={handleChange} /> 
+                    <DateTimePickerValue keyType={keyDate} date={formObject.date} onDateChange={handleChange} /> 
                   </FormControl>
                 </Grid>
                 <Grid item xs={6}>
