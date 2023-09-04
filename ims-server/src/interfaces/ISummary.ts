@@ -1,7 +1,8 @@
-
-export interface ISummary  extends Document{
+import { Priority } from "../enums/enum";
+import { ITag } from "./tagInterface";
+export interface ISummary {
     createdBy:string,
-    createdAt:Date,
-    currentPriority:string,
-    tags: { id: string, name: string }[];
+    createdAt:string,
+    currentPriority:Priority,
+    tags: ITag[];
   }

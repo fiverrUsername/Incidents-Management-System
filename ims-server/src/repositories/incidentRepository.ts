@@ -1,20 +1,40 @@
+
 import { IncidentDto } from "../dto/incidentDto";
 import { IIncident } from "../interfaces/IncidentInterface";
+import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import incidentModel from "../models/IncidentModel";
+import TimelineEventRepository from "../repositories/timelineEventRepository"
+import { Status } from "../enums/enum";
 
 class IncidentRepository {
   async addIncident(newIncident: IIncident): Promise<IIncident | any> {
+    const timeline:ITimelineEvent={
+      channelId:newIncident.channelId,
+      incidentId: newIncident.id || "",
+      userId: newIncident.createdBy,
+      description: 'Created new Incident',
+      priority: newIncident.currentPriority,
+      type: newIncident.type,
+      files: [],
+      createdDate: new Date(),
+      updatedDate: new Date(),
+      status:newIncident.status,
+      tags:newIncident.currentTags
+    }
     try {
-      return await incidentModel.create(newIncident);
+      const _newIncident:IIncident=await incidentModel.create(newIncident);
+      timeline.incidentId=_newIncident.id || ""
+      await TimelineEventRepository.addTimelineEvent(timeline)
+      return  _newIncident;
     } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
     }
   }
 
-  async updateIncident(id: String, data: IncidentDto): Promise<void | any> {
+  async updateIncident(id: String, data: IncidentDto): Promise<IIncident | any> {
     try {
-      return await incidentModel.findByIdAndUpdate(id, data);
+      return await incidentModel.findOneAndUpdate({id}, data);
     } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
@@ -30,14 +50,23 @@ class IncidentRepository {
     }
   }
 
-  async getIncidentById(id: String): Promise<IIncident | any> {
+  async  getIncidentByField(fieldValue: string, fieldName: string): Promise<IIncident | any> {
     try {
-      return await incidentModel.findById(id);
+      return await incidentModel.findOne({ [fieldName]: fieldValue });
     } catch (error: any) {
       console.error(`error: ${error}`);
       return error;
     }
   }
-
+  
+  async  getIncidentById(id: string): Promise<IIncident | any> {
+    try {
+      return await incidentModel.findOne({ id });
+    } catch (error: any) {
+      console.error(`error: ${error}`);
+      return error;
+    }
+  }
+  
 }
 export default new IncidentRepository();

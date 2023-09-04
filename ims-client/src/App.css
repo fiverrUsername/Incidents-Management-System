@@ -15,7 +15,7 @@
 @font-face {
   font-family: "Poppins";  
   src: local("AirbnbCerealPoppins"),
-    url("./fonts/Poppins-Medium.woff") format("woff");
+    url("./assets/fonts/Poppins-Medium.woff") format("woff");
 }
 .App-header {
   background-color: #282c34;

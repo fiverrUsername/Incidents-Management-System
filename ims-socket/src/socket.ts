@@ -1,6 +1,5 @@
 import WebSocket from 'ws';
-
-const ws = new WebSocket.Server({ port: 7071 });
+const ws = new WebSocket.Server({ port: 8080, perMessageDeflate: false });
 const clients = new Map<string, WebSocket>();
 
 function uuidv4(): string {
@@ -15,12 +14,14 @@ ws.on('connection', (ws: WebSocket) => {
   const id = uuidv4();
   clients.set(id, ws);
   ws.on('message', (messageAsString: string) => {
+    console.log("--------ws.on ");
     [...clients.entries()].forEach(([clientId, client]) => {
       if (clientId !== id) // Don't send the message back to the sender
         client.send(messageAsString);
     });
   });
   ws.on('close', () => {
+    console.log("--------ws.close ");
     clients.delete(id);
   });
 });

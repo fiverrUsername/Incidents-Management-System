@@ -1,3 +1,4 @@
+import { Status } from "../enums/enum";
 import IncidentModel from "../models/IncidentModel";
 
 class AggregationRepository {
@@ -8,7 +9,7 @@ class AggregationRepository {
           $group: {
             _id: null,
             activeCount: {
-              $sum: { $cond: [{ $eq: ["$status", "Active"] }, 1, 0] },
+              $sum: { $cond: [{ $eq: ["$status", Status.Active] }, 1, 0] },
             },
             averageCost: { $avg: "$cost" },
             averageDurationHours: { $avg: "$durationHours" },

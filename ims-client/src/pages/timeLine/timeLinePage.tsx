@@ -1,94 +1,76 @@
+import { Grid, Typography, useMediaQuery } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import TimeLine from "./timeLine";
-import Search from "../../components/search/search";
-import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
 import { WithIdProps } from "../../HOC";
-import AddUpdateComp from "../../components/AddUpdate/AddUpdateComp"
-import DisplaySummary from "../../components/summary/displaySummary";
-import apiCalls from "../../service/apiCalls";
-import { TimelineEvent } from "./modules/interface";
-import { ISummary } from "../../interface/ISummary";
-import IIncident from "../../interface/incidentInterface";
-import { Grid, Typography } from "@mui/material";
-import users from '../../mockAPI/users.json';
-import { GetIncident } from "../../components/AddUpdate/AddUpdate";
+import DisplaySummary from "../../components/timelineEvents/summary/displaySummary";
+import { ITimeLineEvent } from "../../interfaces/ITimeLineEvent";
+import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
+import Search from "../../components/base/search/search";
+import { receivedIncident } from "../../components/timelineEvents/addTimelineEvent.ts/addTimelineEventForm/addTimelineEventForm";
+import TimeLine from "../../components/timelineEvents/timeline/timeLine";
+import { filterTimeLineBySearch } from "../../services/functions/timeline/filterTimeLineBySearch";
+import backendServices from "../../services/backendServices/backendServices";
+import AddTimelineEvent from "../../components/timelineEvents/addTimelineEvent.ts/addTimelineEvent";
+import Logger from "../../loggers/logger";
 
-const TimeLinePage = ({ _id }: WithIdProps) => {
-  const [timelineObjects, setTimelineObjects] = useState<TimelineEvent[]>([]);
-  const [summaryIncident, setSummaryIncident] = useState<ISummary>();
-  const [incident, setIncident] = useState<GetIncident>();
-  //const [user,setUser]=useState();
-  // const user = users.find((u) => u._id === incident?.createdBy);
-  //when the functions in server are done
+
+
+const TimeLinePage = ({ id }: WithIdProps) => {
+  const [timelineObjects, setTimelineObjects] = useState<ITimeLineEvent[]>([]);
+  const [incident, setIncident] = useState<receivedIncident>();
+  //gets incident id
   useEffect(() => {
-    const FetchTimeline = async () => {
-      const getTimeLineEventsById = await apiCalls.getTimeLineEventsById(_id)
-      console.log(getTimeLineEventsById, "getTimeLineEventsById");
-      setTimelineObjects(getTimeLineEventsById);
-    };
-    FetchTimeline();
-    const FetchSummaryIncident = async () => {
-      const summary = await apiCalls.getSummaryIncident(_id);
-      console.log(summary, "summery")
-      setSummaryIncident(summary)
-    }
-    FetchSummaryIncident();
-    const FetchIncident = async () => {
-      const getIncidentById = await apiCalls.getIncidentById(_id);
-      console.log(getIncidentById);
-      setIncident(getIncidentById);
-    };
-    FetchIncident();
-    //   const FetchUser = async () => {
-    //     const getUserById = await apiCalls.getUserById(_id);
-    //     console.log(getUserById,"getUserById");
-    //     setUser(getUserById);
-    //   };
-    //   FetchUser();
-  }, [_id]);
-
-  const filterTimeLineBySearch = (array: TimelineEvent[], filterString: string): TimelineEvent[] => {
-    return array.filter((item) => {
-
-      for (const key in item) {
-
-        if ((key != 'createdAt') && (String(item[key as keyof TimelineEvent]).toLowerCase()).includes(filterString.toLowerCase())) {
-          console.log(key)
-          return true;
-        }
-        if ((key == 'userId') && (String(item[key as keyof TimelineEvent]).toLowerCase()).includes(filterString.toLowerCase())) {
-          console.log(key)
-          return true;
-        }
+    const fetchTimeline = async () => {
+      try {
+        const getTimeLineEventsById: ITimeLineEvent[] = await backendServices.timelineEventByIncidentId(id)
+        Logger.info({ source: "Time line page", message: "Getting timeline events by Incident id success!" });
+        setTimelineObjects(getTimeLineEventsById);
       }
-      return false;
-    });
-  }
+      catch (err: any) {
+        Logger.error({ source: "Time line page", message: "Error getting timeline events by Incident id.\t IncidentId:" + id });
+      }
+    };
+    fetchTimeline();
+    const fetchIncident = async () => {
+      try {
+        const getIncidentById: receivedIncident = await backendServices.getIncidentById(id);
+        Logger.info({ source: "Time line page", message: `Getting incident by id=${id} success!` });
+        setIncident(getIncidentById);
+      } catch (error: any) {
+        Logger.error({ source: "Time line page", message: `Error getting incident by id\tId:${id}` });
+      }
+    };
+    fetchIncident();
+  }, [id]);
 
-  const someFunction = () => {
-    filter = filterTimeLineBySearch(timelineObjects, myValue);
-    console.log("The event was triggered!");
-  };
+  const isMobile320px = useMediaQuery('(max-width: 400px )');
+  
+  const gridDirection = isMobile320px ?'column-reverse':'row';
 
+  let filter: ITimeLineEvent[] = [];
   const [myValue, setMyValue] = useState<string>("");
-  let filter: TimelineEvent[] = []
-  someFunction()
 
+  filter = filterTimeLineBySearch(timelineObjects, myValue);
+
+  const addNewTimeline = (newTimeline: ITimeLineEvent) => {
+    setTimelineObjects([...timelineObjects, newTimeline]);
+  }
+  const updateIncidentFunction = (newIncident: receivedIncident) => {
+    setIncident(newIncident);
+  }
   return (
     <>
-      {/* <StyledSearch onEvent={someFunction} setValue={setMyValue}></StyledSearch> */}
-      <Search onEvent={someFunction} setValue={setMyValue}></Search>
-      {summaryIncident && <DisplaySummary summaryIncident={{ ...summaryIncident }} ></DisplaySummary>}
+      <Search setValue={setMyValue}></Search>
+      <DisplaySummary id={id}></DisplaySummary>
       <StyledPaper>
-        <Grid container direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="nowrap">
-          <Typography variant='bold'>Consectetur massa</Typography>
-          {incident && <AddUpdateComp incident={{ ...incident }} />}
+        <Grid container direction={gridDirection} justifyContent="space-between" alignItems="flex-start" flexWrap="nowrap">
+          <Typography variant='bold' sx={{'@media (max-width: 600px)': {fontSize:'15px'},}}>Consectetur massa</Typography>
+          {incident && <AddTimelineEvent updateIncidentFunction={updateIncidentFunction} addNewTimelineFunction={addNewTimeline} incident={incident} />}
         </Grid>
+        <CustomScrollbar>
         {timelineObjects && (
-          <CustomScrollbar>
             <TimeLine timelineList={filter} />
-          </CustomScrollbar>
         )}
+        </CustomScrollbar>
       </StyledPaper>
     </>
   );
