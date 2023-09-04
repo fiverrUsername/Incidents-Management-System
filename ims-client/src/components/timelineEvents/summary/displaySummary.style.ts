@@ -56,11 +56,4 @@ export const StyledBox = styled(Box)`
 `;
  
 
-export const styleGrid = styled(Grid)`
-display: flex;
-flex-direction: row;
--webkit-box-pack: center;
-justify-content: center;
-align-items: flex-start;
-flex-wrap: nowrap;
-`;
+ 

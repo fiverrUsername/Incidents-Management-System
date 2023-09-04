@@ -11,6 +11,8 @@ export const TimelineItemWrapper = styled(TimelineItem)(() => ({
     ' &': {
         flex: 2,
     },
+    fontSize: '1.071429rem',
+    lineHeight: '0.5',
 }))
 
 

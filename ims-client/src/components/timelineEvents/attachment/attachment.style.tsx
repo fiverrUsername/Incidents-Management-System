@@ -10,6 +10,7 @@ export const SingleAttachment = styled.div`
   display:flex;
   flex-direction: column;
   justify-content: flex-end;
+  width:100%;
 `;
 export const StyledImage = styled.img`
   flex:1;
@@ -38,6 +39,37 @@ export const StyledFilePreview = styled.div`
   border-radius: 20px;
   /* Add any additional styling here */
   padding: 10px;
+
+  @media (max-width: 320px) {
+    flex: 1;
+    height: 65px;
+    width: 85px;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 20px;
+    padding: 10px;
+  }
+
+  @media (max-width: 420px) {
+    flex: 1;
+    height: 65px;
+    width: 85px;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 20px;
+    padding: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    flex: 1;
+    height: 87%;
+    width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 20px;
+    padding: 10px;
+  }
+
 `;
 
 

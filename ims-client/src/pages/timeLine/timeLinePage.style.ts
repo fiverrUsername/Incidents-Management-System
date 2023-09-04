@@ -6,7 +6,7 @@ import { Box } from "@mui/system";
 export const CustomScrollbar = styled.div`
   // max-height: 400px;
   max-height:300px;
-  overflow-y: auto;
+   overflow-y: auto;
   scrollbar-color-x:${theme.palette.info.main};
   scrollbar-width: thin;
   
@@ -22,8 +22,18 @@ export const CustomScrollbar = styled.div`
     border-radius: 5px;
     border: none;
     // scrollbar-hight: 400px;
-
   }
+    @media (max-width: 480px) {
+      overflow-y: auto;
+      overflow-x: auto;
+    }
+    
+    @media (max-width: 768px) {
+      overflow-y: auto;
+      overflow-x: unset;
+    }
+
+  
 `;
 export const StyledPaper = styled(Paper)`
 border-radius: 20px;

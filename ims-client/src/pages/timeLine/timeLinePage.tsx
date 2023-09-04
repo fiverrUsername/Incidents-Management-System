@@ -1,8 +1,7 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, useMediaQuery } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { WithIdProps } from "../../HOC";
 import DisplaySummary from "../../components/timelineEvents/summary/displaySummary";
-import { ISummary } from "../../interfaces/ISummary";
 import { ITimeLineEvent } from "../../interfaces/ITimeLineEvent";
 import { CustomScrollbar, StyledPaper } from "./timeLinePage.style";
 import Search from "../../components/base/search/search";
@@ -12,7 +11,7 @@ import { filterTimeLineBySearch } from "../../services/functions/timeline/filter
 import backendServices from "../../services/backendServices/backendServices";
 import AddTimelineEvent from "../../components/timelineEvents/addTimelineEvent.ts/addTimelineEvent";
 import Logger from "../../loggers/logger";
-import IIncident from "../../interfaces/IIncident";
+
 
 
 const TimeLinePage = ({ id }: WithIdProps) => {
@@ -43,6 +42,10 @@ const TimeLinePage = ({ id }: WithIdProps) => {
     fetchIncident();
   }, [id]);
 
+  const isMobile320px = useMediaQuery('(max-width: 400px )');
+  
+  const gridDirection = isMobile320px ?'column-reverse':'row';
+
   let filter: ITimeLineEvent[] = [];
   const [myValue, setMyValue] = useState<string>("");
 
@@ -59,8 +62,8 @@ const TimeLinePage = ({ id }: WithIdProps) => {
       <Search setValue={setMyValue}></Search>
       <DisplaySummary id={id}></DisplaySummary>
       <StyledPaper>
-        <Grid container direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="nowrap">
-          <Typography variant='bold'>Consectetur massa</Typography>
+        <Grid container direction={gridDirection} justifyContent="space-between" alignItems="flex-start" flexWrap="nowrap">
+          <Typography variant='bold' sx={{'@media (max-width: 600px)': {fontSize:'15px'},}}>Consectetur massa</Typography>
           {incident && <AddTimelineEvent updateIncidentFunction={updateIncidentFunction} addNewTimelineFunction={addNewTimeline} incident={incident} />}
         </Grid>
         <CustomScrollbar>
