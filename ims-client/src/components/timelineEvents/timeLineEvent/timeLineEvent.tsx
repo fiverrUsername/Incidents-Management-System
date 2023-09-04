@@ -7,13 +7,15 @@ import React from 'react';
 import { ITimeLineEventprops } from '../../../interfaces/ITimeLineEvent';
 import { TimelineConnectorWrapper, TimelineDotWrapper, TimelineItemWrapper } from './timeLineEvent.style';
 import Attachmentlist from '../attachment/attachmentList';
+import  './timeLineEvent.css';
 
 const timeLineEvent: React.FC<ITimeLineEventprops> = (props) => {
     const { timeline, isPriorityChanged, isTypeChanged, previousType, previosPriority, name, profile } = props
     const { description, createdDate } = timeline
     const date = dayjs(createdDate).format("DD/MM/YYYY")
 
-    return <div style={{display:"flex"}}>
+    return <div className='flex-container' style={{display:"flex" }}>
+        
         <TimelineItemWrapper>
             <TimelineSeparator>
                 <TimelineDotWrapper>
@@ -21,8 +23,8 @@ const timeLineEvent: React.FC<ITimeLineEventprops> = (props) => {
                 </TimelineDotWrapper>
                 <TimelineConnectorWrapper />
             </TimelineSeparator>
-            <TimelineContent>
-                <Typography variant='bold'>
+            <TimelineContent sx={{'@media (max-width: 600px)': {fontSize:'14px'},}}>
+                <Typography variant='bold' sx={{'@media (max-width: 600px)': {fontSize:'14px'},}}>
                     {name}
                 </Typography>
                 <Typography variant='date'>

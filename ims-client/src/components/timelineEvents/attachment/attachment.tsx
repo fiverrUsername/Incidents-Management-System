@@ -24,7 +24,7 @@ export default function Attachment({ fileType, file, onDelete, }: { fileType: st
     }
     return '';
   };
-
+  
   const handleDelete = async () => {
     try {
       await attachmentServices.deleteAttachment(file.key);
@@ -56,13 +56,15 @@ export default function Attachment({ fileType, file, onDelete, }: { fileType: st
 
 
   const fileTypeStyles: Record<string, FileTypeStyle> = {
-    txt: { icon: faFileAlt, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
-    word: { icon: faFileWord, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
-    excel: { icon: faFileExcel, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
-    powerpoint: { icon: faFilePowerpoint, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
-    pdf: { icon: faFilePdf, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
-    code: { icon: faFileCode, fontSize: '170px', marginBottom: '20px', marginLeft: '20px' },
+    txt: { icon: faFileAlt, fontSize: '170px', marginBottom: '20px', marginLeft: '20px',width:'95%'},
+    word: { icon: faFileWord, fontSize: '170px', marginBottom: '20px', marginLeft: '20px',width:'95%' },
+    excel: { icon: faFileExcel, fontSize: '170px', marginBottom: '20px', marginLeft: '20px',width:'95%' },
+    powerpoint: { icon: faFilePowerpoint, fontSize: '170px', marginBottom: '20px', marginLeft: '20px',width:'95%' },
+    pdf: { icon: faFilePdf, fontSize: '170px', marginBottom: '20px', marginLeft: '20px',width:'95%' },
+    code: { icon: faFileCode, fontSize: '170px', marginBottom: '20px', marginLeft: '20px',width:'95%'},
   };
+
+   
 
   const fileTypeMappings = {
     image: () => (
@@ -108,10 +110,10 @@ export default function Attachment({ fileType, file, onDelete, }: { fileType: st
 
 
     if (fileTypeStyles[fileType]) {
-      const { icon, fontSize, marginBottom, marginLeft } = fileTypeStyles[fileType];
+      const { icon, fontSize, marginBottom, marginLeft, width } = fileTypeStyles[fileType];
       return (
         <div title={getFileName(file.key)}>
-          <FontAwesomeIcon icon={icon} style={{ color: '#2F854F', fontSize, marginBottom, marginLeft }} onClick={handleDownload} />
+          <FontAwesomeIcon icon={icon} style={{ color: '#2F854F', fontSize, marginBottom, marginLeft,width }} onClick={handleDownload} />
         </div>
       );
     }
@@ -130,9 +132,9 @@ export default function Attachment({ fileType, file, onDelete, }: { fileType: st
   return (
     <SingleAttachment >
       {renderFileContent()}
-      <Grid container spacing={2} alignItems="center">
-        <Grid item>
-          <IconButton onClick={handleDelete}>
+      <Grid container spacing={2} alignItems="center" flexWrap={'nowrap'}>
+        <Grid item >
+          <IconButton sx={{ '@media (max-width: 600px)':  {width: '0px' } }}  onClick={handleDelete}>
             <DeleteIcon />
           </IconButton>
         </Grid>

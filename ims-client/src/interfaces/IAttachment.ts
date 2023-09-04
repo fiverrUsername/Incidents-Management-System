@@ -10,4 +10,5 @@ export interface FileTypeStyle {
   fontSize: string;
   marginBottom: string;
   marginLeft: string;
+  width:string
 }
