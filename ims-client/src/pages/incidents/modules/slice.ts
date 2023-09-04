@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit"
-import IIncident from "../../../interface/incidentInterface"
+import IIncident from "../../../interfaces/IIncident"
 
 
 export const INCIDENT_STATE_KEY = 'INCIDENT'
@@ -12,8 +12,8 @@ const slice = createSlice({
     name: INCIDENT_STATE_KEY,
     initialState,
     reducers: {
-        onGetIncidentsRequest: (state, action) => {
-            console.log('onGetIncidentsRequest')
+        onGetIncidentsRequest: () => {
+            console.log('')
         },
         onGetIncidentsSuccess: (state, action) => {
             state.incidents = action.payload

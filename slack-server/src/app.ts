@@ -1,21 +1,59 @@
-import bodyParser from 'body-parser';
 import express, { Request, Response } from 'express';
-import { addTimeLineEvent } from "./services/slack-api/wrap/sendTimeLine";
+import bodyParser from 'body-parser';
+import events from './slackTracking';
+import cors from 'cors';
+import { WEBHOOK_EVENT_RECEIVED_SUCCESSFULLY, port } from './constPage';
+import { constants, files } from './loggers/constants';
+import logger from './loggers/log';
+
 const app = express();
-const port = 4700;
-console.log("000000000000")
+require('dotenv').config()
+
+const whitelist = ['wss://ims-socket.onrender.com/','ws://ims-socket.onrender.com/','https://ims-socket.onrender.com','https://ims-server-pbkw.onrender.com'];
+const apiKey = process.env.API_KEY;
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    if (origin === undefined || whitelist.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('slack server! Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: 'POST,GET,PUT,OPTIONS,DELETE'
+};
 
 app.use(bodyParser.json());
+app.use(cors(corsOptions));
+// app.use(cors({
+//   origin: "https://ims-server-pbkw.onrender.com",
+//   credentials: true,
+//   methods: 'POST, GET, PUT, OPTIONS, DELETE',
+//   allowedHeaders: 'Content-Type,Authorization' // Add any other required headers here
+// }));
+// app.use(cors({
+//   origin: true,
+//   credentials: true,
+//   methods: 'POST,GET,PUT,OPTIONS,DELETE'
+// }));
 
+app.get('/test', (req: Request, res: Response) => {
+  res.status(200).send('OK');
+});
 
-app.post('/', (req:Request, res:Response) => {
-    console.log(req.body)
-    addTimeLineEvent(req.body);
-    res.json({ message: 'Timeline event added successfully'});
-  });
+app.post('/webhook', (req: Request, res: Response) => {
+  const data: any = req.body;
+  if (data.challenge) {
+    const challenge: string = data.challenge;
+    res.json({ challenge });
+  } else {
+    res.json({ message: WEBHOOK_EVENT_RECEIVED_SUCCESSFULLY });
+  }
+  events(data);
+});
 
-  app.listen(port, () => {
-    console.log(`Server is on http://localhost:${port}`)
-  });
+app.listen(port, () => {
+  logger.info({ source: constants.SERVER_IS_OS_IN_LOCALHOST_PORT+""+port, file: files.APP })
+});
 
 

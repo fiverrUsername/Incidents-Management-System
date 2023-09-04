@@ -1,11 +1,12 @@
+import { Priority, Status } from "../enums/enum";
 import { ITag } from "./tagInterface";
 
  export interface IIncident {
-  id: string;
+  id?: string;
   name: string;
-  status: string;
+  status: Status;
   description: string;
-  currentPriority: string;
+  currentPriority: Priority;
   type: string;
   durationHours: number;
   channelId: string;

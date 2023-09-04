@@ -1,9 +1,15 @@
+import { validate } from "class-validator";
 import { ITimelineEventDto } from "../dto/timelineEventDto";
+import { Priority } from "../enums/enum";
+import { IIncident } from "../interfaces/IncidentInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
+import { ITag } from "../interfaces/tagInterface";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
+import incidentRepository from "../repositories/incidentRepository";
 import timelineEventRepository from "../repositories/timelineEventRepository";
-import { validate } from "class-validator";
+import incidentService from "./incidentService";
+import liveStatusService from "./liveStatusService";
 
 class TimelineEventService {
   async getAllTimelineEvents(): Promise<ITimelineEvent[] | any> {
@@ -16,32 +22,23 @@ class TimelineEventService {
       const timelineEvent = await timelineEventRepository.getAllTimelineEvents();
       return timelineEvent;
     } catch (error: any) {
-      logger.error({
-        source: constants.TIMELINE_EVENT,
-        method: constants.METHOD.GET,
-        err: true
-      });
+      logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.GET, err: true });
       console.error(`error: ${error}`);
       return error;
     }
   }
 
-  async getTimelineEventsById(id: string): Promise<ITimelineEvent[] | any> {
+  async getTimelineEventByIncidentId(id: string): Promise<ITimelineEvent[] | any> {
     try {
       logger.info({
         source: constants.TIMELINE_EVENT,
         msg: constants.METHOD.GET,
         success: true
       });
-      const timelineEvent = await timelineEventRepository.getTimelineEventsById(id);
-      
+      const timelineEvent = await timelineEventRepository.getTimelineEventByIncidentId(id);
       return timelineEvent;
     } catch (error: any) {
-      logger.error({
-        source: constants.TIMELINE_EVENT,
-        method: constants.METHOD.GET,
-        err: true
-      });
+      logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.GET, err: true });
       console.error(`error: ${error}`);
       return error;
     }
@@ -49,25 +46,35 @@ class TimelineEventService {
 
   async addTimelineEvent(newTimelineEvent: ITimelineEvent): Promise<void | any> {
     try {
+      console.log("-------TimelineEventService ,",newTimelineEvent)
+
+      const incident: IIncident = await incidentRepository.getIncidentByField(newTimelineEvent.incidentId!, "id");
+      const priority: Priority = incident.currentPriority
+      const tags: ITag[] = incident.currentTags
+      newTimelineEvent.channelId = incident.channelId;
       const _timelineEvent = new ITimelineEventDto(newTimelineEvent);
       const validationErrors = await validate(_timelineEvent);
       if (validationErrors.length > 0) {
-        logger.error({
-          source: constants.TIMELINE_EVENT,
-          err: "Validation error",
-          validationErrors: validationErrors.map((error) => error.toString()),
+        logger.error({ source: constants.TIMELINE_EVENT, err: constants.VALIDATION_ERROR, validationErrors: validationErrors.map((error) => error.toString()), });
+        return new Error(constants.VALIDATION_ERROR);
+      }
+      if (tags.length != newTimelineEvent.tags.length) {
+        const newIncident = incident
+        const newTags = newTimelineEvent.tags.filter(tag => {
+          return !tags.some(existingTag => existingTag.name === tag.name);
         });
-        return new Error("Validation error");
+        newTags.forEach(tag => {
+          newIncident.currentTags = [tag]
+          liveStatusService.liveStatusByIncident(newIncident)
+        })
       }
-      logger.info({sourece: constants.TIMELINE_EVENT,method: constants.METHOD.POST,timelineEventId: newTimelineEvent.id});
-      const timelineEvent= await timelineEventRepository.addTimelineEvent(newTimelineEvent);
-      if(timelineEvent instanceof Error){
-        logger.error({source: constants.TIMELINE_EVENT,method: constants.METHOD.POST,error: constants.MISSNG_REQUIRED_FIELDS,timelineEventId: newTimelineEvent.id})
-        return new Error(constants.MISSNG_REQUIRED_FIELDS)
-      }
-      return  timelineEvent;
+      tags.map((tag) => {
+        liveStatusService.updateLiveStatusByTimeLineEvent(newTimelineEvent, String(tag.name), priority)
+      })
+      logger.info({ sourece: constants.TIMELINE_EVENT, method: constants.METHOD.POST, timelineEventId: newTimelineEvent.id });
+      return await timelineEventRepository.addTimelineEvent(newTimelineEvent);
     } catch (error: any) {
-      logger.error({source: constants.TIMELINE_EVENT,method: constants.METHOD.POST,error: true,timelineEventId: newTimelineEvent.id});
+      logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.POST, error: true, timelineEventId: newTimelineEvent.id });
       console.error(`error: ${error}`);
       return error;
     }
@@ -135,7 +142,7 @@ class TimelineEventService {
     }
   }
 
-  async getFileInTimelineEventByIndex(id: string, index: number): Promise<string|any> {
+  async getFileInTimelineEventByIndex(id: string, index: number): Promise<string | any> {
     try {
       const timelineEvent: ITimelineEvent | null = await this.getTimelineEventById(id);
       if (timelineEvent === null) {
@@ -158,12 +165,12 @@ class TimelineEventService {
     try {
       const timelineEvent: ITimelineEvent | null = await this.getTimelineEventById(id);
       if (timelineEvent === null) {
-        logger.error({ source: constants.TIMELINE_EVENT, err: constants.NOT_FOUND, timelineEventId: id,indexFile:index,method:constants.METHOD.DELETE})
+        logger.error({ source: constants.TIMELINE_EVENT, err: constants.NOT_FOUND, timelineEventId: id, indexFile: index, method: constants.METHOD.DELETE })
         return new Error('Timeline event not found');
       }
       const files: string[] = timelineEvent.files;
       if (!(typeof index === 'number' && !isNaN(index)) || files.length === 0 || index < 0 || index >= files.length) {
-        logger.error({ source: constants.TIMELINE_EVENT, err: constants.INDEX_NOT_VALID, timelineEventId: timelineEvent?.id,indexFile:index,method:constants.METHOD.DELETE})
+        logger.error({ source: constants.TIMELINE_EVENT, err: constants.INDEX_NOT_VALID, timelineEventId: timelineEvent?.id, indexFile: index, method: constants.METHOD.DELETE })
         return new Error('Invalid index');
       }
       timelineEvent.files.splice(index, 1);
@@ -171,6 +178,38 @@ class TimelineEventService {
     } catch (error: any) {
       logger.error({ source: constants.TIMELINE_EVENT, err: constants.SERVER_ERROR, method: constants.METHOD.DELETE });
       return new Error(`Error deleting file in timeline event by index: ${error}`);
+    }
+  }
+
+  async deleteFileInTimelineEventByValue(id: string, file: string): Promise<ITimelineEvent | any> {
+    try {
+      const timelineEvent: ITimelineEvent | null = await this.getTimelineEventById(id);
+      if (timelineEvent === null) {
+        logger.error({ source: constants.TIMELINE_EVENT, err: constants.NOT_FOUND, timelineEventId: id, file: file, method: constants.METHOD.DELETE })
+        return new Error('Timeline event not found');
+      }
+      if (!timelineEvent.files.some((v) => v === file)) {
+        logger.error({ source: constants.TIMELINE_EVENT, err: constants.NOT_FOUND, timelineEventId: id, file: file, method: constants.METHOD.DELETE })
+        return;
+      }
+      timelineEvent.files = timelineEvent.files.filter((v) => v !== file);
+      return await timelineEventRepository.updateTimelineEvent(id, timelineEvent);;
+    } catch (error: any) {
+      logger.error({ source: constants.TIMELINE_EVENT, err: constants.SERVER_ERROR, method: constants.METHOD.DELETE });
+      return new Error(`Error deleting file in timeline event by string file: ${error}`);
+    }
+  }
+
+  async updateFieldsOfIncidentById(timeline: ITimelineEvent): Promise<IIncident | any> {
+    try {
+      const incident: IIncident = await incidentRepository.getIncidentById(timeline.incidentId);
+      incident.currentPriority = timeline.priority;
+      incident.status = timeline.status;
+      incident.currentTags = timeline.tags;
+      incident.type=timeline.type;
+      return await incidentService.updateIncident(incident.id!, incident);
+    } catch (err: any) {
+      return new Error(err);
     }
   }
 
