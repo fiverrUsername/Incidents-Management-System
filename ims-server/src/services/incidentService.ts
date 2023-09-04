@@ -16,6 +16,7 @@ class IncidentService {
         msg: constants.ADD_INCIDENT_SUCCESS,
         incidentId: newIncident.id
       });
+      console.log("-------IncidentService ,",newIncident)
       const incident = await incidentRepository.addIncident(newIncident);
       const newIncidentDate = new Date(newIncident.date);
       const currentDate = new Date();

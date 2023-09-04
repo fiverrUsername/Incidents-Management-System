@@ -10,7 +10,7 @@ import { constants, files } from "../../loggers/constants";
 // Load environment variables from .env file
 dotenv.config();
 export async function sendMessageOnAddTimelineEvent(timeline: ITimelineEvent) {
-   try {
+   try {         
         const headers = {
             Authorization: `Bearer ${process.env.API_KEY}`
         };

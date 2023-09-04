@@ -1,0 +1,49 @@
+{"level":"INFO","time":"2023-08-30T13:41:43.672Z","pid":18908,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T13:41:43.672Z","pid":18908,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T13:41:44.660Z","pid":18908,"hostname":"DESKTOP-VUIMGCN","source":"WebSocket connection is open in ims-slack","file":"socket.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:19:03.302Z","pid":12248,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T14:19:03.304Z","pid":12248,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:19:13.464Z","pid":25312,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T14:19:13.465Z","pid":25312,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:19:23.107Z","pid":25328,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T14:19:23.108Z","pid":25328,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:19:33.574Z","pid":15396,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T14:19:33.575Z","pid":15396,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:19:42.230Z","pid":25000,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T14:19:42.232Z","pid":25000,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:19:55.070Z","pid":25000,"hostname":"DESKTOP-VUIMGCN","source":"WebSocket connection is open in ims-slack","file":"socket.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:48:12.390Z","pid":12328,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T14:48:12.391Z","pid":12328,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:49:54.404Z","pid":12328,"hostname":"DESKTOP-VUIMGCN","source":"WebSocket connection is open in ims-slack","file":"socket.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:56:00.388Z","pid":23040,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T14:56:00.390Z","pid":23040,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:56:01.444Z","pid":23040,"hostname":"DESKTOP-VUIMGCN","source":"WebSocket connection is open in ims-slack","file":"socket.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:56:19.522Z","pid":24336,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T14:56:19.524Z","pid":24336,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:56:20.351Z","pid":24336,"hostname":"DESKTOP-VUIMGCN","source":"WebSocket connection is open in ims-slack","file":"socket.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:56:36.776Z","pid":24788,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T14:56:36.780Z","pid":24788,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:56:37.609Z","pid":24788,"hostname":"DESKTOP-VUIMGCN","source":"WebSocket connection is open in ims-slack","file":"socket.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:56:44.001Z","pid":5392,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T14:56:44.004Z","pid":5392,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:56:44.894Z","pid":5392,"hostname":"DESKTOP-VUIMGCN","source":"WebSocket connection is open in ims-slack","file":"socket.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:56:55.573Z","pid":25292,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T14:56:55.574Z","pid":25292,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:56:57.439Z","pid":25292,"hostname":"DESKTOP-VUIMGCN","source":"WebSocket connection is open in ims-slack","file":"socket.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:57:30.176Z","pid":23768,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T14:57:30.179Z","pid":23768,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T14:57:31.450Z","pid":23768,"hostname":"DESKTOP-VUIMGCN","source":"WebSocket connection is open in ims-slack","file":"socket.ts","method":"slack-client"}
+{"level":"ERROR","time":"2023-08-30T15:02:20.809Z","pid":23768,"hostname":"DESKTOP-VUIMGCN","source":"CLIENT_ERROR_POST_MASSAGE","file":"actions/base/sendMassage.ts","method":"slack-client","error":{"code":"slack_webapi_platform_error","data":{"ok":false,"error":"account_inactive","response_metadata":{}}}}
+{"level":"INFO","time":"2023-08-30T15:02:20.809Z","pid":23768,"hostname":"DESKTOP-VUIMGCN","source":"Message sent successfully!","file":"actions/base/sendMassage.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T15:05:47.875Z","pid":23172,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T15:05:47.878Z","pid":23172,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T15:05:48.887Z","pid":23172,"hostname":"DESKTOP-VUIMGCN","source":"WebSocket connection is open in ims-slack","file":"socket.ts","method":"slack-client"}
+{"level":"ERROR","time":"2023-08-30T15:05:52.008Z","pid":23172,"hostname":"DESKTOP-VUIMGCN","source":"CLIENT_ERROR_POST_MASSAGE","file":"actions/base/sendMassage.ts","method":"slack-client","error":{"code":"slack_webapi_platform_error","data":{"ok":false,"error":"account_inactive","response_metadata":{}}}}
+{"level":"INFO","time":"2023-08-30T15:05:52.008Z","pid":23172,"hostname":"DESKTOP-VUIMGCN","source":"Message sent successfully!","file":"actions/base/sendMassage.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T15:37:52.144Z","pid":8732,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T15:37:52.146Z","pid":8732,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T15:38:33.936Z","pid":20468,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T15:38:33.939Z","pid":20468,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T15:38:43.352Z","pid":18748,"hostname":"DESKTOP-VUIMGCN","source":"Server is on http://localhost:4700","file":"app.ts"}
+{"level":"INFO","time":"2023-08-30T15:38:43.354Z","pid":18748,"hostname":"DESKTOP-VUIMGCN","source":"SERVER_STARTED_PORT_4701","file":"slackTracking.ts","method":"slack-client"}
+{"level":"INFO","time":"2023-08-30T15:38:43.370Z","pid":18748,"hostname":"DESKTOP-VUIMGCN","source":"WebSocket connection is open in ims-slack","file":"socket.ts","method":"slack-client"}
