@@ -11,6 +11,8 @@ import TimeLine from "../../components/timelineEvents/timeline/timeLine";
 import { filterTimeLineBySearch } from "../../services/functions/timeline/filterTimeLineBySearch";
 import backendServices from "../../services/backendServices/backendServices";
 import AddTimelineEvent from "../../components/timelineEvents/addTimelineEvent.ts/addTimelineEvent";
+import Logger from "../../loggers/logger";
+import IIncident from "../../interfaces/IIncident";
 
 
 const TimeLinePage = ({ id }: WithIdProps) => {
@@ -19,21 +21,27 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   //gets incident id
   useEffect(() => {
     const fetchTimeline = async () => {
-      const getTimeLineEventsById = await backendServices.timelineEventByIncidentId(id)
-      console.log('getTimeLineEventsById:',getTimeLineEventsById);
-      
-      setTimelineObjects(getTimeLineEventsById);
+      try {
+        const getTimeLineEventsById: ITimeLineEvent[] = await backendServices.timelineEventByIncidentId(id)
+        Logger.info({ source: "Time line page", message: "Getting timeline events by Incident id success!" });
+        setTimelineObjects(getTimeLineEventsById);
+      }
+      catch (err: any) {
+        Logger.error({ source: "Time line page", message: "Error getting timeline events by Incident id" });
+      }
     };
     fetchTimeline();
     const fetchIncident = async () => {
-      const getIncidentById = await backendServices.getIncidentById(id);
-      setIncident(getIncidentById);
+      try {
+        const getIncidentById: receivedIncident = await backendServices.getIncidentById(id);
+        Logger.info({ source: "Time line page", message: "Getting incident by id success!" });
+        setIncident(getIncidentById);
+      } catch (error: any) {
+        Logger.error({ source: "Time line page", message: "Error getting incident by id" });
+      }
     };
     fetchIncident();
   }, [id]);
-
-  
-
 
   let filter: ITimeLineEvent[] = [];
   const [myValue, setMyValue] = useState<string>("");
@@ -43,15 +51,13 @@ const TimeLinePage = ({ id }: WithIdProps) => {
   const addNewTimeline = (newTimeline: ITimeLineEvent) => {
     setTimelineObjects([...timelineObjects, newTimeline]);
   }
-   const updateIncidentFunction = (newIncident: receivedIncident) => {
+  const updateIncidentFunction = (newIncident: receivedIncident) => {
     setIncident(newIncident);
   }
   return (
     <>
       <Search setValue={setMyValue}></Search>
-      <DisplaySummary id={id}
-       ></DisplaySummary>
-      {/* } */}
+      <DisplaySummary id={id}></DisplaySummary>
       <StyledPaper>
         <Grid container direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="nowrap">
           <Typography variant='bold'>Consectetur massa</Typography>

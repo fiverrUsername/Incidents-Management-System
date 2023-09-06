@@ -3,12 +3,12 @@ import IIncident from '../../../interfaces/IIncident'
 import { FormData } from '../../../components/incidents/addIncident/addIncidentForm/addIncidentForm'
 import { Status } from '../../../interfaces/enums'
 import backendServices from '../../backendServices/backendServices'
+import Logger from '../../../loggers/logger'
 
 
 export default async function submitIncident(data: FormData, incident: IIncident[], setIncident: React.Dispatch<React.SetStateAction<IIncident[]>>) {
 
     const incidentcR: IIncident = {
-        //TODO
         name: data.name,
         status: Status.Active,
         description: data.description,
@@ -32,12 +32,14 @@ export default async function submitIncident(data: FormData, incident: IIncident
 
     try {
         const newIncident = await backendServices.createIncident(incidentcR);
-        incidentcR.id = newIncident.id
+        Logger.info({ source: "services/functions/submitIncident", message: "Adding incident success!\t" + "Incident Id:" + newIncident.id })
+        incidentcR.id = newIncident.id;
         const updatedIncidents = [incidentcR, ...incident];
         setIncident(updatedIncidents);
         return true;
     } catch (error) {
         console.error('Error creating incident:', error);
+        Logger.error({ source: "services/functions/submitIncident", message: "Error adding incident" });
         return false;
     }
 }

@@ -1,22 +1,24 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Button, Dialog, FormControl, Grid, SelectChangeEvent } from "@mui/material";
+import { Button, Dialog, FormControl, Grid } from "@mui/material";
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+
 import IIncident from '../../../../interfaces/IIncident';
 import { ITag } from '../../../../interfaces/ITag';
 import { Priority } from '../../../../interfaces/enums';
 import backendServices from '../../../../services/backendServices/backendServices';
 import submitIncident from '../../../../services/functions/incident/submitIncident';
 import theme from '../../../../theme';
-import TextFieldInput from '../../../../trash/TextFields';
-import CustomAutocomplete, { CustomSyntheticEvent } from '../../../base/autoCompleteTag/autoComplete';
+import CustomAutocomplete from '../../../base/autoCompleteTag/autoComplete';
 import BannerNotification from "../../../base/bannerNotification/BannerNotification";
+import TextFieldInput from "../../../base/customTextField/TextFields";
 import DateTimePickerValue from '../../../base/datePicker/datePicker';
 import DropDown from '../../../base/dropDown/DropDown';
 import { TypesIncident } from '../../../base/dropDown/Types';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
-import{keyTags,keyPriority,keyDate,keyStatus,keyType}from '../../../../const'
+import { keyTags, keyPriority, keyDate, keyStatus, keyType } from '../../../../const'
+import Logger from '../../../../loggers/logger';
 
 export interface FormFormData {
 
@@ -54,28 +56,20 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
     date: dayjs(),
     type: "",
     tags: [],
+   
   });
-
-
-  const getOptionLabel = (option: ITag | string) => {
-    if (typeof option === 'string') {
-      return option;
-    }
-    return option.name;
-  };
 
   async function onSubmit(data: FormData) {
     setIsSubmit(true);
     if (formObject.priority != null)
       data.priority = formObject.priority
-
     if (formObject.date == null)
       data.date = dayjs();
     else
       data.date = formObject.date
     data.type = formObject.type
     data.tags = formObject.tags
-    if (formObject.type && tags.length>0) {
+    if (formObject.type && tags.length > 0) {
       const isSuccess = await submitIncident(data, incidents, setIncidents);
       setIsSuccess(isSuccess);
       setShowBanner(true);
@@ -145,14 +139,20 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
 
   useEffect(() => {
     const FetchData = async () => {
-      const getAllTags = await backendServices.getTags();
-      setTags(getAllTags);
+      try {
+        const getAllTags: ITag[] = await backendServices.getTags();
+        Logger.info({ source: "Add incident Form", message: "Getting all tags success!" })
+        setTags(getAllTags);
+      } catch (error: any) {
+        Logger.error({ source: "Add incident Form", message: "Error getting all tags" })
+      }
     };
     FetchData();
   }, []);
 
 
   const handleChange = async (keyType: string, event: any) => {
+    console.log(event)
         setFormObject((prevFormObject) => ({
           ...prevFormObject,
           [keyType]: event 
@@ -193,7 +193,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
-                <PriorityButtons keyType={keyPriority} onChangePriority={handleChange} priority={formObject.priority} />
+                  <PriorityButtons keyType={keyPriority} onChangePriority={handleChange} priority={formObject.priority} />
                 </div>
               </FormControl>
             </Grid>
@@ -202,7 +202,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
-                    <DateTimePickerValue keyType={keyDate} date={formObject.date} onDateChange={handleChange} /> 
+                    <DateTimePickerValue keyType='string' date={formObject.date} onDateChange={handleChange} /> 
                   </FormControl>
                 </Grid>
                 <Grid item xs={6}>
@@ -225,7 +225,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="type">Type</label>
-                <DropDown  keyType={keyType}   defaultValue={formObject.type} Types={TypesIncident} onChangeType={handleChange} />
+                <DropDown keyType={keyType} defaultValue={formObject.type} Types={TypesIncident} onChangeType={handleChange} />
                 {isSubmit && !formObject.type && <span style={{ color: errorColor }}>Type is required</span>}
               </FormControl>
             </Grid>
@@ -233,7 +233,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Tags</label>
                 <div id="tags">
-                <CustomAutocomplete options={tags} keytype= {keyTags}  onChangeOptions={handleChange} />
+                  <CustomAutocomplete options={tags} keytype={keyTags} onChangeOptions={handleChange} />
                 </div>
                 {isSubmit && tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>}
               </FormControl>

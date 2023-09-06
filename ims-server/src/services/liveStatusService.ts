@@ -29,20 +29,21 @@ class liveStatusService {
             const systemDate = date || new Date();
             if (tags) {
                 const startDate = new Date(systemDate);
-                    startDate.setDate(startDate.getDate() - 9);
-            const liveStatuses = await Promise.all(tags.map(async (tag) => {
-                const latestStatusForTag = await liveStatusRepository.getLiveStatusByTag(tag.name,startDate, systemDate);
-                return {
-                    systemName: tag.name,
-                    systemData: latestStatusForTag,
-                };
-            }));
-            const hasData = liveStatuses.some((entry) => entry.systemData.length > 0);
-            if (!hasData) {
-                return null;
+                startDate.setDate(startDate.getDate() - 9);
+                const liveStatuses = await Promise.all(tags.map(async (tag) => {
+                    const latestStatusForTag = await liveStatusRepository.getLiveStatusByTag(tag.name, startDate, systemDate);
+                    return {
+                        systemName: tag.name,
+                        systemData: latestStatusForTag,
+                    };
+                }));
+                const hasData = liveStatuses.some((entry) => entry.systemData.length > 0);
+                if (!hasData) {
+                    return null;
+                }
+                return liveStatuses;
             }
-            return liveStatuses;
-        } }catch (error: any) {
+        } catch (error: any) {
             logger.error({
                 source: constants.SYSTEM_STATUS_SERVICE,
                 err: constants.GET_SYSTEMS_BY_DATE_FAILED,
@@ -179,7 +180,7 @@ class liveStatusService {
                         const liveStatusData: IliveStatus = system
                         liveStatusData.maxPriority = incident.currentPriority
                         return await this.createOrUpdateLiveStatus(liveStatusData, incident.id ? incident.id : '', tag.name, system);
-                    })  
+                    })
             });
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,
@@ -196,7 +197,7 @@ class liveStatusService {
         }
     }
     async liveStatusByIncident(incident: IIncident): Promise<(IliveStatus[] | any)> {
-        try {
+        try {           
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,
                 msg: constants.UPDATE_BY_INCIDENT_SUCCESS,

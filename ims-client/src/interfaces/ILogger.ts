@@ -4,7 +4,7 @@ export interface ILogData {
     level: Level,
     message: string,
     timestamp: string,
-    source?: string
+    source: string
 }
 
 export interface ILogRecievedData {

@@ -10,7 +10,7 @@ import attachmentServices from '../../../../services/backendServices/attachmentS
 import backendServices from '../../../../services/backendServices/backendServices';
 import submitTimeLine from '../../../../services/functions/timeline/submitTimeLine';
 import theme from '../../../../theme';
-import TextFieldInput from '../../../../trash/TextFields';
+import TextFieldInput from "../../../base/customTextField/TextFields";
 import CustomAutocomplete, { CustomSyntheticEvent } from '../../../base/autoCompleteTag/autoComplete';
 import BannerNotification from '../../../base/bannerNotification/BannerNotification';
 import DateTimePickerValue from '../../../base/datePicker/datePicker';
@@ -19,7 +19,6 @@ import { TypesIncident, StatusIncident } from '../../../base/dropDown/Types';
 import UploadFiles from '../../../base/uploadFiles/UploadFiles';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 import { keyDate, keyPriority, keyStatus, keyTags, keyType } from '../../../../const';
-import log from '../../../../loggers/logger'
 
 export interface dataFromForm {
   text: string;
@@ -48,17 +47,16 @@ export interface receivedIncident {
   cost: number;
   createdBy: string;
 }
+
 interface Props {
   isOpen: boolean;
   incident: receivedIncident;
   onClose: () => void;
   addNewTimelineFunction: (newTimeline: ITimeLineEvent) => void;
   updateIncidentFunction: (newIncident: receivedIncident) => void;
-
 }
 
-
-export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimelineFunction,updateIncidentFunction }: Props) {
+export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimelineFunction, updateIncidentFunction }: Props) {
   const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();
   const [formObject, setFormObject] = React.useState<dataFromForm>({
     text: "",
@@ -76,7 +74,6 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
   const [severityValue, setSeverityValue] = useState<AlertColor>('error');
   const [messageValue, setMessageValue] = useState<string>("");
   const [tags, setTags] = useState<ITag[]>([]);
- 
 
   async function onSubmit(data: dataFromForm) {
     setIsSubmit(true);
@@ -93,7 +90,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
     })
     data.filesString = formObject.filesString;
     await attachmentServices.uploadAttachment(formData);
-    const isSuccess = await submitTimeLine({ data, incident, addNewTimelineFunction ,updateIncidentFunction});
+    const isSuccess = await submitTimeLine({ data, incident, addNewTimelineFunction, updateIncidentFunction });
     if (isSuccess) {
       setSeverityValue('success');
       setMessageValue('new update Added Successfully');
@@ -129,6 +126,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
   const backdropStyles: React.CSSProperties = {
     background: 'rgba(0, 48, 18, 0.84)',
   };
+
   useEffect(() => {
     const getTags = async () => {
       const getAllTags = await backendServices.getTags();
@@ -136,13 +134,14 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
     }
     getTags();
   }, []);
-  const handleChange = async (keyType: string, event: any) => {
 
+  const handleChange = async (keyType: string, event: any) => {
     setFormObject((prevFormObject) => ({
       ...prevFormObject,
       [keyType]: event
     }));
   };
+
   return (
     <Dialog open={isOpen} PaperProps={{ style: { borderRadius: 20 } }} onClose={onClose} BackdropProps={{ style: backdropStyles }} scroll={'body'}>
       <div className="addUpdate" style={popupStyles}>
@@ -170,7 +169,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
               <FormControl fullWidth >
                 <label htmlFor="priority">Priority</label>
                 <div id="priority">
-                <PriorityButtons keyType={keyPriority} onChangePriority={handleChange} priority={formObject.priority} />                </div>
+                  <PriorityButtons keyType={keyPriority} onChangePriority={handleChange} priority={formObject.priority} />                </div>
               </FormControl>
             </Grid>
             <Grid item xs={12}  >
@@ -178,7 +177,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
                 <Grid item xs={6}>
                   <FormControl style={{ width: '100%' }}>
                     <label htmlFor="date">Date (optional)</label>
-                    <DateTimePickerValue  keyType={keyDate} date={formObject.date} onDateChange={handleChange} />
+                    <DateTimePickerValue keyType={keyDate} date={formObject.date} onDateChange={handleChange} />
                   </FormControl>
                 </Grid>
               </Grid>
@@ -187,7 +186,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
               <FormControl
                 style={{ width: '100%' }}>
                 <label htmlFor="type">Type</label>
-                <DropDown keyType={keyType} defaultValue={formObject.type} Types={TypesIncident} onChangeType={handleChange}  />
+                <DropDown keyType={keyType} defaultValue={formObject.type} Types={TypesIncident} onChangeType={handleChange} />
                 {isSubmit && !formObject.type && <span style={{ color: errorColor }}>Type is required</span>}
               </FormControl>
             </Grid>
@@ -203,7 +202,7 @@ export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimel
               <FormControl style={{ width: '100%' }}>
                 <label htmlFor="tags">Affected services</label>
                 <div id="tags">
-                <CustomAutocomplete selectedOptions={formObject.tags} options={tags} keytype={keyTags}  onChangeOptions={handleChange} />
+                  <CustomAutocomplete selectedOptions={formObject.tags} options={tags} keytype={keyTags} onChangeOptions={handleChange} />
                   {/* {isSubmit && formObject.tags.length === 0 && <span style={{ color: errorColor }}>tags is required</span>} */}
                 </div>
               </FormControl>
