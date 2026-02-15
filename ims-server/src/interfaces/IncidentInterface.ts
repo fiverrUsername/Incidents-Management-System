@@ -19,6 +19,3 @@ import { ITag } from "./tagInterface";
   cost: number;
   createdBy: string;
 }
-
-
-

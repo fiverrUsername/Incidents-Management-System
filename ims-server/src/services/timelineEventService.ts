@@ -19,7 +19,7 @@ class TimelineEventService {
         method: constants.METHOD.GET,
         success: true
       });
-      const timelineEvent = await timelineEventRepository.getAllTimelineEvents();
+      const timelineEvent: ITimelineEvent[] | null = await timelineEventRepository.getAllTimelineEvents();
       return timelineEvent;
     } catch (error: any) {
       logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.GET, err: true });
@@ -35,7 +35,7 @@ class TimelineEventService {
         msg: constants.METHOD.GET,
         success: true
       });
-      const timelineEvent = await timelineEventRepository.getTimelineEventByIncidentId(id);
+      const timelineEvent: ITimelineEvent[] | null = await timelineEventRepository.getTimelineEventByIncidentId(id);
       return timelineEvent;
     } catch (error: any) {
       logger.error({ source: constants.TIMELINE_EVENT, method: constants.METHOD.GET, err: true });
@@ -46,21 +46,21 @@ class TimelineEventService {
 
   async addTimelineEvent(newTimelineEvent: ITimelineEvent): Promise<void | any> {
     try {
-      console.log("-------TimelineEventService ,",newTimelineEvent)
+      console.log("-------TimelineEventService ,", newTimelineEvent)
 
       const incident: IIncident = await incidentRepository.getIncidentByField(newTimelineEvent.incidentId!, "id");
       const priority: Priority = incident.currentPriority
       const tags: ITag[] = incident.currentTags
       newTimelineEvent.channelId = incident.channelId;
-      const _timelineEvent = new ITimelineEventDto(newTimelineEvent);
-      const validationErrors = await validate(_timelineEvent);
+      const _timelineEvent: ITimelineEventDto = new ITimelineEventDto(newTimelineEvent);
+      const validationErrors: any[] = await validate(_timelineEvent);
       if (validationErrors.length > 0) {
         logger.error({ source: constants.TIMELINE_EVENT, err: constants.VALIDATION_ERROR, validationErrors: validationErrors.map((error) => error.toString()), });
         return new Error(constants.VALIDATION_ERROR);
       }
       if (tags.length != newTimelineEvent.tags.length) {
-        const newIncident = incident
-        const newTags = newTimelineEvent.tags.filter(tag => {
+        const newIncident: IIncident = { ...incident };
+        const newTags: ITag[] = newTimelineEvent.tags.filter(tag => {
           return !tags.some(existingTag => existingTag.name === tag.name);
         });
         newTags.forEach(tag => {
@@ -100,9 +100,9 @@ class TimelineEventService {
     }
   }
 
-  async getTimelineEventById(id: String): Promise<ITimelineEvent | any> {
+  async getTimelineEventById(id: string): Promise<ITimelineEvent | any> {
     try {
-      const _timelineEvent = await timelineEventRepository.getTimelineEventById(id);
+      const _timelineEvent: ITimelineEvent | null = await timelineEventRepository.getTimelineEventById(id);
       if (_timelineEvent) {
         logger.info({
           source: constants.TIMELINE_EVENT,
@@ -206,7 +206,7 @@ class TimelineEventService {
       incident.currentPriority = timeline.priority;
       incident.status = timeline.status;
       incident.currentTags = timeline.tags;
-      incident.type=timeline.type;
+      incident.type = timeline.type;
       return await incidentService.updateIncident(incident.id!, incident);
     } catch (err: any) {
       return new Error(err);
@@ -214,4 +214,5 @@ class TimelineEventService {
   }
 
 }
+
 export default new TimelineEventService();

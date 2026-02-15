@@ -4,7 +4,7 @@ import IncidentModel from "../models/IncidentModel";
 class AggregationRepository {
   async aggregateIncident(): Promise<any> {
     try {
-      const result = await IncidentModel.aggregate([
+      const result :any= await IncidentModel.aggregate([
         {
           $group: {
             _id: null,

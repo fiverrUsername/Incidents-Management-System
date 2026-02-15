@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { IliveStatus } from "../interfaces/liveStatusInterface";
 import { Priority } from "../enums/enum";
 
-const liveStatusSchema = new Schema<IliveStatus>({
+const liveStatusSchema: mongoose.Schema = new Schema<IliveStatus>({
     id: {
         type: String,
         default: uuidv4,
@@ -35,7 +35,7 @@ const liveStatusSchema = new Schema<IliveStatus>({
     }
 });
 
-liveStatusSchema.index({ date: 1 }); 
+liveStatusSchema.index({ date: 1 });
 
 const LiveStatus = mongoose.model<IliveStatus>("liveStatus", liveStatusSchema);
 

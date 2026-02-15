@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
+import { ActionType, ObjectType } from '../../../ims-socket/src/interfaces';
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import { constants, status } from "../loggers/constants";
-import timelineEventService from "../services/timelineEventService";
 import logger from "../loggers/log";
-import axios from "axios";
-import { ActionType, ObjectType } from '../../../ims-socket/src/interfaces';
-import { sendToSocket } from '../services/socket';
-import AwsController from "./attachmentController";
 import attachmentService from "../services/attachmentService";
+import { sendToSocket } from '../services/socket';
+import timelineEventService from "../services/timelineEventService";
+import { KeyUrlPair } from "../interfaces/IAttachment";
 
 export default class TimelineEventController {
 
@@ -41,7 +40,7 @@ export default class TimelineEventController {
     async addTimelineEvent(req: Request, res: Response): Promise<Response> {
         try {
             console.log("----------TimelineEventController: req.body:   ", req.body)
-            const _timelineEvent = await timelineEventService.addTimelineEvent(req.body);
+            const _timelineEvent: any = await timelineEventService.addTimelineEvent(req.body);
             if (_timelineEvent instanceof Error) {
                 if (_timelineEvent.message === "Validation error" || _timelineEvent.message === "Incident ID not found") {
                     return res.status(status.BAD_REQUEST).json({ message: constants.INVALID_MESSAGE })
@@ -173,7 +172,7 @@ export default class TimelineEventController {
         }
         let answer: compare = { description: ["", "", req.body.description], files: [] };
         const allTimelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventByIncidentId(req.body.incidentId);
-        const attachment = attachmentService.getSignedUrlForKeys(req.body.files)
+        const attachment: Promise<KeyUrlPair[]> = attachmentService.getSignedUrlForKeys(req.body.files)
         await attachment.then(function (result: any) {
             answer.files = result
         })

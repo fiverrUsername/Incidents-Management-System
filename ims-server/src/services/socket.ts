@@ -1,27 +1,27 @@
 import { WebSocket } from 'ws'
-import {IIncident} from '../../../ims-server/src/interfaces/IncidentInterface'
+import { IIncident } from '../../../ims-server/src/interfaces/IncidentInterface'
 import { ITimelineEvent } from '../interfaces/ItimelineEvent';
 import { IMessage, ActionType, ObjectType } from '../../../ims-socket/src/interfaces';
 import incidentRepository from '../repositories/incidentRepository';
 import timelineEventRepository from '../repositories/timelineEventRepository';
 
-const ws = new WebSocket('wss://ims-socket.onrender.com/');
+const ws: WebSocket = new WebSocket('wss://ims-socket.onrender.com/');
 
 const messageQueue: any[] = []; // Replace 'any' with the type of messages you are sending
 
 ws.on('open', () => {
   // Process the message queue
   while (messageQueue.length > 0) {
-    const message = messageQueue.shift();
+    const message: IMessage = messageQueue.shift();
     send(message);
   }
 });
 
-const send = (message: IMessage) => {
+const send = (message: IMessage): void => {
   ws.send(JSON.stringify(message));
 }
 
-ws.onmessage = (webSocketMessage: { data: { toString: () => string; }; }) => {
+ws.onmessage = (webSocketMessage: { data: { toString: () => string; }; }): void => {
   const messageBody: IMessage = JSON.parse(webSocketMessage.data.toString());
   switch (messageBody.objectType) {
     case ObjectType.Incident:

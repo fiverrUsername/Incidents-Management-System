@@ -3,9 +3,9 @@ import liveStatusModel from "../models/liveStatusModel";
 class liveStatusRepository {
     async getLiveStatusSystemsByDate(_date: Date, tag?: string): Promise<IliveStatus[] | any> {
         try {
-            const startDate = new Date(_date);
+            const startDate: Date = new Date(_date);
             startDate.setHours(0, 0, 0, 0);
-            const endDate = new Date(_date);
+            const endDate: Date = new Date(_date);
             endDate.setHours(23, 59, 59, 999);
             let query: Record<string, any> = {
                 date: {
@@ -16,7 +16,7 @@ class liveStatusRepository {
             if (tag) {
                 query.systemName = tag
             }
-            const results = await liveStatusModel.find(query);
+            const results: IliveStatus[] = await liveStatusModel.find(query);
             return results;
         }
         catch (e) {
@@ -43,8 +43,8 @@ class liveStatusRepository {
     }
     async getTodaysLiveStatusByTag(tag: string): Promise<IliveStatus | null> {
         try {
-            const today = new Date();
-            const todaysLiveStatus = await this.getLiveStatusSystemsByDate(today, tag);
+            const today: Date = new Date();
+            const todaysLiveStatus: IliveStatus[] = await this.getLiveStatusSystemsByDate(today, tag);
             return todaysLiveStatus[0];
         } catch (error: any) {
             console.error(`error: ${error}`);

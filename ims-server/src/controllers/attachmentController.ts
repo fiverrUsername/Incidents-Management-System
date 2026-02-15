@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import attachmentsService from "../services/attachmentService";
 import { status } from "../loggers/constants";
+import { KeyUrlPair } from "../interfaces/IAttachment";
 
 export default class AwsController {
 
   async uploadAttachment(req: Request, res: Response): Promise<void> {
     try {
-      const attachment = await attachmentsService.uploadAttachment(
+      const attachment: any = await attachmentsService.uploadAttachment(
         req.files as Express.Multer.File[]
       );
       if (attachment instanceof Error) {
@@ -21,8 +22,8 @@ export default class AwsController {
 
   async getSignedUrlForKeys(req: Request, res: Response): Promise<void> {
     try {
-      const keys=req.body as string[];
-      const file = await attachmentsService.getSignedUrlForKeys(keys);
+      const keys: string[] = req.body as string[];
+      const file: KeyUrlPair[] = await attachmentsService.getSignedUrlForKeys(keys);
       if (file instanceof Error) {
         res.status(status.PAGE_NOT_FOUND).json({ message: file, error: true });
       } else res.status(status.SUCCESS).json(file);
@@ -33,8 +34,8 @@ export default class AwsController {
 
   async deleteAttachmentById(req: Request, res: Response): Promise<void> {
     try {
-      const key = req.query.key as string ;
-      const file = await attachmentsService.deleteAttachmentById(key);
+      const key: string = req.query.key as string;
+      const file: any = await attachmentsService.deleteAttachmentById(key);
       if (file instanceof Error) {
         res.status(status.PAGE_NOT_FOUND).json({ message: file, error: true });
       } else res.status(status.SUCCESS).json(file);

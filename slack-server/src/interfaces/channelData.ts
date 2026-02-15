@@ -1,5 +1,3 @@
-
-
 import { Priority } from "../../../ims-server/src/enums/enum";
 
 export interface IChannelData {

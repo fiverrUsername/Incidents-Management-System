@@ -4,7 +4,7 @@ import timelineEvent from "../models/timelineEvent";
 class TimelineEventRepository {
   async addTimelineEvent(newTimelineEvent: ITimelineEvent): Promise<void | any> {
     try {
-      const _timelineEvent = await timelineEvent.create(newTimelineEvent);
+      const _timelineEvent: ITimelineEvent = await timelineEvent.create(newTimelineEvent);
       return _timelineEvent;
     } catch (error: any) {
       console.error(`error: ${error}`);
@@ -23,7 +23,7 @@ class TimelineEventRepository {
 
   async getTimelineEventByIncidentId(id: string): Promise<ITimelineEvent[] | any> {
     try {
-      const _timelineEvent = await timelineEvent.find({ incidentId: id }).sort();
+      const _timelineEvent: ITimelineEvent[] = await timelineEvent.find({ incidentId: id }).sort({ createdDate: 1 });
       return _timelineEvent;
     } catch (error: any) {
       console.error(`error: ${error}`);
@@ -52,7 +52,7 @@ class TimelineEventRepository {
 
   async getTimelineEventById(id: String): Promise<ITimelineEvent | any> {
     try {
-      const _timelineevent = await timelineEvent.findOne({ id });
+      const _timelineevent: ITimelineEvent | null = await timelineEvent.findOne({ id });
       return _timelineevent;
     } catch (error: any) {
       console.error(`error: ${error}`);

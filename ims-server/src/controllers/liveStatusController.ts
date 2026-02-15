@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-
 import { status } from "../loggers/constants";
 import liveStatusService from "../services/liveStatusService";
 import { IliveStatus } from "../interfaces/liveStatusInterface";
@@ -11,7 +10,7 @@ export default class liveStatusController {
         try {
             let systems: IliveStatus[] | null;
             if (req.query.date) {
-                const filterDate = new Date(req.query.date.toString());
+                const filterDate: Date = new Date(req.query.date.toString());
                 //focus on a specific day without considering the time component.
                 filterDate.setHours(0, 0, 0, 0);
                 //if calling this action not from client

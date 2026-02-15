@@ -1,30 +1,30 @@
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import express, { NextFunction, Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import fs from 'fs';
 import swaggerUI from 'swagger-ui-express';
-import clientLogRouter from './routes/clientLoggerRouter'
 import '../src/services/socket';
+import { authenticateWithApiKey } from './authenticateWithApiKey ';
 import config from './config/config';
 import logger from './loggers/log';
 import { connect } from './models/db';
 import incidentRoute from './routes/IncidentRout';
 import aggregationRouter from './routes/aggrigationRouter';
 import attachmentRouter from './routes/attachmentRouter';
+import clientLogRouter from './routes/clientLoggerRouter';
 import liveStatusRouter from "./routes/liveStatusRouter";
 import tagRouter from './routes/tagRouter';
 import timelineEventRouter from './routes/timelineEventRouter';
 import dailySchedule from './services/schedule';
-import { authenticateWithApiKey } from './authenticateWithApiKey ';
 
-const port = config.server.port
-const app = express()
+const port: string | undefined = config.server.port
+const app: express.Application = express()
 const swaggerFile: any = (process.cwd() + "/src/Swagger.json");
 const swaggerData: any = fs.readFileSync(swaggerFile, 'utf8');
-const swaggerDocument = JSON.parse(swaggerData);
+const swaggerDocument: any = JSON.parse(swaggerData);
 // swaggerDocument.servers[0].url = `http://localhost:${process.env.SERVER_PORT}`
-const whitelist = ['https://ims-client-mep8.onrender.com','https://ims-client-mep8.onrender.com/','wss://ims-socket.onrender.com/','ws://ims-socket.onrender.com/4700','https://ims-socket.onrender.com','https://ims-slack.onrender.com/','https://ims-slack.onrender.com','https://slack-server-71aw.onrender.com/','wss://ims-socket.onrender.com/8080','https://slack-server-71aw.onrender.com/4700','http://localhost:3000', 'http://localhost:4700', 'http://localhost:7071','http://localhost:7000'];
-const apiKey = process.env.API_KEY;
+const whitelist: string[] = ['https://ims-client-mep8.onrender.com', 'https://ims-client-mep8.onrender.com/', 'wss://ims-socket.onrender.com/', 'ws://ims-socket.onrender.com/4700', 'https://ims-socket.onrender.com', 'https://ims-slack.onrender.com/', 'https://ims-slack.onrender.com', 'https://slack-server-71aw.onrender.com/', 'wss://ims-socket.onrender.com/8080', 'https://slack-server-71aw.onrender.com/4700', 'http://localhost:3000', 'http://localhost:4700', 'http://localhost:7071', 'http://localhost:7000'];
+const apiKey: string | undefined = process.env.API_KEY;
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
     if (origin === undefined || whitelist.includes(origin)) {

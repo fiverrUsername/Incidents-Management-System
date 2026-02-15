@@ -1,9 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
-import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import { Priority, Status } from "../enums/enum";
-import { ITag } from "../interfaces/tagInterface";
-export const TimelineEventSchema = new Schema<ITimelineEvent>({
+import { ITimelineEvent } from "../interfaces/ItimelineEvent";
+
+export const TimelineEventSchema: mongoose.Schema = new Schema<ITimelineEvent>({
   id: {
     type: String,
     default: uuidv4,

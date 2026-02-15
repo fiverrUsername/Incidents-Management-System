@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import { type ITag } from "../interfaces/tagInterface";
 
-export const TagSchema = new Schema<ITag>({
+export const TagSchema: mongoose.Schema = new Schema<ITag>({
   id: {
     type: String,
     required: true,

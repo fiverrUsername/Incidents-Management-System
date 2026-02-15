@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 
-const expectedToken = 'YOUR_EXPECTED_TOKEN_HERE'; 
+const expectedToken: string = 'YOUR_EXPECTED_TOKEN_HERE';
 
 export function authenticateToken(req: Request, res: Response, next: NextFunction) {
-  const authorizationHeader = req.headers.authorization;
+  const authorizationHeader: string | undefined = req.headers.authorization;
   if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
-    const receivedToken = authorizationHeader.substring(7);
+    const receivedToken: string = authorizationHeader.substring(7);
     if (receivedToken && receivedToken === expectedToken) {
       next();
     } else {
@@ -15,4 +15,3 @@ export function authenticateToken(req: Request, res: Response, next: NextFunctio
     return res.status(401).json({ error: 'Unauthorized' });
   }
 }
-

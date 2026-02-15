@@ -7,6 +7,7 @@ import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import liveStatusRepository from "../repositories/liveStatusRepository";
 import tagService from "./tagService";
+import { ITag } from '../interfaces/tagInterface';
 
 class liveStatusService {
     constructor() {
@@ -25,19 +26,19 @@ class liveStatusService {
                 source: constants.SYSTEM_STATUS_SERVICE,
                 msg: constants.GET_SYSTEMS_BY_DATE_SUCCESS,
             });
-            const tags = await tagService.getAllTags();
-            const systemDate = date || new Date();
+            const tags: ITag[] | undefined = await tagService.getAllTags();
+            const systemDate: Date = date || new Date();
             if (tags) {
-                const startDate = new Date(systemDate);
+                const startDate: Date = new Date(systemDate);
                 startDate.setDate(startDate.getDate() - 9);
                 const liveStatuses = await Promise.all(tags.map(async (tag) => {
-                    const latestStatusForTag = await liveStatusRepository.getLiveStatusByTag(tag.name, startDate, systemDate);
+                    const latestStatusForTag: IliveStatus[] | null = await liveStatusRepository.getLiveStatusByTag(tag.name, startDate, systemDate);
                     return {
                         systemName: tag.name,
                         systemData: latestStatusForTag,
                     };
                 }));
-                const hasData = liveStatuses.some((entry) => entry.systemData.length > 0);
+                const hasData: boolean = liveStatuses.some((entry) => entry.systemData && entry.systemData.length > 0);
                 if (!hasData) {
                     return null;
                 }
@@ -55,7 +56,7 @@ class liveStatusService {
         try {
             //here i need the index
             let existingLiveStatus;
-            const incidentIndex = this.priorityIndexMap[data.maxPriority];
+            const incidentIndex: number = this.priorityIndexMap[data.maxPriority];
             if (liveStatus) {
                 existingLiveStatus = liveStatus;
             } else {
@@ -91,11 +92,11 @@ class liveStatusService {
             });
             if (previousPriority == timeLineEvent.priority && timeLineEvent.status == Status.Active)
                 return
-            const liveStatus = await liveStatusRepository.getTodaysLiveStatusByTag(system);
+            const liveStatus: IliveStatus | null = await liveStatusRepository.getTodaysLiveStatusByTag(system);
             if (!liveStatus)
                 return
-            const updatedIncidents = [...liveStatus.incidents];
-            const incidentIndex = this.priorityIndexMap[previousPriority];
+            const updatedIncidents: string[][] = liveStatus.incidents.map((incidentsArray) => [...incidentsArray]);
+            const incidentIndex: number = this.priorityIndexMap[previousPriority];
             updatedIncidents[incidentIndex] = updatedIncidents[incidentIndex].filter(
                 (incidentId) => incidentId !== timeLineEvent.incidentId
             );
@@ -122,7 +123,7 @@ class liveStatusService {
     }
 
     getUpdatedMaxPriority(incidentsIds: string[][]) {
-        const priorityValues = Object.values(Priority) as string[];
+        const priorityValues: string[] = Object.values(Priority) as string[];
         for (const [index, incidentsId] of incidentsIds.entries()) {
             if (incidentsId.length > 0) {
                 return priorityValues[priorityValues.length - index - 1] as Priority;
@@ -133,7 +134,7 @@ class liveStatusService {
 
     async autoUpdateLiveStatus() {
         try {
-            const yesterday = new Date();
+            const yesterday: Date = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
             const systems: IliveStatus[] = await liveStatusRepository.getLiveStatusSystemsByDate(yesterday);
             systems.forEach(async system => {
@@ -197,7 +198,7 @@ class liveStatusService {
         }
     }
     async liveStatusByIncident(incident: IIncident): Promise<(IliveStatus[] | any)> {
-        try {           
+        try {
             logger.info({
                 source: constants.SYSTEM_STATUS_SERVICE,
                 msg: constants.UPDATE_BY_INCIDENT_SUCCESS,
@@ -227,4 +228,5 @@ class liveStatusService {
         }
     }
 }
+
 export default new liveStatusService()

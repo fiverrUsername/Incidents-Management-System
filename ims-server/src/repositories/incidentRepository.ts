@@ -3,8 +3,7 @@ import { IncidentDto } from "../dto/incidentDto";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import incidentModel from "../models/IncidentModel";
-import TimelineEventRepository from "../repositories/timelineEventRepository"
-import { Status } from "../enums/enum";
+import TimelineEventRepository from "../repositories/timelineEventRepository";
 
 class IncidentRepository {
   async addIncident(newIncident: IIncident): Promise<IIncident | any> {
@@ -69,4 +68,5 @@ class IncidentRepository {
   }
   
 }
+
 export default new IncidentRepository();

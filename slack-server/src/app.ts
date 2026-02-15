@@ -6,11 +6,11 @@ import { WEBHOOK_EVENT_RECEIVED_SUCCESSFULLY, port } from './constPage';
 import { constants, files } from './loggers/constants';
 import logger from './loggers/log';
 
-const app = express();
+const app: express.Application = express();
 require('dotenv').config()
 
-const whitelist = ['wss://ims-socket.onrender.com/','ws://ims-socket.onrender.com/','https://ims-socket.onrender.com','https://ims-server-pbkw.onrender.com'];
-const apiKey = process.env.API_KEY;
+const whitelist: string[] = ['wss://ims-socket.onrender.com/', 'ws://ims-socket.onrender.com/', 'https://ims-socket.onrender.com', 'https://ims-server-pbkw.onrender.com'];
+const apiKey: string = process.env.API_KEY || '';
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
     if (origin === undefined || whitelist.includes(origin)) {
@@ -25,19 +25,7 @@ const corsOptions: cors.CorsOptions = {
 
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
-// app.use(cors({
-//   origin: "https://ims-server-pbkw.onrender.com",
-//   credentials: true,
-//   methods: 'POST, GET, PUT, OPTIONS, DELETE',
-//   allowedHeaders: 'Content-Type,Authorization' // Add any other required headers here
-// }));
-// app.use(cors({
-//   origin: true,
-//   credentials: true,
-//   methods: 'POST,GET,PUT,OPTIONS,DELETE'
-// }));
-
-app.get('/test', (req: Request, res: Response) => {
+app.get('/test', (_req: Request, res: Response) => {
   res.status(200).send('OK');
 });
 
@@ -53,7 +41,5 @@ app.post('/webhook', (req: Request, res: Response) => {
 });
 
 app.listen(port, () => {
-  logger.info({ source: constants.SERVER_IS_OS_IN_LOCALHOST_PORT+""+port, file: files.APP })
+  logger.info({ source: constants.SERVER_IS_OS_IN_LOCALHOST_PORT + "" + port, file: files.APP })
 });
-
-

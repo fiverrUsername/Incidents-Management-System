@@ -5,7 +5,7 @@ import {Request,Response} from 'express'
 @ValidatorConstraint({ async: true })
 export class IsValidUserId implements ValidatorConstraintInterface {
     async validate(userId: string) {
-        const req={
+        const req : Request = {
             params: {
                 id: userId,
             },

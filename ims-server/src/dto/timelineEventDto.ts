@@ -74,5 +74,4 @@ export class ITimelineEventDto {
     @IsArray({ message: "is not an array" })
     @ValidateNested({ each: true })
     tags: TagDto[];
-
 }

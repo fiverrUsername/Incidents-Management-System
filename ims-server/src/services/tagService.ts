@@ -8,8 +8,8 @@ import { constants } from "../loggers/constants";
 class TagService {
   async addTag(newTag: ITag): Promise<void | any> {
     try {
-      const tag = new TagDto(newTag);
-      const validationErrors = await validate(tag);
+      const tag: TagDto = new TagDto(newTag);
+      const validationErrors: any[] = await validate(tag);
       if (validationErrors.length > 0) {
         logger.error({
           source: constants.TAG_SERVICE,
@@ -33,7 +33,7 @@ class TagService {
 
   async getAllTags(): Promise<ITag[] | undefined> {
     try {
-      const tags = await tagRepository.getAllTags();
+      const tags: ITag[] | null = await tagRepository.getAllTags();
       if (!tags) {
         logger.error({ source: constants.TAG_SERVICE, method: constants.METHOD.GET });
         return;

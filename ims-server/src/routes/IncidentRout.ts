@@ -1,13 +1,13 @@
-import express from "express";
+import express, { Router } from "express";
 
 import IncidenceController from "../controllers/IncidentController";
 
-const router = express.Router();
-const incidenceController = new IncidenceController();
+const router: Router = express.Router();
+const incidenceController: IncidenceController = new IncidenceController();
 
 router.get('/', incidenceController.getAllIncidents);
 router.get('/:fieldvalue/:fieldname?', incidenceController.getIncidentByField);
 router.post('/addIncident', incidenceController.addIncident);
 router.put('/updateIncident/:id', incidenceController.updateIncident);
-router.get('/result/summary/:id',incidenceController.getSummaryIncident);
+router.get('/result/summary/:id', incidenceController.getSummaryIncident);
 export default router;

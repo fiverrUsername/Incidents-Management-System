@@ -1,12 +1,10 @@
 import dayjs from "dayjs";
-
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ISummary } from "../interfaces/ISummary";
 import { constants } from "../loggers/constants";
 import logger from "../loggers/log";
 import incidentRepository from "../repositories/incidentRepository";
 import liveStatusService from './liveStatusService';
-
 
 class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {
@@ -16,10 +14,10 @@ class IncidentService {
         msg: constants.ADD_INCIDENT_SUCCESS,
         incidentId: newIncident.id
       });
-      console.log("-------IncidentService ,",newIncident)
-      const incident = await incidentRepository.addIncident(newIncident);
-      const newIncidentDate = new Date(newIncident.date);
-      const currentDate = new Date();
+      console.log("-------IncidentService ,", newIncident)
+      const incident: IIncident = await incidentRepository.addIncident(newIncident);
+      const newIncidentDate: Date = new Date(newIncident.date);
+      const currentDate: Date = new Date();
       if (
         newIncidentDate.getDate() === currentDate.getDate() &&
         newIncidentDate.getMonth() === currentDate.getMonth() &&
@@ -83,7 +81,7 @@ class IncidentService {
 
   async getIncidentByField(fieldValue: string, fieldName: string): Promise<IIncident | any> {
     try {
-      const incident = await incidentRepository.getIncidentByField(fieldValue, fieldName);
+      const incident: IIncident | any = await incidentRepository.getIncidentByField(fieldValue, fieldName);
       if (incident) {
         logger.info({
           source: constants.INCIDENT_COTROLLER,
@@ -106,7 +104,7 @@ class IncidentService {
   async getSummaryIncident(id: string): Promise<ISummary | any> {
     try {
       let summary: ISummary | null = null;
-      const incident = await incidentRepository.getIncidentByField(id, 'id');
+      const incident: IIncident | any = await incidentRepository.getIncidentByField(id, 'id');
       if (incident) {
         summary = {
           createdBy: incident.createdBy,
@@ -126,4 +124,5 @@ class IncidentService {
   }
 
 }
+
 export default new IncidentService();

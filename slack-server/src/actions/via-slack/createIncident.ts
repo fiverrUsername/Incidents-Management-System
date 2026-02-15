@@ -9,7 +9,6 @@ import { getSlackDataByChannelId } from '../base/getSlackDataByChannelId';
 import { JoinBotToChannels } from '../base/joinBotToChannels'
 import { constants, files } from '../../loggers/constants';
 
-
 export async function createIncident(channelId: string) {
   try {
     await JoinBotToChannels(channelId);
@@ -39,8 +38,3 @@ export async function createIncident(channelId: string) {
     logger.error({ source: constants.ERROR_CREATING_INCIDENT, file: files.CREATEINCIDENT, method: constants.METHOD.POST, error: error })
   }
 }
-
-
-
-
-

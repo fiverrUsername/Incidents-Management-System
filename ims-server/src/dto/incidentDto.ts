@@ -1,18 +1,16 @@
 import {
   IsArray,
   IsISO8601,
-  isNotEmpty,
   IsNotEmpty,
   IsNumber,
   IsOptional,
-  isString,
   IsString,
-  ValidateNested,
+  ValidateNested
 } from "class-validator";
-import { constants } from "../loggers/constants";
-import { IIncident } from "../interfaces/IncidentInterface";
-import { TagDto } from "./tagDto";
 import { Priority, Status } from "../enums/enum";
+import { IIncident } from "../interfaces/IncidentInterface";
+import { constants } from "../loggers/constants";
+import { TagDto } from "./tagDto";
 
 export class IncidentDto {
   constructor(init: IIncident) {
@@ -66,12 +64,9 @@ export class IncidentDto {
   @IsOptional({ message: `channelName ${constants.EMPTY_OBJECT}` })
   channelName?: string;
 
-
   @IsString({ message: `slackLink ${constants.INVALID_MESSAGE}` })
   @IsOptional({ message: `slackLink ${constants.EMPTY_OBJECT}` })
   slackLink?: string;
-
-
 
   @IsString({ message: `channelId ${constants.INVALID_MESSAGE}` })
   @IsOptional({ message: `channelId ${constants.EMPTY_OBJECT}` })

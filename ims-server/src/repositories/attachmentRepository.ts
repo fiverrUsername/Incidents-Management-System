@@ -1,17 +1,18 @@
-import AWS, { AWSError } from 'aws-sdk';
-import fs from 'fs';
+// import AWS from 'aws-sdk';
 import dotenv from 'dotenv';
-import logger from "../loggers/log";
-import { constants } from '../loggers/constants';
+import fs from 'fs';
 import { KeyUrlPair } from '../interfaces/IAttachment';
-dotenv.config()
-// const s3 = new AWS.S3();
-const expiration = 3600;
+import { constants } from '../loggers/constants';
+import logger from "../loggers/log";
+import * as AWS from 'aws-sdk';
 
-const s3 = new AWS.S3({
+dotenv.config()
+const expiration: number = 3600;
+
+const s3: AWS.S3 = new AWS.S3({
   region: process.env.AWS_REGION,
 });
-AWS.config.getCredentials(function(err) {
+AWS.config.getCredentials(function (err) {
   if (err) console.log(err.stack);
   // credentials not loaded
   else {
@@ -22,9 +23,9 @@ AWS.config.getCredentials(function(err) {
 class AttachmentsRepository {
 
   async uploadAttachment(files: Express.Multer.File[]): Promise<AWS.S3.ManagedUpload.SendData | any> {
-    const uploadPromises = files.map((file) => {
-      const fileName = file.originalname;
-      const fileBuffer = fs.readFileSync(file.path);
+    const uploadPromises: (Promise<AWS.S3.ManagedUpload.SendData> | undefined)[] = files.map((file) => {
+      const fileName: string = file.originalname;
+      const fileBuffer: Buffer = fs.readFileSync(file.path);
       if (fileName && fileBuffer) {
         const params: AWS.S3.PutObjectRequest = {
           Bucket: AttachmentsRepository.getBucketName(),
@@ -35,8 +36,8 @@ class AttachmentsRepository {
       }
     });
     try {
-      const uploadResults = await Promise.allSettled(uploadPromises);
-      uploadResults.forEach((result) => {
+      const uploadResults: PromiseSettledResult<AWS.S3.ManagedUpload.SendData | undefined>[] = await Promise.allSettled(uploadPromises);
+      uploadResults.forEach(() => {
         logger.info({ source: constants.UPLOAD_SUCCESS, msg: constants.METHOD.GET, success: true });
       });
     } catch (error) {
@@ -45,13 +46,13 @@ class AttachmentsRepository {
   }
 
   async getSignedUrlForKey(key: String): Promise<String> {
-    const params = {
+    const params = {//: AWS.S3.GetSignedUrlRequest
       Bucket: AttachmentsRepository.getBucketName(),
       Key: key.replace(/\?/g, '/'),
       Expires: expiration,
     };
     try {
-      const signedUrl = await s3.getSignedUrlPromise('getObject', params);
+      const signedUrl: string = await s3.getSignedUrlPromise('getObject', params);
       logger.info({ source: constants.SIGNED_URL_OF_FILE_SUCCESS, msg: 'GET', success: true });
       return signedUrl;
     } catch (error) {
@@ -64,11 +65,11 @@ class AttachmentsRepository {
     try {
       const allResponses: KeyUrlPair[] = await Promise.all(
         keys.map(async (key) => {
-          const url = await this.getSignedUrlForKey(key);
+          const url: String = await this.getSignedUrlForKey(key);
           return { key, url };
         })
       );
-  
+
       logger.info({ source: constants.GET_FILE_KEY_FAILED, method: constants.METHOD.GET, err: true });
       return allResponses;
     } catch (error) {
@@ -105,6 +106,3 @@ class AttachmentsRepository {
 
 }
 export default new AttachmentsRepository();
-
-
-

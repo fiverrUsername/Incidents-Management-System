@@ -11,10 +11,10 @@ const levels = {
   fatal: 60,
 };
 
-const file = process.env.LOG_DESTINATION || '';
-const logFile = fs.createWriteStream(file, { flags: 'a' });
+const file: string = process.env.LOG_DESTINATION || '';
+const logFile: fs.WriteStream = fs.createWriteStream(file, { flags: 'a' });
 
-const logger = pino({
+const logger: pino.Logger = pino({
   level: process.env.PINO_LOG_LEVEL || 'info',
   customLevels: levels,
   formatters: {

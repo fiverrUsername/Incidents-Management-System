@@ -4,7 +4,7 @@ import logger from "../loggers/log";
 import attachmentsRepository from "../repositories/attachmentRepository";
 
 class AttachmentsService {
-  
+
   async uploadAttachment(files: Express.Multer.File[]): Promise<void | any> {
     try {
       return await attachmentsRepository.uploadAttachment(files);;
@@ -14,18 +14,18 @@ class AttachmentsService {
     }
   }
 
-  async getSignedUrlForKeys(keys:String[]): Promise<KeyUrlPair[]> {
+  async getSignedUrlForKeys(keys: String[]): Promise<KeyUrlPair[]> {
     try {
-     logger.info({ source: constants.GET_FILE_KEY_SUCCESS, msg: constants.METHOD.GET, success: true });
-      const signedUrl = await attachmentsRepository.getSignedUrlForKeys(keys);
-      return signedUrl;
+      logger.info({ source: constants.GET_FILE_KEY_SUCCESS, msg: constants.METHOD.GET, success: true });
+      const signedUrls: KeyUrlPair[] = await attachmentsRepository.getSignedUrlForKeys(keys);
+      return signedUrls;
     } catch (error: any) {
       logger.error({ source: constants.GET_FILE_KEY_FAILED, method: constants.METHOD.GET, err: true });
       return error;
     }
   }
 
-  async deleteAttachmentById(key: string ): Promise<void | any> {
+  async deleteAttachmentById(key: string): Promise<void | any> {
     try {
       return await attachmentsRepository.deleteAttachmentById(key);
     } catch (error: any) {
@@ -35,4 +35,5 @@ class AttachmentsService {
   }
 
 }
+
 export default new AttachmentsService();

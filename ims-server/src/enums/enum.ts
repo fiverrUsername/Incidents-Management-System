@@ -4,7 +4,6 @@ export enum EncidentType {
     Comment = "comment",
 }
 
-
 export enum Status {
     Active = "Active",
     Resolved = "Resolved",
@@ -22,6 +21,4 @@ export enum Level {
     error = 'erorr',
     trace = 'trace',
     warn = 'warn',
-  }
-  
-  
+}

@@ -3,13 +3,11 @@ import logger from "../loggers/log";
 import aggregationRepository from "../repositories/aggregationRepository";
 
 
-
-
 class AggregateService {
   async aggregateIncident(): Promise<any> {
 
     try {
-      const aggregation = await aggregationRepository.aggregateIncident();
+      const aggregation :any= await aggregationRepository.aggregateIncident();
       if (aggregation instanceof Error) {
         logger.error({ source: constants.AGGREGATION, err: constants.ERROR_AGGGREATION });
       }
