@@ -1,23 +1,6 @@
 import { Priority } from "../../../../../ims-server/src/enums/enum";
 
 export function decodeMessagePriority(message: string): Priority | null {
-  const regex: RegExp = /\b[Pp][0-3]\b/;
-  const match: RegExpMatchArray | null = message.match(regex);
-  if (match && match.length > 0) {
-    const matchedValue = match[0].toUpperCase();
-    switch (matchedValue) {
-      case "P0":
-        return Priority.P0;
-      case "P1":
-        return Priority.P1;
-      case "P2":
-        return Priority.P2;
-      case "P3":
-        return Priority.P3;
-      default:
-        return null;
-    }
-  } else {
-    return null;
-  }
+  const match: RegExpMatchArray | null = message.match(/\bp[0-3]\b/i);
+  return match ? Priority[match[0].toUpperCase() as keyof typeof Priority] : null;
 }

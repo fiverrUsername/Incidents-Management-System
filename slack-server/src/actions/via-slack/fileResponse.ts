@@ -5,6 +5,7 @@ import logger from "../../loggers/log";
 const s3: AWS.S3 = new AWS.S3({
   region: process.env.AWS_REGION,
 });
+
 AWS.config.getCredentials(function (err) {
   if (err) console.log(err.stack);
   else {
