@@ -7,7 +7,7 @@ import { sendMassageOnSpecificPriorityChannel } from '../via-ims/sendMassageOnCh
 import { client } from '../../constPage';
 import { IChannelData } from '../../interfaces/channelData';
 import logger from '../../loggers/log';
-import { constants, files } from '../../loggers/constants';
+import { constants, FILES } from '../../loggers/constants';
 
 export async function createChannel(data: IChannelData) {
     try {
@@ -20,10 +20,10 @@ export async function createChannel(data: IChannelData) {
         await InvitePeopleToChannel(channelId, data.userIds);
         await updateChannelDescription(channelId, data.description) || "no description";
         await sendMassageOnSpecificPriorityChannel(channelId, data.currentPriority);
-        logger.info({ source: constants.SUCCESSFULLY_CREATING_CHANNEL, file: files.CREATE_CHANNEL, method: constants.METHOD.CLIENT })
+        logger.info({ source: constants.SUCCESSFULLY_CREATING_CHANNEL, file: FILES.CREATE_CHANNEL, method: constants.METHOD.CLIENT })
         return channelId;
     } catch (error) {
-        logger.error({ source: constants.CLIENT_ERROR_CREATING_CHANNEL, file: files.CREATE_CHANNEL, method: constants.METHOD.CLIENT, error: error })
+        logger.error({ source: constants.CLIENT_ERROR_CREATING_CHANNEL, file: FILES.CREATE_CHANNEL, method: constants.METHOD.CLIENT, error: error })
         return null;
     }
 }

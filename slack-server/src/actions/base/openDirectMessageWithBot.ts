@@ -2,7 +2,7 @@ import { ConversationsOpenResponse } from "@slack/web-api";
 import { sendMessage } from "./sendMessage";
 import { client } from "../../constPage";
 import logger from "../../loggers/log";
-import { constants, files } from "../../loggers/constants";
+import { constants, FILES } from "../../loggers/constants";
 
 export async function openDirectMessageWithBot(userId: string, text: string): Promise<void> {
   try {
@@ -12,6 +12,6 @@ export async function openDirectMessageWithBot(userId: string, text: string): Pr
     });
     result.channel?.id && sendMessage({ channelId: result.channel.id, text });
   } catch (error) {
-    logger.error({ source: constants.CLIENT_ERROR_OPEN_DIRECT_MESSAGE_WITH_BOT, file: files.OPEN_DIRECT_MESSAGE_WITH_BOT, method: constants.METHOD.CLIENT, error: error })
+    logger.error({ source: constants.CLIENT_ERROR_OPEN_DIRECT_MESSAGE_WITH_BOT, file: FILES.OPEN_DIRECT_MESSAGE_WITH_BOT, method: constants.METHOD.CLIENT, error: error })
   }
 }

@@ -7,14 +7,14 @@ import { CHANNEL_REDIRECT, NO_INCIDENT_NAME } from '../../constPage';
 import { sendToSocket } from "../../socket";
 import { getSlackDataByChannelId } from '../base/getSlackDataByChannelId';
 import { JoinBotToChannels } from '../base/joinBotToChannels'
-import { constants, files } from '../../loggers/constants';
+import { constants, FILES } from '../../loggers/constants';
 
 export async function createIncident(channelId: string) {
   try {
     await JoinBotToChannels(channelId);
     const slackData: ConversationsInfoResponse | null = await getSlackDataByChannelId(channelId);
     if (!slackData) {
-      logger.fatal({ source: constants.CHANNEL_NOT_FOUND_IN_SLACK, file: files.CREATEINCIDENT });
+      logger.fatal({ source: constants.CHANNEL_NOT_FOUND_IN_SLACK, file: FILES.CREATEINCIDENT });
     }
     const newIncident: IIncident = {
       name: slackData?.channel?.name || NO_INCIDENT_NAME,
@@ -35,6 +35,6 @@ export async function createIncident(channelId: string) {
     };
     sendToSocket(newIncident, ObjectType.Incident, ActionType.Add);
   } catch (error) {
-    logger.error({ source: constants.ERROR_CREATING_INCIDENT, file: files.CREATEINCIDENT, method: constants.METHOD.POST, error: error })
+    logger.error({ source: constants.ERROR_CREATING_INCIDENT, file: FILES.CREATEINCIDENT, method: constants.METHOD.POST, error: error })
   }
 }

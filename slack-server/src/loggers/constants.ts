@@ -1,13 +1,4 @@
-export const status = {
-  SUCCESS: 200,
-  CREATED_SUCCESS: 201,
-  BAD_REQUEST: 400,
-  PAGE_NOT_FOUND: 404,
-  MISSNG_REQUIRED_FIELDS: 422,
-  SERVER_ERROR: 500,
-};
-
-export const files = {
+export const FILES = {
   CREATEINCIDENT: "actions/via-slack/createIncident.ts",
   CREATETIMELINE: "actions/via-slack/createTimeline.ts",
   FILERESPONSE: "actions/via-slack/fileResponse.ts",

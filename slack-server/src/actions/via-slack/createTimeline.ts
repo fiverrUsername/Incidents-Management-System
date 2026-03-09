@@ -10,7 +10,7 @@ import { decodeMessagePriority } from '../base/decode/decodeMessagePriority';
 import { decodeMessageStatus } from '../base/decode/decodeMessageStatus';
 import { fileResponse } from './fileResponse';
 import logger from '../../loggers/log';
-import { constants, files } from '../../loggers/constants';
+import { constants, FILES } from '../../loggers/constants';
 
 export const date: Date = new Date();
 // Load environment variables from .env file
@@ -40,11 +40,11 @@ export default async function handleMessageEvent(event: any) {
       try {
         sendToSocket(timelineEvent, ObjectType.TimelineEvent, ActionType.Add);
       } catch (error) {
-        logger.error({ source: constants.AXIOS_ERROR_GET_INCIDENT_BY_CHANNELID, file: files.CREATETIMELINE, method: constants.METHOD.POST, error: error })
+        logger.error({ source: constants.AXIOS_ERROR_GET_INCIDENT_BY_CHANNELID, file: FILES.CREATETIMELINE, method: constants.METHOD.POST, error: error })
       }
     }
   } catch (error) {
-    logger.error({ source: constants.ERROR_CREATING_TIMELINEEVENT, file: files.CREATETIMELINE, method: constants.METHOD.GET, error: error })
+    logger.error({ source: constants.ERROR_CREATING_TIMELINEEVENT, file: FILES.CREATETIMELINE, method: constants.METHOD.GET, error: error })
 
   }
 

@@ -1,7 +1,7 @@
 import { IIncident } from '../../../../ims-server/src/interfaces/IncidentInterface';
 import { ActionType, ObjectType } from '../../../../ims-socket/src/interfaces';
 import { CHANNEL_REDIRECT, NO_CHANNEL_NAME } from '../../constPage';
-import { constants, files } from '../../loggers/constants';
+import { constants, FILES } from '../../loggers/constants';
 import logger from '../../loggers/log';
 import { sendToSocket } from '../../socket';
 import { createChannel } from '../base/createChannel';
@@ -22,7 +22,7 @@ export async function IMS_CreateChannel(incidentData: IIncident) {
     incidentData.channelId = channelId || ''
     sendToSocket(incidentData, ObjectType.Incident, ActionType.Update);
   } catch (error) {
-    logger.error({ source: constants.ERROR_CREATING_CHANNEL, file: files.CREATECHANNEL, method: constants.METHOD.POST, error: error })
+    logger.error({ source: constants.ERROR_CREATING_CHANNEL, file: FILES.CREATECHANNEL, method: constants.METHOD.POST, error: error })
     return null;
   }
 }

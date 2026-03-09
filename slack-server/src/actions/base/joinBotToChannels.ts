@@ -1,7 +1,7 @@
 
 import { ConversationsJoinResponse } from "@slack/web-api/dist/response/ConversationsJoinResponse";
 import { client } from "../../constPage";
-import { constants, files } from "../../loggers/constants";
+import { constants, FILES } from "../../loggers/constants";
 import logger from "../../loggers/log";
 
 export async function JoinBotToChannels(channelId: string): Promise<void> {
@@ -11,12 +11,12 @@ export async function JoinBotToChannels(channelId: string): Promise<void> {
         channel: channelId,
       });
       if (response.ok) {
-        logger.info({ source: constants.BOT_SUCCESSFULLY_JOINED_CHANNEL + " " + channelId, file: files.JOIN_BOT_TO_CHANNEL, method: constants.METHOD.CLIENT })
+        logger.info({ source: constants.BOT_SUCCESSFULLY_JOINED_CHANNEL + " " + channelId, file: FILES.JOIN_BOT_TO_CHANNEL, method: constants.METHOD.CLIENT })
       } else {
-        logger.error({ source: constants.CLIENT_ERROR_JOIN_BOT_TO_CHANNEL, file: files.JOIN_BOT_TO_CHANNEL, method: constants.METHOD.CLIENT, error: response.error })
+        logger.error({ source: constants.CLIENT_ERROR_JOIN_BOT_TO_CHANNEL, file: FILES.JOIN_BOT_TO_CHANNEL, method: constants.METHOD.CLIENT, error: response.error })
       }
     } catch (error) {
-      logger.error({ source: constants.CLIENT_ERROR_JOIN_BOT_TO_CHANNEL, file: files.JOIN_BOT_TO_CHANNEL, method: constants.METHOD.CLIENT, error: error })
+      logger.error({ source: constants.CLIENT_ERROR_JOIN_BOT_TO_CHANNEL, file: FILES.JOIN_BOT_TO_CHANNEL, method: constants.METHOD.CLIENT, error: error })
     }
   })();
 }

@@ -7,13 +7,13 @@ import { sendMessageOnAddTimelineEvent } from './actions/via-ims/sendMessageOnAd
 import { sendMassageOnSpecificPriorityChannel } from './actions/via-ims/sendMassageOnChangePriority';
 import { wsPort } from './constPage';
 import logger from './loggers/log';
-import { constants, files } from './loggers/constants';
+import { constants, FILES } from './loggers/constants';
 
 const ws: WebSocket = new WebSocket(wsPort);
 const messageQueue: IMessage[] = [];
 
 ws.on('open', () => {
-  logger.info({ source: constants.SOCKET_WEBSOCKET_CONNECTION_IS_OPEN, file: files.SOCKET, method: constants.METHOD.CLIENT })
+  logger.info({ source: constants.SOCKET_WEBSOCKET_CONNECTION_IS_OPEN, file: FILES.SOCKET, method: constants.METHOD.CLIENT })
   while (messageQueue.length > 0) {
     const message = messageQueue.shift();
     send(message!);
@@ -39,7 +39,7 @@ ws.onmessage = (webSocketMessage) => {
           // Perform some action for deleting a TimelineEvent
           break;
         default:
-          logger.error({ source: constants.SOCKET_ERROR_RECEIVED_UNKNOWN_ACTION_TYPE_FOR_TIMELINE + ": " + messageBody, file: files.SOCKET })
+          logger.error({ source: constants.SOCKET_ERROR_RECEIVED_UNKNOWN_ACTION_TYPE_FOR_TIMELINE + ": " + messageBody, file: FILES.SOCKET })
           break;
       }
       break;
@@ -58,12 +58,12 @@ ws.onmessage = (webSocketMessage) => {
           sendMassageOnSpecificPriorityChannel(messageBody.object.channelId, messageBody.object.priority)
           break;
         default:
-          logger.error({ source: constants.SOCKET_ERROR_RECEIVED_UNKNOWN_ACTION_TYPE_FOR_TIMELINE + ": " + messageBody, file: files.SOCKET })
+          logger.error({ source: constants.SOCKET_ERROR_RECEIVED_UNKNOWN_ACTION_TYPE_FOR_TIMELINE + ": " + messageBody, file: FILES.SOCKET })
           break;
       }
       break;
     default:
-      logger.error({ source: constants.SOCKET_ERROR_RECEIVED_UNKNOWN_OBJECT_TYPE + ": " + messageBody, file: files.SOCKET })
+      logger.error({ source: constants.SOCKET_ERROR_RECEIVED_UNKNOWN_OBJECT_TYPE + ": " + messageBody, file: FILES.SOCKET })
       break;
   }
 };

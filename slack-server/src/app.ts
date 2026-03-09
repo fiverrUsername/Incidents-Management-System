@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import events from './slackTracking';
 import cors from 'cors';
 import { WEBHOOK_EVENT_RECEIVED_SUCCESSFULLY, port } from './constPage';
-import { constants, files } from './loggers/constants';
+import { constants, FILES } from './loggers/constants';
 import logger from './loggers/log';
 
 const app: express.Application = express();
@@ -41,5 +41,5 @@ app.post('/webhook', (req: Request, res: Response) => {
 });
 
 app.listen(port, () => {
-  logger.info({ source: constants.SERVER_IS_OS_IN_LOCALHOST_PORT + "" + port, file: files.APP })
+  logger.info({ source: constants.SERVER_IS_OS_IN_LOCALHOST_PORT + "" + port, file: FILES.APP })
 });
