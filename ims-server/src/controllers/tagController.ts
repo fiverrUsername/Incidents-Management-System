@@ -3,6 +3,7 @@ import { TagDto } from "../dto/tagDto";
 import tagService from "../services/tagService";
 import { STATUS } from "../loggers/constants";
 import { ITag } from "../interfaces/tagInterface";
+
 export default class TagController {
   async addTag(req: Request, res: Response): Promise<void> {
     try {

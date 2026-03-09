@@ -29,7 +29,7 @@ export default class IncidentController {
     try {
       const incident: IncidentDto = await incidentService.updateIncident(req.params.id, req.body);
       if (incident instanceof Error) {
-        if (incident.message === CONSTANTS.INCIDENT_NOT_FOUND ) {
+        if (incident.message === CONSTANTS.INCIDENT_NOT_FOUND) {
           return res.status(STATUS.NOT_FOUND).json({ message: CONSTANTS.INCIDENT_NOT_FOUND });
         } else {
           return res.status(STATUS.SERVER_ERROR).json({ message: incident, error: true });
@@ -56,7 +56,7 @@ export default class IncidentController {
 
   async getIncidentByField(req: Request, res: Response): Promise<void> {
     try {
-      const incident: any = await incidentService.getIncidentByField(req.params.fieldvalue, req.params.fieldname || 'id');
+      const incident: IncidentDto = await incidentService.getIncidentByField(req.params.fieldvalue, req.params.fieldname || 'id');
       if (incident instanceof Error) {
         res.status(STATUS.NOT_FOUND).json({ message: incident, error: true });
       } else res.status(STATUS.SUCCESS).json(incident);

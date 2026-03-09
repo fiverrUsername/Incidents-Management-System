@@ -1,3 +1,4 @@
+import { AggregationType } from "aws-sdk/clients/appflow";
 import { CONSTANTS } from "../loggers/constants";
 import logger from "../loggers/log";
 import aggregationRepository from "../repositories/aggregationRepository";
@@ -6,7 +7,7 @@ class AggregateService {
   async aggregateIncident(): Promise<any> {
 
     try {
-      const aggregation: any = await aggregationRepository.aggregateIncident();
+      const aggregation: AggregationType | Error = await aggregationRepository.aggregateIncident();
       if (aggregation instanceof Error) {
         logger.error({ source: CONSTANTS.AGGREGATION, err: CONSTANTS.ERROR_AGGGREATION });
       }

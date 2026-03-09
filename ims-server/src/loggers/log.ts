@@ -17,7 +17,7 @@ const logger: Logger = pino({
   level: process.env.PINO_LOG_LEVEL || 'info',
   customLevels: levels,
   formatters: {
-    level: (label) => {
+    level: (label: string) => {
       return { level: label.toUpperCase() };
     },
   },

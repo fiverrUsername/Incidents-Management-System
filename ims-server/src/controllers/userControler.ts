@@ -5,8 +5,8 @@ import { User } from "../interfaces/userI";
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-    const { name, email, role } = req.body;
-    const user= new UserModel({ name, email, role });
+    const { name, email, role }: User = req.body;
+    const user = new UserModel({ name, email, role });
     const savedUser: User = await user.save();
     return res.status(STATUS.SUCCESS).json(savedUser);
   } catch (error) {

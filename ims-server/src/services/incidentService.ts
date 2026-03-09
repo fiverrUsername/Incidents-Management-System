@@ -5,6 +5,7 @@ import { CONSTANTS } from "../loggers/constants";
 import logger from "../loggers/log";
 import incidentRepository from "../repositories/incidentRepository";
 import liveStatusService from './liveStatusService';
+import { IncidentDto } from "../dto/incidentDto";
 
 class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {
@@ -63,7 +64,7 @@ class IncidentService {
         source: CONSTANTS.INCIDENT_COTROLLER,
         msg: CONSTANTS.GET_ALL_INCIDENTS_SUCCESS,
       });
-      const incidents = await incidentRepository.getAllIncidents();
+      const incidents :IIncident[]= await incidentRepository.getAllIncidents();
       const orderedIncidents = incidents.sort((a: IIncident, b: IIncident) => {
         const diff = dayjs(b.date).diff(dayjs(a.date));
         return diff;

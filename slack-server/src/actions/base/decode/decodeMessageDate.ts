@@ -2,7 +2,7 @@ import { parse, addDays } from 'date-fns';
 
 export function decodeMessageDate(message: string): Date | null {
   const regex: RegExp = /\d{4}-\d{2}-\d{2}/;
-  const match: RegExpMatchArray = message.match(regex);
+  const match: RegExpMatchArray | null = message.match(regex);
 
   if (match) {
     const dateString: string = match[0];

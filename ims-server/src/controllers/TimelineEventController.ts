@@ -10,7 +10,7 @@ import { KeyUrlPair } from "../interfaces/IAttachment";
 
 export default class TimelineEventController {
 
-    async getAllTimelineEvents(req: Request, res: Response): Promise<void> {
+    async getAllTimelineEvents(_req: Request, res: Response): Promise<void> {
         try {
             const timelineEvents: ITimelineEvent[] | null = await timelineEventService.getAllTimelineEvents();
             if (timelineEvents instanceof Error) {
@@ -73,7 +73,7 @@ export default class TimelineEventController {
 
     async updateTimelineEvent(req: Request, res: Response): Promise<void> {
         try {
-            const _timelineEvent = await timelineEventService.updateTimelineEvent(req.params.id, req.body);
+            const _timelineEvent: ITimelineEvent = await timelineEventService.updateTimelineEvent(req.params.id, req.body);
             if (_timelineEvent instanceof Error) {
                 if (_timelineEvent.message === CONSTANTS.MISSNG_REQUIRED_FIELDS) {
                     res.status(STATUS.MISSNG_REQUIRED_FIELDS).json({ message: CONSTANTS.MISSNG_REQUIRED_FIELDS, error: true });

@@ -2,12 +2,13 @@ import { Request, Response } from "express";
 import attachmentsService from "../services/attachmentService";
 import { STATUS } from "../loggers/constants";
 import { KeyUrlPair } from "../interfaces/IAttachment";
+import { Attachment } from "aws-sdk/clients/ecs";
 
 export default class AwsController {
 
   async uploadAttachment(req: Request, res: Response): Promise<void> {
     try {
-      const attachment: any = await attachmentsService.uploadAttachment(
+      const attachment: Attachment = await attachmentsService.uploadAttachment(
         req.files as Express.Multer.File[]
       );
       if (attachment instanceof Error) {
