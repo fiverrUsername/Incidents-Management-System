@@ -1,4 +1,3 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import Table from './table';
 
 const meta = {
@@ -9,6 +8,7 @@ const meta = {
         layout: 'fullscreen',
     },
 };
+
 export const Default = {
     args: {
         columns: [],
@@ -16,4 +16,3 @@ export const Default = {
     }
 };
 export default meta;
-type Story = StoryObj<typeof meta>;

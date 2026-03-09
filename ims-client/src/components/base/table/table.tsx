@@ -16,7 +16,7 @@ interface TableProps<T> {
   visibilityModel: GridColumnVisibilityModel | undefined
 }
 
-export const PAGE_SIZE = 6;
+export const PAGE_SIZE: number = 6;
 
 const Table = <T extends object>({ columns, rows, isLoading, visibilityModel }: TableProps<T>) => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const Table = <T extends object>({ columns, rows, isLoading, visibilityModel }: 
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState<GridColumnVisibilityModel>(visibilityModel ?? {});
 
   const handleSelectionChange = (rowSelectionModel: GridRowSelectionModel) => {
-    const timelineUrl = `/timeline/${rowSelectionModel[0]}`;
+    const timelineUrl: string = `/timeline/${rowSelectionModel[0]}`;
     navigate(timelineUrl);
   };
 

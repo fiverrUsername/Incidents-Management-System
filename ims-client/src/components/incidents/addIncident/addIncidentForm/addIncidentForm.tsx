@@ -3,7 +3,6 @@ import { Button, Dialog, FormControl, Grid } from "@mui/material";
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-
 import { keyDate, keyPriority, keyTags, keyType } from '../../../../const';
 import IIncident from '../../../../interfaces/IIncident';
 import { ITag } from '../../../../interfaces/ITag';
@@ -21,14 +20,13 @@ import { TypesIncident } from '../../../base/dropDown/Types';
 import PriorityButtons from '../../../base/priorityButtons/priorityButtons';
 
 export interface FormFormData {
-
   priority: Priority;
-  date: dayjs.Dayjs|null;
+  date: dayjs.Dayjs | null;
   type: string;
   tags: ITag[];
 }
-export interface FormData {
 
+export interface FormData {
   name: string;
   description: string;
   priority: Priority;
@@ -38,6 +36,7 @@ export interface FormData {
   type: string;
   tags: (string | ITag)[];
 }
+
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -48,8 +47,8 @@ interface Props {
 export default function addIncidentForm({ open, onClose, incidents, setIncidents }: Props) {
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>();
   const [tags, setTags] = useState<ITag[]>([]);
-  const [showBanner, setShowBanner] = useState(false);
-  const [isSubmit, setIsSubmit] = useState(false);
+  const [showBanner, setShowBanner] = useState<boolean>(false);
+  const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [formObject, setFormObject] = React.useState<FormFormData>({
     priority: Priority.P0,
@@ -70,7 +69,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
     data.type = formObject.type
     data.tags = formObject.tags
     if (formObject.type && tags.length > 0) {
-      const isSuccess = await submitIncident(data, incidents, setIncidents);
+      const isSuccess: boolean = await submitIncident(data, incidents, setIncidents);
       setIsSuccess(isSuccess);
       setShowBanner(true);
     }
@@ -88,7 +87,8 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
     right: '20px',
     cursor: 'pointer',
   };
-  const errorColor = theme.palette.error.light;
+
+  const errorColor: string = theme.palette.error.light;
   const popupStyles: React.CSSProperties = {
     background: '#FFF',
     display: 'flex',
@@ -101,9 +101,9 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
 
 
   const validatechannelName = async (value: string) => {
-    const minLength = 1;
-    const maxLength = 80;
-    const allowedCharacters = /^[a-zA-Z0-9-_]+$/;
+    const minLength: number = 1;
+    const maxLength: number = 80;
+    const allowedCharacters: RegExp = /^[a-zA-Z0-9-_]+$/;
 
     let allChannelNames: string[] = [];
 
@@ -152,7 +152,7 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
     FetchData();
   }, []);
 
-  
+
   const handleChange = async (keyType: string, event: any) => {
     console.log(event)
     setFormObject((prevFormObject) => ({
@@ -256,4 +256,3 @@ export default function addIncidentForm({ open, onClose, incidents, setIncidents
     </Dialog>
   );
 }
-

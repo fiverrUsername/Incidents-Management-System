@@ -11,12 +11,15 @@ interface DropDownProps {
     Types: option[];
     onChangeType: (keyType: string, event: any) => void;
 }
+
 export default function DropDown(props: DropDownProps) {
+
     const [type, setType] = React.useState(props.defaultValue);
     const handleChange = (event: SelectChangeEvent) => {
         setType(event.target.value);
         props.onChangeType(props.keyType, event.target.value)
     };
+
     return (
         <FormControl>
             <Select
@@ -40,18 +43,3 @@ export default function DropDown(props: DropDownProps) {
         </FormControl>
     );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

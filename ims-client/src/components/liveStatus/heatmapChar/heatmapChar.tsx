@@ -2,7 +2,7 @@ import { ApexOptions } from 'apexcharts';
 import dayjs from 'dayjs';
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { IcolorScale, liveStatusEntry } from '../../../interfaces/ILiveStatus';
+import { IcolorScale, IliveStatus, liveStatusEntry } from '../../../interfaces/ILiveStatus';
 import "./heatmapChar.css";
 import theme from '../../../theme';
 
@@ -24,28 +24,29 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         offsetX: 0,
         offsetY: 0,
         tools: {
-          download: true,  
-          selection: false,  
-          zoom: false, 
+          download: true,
+          selection: false,
+          zoom: false,
           zoomin: false,
           zoomout: false,
           pan: false,
         },
       },
     },
-    legend: {	
-      fontSize: "16px",	
-      markers: {	
-        height: 16,	
-        width: 16	
-      }},
-    grid:{
-      padding:{
-        top:10,
-        right:40,
-         bottom:10,
-         left:20
-  }
+    legend: {
+      fontSize: "16px",
+      markers: {
+        height: 16,
+        width: 16
+      }
+    },
+    grid: {
+      padding: {
+        top: 10,
+        right: 40,
+        bottom: 10,
+        left: 20
+      }
 
     },
     responsive: [
@@ -98,8 +99,8 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
         seriesIndex: number,
         dataPointIndex: number
       }) {
-        const dataPoint = props.systemsStatusCollection[seriesIndex].systemData[dataPointIndex];
-        const date = dayjs(dataPoint.date).format("DD/MM/YYYY")
+        const dataPoint: IliveStatus = props.systemsStatusCollection[seriesIndex].systemData[dataPointIndex];
+        const date: string = dayjs(dataPoint.date).format("DD/MM/YYYY")
         if (dataPoint.date !== undefined) {
           return (
             '<div class="arrow_box">' +
@@ -128,14 +129,14 @@ const HeatmapChar: React.FC<HeatmapCharProps> = (props: HeatmapCharProps) => {
           return {
             x: formattedDate,
             y: priorityValue,
-         
+
           };
         }
         else {
           return {
             x: '',
             y: 0,
-            
+
           };
         }
       })

@@ -48,5 +48,3 @@ const TypesSelect: React.FC<TypesProps> = ({ value, onChange }) => {
 };
 
 export default TypesSelect;
-
-

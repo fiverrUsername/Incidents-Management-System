@@ -2,18 +2,21 @@ import ButtonBase from "@mui/material/ButtonBase";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+
 import React from "react";
 interface WidgetProps {
   title: string;
   aggregation: number;
   icon: JSX.Element;
 }
+
 const StyledButtonBase = styled(ButtonBase)(({ theme }) => ({
   width: "102px",
   height: "102px",
   borderRadius: "10px",
   backgroundColor: theme.palette.secondary.light,
 }));
+
 const StyledIcon = styled("div")(({ theme }) => ({
   color: theme.palette.primary.contrastText,
   display: "flex",
@@ -21,6 +24,7 @@ const StyledIcon = styled("div")(({ theme }) => ({
   alignItems: "center",
   fontSize: "65px",
 }));
+
 const NewGrid = styled(Grid)(({ theme }) => ({
   width: "437px",
   height: "147px",
@@ -30,8 +34,9 @@ const NewGrid = styled(Grid)(({ theme }) => ({
   boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
   border: "1px solid rgba(0, 0, 0, 0.1)",
 }));
+
 export default function Widget({ title, aggregation, icon }: WidgetProps) {
-  const formattedAggregation = aggregation.toLocaleString();
+  const formattedAggregation: string = aggregation.toLocaleString();
   return (
     <NewGrid container spacing={{ xs: 2, md: 3 }}>
       <Grid container spacing={3}>

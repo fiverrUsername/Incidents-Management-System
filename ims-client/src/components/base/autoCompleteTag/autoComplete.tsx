@@ -3,15 +3,18 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import theme from '../../../theme';
 import { ITag } from '../../../interfaces/ITag';
+
 interface AutocompleteProps {
-  keytype:string;
+  keytype: string;
   options: ITag[];
   selectedOptions?: ITag[];
-  onChangeOptions: (keytype:string,event: any) => void;
+  onChangeOptions: (keytype: string, event: any) => void;
 }
+
 export interface CustomSyntheticEvent extends SyntheticEvent {
   selectedTags: ITag[];
 }
+
 const CustomAutocomplete = (props: AutocompleteProps) => {
 
   const [value, setValue] = useState<ITag[]>(props.selectedOptions || []);
@@ -26,7 +29,7 @@ const CustomAutocomplete = (props: AutocompleteProps) => {
         setFilteredOptions(newFilteredOptions);
       }
     }
-    else{
+    else {
       setFilteredOptions(props.options);
     }
   }, [props.selectedOptions, props.options]);
@@ -42,8 +45,8 @@ const CustomAutocomplete = (props: AutocompleteProps) => {
     };
     props.onChangeOptions(props.keytype, customEvent.selectedTags);
   };
- // eslint-disable-next-line @typescript-eslint/no-explicit-any
- const getOptionLabel= (option: any) => option.name;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const getOptionLabel = (option: any) => option.name;
   return (
     <Autocomplete
       ChipProps={{

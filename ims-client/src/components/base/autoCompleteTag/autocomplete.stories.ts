@@ -15,4 +15,3 @@ export const Default = {
   };
 export default meta;
 type Story = StoryObj<typeof meta>;
-

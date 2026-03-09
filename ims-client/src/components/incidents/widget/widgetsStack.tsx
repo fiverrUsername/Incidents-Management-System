@@ -3,12 +3,12 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import { useMediaQuery } from '@mui/material';
 import Stack from '@mui/material/Stack';
-import React, { styled, useTheme } from '@mui/material/styles';
+import { styled, Theme, useTheme } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import IAggregation from '../../../interfaces/IAggregation';
-import Widget from './widget';
-import backendServices from '../../../services/backendServices/backendServices';
 import Logger from '../../../loggers/logger';
+import backendServices from '../../../services/backendServices/backendServices';
+import Widget from './widget';
 
 const NewStack = styled(Stack)(() => ({
   '&': {
@@ -20,18 +20,20 @@ const NewStack = styled(Stack)(() => ({
     'paddingRight': '25px'
   }
 }));
+
 const iconMapping = {
   'Active Count': <BarChartIcon />,
   'Average Cost': <MonetizationOnIcon />,
   'Average Duration Hours': <ScheduleIcon />,
 };
+
 export default function WidgetsStack() {
   const [aggregateIncident, setAggregateIncident] = useState<IAggregation | null>(null);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const theme: Theme = useTheme();
+  const isMobile: boolean = useMediaQuery(theme.breakpoints.down('sm'));
   const fetchData = async () => {
     try {
-      const response = await backendServices.getAggregation();
+      const response: any = await backendServices.getAggregation();
       Logger.info({ source: "Widget stack", message: "Get aggregation success!" })
       setAggregateIncident(response);
     } catch (error) {

@@ -1,5 +1,6 @@
-import { Pagination } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { StyledComponent } from "@emotion/styled";
+import { Pagination, PaginationProps } from "@mui/material";
+import { styled, Theme } from "@mui/material/styles";
 import {
   gridPageCountSelector,
   gridPageSelector,
@@ -7,27 +8,30 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 import React from "react";
+import { MUIStyledCommonProps } from '@mui/system';
+import { GridApiCommunity } from "@mui/x-data-grid/internals";
 
 export const PaginationComponent = () => {
-  const StyledPagination = styled(Pagination)(({ theme }) => ({
-    "& .MuiPaginationItem-root:hover, & .MuiPaginationItem-root.Mui-selected": {
-      color: "white",
-      backgroundColor: theme.palette.secondary.main,
-    },
-  }));
+  const StyledPagination: StyledComponent<PaginationProps & MUIStyledCommonProps<Theme>, {}, {}>
+    = styled(Pagination)(({ theme }) => ({
+      "& .MuiPaginationItem-root:hover, & .MuiPaginationItem-root.Mui-selected": {
+        color: "white",
+        backgroundColor: theme.palette.secondary.main,
+      },
+    }));
 
-  const apiRef = useGridApiContext();
-  const page = useGridSelector(apiRef, gridPageSelector);
-  const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+  const apiRef: React.MutableRefObject<GridApiCommunity> = useGridApiContext();
+  const page: number = useGridSelector(apiRef, gridPageSelector);
+  const pageCount: number = useGridSelector(apiRef, gridPageCountSelector);
 
   return (
-    
-      <StyledPagination
-        page={page + 1}
-        count={pageCount}
-        onChange={(event: React.ChangeEvent<unknown>, value: number) =>
-          apiRef.current.setPage(value - 1)
-        }
-      />
+
+    <StyledPagination
+      page={page + 1}
+      count={pageCount}
+      onChange={(_event: React.ChangeEvent<unknown>, value: number) =>
+        apiRef.current.setPage(value - 1)
+      }
+    />
   );
 };

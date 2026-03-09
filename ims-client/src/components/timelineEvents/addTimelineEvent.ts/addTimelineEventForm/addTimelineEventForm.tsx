@@ -31,6 +31,7 @@ export interface dataFromForm {
   filesString: string[];
   status: Status;
 }
+
 export interface receivedIncident {
   id: string;
   name: string;
@@ -57,7 +58,6 @@ interface Props {
   addNewTimelineFunction: (newTimeline: ITimeLineEvent) => void;
   updateIncidentFunction: (newIncident: receivedIncident) => void;
 }
-
 
 export default function AddTimelineForm({ isOpen, incident, onClose, addNewTimelineFunction, updateIncidentFunction }: Props) {
   const { handleSubmit, register, formState: { errors } } = useForm<dataFromForm>();

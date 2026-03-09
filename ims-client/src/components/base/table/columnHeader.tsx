@@ -9,4 +9,3 @@ export const ColumnHeader: React.FC<{ params: GridColumnHeaderParams }> = ({ par
     </Typography>
   );
 };
-

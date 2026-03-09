@@ -83,12 +83,3 @@ export const UploadStyles = {
     },
   },
 };
-
-
-
-
-
-
-
-
-

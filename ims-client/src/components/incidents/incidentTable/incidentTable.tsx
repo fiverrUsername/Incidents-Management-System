@@ -32,19 +32,84 @@ const IncidentTable: React.FC<IInceidentTableProps> = ({ rows, isLoading, incide
   };
 
   const columnsConfig: GridColDef[] = [
-    { field: "id", headerName: "Id", minWidth: 150, maxWidth: 1700, },
-    { field: "name", headerName: "Name", minWidth: 200, maxWidth: 1700, },
-    { field: "status", headerName: "Status", minWidth: 150, maxWidth: 1700, },
-    { field: "description", headerName: "Description", minWidth: 250, maxWidth: 1700, },
-    { field: "currentPriority", headerName: "Priority", minWidth: 150, maxWidth: 1700, },
-    { field: "type", headerName: "Type", minWidth: 150, maxWidth: 1700, },
-    { field: "durationHours", headerName: "Duration (Hours)", minWidth: 200, maxWidth: 1700, },
-    { field: "channelName", headerName: "Channel Name", minWidth: 200, maxWidth: 1700, },
-    { field: "tags", headerName: "Tags", minWidth: 200, maxWidth: 1700, },
-    { field: "date", headerName: "Date", minWidth: 150, maxWidth: 1700, },
-    { field: "createdAt", headerName: "Created At", minWidth: 200, maxWidth: 500, },
-    { field: "updatedAt", headerName: "Updated At", minWidth: 200, maxWidth: 700, },
-    { field: "cost", headerName: "Cost", minWidth: 150, maxWidth: 700, },
+    {
+      field: "id",
+      headerName: "Id",
+      minWidth: 150,
+      maxWidth: 1700,
+    },
+    {
+      field: "name",
+      headerName: "Name",
+      minWidth: 200,
+      maxWidth: 1700,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      minWidth: 150,
+      maxWidth: 1700,
+    },
+    {
+      field: "description",
+      headerName: "Description",
+      minWidth: 250,
+      maxWidth: 1700,
+    },
+    {
+      field: "currentPriority",
+      headerName: "Priority",
+      minWidth: 150,
+      maxWidth: 1700,
+    },
+    {
+      field: "type",
+      headerName: "Type",
+      minWidth: 150,
+      maxWidth: 1700,
+    },
+    {
+      field: "durationHours",
+      headerName: "Duration (Hours)",
+      minWidth: 200,
+      maxWidth: 1700,
+    },
+    {
+      field: "channelName",
+      headerName: "Channel Name",
+      minWidth: 200,
+      maxWidth: 1700,
+    },
+    {
+      field: "tags",
+      headerName: "Tags",
+      minWidth: 200,
+      maxWidth: 1700,
+    },
+    {
+      field: "date",
+      headerName: "Date",
+      minWidth: 150,
+      maxWidth: 1700,
+    },
+    {
+      field: "createdAt",
+      headerName: "Created At",
+      minWidth: 200,
+      maxWidth: 500,
+    },
+    {
+      field: "updatedAt",
+      headerName: "Updated At",
+      minWidth: 200,
+      maxWidth: 700,
+    },
+    {
+      field: "cost",
+      headerName: "Cost",
+      minWidth: 150,
+      maxWidth: 700,
+    },
   ];
 
   columnsConfig.forEach((column) => {

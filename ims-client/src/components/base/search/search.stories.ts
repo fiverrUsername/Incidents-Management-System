@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import Search from './search';
 
@@ -20,4 +19,3 @@ export const def: Story = {
     setValue: ()=>{console.log("jjj")}
   },
 };
-

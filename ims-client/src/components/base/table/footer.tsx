@@ -5,11 +5,12 @@ import { PAGE_SIZE } from "./table";
 import React from 'react';
 import theme from "../../../theme";
 import CustomTextField from "../customTextField/customTextfield";
+import { GridApiCommunity } from "@mui/x-data-grid/internals";
 
 export const CustomFooter = (): JSX.Element => {
 
-    const gridApi = useGridApiContext();
-    const [rowCount, setRowCount] = useState(PAGE_SIZE);
+    const gridApi: React.MutableRefObject<GridApiCommunity> = useGridApiContext();
+    const [rowCount, setRowCount] = useState<number>(PAGE_SIZE);
 
     const handleRowCountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newRowCount = parseInt(event.target.value, 10);
@@ -20,7 +21,7 @@ export const CustomFooter = (): JSX.Element => {
     };
 
     return (
-        <GridFooterContainer sx={{border:'none',marginBottom:2,marginTop:2}}>
+        <GridFooterContainer sx={{ border: 'none', marginBottom: 2, marginTop: 2 }}>
             <PaginationComponent />
             <div style={{ flexGrow: 1, textAlign: 'right' }} >
                 show:

@@ -2,13 +2,15 @@ import { Button } from "@mui/material";
 import React, { useState } from "react";
 import IIncident from "../../../interfaces/IIncident";
 import AddIncidentForm from "./addIncidentForm/addIncidentForm";
+
 export interface Props {
     incidents: IIncident[]
     setIncident: (value: React.SetStateAction<IIncident[]>) => void
 }
 
 export default function AddIncident({ incidents, setIncident }: Props) {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
+
     const handleClick = () => {
         setOpen(!open);
     };
@@ -24,4 +26,3 @@ export default function AddIncident({ incidents, setIncident }: Props) {
         </div>
     )
 }
-
