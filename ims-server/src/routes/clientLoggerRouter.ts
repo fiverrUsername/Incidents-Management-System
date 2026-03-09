@@ -1,0 +1,20 @@
+import express, { Router } from "express";
+import fs from 'fs';
+import ILogData from '../interfaces/ILog'
+import { STATUS, CONSTANTS } from "../loggers/constants";
+
+const router: Router = express.Router();
+
+router.post("/", async (req, res) => {
+  const logData: ILogData = req.body;
+  const logEntry: string = `time:[${logData.timestamp}] level:[${logData.level}] massage:[${logData.message}] source:[${logData.source}]\n`;
+  try {
+    await fs.promises.appendFile('ClientLogs.log', logEntry);
+    res.status(STATUS.SUCCESS).json({ message: CONSTANTS.ADD_CLIENT_LOG_ENTRY_SUCCESS });
+
+  } catch (error) {
+    res.status(STATUS.SERVER_ERROR).json({ message: CONSTANTS.ADD_CLIENT_LOG_ENTRY_FAILED });
+  }
+});
+
+export default router;

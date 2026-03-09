@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { within, userEvent } from '@storybook/testing-library';
-import UpTabs from '../../components/tabs/Tabs';
 import incidentsPage from './incidentsPage';
 
 const meta = {
@@ -18,11 +17,9 @@ type Story = StoryObj<typeof meta>;
 export const Filter: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const activeIncidents = await canvas.getByText('Active Incidents');
+    const activeIncidents: HTMLElement = await canvas.getByText('Active Incidents');
     await userEvent.click(activeIncidents);
-    const SolvedIncidents = await canvas.getByText('Solved Incidents');
+    const SolvedIncidents: HTMLElement = await canvas.getByText('Solved Incidents');
     await userEvent.click(SolvedIncidents);
   },
 };
-
-

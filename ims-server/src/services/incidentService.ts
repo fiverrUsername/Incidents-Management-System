@@ -1,77 +1,57 @@
-import { validate } from "class-validator";
-import { IncidentDto } from "../dto/incidentDto";
+import dayjs from "dayjs";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ISummary } from "../interfaces/ISummary";
-import { constants } from "../loggers/constants";
+import { CONSTANTS } from "../loggers/constants";
 import logger from "../loggers/log";
-import incidentModel from "../models/IncidentModel";
 import incidentRepository from "../repositories/incidentRepository";
+import liveStatusService from './liveStatusService';
+import { IncidentDto } from "../dto/incidentDto";
 
 class IncidentService {
   async addIncident(newIncident: IIncident): Promise<void | any> {
     try {
-      const incident = new IncidentDto(newIncident);
-      const validationErrors = await validate(incident);
-      if (validationErrors.length > 0) {
-        logger.error({
-          source: constants.INCIDENT_SERVICE,
-          err: "Validation error",
-          validationErrors: validationErrors.map((error) => error.toString()),
-        });
-        throw new Error("Validation error");
-      }
       logger.info({
-        sourece: constants.INCIDENT_COTROLLER,
-        msg: constants.ADD_INCIDENT_SUCCESS
+        sourece: CONSTANTS.INCIDENT_COTROLLER,
+        msg: CONSTANTS.ADD_INCIDENT_SUCCESS,
+        incidentId: newIncident.id
       });
-      return await incidentRepository.addIncident(newIncident);
-      // return await incidentRepository.addIncident(incident);
+      console.log("-------IncidentService ,", newIncident)
+      const incident = await incidentRepository.addIncident(newIncident);
+
+      const isToday = new Date(newIncident.date).toDateString() === new Date().toDateString();
+
+      if (isToday) {
+        await liveStatusService.liveStatusByIncident(incident);
+      }
+      else
+        await liveStatusService.liveStatusByIncidentWithPreviousDate(incident)
+      return incident
     } catch (error: any) {
       logger.error({
-        source: constants.INCIDENT_COTROLLER,
-        err: constants.ERROR_ADDING_INCIDENT,
+        source: CONSTANTS.INCIDENT_COTROLLER,
+        err: CONSTANTS.ERROR_ADDING_INCIDENT,
       });
       console.error(`error: ${error}`);
       return error;
     }
   }
 
-  async updateIncident(id: String, data: any): Promise<void | any> {
+  async updateIncident(id: string, data: any): Promise<IIncident | any> {
     try {
-      const updatedIncident = await incidentRepository.updateIncident(id, data);
-      if (updatedIncident) {
-        logger.info({
-          source: constants.INCIDENT_COTROLLER,
-          msg: constants.UPDATE_INCIDENT_SUCCESS,
-          incidetID: id,
-        });
-        throw new Error("Validation error");
+      const isValidId: IIncident | any = await incidentRepository.getIncidentById(id);
+      if (isValidId === null || isValidId instanceof Error) {
+        logger.error({ source: CONSTANTS.INCIDENT_COTROLLER, err: CONSTANTS.INCIDENT_NOT_FOUND, incidentId: id, });
+        return new Error(CONSTANTS.INCIDENT_NOT_FOUND);
       }
-      logger.info({
-        sourece: constants.INCIDENT_COTROLLER,
-        msg: constants.UPDATE_INCIDENT_SUCCESS
-      });
-      await incidentRepository.updateIncident(id, updatedIncident);
-      // if (!data.name) {
-      //   logger.error({
-      //     source: constants.MISSNG_REQUIRED_FIELDS,
-      //     method: constants.METHOD.PUT,
-      //   });
-      //   throw new Error(constants.MISSNG_REQUIRED_FIELDS);
-      // } else {
-      //   logger.error({
-      //     source: constants.INCIDENT_COTROLLER,
-      //     err: constants.INCIDENT_NOT_FOUND,
-      //     incidentId: id,
-      //   });
-      //   throw new Error(constants.INCIDENT_NOT_FOUND);
-      // }
+      const updatedIncident: IIncident = await incidentRepository.updateIncident(id, data);
+      if (updatedIncident) {
+        logger.info({ source: CONSTANTS.INCIDENT_COTROLLER, msg: CONSTANTS.UPDATE_INCIDENT_SUCCESS, incidetID: id, });
+        return updatedIncident;
+      }
+      logger.error({ source: CONSTANTS.SERVER_ERROR, method: CONSTANTS.METHOD.PUT, error: true })
+      return new Error(CONSTANTS.SERVER_ERROR)
     } catch (error: any) {
-      logger.error({
-        source: constants.INCIDENT_COTROLLER,
-        method: constants.METHOD.PUT,
-        incidetID: id,
-      });
+      logger.error({ source: CONSTANTS.INCIDENT_COTROLLER, method: CONSTANTS.METHOD.PUT, incidetID: id, });
       console.error(`error: ${error}`);
       return error;
     }
@@ -80,71 +60,69 @@ class IncidentService {
   async getAllIncidents(): Promise<IIncident[] | any> {
     try {
       logger.info({
-        source: constants.INCIDENT_COTROLLER,
-        msg: constants.GET_ALL_INCIDENTS_SUCCESS,
+        source: CONSTANTS.INCIDENT_COTROLLER,
+        msg: CONSTANTS.GET_ALL_INCIDENTS_SUCCESS,
       });
-      const incidents = await incidentRepository.getAllIncidents();
-      return incidents;
+      const incidents: IIncident[] = await incidentRepository.getAllIncidents();
+      const orderedIncidents = incidents.sort((a: IIncident, b: IIncident) => {
+        const diff = dayjs(b.date).diff(dayjs(a.date));
+        return diff;
+      });
+      return orderedIncidents;
     } catch (error: any) {
       logger.error({
-        source: constants.INCIDENT_COTROLLER,
-        err: constants.ERROR_GETTING_ALL_INCIDENTS,
+        source: CONSTANTS.INCIDENT_COTROLLER,
+        err: CONSTANTS.ERROR_GETTING_ALL_INCIDENTS,
       });
       console.error(`error: ${error}`);
       return error;
     }
   }
 
-  async getIncidentById(id: String): Promise<IIncident | any> {
+  async getIncidentByField(fieldValue: string, fieldName: string): Promise<IIncident | any> {
     try {
-      const incident = await incidentRepository.getIncidentById(id);
+      const incident: IIncident | any = await incidentRepository.getIncidentByField(fieldValue, fieldName);
       if (incident) {
         logger.info({
-          source: constants.INCIDENT_COTROLLER,
-          method: constants.METHOD.GET,
-          incidentId: id,
+          source: CONSTANTS.INCIDENT_COTROLLER,
+          method: CONSTANTS.METHOD.GET,
+          incidentId: fieldValue,
         });
       }
       return incident;
     } catch (error: any) {
       logger.error({
-        source: constants.INCIDENT_COTROLLER,
-        err: constants.INCIDENT_NOT_FOUND,
-        incidentID: id,
+        source: CONSTANTS.INCIDENT_COTROLLER,
+        err: CONSTANTS.INCIDENT_NOT_FOUND,
+        incidentID: fieldValue,
       });
       console.error(`error: ${error}`);
       return error;
     }
   }
 
-  async getSummaryIncident(id: String): Promise<ISummary | any> {
+  async getSummaryIncident(id: string): Promise<ISummary | any> {
     try {
-      let summary = {
-        createdBy: '',
-        createdAt: new Date(),
-        currentPriority: '',
-        tags: []
-      }
-      //check if get incident from repository or service
-      const incident = await incidentRepository.getIncidentById(id);
+      let summary: ISummary | null = null;
+      const incident: IIncident | any = await incidentRepository.getIncidentByField(id, 'id');
       if (incident) {
-        //find user with userId from createdBy  ????
-        //create summary
         summary = {
           createdBy: incident.createdBy,
           createdAt: incident.createdAt,
-          currentPriority: incident.priority,
-          tags: incident.tags
+          currentPriority: incident.currentPriority,
+          tags: incident.currentTags
         }
-        logger.info({ source: constants.INCIDENT_COTROLLER, method: constants.METHOD.GET, incidentId: id })
+        logger.info({ source: CONSTANTS.INCIDENT_COTROLLER, method: CONSTANTS.METHOD.GET, incidentId: id })
+        return summary;
       }
       return summary;
     } catch (error: any) {
-      logger.error({ source: constants.INCIDENT_COTROLLER, err: constants.INCIDENT_NOT_FOUND, incidentID: id });
+      logger.error({ source: CONSTANTS.INCIDENT_COTROLLER, err: true, incidentID: id });
       console.error(`error: ${error}`);
       return error;
     }
   }
 
 }
+
 export default new IncidentService();

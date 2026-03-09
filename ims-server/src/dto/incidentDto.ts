@@ -1,25 +1,24 @@
 import {
   IsArray,
   IsISO8601,
-  isNotEmpty,
   IsNotEmpty,
   IsNumber,
   IsOptional,
-  isString,
   IsString,
-  ValidateNested,
+  ValidateNested
 } from "class-validator";
-import { constants } from "../loggers/constants";
+import { Priority, Status } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
+import { CONSTANTS } from "../loggers/constants";
 import { TagDto } from "./tagDto";
 
 export class IncidentDto {
   constructor(init: IIncident) {
     this.id = "";
     this.name = "";
-    this.status = "";
+    this.status = Status.Active;
     this.description = "";
-    this.currentPriority = "";
+    this.currentPriority = Priority.P0;
     this.type = "";
     this.channelId ="";
     this.durationHours = 0;
@@ -31,73 +30,70 @@ export class IncidentDto {
     this.createdBy = '';
     Object.assign(this, init);
   }
+//TODO
+  @IsString({ message: `id ${CONSTANTS.INVALID_MESSAGE}` })
+  @IsOptional({ message: `id ${CONSTANTS.EMPTY_OBJECT}` })
+  id?: string;
 
-  @IsNotEmpty({ message: `id ${constants.EMPTY_OBJECT}` })
-  @IsString({ message: `id ${constants.INVALID_MESSAGE}` })
-  id: string;
-
-  @IsNotEmpty({ message: `name ${constants.EMPTY_OBJECT}` })
-  @IsString({ message: `name ${constants.INVALID_MESSAGE}` })
+  @IsNotEmpty({ message: `name ${CONSTANTS.EMPTY_OBJECT}` })
+  @IsString({ message: `name ${CONSTANTS.INVALID_MESSAGE}` })
   name: string;
 
-  @IsNotEmpty({ message: `status ${constants.EMPTY_OBJECT}` })
-  @IsString({ message: `status ${constants.INVALID_MESSAGE}` })
-  status: string;
+  @IsNotEmpty({ message: `status ${CONSTANTS.EMPTY_OBJECT}` })
+  @IsString({ message: `status ${CONSTANTS.INVALID_MESSAGE}` })
+  status: Status;
 
-  @IsNotEmpty({ message: `description ${constants.EMPTY_OBJECT}` })
-  @IsString({ message: `description ${constants.INVALID_MESSAGE}` })
+  @IsNotEmpty({ message: `description ${CONSTANTS.EMPTY_OBJECT}` })
+  @IsString({ message: `description ${CONSTANTS.INVALID_MESSAGE}` })
   description: string;
 
-  @IsNotEmpty({ message: `currentPriority ${constants.EMPTY_OBJECT}` })
-  @IsString({ message: `currentPriority ${constants.INVALID_MESSAGE}` })
-  currentPriority: string;
+  @IsNotEmpty({ message: `currentPriority ${CONSTANTS.EMPTY_OBJECT}` })
+  @IsString({ message: `currentPriority ${CONSTANTS.INVALID_MESSAGE}` })
+  currentPriority: Priority;
 
-  @IsNotEmpty({ message: `type ${constants.EMPTY_OBJECT}` })
-  @IsString({ message: `type ${constants.INVALID_MESSAGE}` })
+  @IsNotEmpty({ message: `type ${CONSTANTS.EMPTY_OBJECT}` })
+  @IsString({ message: `type ${CONSTANTS.INVALID_MESSAGE}` })
   type: string;
 
-  @IsNotEmpty({ message: `durationHours ${constants.EMPTY_OBJECT}` })
+  @IsNotEmpty({ message: `durationHours ${CONSTANTS.EMPTY_OBJECT}` })
   @IsNumber()
   durationHours: number;
 
-  @IsNotEmpty({ message: `channelName ${constants.EMPTY_OBJECT}` })
-  @IsString({ message: `channelName ${constants.INVALID_MESSAGE}` })
-  @IsOptional({ message: `channelName ${constants.EMPTY_OBJECT}` })
+  @IsNotEmpty({ message: `channelName ${CONSTANTS.EMPTY_OBJECT}` })
+  @IsString({ message: `channelName ${CONSTANTS.INVALID_MESSAGE}` })
+  @IsOptional({ message: `channelName ${CONSTANTS.EMPTY_OBJECT}` })
   channelName?: string;
 
-
-  @IsString({ message: `slackLink ${constants.INVALID_MESSAGE}` })
-  @IsOptional({ message: `slackLink ${constants.EMPTY_OBJECT}` })
+  @IsString({ message: `slackLink ${CONSTANTS.INVALID_MESSAGE}` })
+  @IsOptional({ message: `slackLink ${CONSTANTS.EMPTY_OBJECT}` })
   slackLink?: string;
 
-
-
-  @IsString({ message: `channelId ${constants.INVALID_MESSAGE}` })
-  @IsOptional({ message: `channelId ${constants.EMPTY_OBJECT}` })
+  @IsString({ message: `channelId ${CONSTANTS.INVALID_MESSAGE}` })
+  @IsOptional({ message: `channelId ${CONSTANTS.EMPTY_OBJECT}` })
   channelId?: string;
 
-  @IsNotEmpty({ message: `currentTags ${constants.EMPTY_OBJECT}` })
+  @IsNotEmpty({ message: `currentTags ${CONSTANTS.EMPTY_OBJECT}` })
   @IsArray({ message: "is not an array" })
   @ValidateNested({ each: true })
   currentTags: TagDto[];
 
-  @IsNotEmpty({ message: `date ${constants.EMPTY_OBJECT}` })
+  @IsNotEmpty({ message: `date ${CONSTANTS.EMPTY_OBJECT}` })
   @IsISO8601()
   date: string;
 
-  @IsNotEmpty({ message: `createdAt ${constants.EMPTY_OBJECT}` })
+  @IsNotEmpty({ message: `createdAt ${CONSTANTS.EMPTY_OBJECT}` })
   @IsISO8601()
   createdAt: string;
 
-  @IsNotEmpty({ message: `updatedAt ${constants.EMPTY_OBJECT}` })
+  @IsNotEmpty({ message: `updatedAt ${CONSTANTS.EMPTY_OBJECT}` })
   @IsISO8601()
   updatedAt: string;
 
-  @IsNotEmpty({ message: `cost ${constants.EMPTY_OBJECT}` })
+  @IsNotEmpty({ message: `cost ${CONSTANTS.EMPTY_OBJECT}` })
   @IsNumber()
   cost: number;
 
-  @IsNotEmpty({ message: `createdBy ${constants.EMPTY_OBJECT}` })
+  @IsNotEmpty({ message: `createdBy ${CONSTANTS.EMPTY_OBJECT}` })
   @IsString()
   createdBy: string
 }

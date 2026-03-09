@@ -1,7 +1,7 @@
-import pino from 'pino'
+import pino, { Logger } from 'pino'
 import fs from 'fs';
 
-const levels = {
+const levels: any = {
   http: 10,
   debug: 20,
   info: 30,
@@ -10,14 +10,14 @@ const levels = {
   fatal: 60,
 };
 
-const file = process.env.LOG_DESTINATION || '';
-const logFile = fs.createWriteStream(file, { flags: 'a' });
+const file: string = process.env.LOG_DESTINATION || '';
+const logFile: fs.WriteStream = fs.createWriteStream(file, { flags: 'a' });
 
-const logger = pino({
+const logger: Logger = pino({
   level: process.env.PINO_LOG_LEVEL || 'info',
   customLevels: levels,
   formatters: {
-    level: (label) => {
+    level: (label: string) => {
       return { level: label.toUpperCase() };
     },
   },

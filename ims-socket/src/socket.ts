@@ -1,26 +1,27 @@
 import WebSocket from 'ws';
-
-const ws = new WebSocket.Server({ port: 7071 });
-const clients = new Map<string, WebSocket>();
+const ws: WebSocket.Server = new WebSocket.Server({ port: 8080, perMessageDeflate: false });
+const clients: Map<string, WebSocket> = new Map<string, WebSocket>();
 
 function uuidv4(): string {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    const r = Math.random() * 16 | 0;
-    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    const r: number = Math.random() * 16 | 0;
+    const v: number = c === 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
   });
 }
 
 ws.on('connection', (ws: WebSocket) => {
-  const id = uuidv4();
+  const id: string = uuidv4();
   clients.set(id, ws);
   ws.on('message', (messageAsString: string) => {
+    console.log("--------ws.on ");
     [...clients.entries()].forEach(([clientId, client]) => {
       if (clientId !== id) // Don't send the message back to the sender
         client.send(messageAsString);
     });
   });
   ws.on('close', () => {
+    console.log("--------ws.close ");
     clients.delete(id);
   });
 });
