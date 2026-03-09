@@ -16,6 +16,13 @@ export enum Priority {
     P0 = 'p0',
 }
 
+export const PRIORITY_INDEX_MAP: Record<Priority, number> = {
+    [Priority.P0]: 0,
+    [Priority.P1]: 1,
+    [Priority.P2]: 2,
+    [Priority.P3]: 3,
+};
+
 export enum Level {
     info = 'info',
     debug = 'debug',

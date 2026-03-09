@@ -4,19 +4,32 @@ import logger from "../loggers/log";
 import aggregationRepository from "../repositories/aggregationRepository";
 
 class AggregateService {
-  async aggregateIncident(): Promise<any> {
 
+  async aggregateIncident(): Promise<AggregationType> {
     try {
-      const aggregation: AggregationType | Error = await aggregationRepository.aggregateIncident();
+
+      const aggregation = await aggregationRepository.aggregateIncident();
+
       if (aggregation instanceof Error) {
-        logger.error({ source: CONSTANTS.AGGREGATION, err: CONSTANTS.ERROR_AGGGREATION });
+        throw aggregation;
       }
-      logger.info({ source: CONSTANTS.AGGREGATION, success: true });
+
+      logger.info({
+        source: CONSTANTS.AGGREGATION,
+        message: CONSTANTS.SUCCESS
+      });
+
       return aggregation;
-    } catch (error: any) {
-      logger.error({ source: CONSTANTS.AGGREGATION, err: CONSTANTS.ERROR_AGGGREATION });
-      console.error(`error: ${error}`);
-      return error;
+
+    } catch (error) {
+
+      logger.error({
+        source: CONSTANTS.AGGREGATION,
+        err: CONSTANTS.ERROR_AGGGREATION,
+        error
+      });
+
+      throw error;
     }
   }
 }

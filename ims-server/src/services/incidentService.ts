@@ -16,14 +16,13 @@ class IncidentService {
         incidentId: newIncident.id
       });
       console.log("-------IncidentService ,", newIncident)
-      const incident: IIncident = await incidentRepository.addIncident(newIncident);
-      const newIncidentDate: Date = new Date(newIncident.date);
-      const currentDate: Date = new Date();
-      if (
-        newIncidentDate.getDate() === currentDate.getDate() &&
-        newIncidentDate.getMonth() === currentDate.getMonth() &&
-        newIncidentDate.getFullYear() === currentDate.getFullYear()
-      ) await liveStatusService.liveStatusByIncident(incident)
+      const incident = await incidentRepository.addIncident(newIncident);
+
+      const isToday = new Date(newIncident.date).toDateString() === new Date().toDateString();
+
+      if (isToday) {
+        await liveStatusService.liveStatusByIncident(incident);
+      }
       else
         await liveStatusService.liveStatusByIncidentWithPreviousDate(incident)
       return incident
@@ -64,7 +63,7 @@ class IncidentService {
         source: CONSTANTS.INCIDENT_COTROLLER,
         msg: CONSTANTS.GET_ALL_INCIDENTS_SUCCESS,
       });
-      const incidents :IIncident[]= await incidentRepository.getAllIncidents();
+      const incidents: IIncident[] = await incidentRepository.getAllIncidents();
       const orderedIncidents = incidents.sort((a: IIncident, b: IIncident) => {
         const diff = dayjs(b.date).diff(dayjs(a.date));
         return diff;

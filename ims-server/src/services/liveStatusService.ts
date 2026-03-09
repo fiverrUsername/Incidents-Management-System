@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Priority, Status } from "../enums/enum";
+import { Priority, PRIORITY_INDEX_MAP, Status } from "../enums/enum";
 import { IIncident } from "../interfaces/IncidentInterface";
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import { IliveStatus, liveStatusEntry } from "../interfaces/liveStatusInterface";
@@ -11,16 +11,7 @@ import { ITag } from '../interfaces/tagInterface';
 
 class liveStatusService {
 
-    constructor() {
-        this.autoUpdateLiveStatus = this.autoUpdateLiveStatus.bind(this);
-    }
-
-    priorityIndexMap: Record<Priority, number> = {
-        [Priority.P0]: 0,
-        [Priority.P1]: 1,
-        [Priority.P2]: 2,
-        [Priority.P3]: 3,
-    };
+    constructor() { this.autoUpdateLiveStatus = this.autoUpdateLiveStatus.bind(this); }
 
     async getLiveStatus(date?: Date): Promise<liveStatusEntry[] | any> {
         try {
@@ -58,7 +49,7 @@ class liveStatusService {
         try {
             //here i need the index
             let existingLiveStatus;
-            const incidentIndex: number = this.priorityIndexMap[data.maxPriority];
+            const incidentIndex: number = PRIORITY_INDEX_MAP[data.maxPriority];
             if (liveStatus) {
                 existingLiveStatus = liveStatus;
             } else {
@@ -98,13 +89,13 @@ class liveStatusService {
             if (!liveStatus)
                 return
             const updatedIncidents: string[][] = liveStatus.incidents.map((incidentsArray) => [...incidentsArray]);
-            const incidentIndex: number = this.priorityIndexMap[previousPriority];
+            const incidentIndex: number = PRIORITY_INDEX_MAP[previousPriority];
             updatedIncidents[incidentIndex] = updatedIncidents[incidentIndex].filter(
                 (incidentId) => incidentId !== timeLineEvent.incidentId
             );
             if (previousPriority != timeLineEvent.priority) {
-                updatedIncidents[this.priorityIndexMap[timeLineEvent.priority]].push(timeLineEvent.incidentId)
-                if (this.priorityIndexMap[liveStatus.maxPriority] > this.priorityIndexMap[timeLineEvent.priority]) {
+                updatedIncidents[PRIORITY_INDEX_MAP[timeLineEvent.priority]].push(timeLineEvent.incidentId)
+                if (PRIORITY_INDEX_MAP[liveStatus.maxPriority] > PRIORITY_INDEX_MAP[timeLineEvent.priority]) {
                     liveStatus.maxPriority = timeLineEvent.priority;
                 }
             }
@@ -200,7 +191,7 @@ class liveStatusService {
             return [error];
         }
     }
-    
+
     async liveStatusByIncident(incident: IIncident): Promise<(IliveStatus[] | any)> {
         try {
             logger.info({

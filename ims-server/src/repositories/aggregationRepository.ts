@@ -1,10 +1,11 @@
+import { AggregationType } from "aws-sdk/clients/appflow";
 import { Status } from "../enums/enum";
 import IncidentModel from "../models/IncidentModel";
 
 class AggregationRepository {
   async aggregateIncident(): Promise<any> {
     try {
-      const result :any= await IncidentModel.aggregate([
+      const result: any[] = await IncidentModel.aggregate([
         {
           $group: {
             _id: null,
