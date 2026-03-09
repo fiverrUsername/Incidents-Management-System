@@ -6,6 +6,7 @@ import incidentModel from "../models/IncidentModel";
 import TimelineEventRepository from "../repositories/timelineEventRepository";
 
 class IncidentRepository {
+  
   async addIncident(newIncident: IIncident): Promise<IIncident | any> {
     const timeline:ITimelineEvent={
       channelId:newIncident.channelId,
