@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import attachmentsService from "../services/attachmentService";
-import { status } from "../loggers/constants";
+import { STATUS } from "../loggers/constants";
 import { KeyUrlPair } from "../interfaces/IAttachment";
 
 export default class AwsController {
@@ -12,11 +12,11 @@ export default class AwsController {
       );
       if (attachment instanceof Error) {
         res
-          .status(status.PAGE_NOT_FOUND)
+          .status(STATUS.NOT_FOUND)
           .json({ message: attachment, error: true });
-      } else res.status(status.SUCCESS).json(attachment);
+      } else res.status(STATUS.SUCCESS).json(attachment);
     } catch (error: any) {
-      res.status(status.SERVER_ERROR).json({ message: error.message });
+      res.status(STATUS.SERVER_ERROR).json({ message: error.message });
     }
   }
 
@@ -25,10 +25,10 @@ export default class AwsController {
       const keys: string[] = req.body as string[];
       const file: KeyUrlPair[] = await attachmentsService.getSignedUrlForKeys(keys);
       if (file instanceof Error) {
-        res.status(status.PAGE_NOT_FOUND).json({ message: file, error: true });
-      } else res.status(status.SUCCESS).json(file);
+        res.status(STATUS.NOT_FOUND).json({ message: file, error: true });
+      } else res.status(STATUS.SUCCESS).json(file);
     } catch (error: any) {
-      res.status(status.SERVER_ERROR).json({ message: error });
+      res.status(STATUS.SERVER_ERROR).json({ message: error });
     }
   }
 
@@ -37,10 +37,10 @@ export default class AwsController {
       const key: string = req.query.key as string;
       const file: any = await attachmentsService.deleteAttachmentById(key);
       if (file instanceof Error) {
-        res.status(status.PAGE_NOT_FOUND).json({ message: file, error: true });
-      } else res.status(status.SUCCESS).json(file);
+        res.status(STATUS.NOT_FOUND).json({ message: file, error: true });
+      } else res.status(STATUS.SUCCESS).json(file);
     } catch (error: any) {
-      res.status(status.SERVER_ERROR).json({ message: error });
+      res.status(STATUS.SERVER_ERROR).json({ message: error });
     }
   }
 }

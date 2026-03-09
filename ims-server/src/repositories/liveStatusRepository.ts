@@ -1,6 +1,8 @@
 import { IliveStatus } from "../interfaces/liveStatusInterface";
 import liveStatusModel from "../models/liveStatusModel";
+
 class liveStatusRepository {
+    
     async getLiveStatusSystemsByDate(_date: Date, tag?: string): Promise<IliveStatus[] | any> {
         try {
             const startDate: Date = new Date(_date);
@@ -24,6 +26,7 @@ class liveStatusRepository {
             return null;
         }
     }
+
     async getLiveStatusByTag(tag: string, startDate: Date, endDate: Date): Promise<IliveStatus[] | any> {
         try {
             let query: Record<string, any> = { systemName: tag };
@@ -41,6 +44,7 @@ class liveStatusRepository {
             return null;
         }
     }
+
     async getTodaysLiveStatusByTag(tag: string): Promise<IliveStatus | null> {
         try {
             const today: Date = new Date();
@@ -51,6 +55,7 @@ class liveStatusRepository {
             return null;
         }
     }
+
     async createLiveStatus(data: IliveStatus): Promise<IliveStatus | any> {
         try {
             const newLiveStatus: IliveStatus = await liveStatusModel.create(data);
@@ -60,6 +65,7 @@ class liveStatusRepository {
             return error;
         }
     }
+
     async updateLiveStatus(data: IliveStatus, id: string): Promise<IliveStatus | any> {
         try {
             const updatedliveStatus: IliveStatus | null = await liveStatusModel.findOneAndUpdate({ id: id }, data);

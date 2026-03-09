@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { status } from '../loggers/constants';
+import { STATUS } from '../loggers/constants';
 import { IIncident } from '../interfaces/IncidentInterface';
 import incidentService from '../services/incidentService';
-import { constants } from '../loggers/constants';
+import { CONSTANTS } from '../loggers/constants';
 import { ISummary } from '../interfaces/ISummary';
 import { IncidentDto } from '../dto/incidentDto';
 import { ActionType, ObjectType } from '../../../ims-socket/src/interfaces';
@@ -14,14 +14,14 @@ export default class IncidentController {
     try {
       const incident: IncidentDto = await incidentService.addIncident(req.body);
       if (incident instanceof Error) {
-        res.status(status.SERVER_ERROR).json({ message: incident, error: true });
+        res.status(STATUS.SERVER_ERROR).json({ message: incident, error: true });
       }
       else {
         sendToSocket(incident as IIncident, ObjectType.Incident, ActionType.Add);
-        res.status(status.CREATED_SUCCESS).json(incident);
+        res.status(STATUS.CREATED).json(incident);
       }
     } catch (error: any) {
-      res.status(status.SERVER_ERROR).json({ message: error.message });
+      res.status(STATUS.SERVER_ERROR).json({ message: error.message });
     }
   }
 
@@ -29,28 +29,28 @@ export default class IncidentController {
     try {
       const incident: IncidentDto = await incidentService.updateIncident(req.params.id, req.body);
       if (incident instanceof Error) {
-        if (incident.message === constants.INCIDENT_NOT_FOUND) {
-          return res.status(status.PAGE_NOT_FOUND).json({ message: constants.INCIDENT_NOT_FOUND });
+        if (incident.message === CONSTANTS.INCIDENT_NOT_FOUND ) {
+          return res.status(STATUS.NOT_FOUND).json({ message: CONSTANTS.INCIDENT_NOT_FOUND });
         } else {
-          return res.status(status.SERVER_ERROR).json({ message: incident, error: true });
+          return res.status(STATUS.SERVER_ERROR).json({ message: incident, error: true });
         }
       }
-      return res.status(status.SUCCESS).json(incident);
+      return res.status(STATUS.SUCCESS).json(incident);
     } catch (error: any) {
-      return res.status(status.SERVER_ERROR).json({ message: error.message, error: true });
+      return res.status(STATUS.SERVER_ERROR).json({ message: error.message, error: true });
     }
   }
 
   async getAllIncidents(_req: Request, res: Response): Promise<void> {
-    try {      
+    try {
       const incidents: IncidentDto = await incidentService.getAllIncidents();
       if (incidents instanceof Error) {
         res.status(404).json({ message: incidents.message, error: true });
       } else {
-        res.status(status.SUCCESS).json(incidents);
+        res.status(STATUS.SUCCESS).json(incidents);
       }
     } catch (error: any) {
-      res.status(status.SERVER_ERROR).json({ message: error });
+      res.status(STATUS.SERVER_ERROR).json({ message: error });
     }
   }
 
@@ -58,10 +58,10 @@ export default class IncidentController {
     try {
       const incident: any = await incidentService.getIncidentByField(req.params.fieldvalue, req.params.fieldname || 'id');
       if (incident instanceof Error) {
-        res.status(status.PAGE_NOT_FOUND).json({ message: incident, error: true });
-      } else res.status(status.SUCCESS).json(incident);
+        res.status(STATUS.NOT_FOUND).json({ message: incident, error: true });
+      } else res.status(STATUS.SUCCESS).json(incident);
     } catch (error: any) {
-      res.status(status.SERVER_ERROR).json({ message: error });
+      res.status(STATUS.SERVER_ERROR).json({ message: error });
     }
   }
 
@@ -69,11 +69,11 @@ export default class IncidentController {
     try {
       const summary: ISummary | null = await incidentService.getSummaryIncident(req.params.id);
       if (summary instanceof Error || summary === null) {
-        return res.status(status.PAGE_NOT_FOUND).json({ message: summary, error: true });
+        return res.status(STATUS.NOT_FOUND).json({ message: summary, error: true });
       }
-      return res.status(status.SUCCESS).json(summary);
+      return res.status(STATUS.SUCCESS).json(summary);
     } catch (error: any) {
-      return res.status(status.SERVER_ERROR).json({ message: error });
+      return res.status(STATUS.SERVER_ERROR).json({ message: error });
     }
   }
 

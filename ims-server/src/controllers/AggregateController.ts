@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { status } from "../loggers/constants";
+import { STATUS } from "../loggers/constants";
 import aggregationService from "../services/aggregationService";
 
 
@@ -8,10 +8,10 @@ export default class AggregationController {
     try {
       const aggregation: any = await aggregationService.aggregateIncident();
       if (aggregation instanceof Error) {
-        res.status(status.PAGE_NOT_FOUND).json({ message: aggregation, error: true });
-      } else res.status(status.SUCCESS).json(aggregation);
+        res.status(STATUS.NOT_FOUND).json({ message: aggregation, error: true });
+      } else res.status(STATUS.SUCCESS).json(aggregation);
     } catch (error: any) {
-      res.status(status.SERVER_ERROR).json({ message: error.message });
+      res.status(STATUS.SERVER_ERROR).json({ message: error.message });
     }
   }
 }

@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { status } from "../loggers/constants";
-import liveStatusService from "../services/liveStatusService";
 import { IliveStatus } from "../interfaces/liveStatusInterface";
-import { ITimelineEvent } from "../interfaces/ItimelineEvent";
+import { STATUS } from "../loggers/constants";
+import liveStatusService from "../services/liveStatusService";
 
 export default class liveStatusController {
 
@@ -25,10 +24,10 @@ export default class liveStatusController {
                 systems = await liveStatusService.getLiveStatus();
             }
             if (systems instanceof Error) {
-                res.status(status.SERVER_ERROR).json({ message: systems, error: true });
-            } else res.status(status.SUCCESS).json(systems);
+                res.status(STATUS.SERVER_ERROR).json({ message: systems, error: true });
+            } else res.status(STATUS.SUCCESS).json(systems);
         } catch (error: any) {
-            res.status(status.SERVER_ERROR).json({ message: error });
+            res.status(STATUS.SERVER_ERROR).json({ message: error });
         }
     }
 }

@@ -1,5 +1,4 @@
 import express, { Router } from "express";
-
 import TimelineEventController from "../controllers/TimelineEventController";
 
 const router: Router = express.Router();

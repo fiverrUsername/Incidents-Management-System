@@ -1,5 +1,4 @@
 import express, { Router } from "express";
-
 import aggregation from "../controllers/AggregateController";
 
 const aggregationRouter: Router = express.Router();

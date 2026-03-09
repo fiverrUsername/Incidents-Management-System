@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ActionType, ObjectType } from '../../../ims-socket/src/interfaces';
 import { ITimelineEvent } from "../interfaces/ItimelineEvent";
-import { constants, status } from "../loggers/constants";
+import { CONSTANTS, STATUS } from "../loggers/constants";
 import logger from "../loggers/log";
 import attachmentService from "../services/attachmentService";
 import { sendToSocket } from '../services/socket';
@@ -14,12 +14,12 @@ export default class TimelineEventController {
         try {
             const timelineEvents: ITimelineEvent[] | null = await timelineEventService.getAllTimelineEvents();
             if (timelineEvents instanceof Error) {
-                res.status(status.PAGE_NOT_FOUND).json({ message: timelineEvents, error: true });
+                res.status(STATUS.PAGE_NOT_FOUND).json({ message: timelineEvents, error: true });
             }
-            else res.status(status.SUCCESS).json(timelineEvents);
+            else res.status(STATUS.SUCCESS).json(timelineEvents);
         }
         catch (error: any) {
-            res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: error });
+            res.status(STATUS.MISSNG_REQUIRED_FIELDS).json({ message: error });
         }
     }
 
@@ -28,12 +28,12 @@ export default class TimelineEventController {
             const timelineEvents: ITimelineEvent[] | null = await timelineEventService.getTimelineEventByIncidentId(req.params.id);
 
             if (timelineEvents instanceof Error) {
-                res.status(status.PAGE_NOT_FOUND).json({ message: timelineEvents, error: true });
+                res.status(STATUS.PAGE_NOT_FOUND).json({ message: timelineEvents, error: true });
             }
-            else res.status(status.SUCCESS).json(timelineEvents);
+            else res.status(STATUS.SUCCESS).json(timelineEvents);
         }
         catch (error: any) {
-            res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: error });
+            res.status(STATUS.MISSNG_REQUIRED_FIELDS).json({ message: error });
         }
     }
 
@@ -43,16 +43,16 @@ export default class TimelineEventController {
             const _timelineEvent: any = await timelineEventService.addTimelineEvent(req.body);
             if (_timelineEvent instanceof Error) {
                 if (_timelineEvent.message === "Validation error" || _timelineEvent.message === "Incident ID not found") {
-                    return res.status(status.BAD_REQUEST).json({ message: constants.INVALID_MESSAGE })
+                    return res.status(STATUS.BAD_REQUEST).json({ message: CONSTANTS.INVALID_MESSAGE })
                 }
-                return res.status(status.SERVER_ERROR).json({ message: constants.SERVER_ERROR });
+                return res.status(STATUS.SERVER_ERROR).json({ message: CONSTANTS.SERVER_ERROR });
             }
             sendToSocket(req.body as ITimelineEvent, ObjectType.TimelineEvent, ActionType.Add);
             await timelineEventService.updateFieldsOfIncidentById(_timelineEvent);
-            return res.status(status.CREATED_SUCCESS).json(_timelineEvent);
+            return res.status(STATUS.CREATED_SUCCESS).json(_timelineEvent);
         }
         catch (error: any) {
-            return res.status(status.SERVER_ERROR).json({ message: error.message });
+            return res.status(STATUS.SERVER_ERROR).json({ message: error.message });
         }
     }
 
@@ -60,14 +60,14 @@ export default class TimelineEventController {
         try {
             const _timelineEvent: ITimelineEvent | null = await timelineEventService.deleteTimelineEvent(req.params.id);
             if (_timelineEvent instanceof Error || _timelineEvent === null) {
-                res.status(status.PAGE_NOT_FOUND).send({ message: constants.NOT_FOUND, error: true })
+                res.status(STATUS.PAGE_NOT_FOUND).send({ message: CONSTANTS.NOT_FOUND, error: true })
             }
             else {
-                res.status(status.SUCCESS).send(_timelineEvent)
+                res.status(STATUS.SUCCESS).send(_timelineEvent)
             }
         }
         catch (error: any) {
-            res.status(status.MISSNG_REQUIRED_FIELDS).send({ message: error, error: true })
+            res.status(STATUS.MISSNG_REQUIRED_FIELDS).send({ message: error, error: true })
         }
     }
 
@@ -75,19 +75,19 @@ export default class TimelineEventController {
         try {
             const _timelineEvent = await timelineEventService.updateTimelineEvent(req.params.id, req.body);
             if (_timelineEvent instanceof Error) {
-                if (_timelineEvent.message === constants.MISSNG_REQUIRED_FIELDS) {
-                    res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: constants.MISSNG_REQUIRED_FIELDS, error: true });
-                } else if (_timelineEvent.message === constants.NOT_FOUND) {
-                    res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND });
+                if (_timelineEvent.message === CONSTANTS.MISSNG_REQUIRED_FIELDS) {
+                    res.status(STATUS.MISSNG_REQUIRED_FIELDS).json({ message: CONSTANTS.MISSNG_REQUIRED_FIELDS, error: true });
+                } else if (_timelineEvent.message === CONSTANTS.NOT_FOUND) {
+                    res.status(STATUS.PAGE_NOT_FOUND).json({ message: CONSTANTS.NOT_FOUND });
                 } else {
-                    res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: _timelineEvent, error: true });
+                    res.status(STATUS.MISSNG_REQUIRED_FIELDS).json({ message: _timelineEvent, error: true });
                 }
             }
             else {
-                res.status(status.SUCCESS).json(_timelineEvent);
+                res.status(STATUS.SUCCESS).json(_timelineEvent);
             }
         } catch (error: any) {
-            res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: error.message, error: true });
+            res.status(STATUS.MISSNG_REQUIRED_FIELDS).json({ message: error.message, error: true });
         }
     }
 
@@ -95,11 +95,11 @@ export default class TimelineEventController {
         try {
             const _timelineEvent: ITimelineEvent | null = await timelineEventService.getTimelineEventById(req.params.id);
             if (_timelineEvent instanceof Error || _timelineEvent === null) {
-                res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, error: true });
+                res.status(STATUS.PAGE_NOT_FOUND).json({ message: CONSTANTS.NOT_FOUND, error: true });
             }
-            else res.status(status.SUCCESS).json(_timelineEvent);
+            else res.status(STATUS.SUCCESS).json(_timelineEvent);
         } catch (error: any) {
-            res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: error });
+            res.status(STATUS.MISSNG_REQUIRED_FIELDS).json({ message: error });
         }
     }
 
@@ -110,15 +110,15 @@ export default class TimelineEventController {
             const file = await timelineEventService.getFileInTimelineEventByIndex(timelineEventId, index);
             if (file instanceof Error) {
                 if (file.message == 'Timeline event not found') {
-                    return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id });
+                    return res.status(STATUS.PAGE_NOT_FOUND).json({ message: CONSTANTS.NOT_FOUND, timelineEventId: req.params.id });
                 }
                 if (file.message == 'Invalid index') {
-                    return res.status(status.BAD_REQUEST).json({ message: constants.BAD_REQUEST, error: constants.INDEX_NOT_VALID });
+                    return res.status(STATUS.BAD_REQUEST).json({ message: CONSTANTS.BAD_REQUEST, error: CONSTANTS.INDEX_NOT_VALID });
                 }
-                return res.status(500).json({ message: constants.SERVER_ERROR });
+                return res.status(500).json({ message: CONSTANTS.SERVER_ERROR });
             }
-            logger.info({ source: constants.TIMELINE_EVENT, msg: constants.SUCCESS, timelineEventId, indexFile: index, method: constants.METHOD.GET });
-            return res.status(status.SUCCESS).json(file);
+            logger.info({ source: CONSTANTS.TIMELINE_EVENT, msg: CONSTANTS.SUCCESS, timelineEventId, indexFile: index, method: CONSTANTS.METHOD.GET });
+            return res.status(STATUS.SUCCESS).json(file);
         } catch (error: any) {
             return res.status(500).json({ message: error });
         }
@@ -131,17 +131,17 @@ export default class TimelineEventController {
             const updatedTimelineEvent = await timelineEventService.deleteFileInTimelineEventByIndex(timelineEventId, index);
             if (updatedTimelineEvent instanceof Error) {
                 if (updatedTimelineEvent.message == 'Timeline event not found') {
-                    return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id });
+                    return res.status(STATUS.PAGE_NOT_FOUND).json({ message: CONSTANTS.NOT_FOUND, timelineEventId: req.params.id });
                 }
                 if (updatedTimelineEvent.message == 'Invalid index') {
-                    return res.status(status.BAD_REQUEST).json({ message: constants.BAD_REQUEST, error: constants.INDEX_NOT_VALID });
+                    return res.status(STATUS.BAD_REQUEST).json({ message: CONSTANTS.BAD_REQUEST, error: CONSTANTS.INDEX_NOT_VALID });
                 }
                 else {
-                    return res.status(status.MISSNG_REQUIRED_FIELDS).json({ message: constants.SERVER_ERROR });
+                    return res.status(STATUS.MISSNG_REQUIRED_FIELDS).json({ message: CONSTANTS.SERVER_ERROR });
                 }
             }
-            logger.info({ source: constants.TIMELINE_EVENT, msg: constants.SUCCESS, timelineEventId, indexFile: index, method: constants.METHOD.DELETE });
-            return res.status(status.SUCCESS).json(updatedTimelineEvent);
+            logger.info({ source: CONSTANTS.TIMELINE_EVENT, msg: CONSTANTS.SUCCESS, timelineEventId, indexFile: index, method: CONSTANTS.METHOD.DELETE });
+            return res.status(STATUS.SUCCESS).json(updatedTimelineEvent);
         } catch (error: any) {
             return res.status(500).json({ message: error });
         }
@@ -154,12 +154,12 @@ export default class TimelineEventController {
             const updatedTimelineEvent = await timelineEventService.deleteFileInTimelineEventByValue(timelineEventId, file);
             if (updatedTimelineEvent instanceof Error) {
                 if (updatedTimelineEvent.message == 'Timeline event not found' || updatedTimelineEvent.message === 'string file not exist') {
-                    return res.status(status.PAGE_NOT_FOUND).json({ message: constants.NOT_FOUND, timelineEventId: req.params.id, stringFile: req.query.fileString });
+                    return res.status(STATUS.PAGE_NOT_FOUND).json({ message: CONSTANTS.NOT_FOUND, timelineEventId: req.params.id, stringFile: req.query.fileString });
                 }
-                return res.status(status.SERVER_ERROR).json({ message: constants.SERVER_ERROR });
+                return res.status(STATUS.SERVER_ERROR).json({ message: CONSTANTS.SERVER_ERROR });
             }
-            logger.info({ source: constants.TIMELINE_EVENT, msg: constants.SUCCESS, timelineEventId, file: file, method: constants.METHOD.DELETE });
-            return res.status(status.SUCCESS).json(updatedTimelineEvent);
+            logger.info({ source: CONSTANTS.TIMELINE_EVENT, msg: CONSTANTS.SUCCESS, timelineEventId, file: file, method: CONSTANTS.METHOD.DELETE });
+            return res.status(STATUS.SUCCESS).json(updatedTimelineEvent);
         } catch (error: any) {
             return res.status(500).json({ message: error });
         }
@@ -186,6 +186,6 @@ export default class TimelineEventController {
             if (previousTimeLineEvent?.type != req.body.type)
                 answer.description[1] = "type changed: " + previousTimeLineEvent.type + " => " + req.body.type + '\n'
         }
-        res.status(status.SUCCESS).json(answer);
+        res.status(STATUS.SUCCESS).json(answer);
     }
 }

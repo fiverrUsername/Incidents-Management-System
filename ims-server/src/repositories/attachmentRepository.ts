@@ -1,8 +1,7 @@
-// import AWS from 'aws-sdk';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import { KeyUrlPair } from '../interfaces/IAttachment';
-import { constants } from '../loggers/constants';
+import { CONSTANTS } from '../loggers/constants';
 import logger from "../loggers/log";
 import * as AWS from 'aws-sdk';
 
@@ -12,11 +11,12 @@ const expiration: number = 3600;
 const s3: AWS.S3 = new AWS.S3({
   region: process.env.AWS_REGION,
 });
+
 AWS.config.getCredentials(function (err) {
   if (err) console.log(err.stack);
   // credentials not loaded
   else {
-    logger.info({ source: constants.UPLOAD_SUCCESS, msg: constants.METHOD.GET, success: true });
+    logger.info({ source: CONSTANTS.UPLOAD_SUCCESS, msg: CONSTANTS.METHOD.GET, success: true });
     console.log("Access key:", AWS.config.credentials?.accessKeyId);
   }
 });
@@ -38,10 +38,10 @@ class AttachmentsRepository {
     try {
       const uploadResults: PromiseSettledResult<AWS.S3.ManagedUpload.SendData | undefined>[] = await Promise.allSettled(uploadPromises);
       uploadResults.forEach(() => {
-        logger.info({ source: constants.UPLOAD_SUCCESS, msg: constants.METHOD.GET, success: true });
+        logger.info({ source: CONSTANTS.UPLOAD_SUCCESS, msg: CONSTANTS.METHOD.GET, success: true });
       });
     } catch (error) {
-      logger.info({ source: constants.UPLOAD_FAILED, msg: constants.METHOD.GET, error: true });
+      logger.info({ source: CONSTANTS.UPLOAD_FAILED, msg: CONSTANTS.METHOD.GET, error: true });
     }
   }
 
@@ -53,10 +53,10 @@ class AttachmentsRepository {
     };
     try {
       const signedUrl: string = await s3.getSignedUrlPromise('getObject', params);
-      logger.info({ source: constants.SIGNED_URL_OF_FILE_SUCCESS, msg: 'GET', success: true });
+      logger.info({ source: CONSTANTS.SIGNED_URL_OF_FILE_SUCCESS, msg: 'GET', success: true });
       return signedUrl;
     } catch (error) {
-      logger.error({ source: constants.SIGNED_URL_OF_FILE_FAILED, msg: 'GET', error: error });
+      logger.error({ source: CONSTANTS.SIGNED_URL_OF_FILE_FAILED, msg: 'GET', error: error });
       throw error;
     }
   }
@@ -70,10 +70,10 @@ class AttachmentsRepository {
         })
       );
 
-      logger.info({ source: constants.GET_FILE_KEY_FAILED, method: constants.METHOD.GET, err: true });
+      logger.info({ source: CONSTANTS.GET_FILE_KEY_FAILED, method: CONSTANTS.METHOD.GET, err: true });
       return allResponses;
     } catch (error) {
-      logger.error({ source: constants.SHOW_FAILED, method: constants.METHOD.GET, err: true, error: true });
+      logger.error({ source: CONSTANTS.SHOW_FAILED, method: CONSTANTS.METHOD.GET, err: true, error: true });
       throw error;
     }
   }
@@ -85,19 +85,19 @@ class AttachmentsRepository {
     };
     try {
       await s3.deleteObject(params).promise();
-      logger.info({ source: constants.DELETE_FILE_SUCCESS, msg: constants.METHOD.GET, success: true });
+      logger.info({ source: CONSTANTS.DELETE_FILE_SUCCESS, msg: CONSTANTS.METHOD.GET, success: true });
     } catch (error: any) {
       if (error.code === 'NoSuchKey') {
-        logger.info({ source: constants.FILE_NOT_FOUND, msg: constants.METHOD.GET, key: key, error: true });
+        logger.info({ source: CONSTANTS.FILE_NOT_FOUND, msg: CONSTANTS.METHOD.GET, key: key, error: true });
       } else {
-        logger.error({ source: constants.DELETE_FILE_FAILED, msg: constants.METHOD.GET, error: true });
+        logger.error({ source: CONSTANTS.DELETE_FILE_FAILED, msg: CONSTANTS.METHOD.GET, error: true });
       }
     }
   }
 
   static getBucketName(): string {
     if (!process.env.BUCKET_NAME) {
-      logger.error({ source: constants.BUCKET_NAME, method: constants.METHOD.GET, err: true });
+      logger.error({ source: CONSTANTS.BUCKET_NAME, method: CONSTANTS.METHOD.GET, err: true });
       return '';
     } else {
       return process.env.BUCKET_NAME ? process.env.BUCKET_NAME.toString() : ''
@@ -105,4 +105,5 @@ class AttachmentsRepository {
   }
 
 }
+
 export default new AttachmentsRepository();

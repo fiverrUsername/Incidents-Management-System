@@ -16,6 +16,7 @@ import liveStatusRouter from "./routes/liveStatusRouter";
 import tagRouter from './routes/tagRouter';
 import timelineEventRouter from './routes/timelineEventRouter';
 import dailySchedule from './services/schedule';
+import { CORS_WHITELIST } from './constants/cors.constants';
 
 const port: string | undefined = config.server.port
 const app: express.Application = express()
@@ -23,26 +24,9 @@ const swaggerFile: any = (process.cwd() + "/src/Swagger.json");
 const swaggerData: any = fs.readFileSync(swaggerFile, 'utf8');
 const swaggerDocument: any = JSON.parse(swaggerData);
 
-const whitelist: string[] = [
-  'https://ims-client-mep8.onrender.com',
-  'https://ims-client-mep8.onrender.com/',
-  'wss://ims-socket.onrender.com/',
-  'ws://ims-socket.onrender.com/4700',
-  'https://ims-socket.onrender.com',
-  'https://ims-slack.onrender.com/',
-  'https://ims-slack.onrender.com',
-  'https://slack-server-71aw.onrender.com/',
-  'wss://ims-socket.onrender.com/8080',
-  'https://slack-server-71aw.onrender.com/4700',
-  'http://localhost:3000',
-  'http://localhost:4700',
-  'http://localhost:7071',
-  'http://localhost:7000'
-];
-
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
-    if (origin === undefined || whitelist.includes(origin)) {
+    if (origin === undefined || CORS_WHITELIST.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -51,7 +35,6 @@ const corsOptions: cors.CorsOptions = {
   credentials: true,
   methods: 'POST,GET,PUT,OPTIONS,DELETE'
 };
-
 
 connect();
 dailySchedule
@@ -66,7 +49,8 @@ app.use('/attachment', attachmentRouter)
 app.use('/livestatus', liveStatusRouter)
 app.use('/log', clientLogRouter);
 app.use(authenticateWithApiKey());
-app.get('/', (req: Request, res: Response): void => {
+
+app.get('/', (_req: Request, res: Response): void => {
   res.redirect('/swagger')
 });
 

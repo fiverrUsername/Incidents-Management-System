@@ -2,6 +2,7 @@ import { ITimelineEvent } from "../interfaces/ItimelineEvent";
 import timelineEvent from "../models/timelineEvent";
 
 class TimelineEventRepository {
+
   async addTimelineEvent(newTimelineEvent: ITimelineEvent): Promise<void | any> {
     try {
       const _timelineEvent: ITimelineEvent = await timelineEvent.create(newTimelineEvent);
@@ -31,7 +32,6 @@ class TimelineEventRepository {
     }
   }
 
-
   async deleteTimelineEvent(id: String): Promise<ITimelineEvent | any> {
     try {
       return await timelineEvent.findOneAndDelete({ id });
@@ -60,4 +60,5 @@ class TimelineEventRepository {
     }
   }
 }
+
 export default new TimelineEventRepository();

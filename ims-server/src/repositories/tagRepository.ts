@@ -2,6 +2,7 @@ import { ITag } from "../interfaces/tagInterface";
 import tagModel from "../models/tagModel";
 
 class TagRepository {
+
   async addTag(newTag: ITag): Promise<ITag | null> {
     try {
       const createdTag: ITag = await tagModel.create(newTag);

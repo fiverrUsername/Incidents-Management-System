@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { status } from './loggers/constants'
+import { STATUS } from './loggers/constants'
 
 export const authenticateWithApiKey = () => {
     const apiKey: string | undefined = process.env.API_KEY;
@@ -8,7 +8,7 @@ export const authenticateWithApiKey = () => {
         if (req.headers.authorization === `Bearer ${apiKey}`) {
             next();
         } else {
-            res.status(status.BAD_REQUEST).json({ error: 'Unauthorized' });
+            res.status(STATUS.BAD_REQUEST).json({ error: 'Unauthorized' });
         }
     };
 };
