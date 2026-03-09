@@ -10,7 +10,7 @@ import ListItemText from '@mui/material/ListItemText'
 import { CSSObject, Theme, styled } from '@mui/material/styles'
 import React from 'react'
 import { IconType } from 'react-icons/lib'
-import { useNavigate } from 'react-router-dom'
+import { NavigateFunction, useNavigate } from 'react-router-dom'
 import logo from '../../assets/images/logo.png'
 import { StyledComponent } from '@emotion/styled'
 import { MUIStyledCommonProps } from "@mui/system";
@@ -97,8 +97,8 @@ const Drawer: StyledComponent<DrawerProps & MUIStyledCommonProps<Theme>, {}, {}>
   )
 
 export default function LeftDrawer({ icons }: Props) {
-  const [open, setOpen] = React.useState(false);
-  const navigate = useNavigate();
+  const [open, setOpen] = React.useState<boolean>(false);
+  const navigate: NavigateFunction = useNavigate();
   const handleClick = (navigation: string) => {
     navigate(navigation)
   }

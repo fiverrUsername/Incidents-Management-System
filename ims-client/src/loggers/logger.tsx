@@ -1,19 +1,19 @@
 import log, { levels } from 'loglevel';
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { Level } from '../interfaces/enums';
 import { ILogData, ILogRecievedData } from '../interfaces/ILogger';
 import axiosRetry from 'axios-retry';
 
-const axiosInstance = axios.create();
+const axiosInstance: AxiosInstance = axios.create();
 
 axiosRetry(axiosInstance, {
-  retries: 3, 
-  retryDelay: axiosRetry.exponentialDelay, 
+  retries: 3,
+  retryDelay: axiosRetry.exponentialDelay,
 })
 
 log.setDefaultLevel(levels.TRACE);
 
-const baseUrl = process.env.REACT_APP_API_KEY
+const baseUrl: string | undefined = process.env.REACT_APP_API_KEY
 
 export default class Logger {
   static info(data: ILogRecievedData): void {
