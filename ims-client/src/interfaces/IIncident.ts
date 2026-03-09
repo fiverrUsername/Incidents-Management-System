@@ -19,5 +19,3 @@ export default interface IIncident {
   cost: number;
   createdBy: string;
 }
-
-

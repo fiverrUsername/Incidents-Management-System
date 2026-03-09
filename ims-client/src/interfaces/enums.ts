@@ -9,6 +9,7 @@ export enum Status {
   Active = "Active",
   Resolved = "Resolved",
 }
+
 export enum Types {
   securing = "Securing",
   technical = "Technical",
@@ -22,4 +23,3 @@ export enum Level {
   trace = 'trace',
   warn = 'warn',
 }
-
