@@ -1,11 +1,10 @@
+import { Paper } from "@mui/material";
+import { Box } from "@mui/system";
 import styled from "styled-components";
 import theme from "../../../theme";
-import { Grid, Paper } from "@mui/material";
-import { Box } from "@mui/system";
- 
 
-export const StyleLabel = styled.label`
-   
+
+export const StyleLabel = styled.label`  
 color: ${theme.palette.primary.dark};
 font-size: ${theme.typography.fontSize};
 
@@ -54,6 +53,3 @@ export const StyledBox = styled(Box)`
     margin-left: 6px;
 }
 `;
- 
-
- 

@@ -1,5 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import  Widget  from './widget';
+import type { StoryObj } from '@storybook/react';
+import Widget from './widget';
+
 const meta = {
   title: 'Components/Widget',
   component: Widget,
@@ -8,11 +9,13 @@ const meta = {
     layout: 'fullscreen',
   },
 };
+
 export const Default = {
     args: {
         title: 'Test Task',
         aggregation: 962555
     }
   };
+  
 export default meta;
 type Story = StoryObj<typeof meta>;

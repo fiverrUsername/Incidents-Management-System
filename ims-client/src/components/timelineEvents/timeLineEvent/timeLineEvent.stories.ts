@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { StoryObj } from '@storybook/react';
 
-import TimeLineEvent from './timeLineEvent'
+import TimeLineEvent from './timeLineEvent';
 const meta = {
     title: 'Components/TimeLineEvent',
     component: TimeLineEvent,
@@ -9,6 +9,7 @@ const meta = {
         layout: 'mobile',
     },
 };
+
 export const Default = {
     args: {
         timeline: {

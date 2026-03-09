@@ -22,6 +22,3 @@ declare module '*.ppt';
 declare module '*.xls';
 declare module '*.excel';
 declare module '*.powerpoint';
-
-
-
