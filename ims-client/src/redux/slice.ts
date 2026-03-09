@@ -1,14 +1,14 @@
-import { combineReducers } from "@reduxjs/toolkit"
+import { AnyAction, combineReducers } from "@reduxjs/toolkit"
 
 import incidentsSlice, { INCIDENT_STATE_KEY } from '../pages/incidents/modules/slice'
+import systemsStatusSlice, { LIVE_STATUS_STATE_KEY } from "../pages/liveStatus/modules/slice"
 
 const createdAppReducer = combineReducers({
-    //-צריך להוסיף כאן את כל ה
-    //slice
-    [INCIDENT_STATE_KEY]: incidentsSlice
+    [INCIDENT_STATE_KEY]: incidentsSlice,
+    [LIVE_STATUS_STATE_KEY]: systemsStatusSlice
 })
 
-const reducer = (state: any, action: any) => {
+const reducer = (state: any, action: AnyAction) => {
     return createdAppReducer(state, action)
 }
 

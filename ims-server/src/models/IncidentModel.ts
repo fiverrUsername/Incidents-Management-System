@@ -1,10 +1,9 @@
 import mongoose, { Schema } from "mongoose";
-// import { type IIncident } from "../interfaces/IncidentInterface";
-import  {IIncident} from "../interfaces/IncidentInterface";
-
+import { IIncident } from "../interfaces/IncidentInterface";
 import { v4 as uuidv4 } from "uuid";
+import { Priority, Status } from "../enums/enum";
 
-export const IncidentSchema = new Schema<IIncident>({
+export const IncidentSchema: mongoose.Schema = new Schema<IIncident>({
   id: {
     type: String,
     default: uuidv4,
@@ -16,6 +15,7 @@ export const IncidentSchema = new Schema<IIncident>({
   status: {
     type: String,
     required: true,
+    enum: Object.values(Status)
   },
   description: {
     type: String,
@@ -24,6 +24,7 @@ export const IncidentSchema = new Schema<IIncident>({
   currentPriority: {
     type: String,
     required: true,
+    enum: Object.values(Priority),
   },
   type: {
     type: String,
@@ -45,7 +46,7 @@ export const IncidentSchema = new Schema<IIncident>({
     type: String,
     required: false,
   },
-  
+
   currentTags: {
     type: [
       {

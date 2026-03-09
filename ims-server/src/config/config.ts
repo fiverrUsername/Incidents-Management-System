@@ -3,7 +3,14 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 // CREATE CONFIG OBJECT
-const config = {
+const config: {
+  mongo: {
+    url: string | undefined;
+  };
+  server: {
+    port: string | undefined;
+  };
+} = {
   mongo: {
     url: process.env.MONGO_URL_LOCAL
   },

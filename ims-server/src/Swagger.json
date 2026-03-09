@@ -75,28 +75,6 @@
                 }
             }
         },
-        "/incident/{id}": {
-            "get": {
-                "tags": [
-                    "incident"
-                ],
-                "description": "get incident by id",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation"
-                    },
-                    "404": {
-                        "description": "Invalid status value"
-                    }
-                }
-            }
-        },
         "/incident/summary/{id}": {
             "get": {
                 "tags": [
@@ -240,6 +218,28 @@
                 }
             }
         },
+        "/timelineEvent/timelineEventByIncidentId/{id}/": {
+            "get": {
+                "tags": [
+                    "timelineEvent"
+                ],
+                "description": "Retrieve all timeline events for specific id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "Timeline Events not found for given id"
+                    }
+                }
+            }
+        },
         "/timelineEvent/": {
             "post": {
                 "tags": [
@@ -262,6 +262,12 @@
                 "responses": {
                     "201": {
                         "description": "successful operation"
+                    },
+                    "400":{
+                        "description":"bad request"
+                    },
+                    "422":{
+                        "description":"missing required fields"
                     },
                     "500": {
                         "description": "Invalid status value"
@@ -329,16 +335,45 @@
                 "tags": [
                     "timelineEvent"
                 ],
-                "description": "delete a file of a timeline event by id and index",
+                "description": "delete a file of a timeline event by id and string file",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path"
                     },
                     {
-                        "name": "index",
+                        "name": "fileString",
                         "in": "query",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "description": "not found"
+                    },
+                    "400": {
+                        "description": "BAD_REQUEST"
+                    },
+                    "500": {
+                        "description": "server error"
+                    }
+                }
+            }
+        },
+        "/livestatus/": {
+            "get": {
+                "tags": [
+                    "liveStatus"
+                ],
+                "description": "get the 10 latest days (untill the given date)",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "required": false
                     }
                 ],
                 "responses": {
@@ -362,10 +397,10 @@
                 "Tag": {
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "id": {
                             "type": "string"
                         },
-                        "userId": {
+                        "name": {
                             "type": "string"
                         }
                     }
@@ -377,13 +412,13 @@
                             "type": "string"
                         },
                         "status": {
-                            "type": "string"
+                            "type": "Status"
                         },
                         "description": {
                             "type": "string"
                         },
                         "priority": {
-                            "type": "string"
+                            "type": "priority"
                         },
                         "date": {
                             "type": "string",

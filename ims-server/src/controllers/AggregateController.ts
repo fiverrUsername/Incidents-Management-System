@@ -1,15 +1,18 @@
 import { Request, Response } from "express";
+import { STATUS } from "../loggers/constants";
 import aggregationService from "../services/aggregationService";
-import { status } from "../loggers/constants";
+import { AggregationType } from "aws-sdk/clients/iot";
+
+
 export default class AggregationController {
-  async incidentAggregation(req: Request, res: Response): Promise<void> {
+  async incidentAggregation(_req: Request, res: Response): Promise<void> {
     try {
-      const aggregation = await aggregationService.aggregateIncident();
+      const aggregation: AggregationType = await aggregationService.aggregateIncident();
       if (aggregation instanceof Error) {
-        res.status(status.PAGE_NOT_FOUND).json({ message: aggregation, error: true });
-      } else res.status(status.SUCCESS).json(aggregation);
+        res.status(STATUS.NOT_FOUND).json({ message: aggregation, error: true });
+      } else res.status(STATUS.SUCCESS).json(aggregation);
     } catch (error: any) {
-      res.status(status.SERVER_ERROR).json({ message: error.message });
+      res.status(STATUS.SERVER_ERROR).json({ message: error.message });
     }
   }
 }

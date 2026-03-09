@@ -1,0 +1,47 @@
+import { Request, Response } from "express";
+import attachmentsService from "../services/attachmentService";
+import { STATUS } from "../loggers/constants";
+import { KeyUrlPair } from "../interfaces/IAttachment";
+import { Attachment } from "aws-sdk/clients/ecs";
+
+export default class AwsController {
+
+  async uploadAttachment(req: Request, res: Response): Promise<void> {
+    try {
+      const attachment: Attachment = await attachmentsService.uploadAttachment(
+        req.files as Express.Multer.File[]
+      );
+      if (attachment instanceof Error) {
+        res
+          .status(STATUS.NOT_FOUND)
+          .json({ message: attachment, error: true });
+      } else res.status(STATUS.SUCCESS).json(attachment);
+    } catch (error: any) {
+      res.status(STATUS.SERVER_ERROR).json({ message: error.message });
+    }
+  }
+
+  async getSignedUrlForKeys(req: Request, res: Response): Promise<void> {
+    try {
+      const keys: string[] = req.body as string[];
+      const file: KeyUrlPair[] = await attachmentsService.getSignedUrlForKeys(keys);
+      if (file instanceof Error) {
+        res.status(STATUS.NOT_FOUND).json({ message: file, error: true });
+      } else res.status(STATUS.SUCCESS).json(file);
+    } catch (error: any) {
+      res.status(STATUS.SERVER_ERROR).json({ message: error });
+    }
+  }
+
+  async deleteAttachmentById(req: Request, res: Response): Promise<void> {
+    try {
+      const key: string = req.query.key as string;
+      const file: any = await attachmentsService.deleteAttachmentById(key);
+      if (file instanceof Error) {
+        res.status(STATUS.NOT_FOUND).json({ message: file, error: true });
+      } else res.status(STATUS.SUCCESS).json(file);
+    } catch (error: any) {
+      res.status(STATUS.SERVER_ERROR).json({ message: error });
+    }
+  }
+}
