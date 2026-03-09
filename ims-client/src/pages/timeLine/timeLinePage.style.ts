@@ -32,9 +32,8 @@ export const CustomScrollbar = styled.div`
       overflow-y: auto;
       overflow-x: unset;
     }
-
-  
 `;
+
 export const StyledPaper = styled(Paper)`
 border-radius: 20px;
 border: 1px solid #bfbfbf;
@@ -52,6 +51,7 @@ margin-top: 2%;
   font-size: 70%
 }
 `;
+
 export const StyledBox = styled(Box)`
  color: ${theme.palette.secondary.main};
  font-weight: ${theme.typography.bold.fontWeight};
@@ -67,5 +67,3 @@ export const StyledBox = styled(Box)`
   font-size: 60%
 }
 `;
- 
-

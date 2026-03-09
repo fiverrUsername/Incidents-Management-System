@@ -4,8 +4,6 @@ import { actions } from './slice'
 import IIncident from '../../../interfaces/IIncident'
 import backendServices from '../../../services/backendServices/backendServices'
 
-
-
 function* onGetIncidents() {
     try {
         const data:IIncident[] = yield call(backendServices.getIncidents)

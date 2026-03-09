@@ -1,7 +1,7 @@
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
-import MuiDrawer from '@mui/material/Drawer'
+import MuiDrawer, { DrawerProps } from '@mui/material/Drawer'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
@@ -12,8 +12,10 @@ import React from 'react'
 import { IconType } from 'react-icons/lib'
 import { useNavigate } from 'react-router-dom'
 import logo from '../../assets/images/logo.png'
+import { StyledComponent } from '@emotion/styled'
+import { MUIStyledCommonProps } from "@mui/system";
 
-const drawerWidth = 240
+const drawerWidth: number = 240
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
   transition: theme.transitions.create('width', {
@@ -43,17 +45,21 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
 }))
+
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean
 }
+
 interface Props {
   icons: IIcon[];
 }
+
 export interface IIcon {
   text: string,
   icon: IconType,
   navigation: string,
 }
+
 styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })<AppBarProps>(({ theme, open }) => ({
@@ -72,22 +78,23 @@ styled(MuiAppBar, {
   }),
 }))
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
-  })
-)
+const Drawer: StyledComponent<DrawerProps & MUIStyledCommonProps<Theme>, {}, {}>
+  = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+    ({ theme, open }) => ({
+      width: drawerWidth,
+      flexShrink: 0,
+      whiteSpace: 'nowrap',
+      boxSizing: 'border-box',
+      ...(open && {
+        ...openedMixin(theme),
+        '& .MuiDrawer-paper': openedMixin(theme),
+      }),
+      ...(!open && {
+        ...closedMixin(theme),
+        '& .MuiDrawer-paper': closedMixin(theme),
+      }),
+    })
+  )
 
 export default function LeftDrawer({ icons }: Props) {
   const [open, setOpen] = React.useState(false);
@@ -114,8 +121,10 @@ export default function LeftDrawer({ icons }: Props) {
         <Divider />
         <List>
           {icons.map((icon) => (
-            <ListItem onClick={() => {handleClick(icon.navigation)
-            if(open) setOpen(false)}} key={icon.text} disablePadding sx={{ display: 'block' }}>
+            <ListItem onClick={() => {
+              handleClick(icon.navigation)
+              if (open) setOpen(false)
+            }} key={icon.text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -141,5 +150,3 @@ export default function LeftDrawer({ icons }: Props) {
     </Box>
   )
 }
-
-

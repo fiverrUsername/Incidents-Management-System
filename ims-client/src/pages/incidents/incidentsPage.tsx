@@ -7,7 +7,7 @@ import Logger from "../../loggers/logger";
 
 const IncidentsPage = () => {
   const [incidents, setIncidents] = useState<Array<IIncident>>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     setIsLoading(true);

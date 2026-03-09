@@ -1,6 +1,11 @@
 import cors from 'cors';
 
-const whitelist: string[] = ['http://localhost:3000', 'http://localhost:4700', 'http://localhost:7071', 'http://localhost:7000'];
+const whitelist: string[] = [
+  'http://localhost:3000',
+  'http://localhost:4700',
+  'http://localhost:7071',
+  'http://localhost:7000'
+];
 
 export const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {

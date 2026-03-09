@@ -1,14 +1,15 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit"
+import { createSelector, createSlice, Slice } from "@reduxjs/toolkit"
 import IIncident from "../../../interfaces/IIncident"
 
+export const INCIDENT_STATE_KEY: string = 'INCIDENT'
 
-export const INCIDENT_STATE_KEY = 'INCIDENT'
 type State = {
     incidents: IIncident[]
 }
+
 const initialState: State = { incidents: [] }
 
-const slice = createSlice({
+const slice: Slice<any> = createSlice({
     name: INCIDENT_STATE_KEY,
     initialState,
     reducers: {
